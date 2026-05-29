@@ -35,6 +35,13 @@ Una versión optimizada y consolidada en 4 grandes pilares, idónea para ser car
 *   [03_ui_ux_and_performance.md](file:///c:/Users/PcLocal/Desktop/developOrange/-makeRuleIA/ai_governance_rule_v3_resume/03_ui_ux_and_performance.md): Criterios de diseño visual premium (aesthetically wow), accesibilidad y rendimiento.
 *   [04_operations_ai_and_quality.md](file:///c:/Users/PcLocal/Desktop/developOrange/-makeRuleIA/ai_governance_rule_v3_resume/04_operations_ai_and_quality.md): Gobernanza de IA, resiliencia cloud, observabilidad, testing y la regla de validación final de flujos.
 
+### 3. `ai_governance_rule_v4_rebirth/` (Estructura Antigravity v4 - Optimizada por Tokens)
+Una estructura de reglas radicalmente optimizada diseñada para consumo mínimo de tokens (reducción de hasta un 92% en el caso base) mediante la carga selectiva por contexto en entornos como Antigravity:
+*   [GEMINI.md](file:///c:/Users/PcLocal/Desktop/developOrange/-makeRuleIA/ai_governance_rule_v4_rebirth/GEMINI.md): Reglas core de Antigravity (carga permanente).
+*   [AGENTS.md](file:///c:/Users/PcLocal/Desktop/developOrange/-makeRuleIA/ai_governance_rule_v4_rebirth/AGENTS.md): Reglas cross-tool y checklist de desarrollo (carga permanente).
+*   `.agent/rules/`: Reglas modulares de carga selectiva por dominio (`ui-ux.md`, `architecture.md`, `security.md`, `cms.md`, `operations.md`).
+*   `.agent/skills/`: Skills bajo demanda para diseño, estilo y convenciones (`web-design-guidelines`, `taste-skill`, `impeccable`).
+
 ---
 
 ## 🌟 La Regla de Oro: Planificación Obligatoria
@@ -49,7 +56,9 @@ Tanto los desarrolladores humanos como los agentes de IA tienen estrictamente pr
 
 ## 🛠️ Cómo Utilizar este Repositorio
 
-*   **Para Agentes de IA (Copilots, Custom GPTs, etc.):** 
+*   **Para IDEs de IA Avanzados (Antigravity, Cursor, etc.):**
+    Implementar la estructura de la carpeta `ai_governance_rule_v4_rebirth/` (copiando `GEMINI.md`, `AGENTS.md` y `.agent/`) para aprovechar la carga selectiva y maximizar la eficiencia en tokens.
+*   **Para Agentes de IA Básicos (Copilots, Custom GPTs, etc.):** 
     Se recomienda inyectar el contenido de la carpeta `ai_governance_rule_v3_resume/` en las instrucciones de sistema o "Custom Instructions" del agente para garantizar que actúe de acuerdo con nuestros estándares de ingeniería.
 *   **Para Desarrolladores:**
     Utilizar los archivos de `ai_governance_rules_v2/` como manual de referencia rápido durante las fases de diseño técnico (SDD), revisiones de código (PRs) e implementación de pruebas.
