@@ -122,15 +122,27 @@ tags: [ui, ux, design, frontend, accessibility, forms, animation]
 
 ---
 
-## Skills de Diseño Disponibles
+## Skills de Diseño — Cuándo Usar Cada Una
 
+| Skill | Momento | Qué hace |
+|-------|---------|----------|
+| `ui-ux-pro-max` | Al **iniciar** una UI nueva | Genera sistema de diseño: estilo, paleta, tipografía por industria |
+| `impeccable` | Al **revisar** UI existente | Audita, pule y critica con 23 comandos |
+| `web-design-guidelines` | Al **auditar** estándares | Verifica a11y, forms, performance técnica |
+
+**Nunca activar las 3 a la vez.** Elegir según el momento de la tarea.
+
+### Jerarquía si hay conflicto
+1. `web-design-guidelines` — estándares técnicos (a11y, WCAG, forms)
+2. `ui-ux-pro-max` — sistema de diseño por industria
+3. `impeccable` — vocabulario y auditoría de diseño
+
+### Instalación
 ```bash
-# Instalar una vez por proyecto
-npx skills add https://github.com/Leonxlnx/taste-skill
+npm install -g uipro-cli && uipro init --ai antigravity
 npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
+# impeccable: ver instrucciones en impeccable.style
 ```
-
-Jerarquía si hay conflicto: Vercel Guidelines > impeccable > taste-skill
 
 ---
 
