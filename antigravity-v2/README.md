@@ -1,16 +1,16 @@
 # Antigravity Rules — Guía de Instalación
 
-Estructura correcta basada en la arquitectura oficial de Google Antigravity.
-
 ---
 
-## Estructura
+## Estructura completa
 
 ```
 ~/.gemini/                                      # GLOBAL — todo el sistema
 ├── GEMINI.md                                   # Always On — reglas core
 └── antigravity/global_workflows/
+    ├── new-feature.md                          # /new-feature
     ├── session-close.md                        # /session-close
+    ├── security-audit.md                       # /security-audit
     └── deploy-checklist.md                     # /deploy-checklist
 
 [proyecto]/
@@ -23,12 +23,13 @@ Estructura correcta basada en la arquitectura oficial de Google Antigravity.
     │   ├── operations.md                       # Model Decision
     │   ├── stack-conventions.md                # Glob: **/*.{ts,tsx,js,jsx,py,php,css}
     │   └── tools-reference.md                  # Manual
-    ├── workflows/
-    │   └── session-close.md                    # Override local de /session-close
     └── skills/
-        ├── ui-ux-pro-max/
-        ├── impeccable/
-        └── web-design-guidelines/
+        ├── ui-ux-pro-max/                      # ⚠️ Placeholder — instalar global
+        ├── impeccable/                         # ⚠️ Placeholder — instalar global
+        ├── web-design-guidelines/              # ⚠️ Placeholder — instalar global
+        ├── react-best-practices/               # ⚠️ Placeholder — instalar global
+        ├── fastapi/                            # ⚠️ Placeholder — instalar global
+        └── nodejs/                             # ⚠️ Placeholder — instalar global
 ```
 
 ---
@@ -39,25 +40,15 @@ Estructura correcta basada en la arquitectura oficial de Google Antigravity.
 
 #### Windows (PowerShell)
 ```powershell
-# Crear carpetas
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\antigravity\global_workflows"
-
-# Copiar GEMINI.md global
 Copy-Item ".gemini\GEMINI.md" "$env:USERPROFILE\.gemini\GEMINI.md"
-
-# Copiar workflows globales
 Copy-Item ".gemini\antigravity\global_workflows\*" "$env:USERPROFILE\.gemini\antigravity\global_workflows\"
 ```
 
 #### macOS / Linux
 ```bash
-# Crear carpetas
 mkdir -p ~/.gemini/antigravity/global_workflows
-
-# Copiar GEMINI.md global
 cp .gemini/GEMINI.md ~/.gemini/GEMINI.md
-
-# Copiar workflows globales
 cp .gemini/antigravity/global_workflows/* ~/.gemini/antigravity/global_workflows/
 ```
 
@@ -67,31 +58,36 @@ cp .gemini/antigravity/global_workflows/* ~/.gemini/antigravity/global_workflows
 
 #### Windows (PowerShell)
 ```powershell
-# Desde la raíz del proyecto
 Copy-Item -Recurse ".agents" ".\"
 ```
 
 #### macOS / Linux
 ```bash
-# Desde la raíz del proyecto
 cp -r .agents/ ./
 ```
 
 ---
 
-### Paso 3 — Instalar skills externas (todas las plataformas)
+### Paso 3 — Instalar skills (tú las ejecutas en tu terminal)
 
+> Todas las skills del ZIP son **placeholders**. Debes instalarlas para que la IA tenga el conocimiento real.
+
+**Globales — ejecutar una sola vez en tu máquina (aplican a todos los proyectos):**
 ```bash
-# ui-ux-pro-max — sistema de diseño por industria
-npm install -g uipro-cli
-uipro init --ai antigravity
+# Diseño UI/UX
+npm install -g uipro-cli && uipro init --ai antigravity
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines
+# impeccable: ver instrucciones en impeccable.style
 
-# web-design-guidelines (Vercel)
-npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
+# Stack
+npx skills add vercel-labs/agent-skills --skill react-best-practices
+npx skills add fastapi/fastapi --skill fastapi
+npx skills add mcollina/skills --skill nodejs
+```
 
-# impeccable — ver instrucciones en impeccable.style
-
-# Context7 MCP — documentación de librerías en tiempo real
+**Por proyecto — ejecutar en cada proyecto nuevo:**
+```bash
+# Context7 MCP — se conecta al contexto específico del proyecto
 npx ctx7 setup
 ```
 
@@ -99,62 +95,115 @@ npx ctx7 setup
 
 ### Paso 4 — Actualizar stack por proyecto
 
-Solo si el proyecto difiere del stack base, especificarlo al inicio de la sesión en Antigravity:
-
+Solo si el proyecto difiere del stack base:
 ```
-Nombre: [NOMBRE DEL PROYECTO]
-Base de datos: [PostgreSQL / MySQL / MongoDB]
-Frontend: [Vanilla JS]   # solo si NO es React/Next.js
-Estilos: [CSS puro]      # solo si NO es Tailwind
+Nombre:        [NOMBRE DEL PROYECTO]           ✏️
+Base de datos: [PostgreSQL / MySQL / MongoDB]   ✏️
+Frontend:      [Vanilla JS]                    ✏️ solo si NO es React/Next.js
+Estilos:       [CSS puro]                      ✏️ solo si NO es Tailwind
 ```
 
 ---
 
 ## Rutas por plataforma
 
-| Plataforma | Ruta global (`~/.gemini/`) |
-|------------|---------------------------|
+| Plataforma | Ruta global |
+|------------|------------|
 | Windows | `C:\Users\TuUsuario\.gemini\` |
 | macOS | `/Users/TuUsuario/.gemini/` |
 | Linux | `/home/TuUsuario/.gemini/` |
 
 ---
 
-## Modos de Activación
+## Modos de Activación — Rules
 
-| Archivo | Modo | Por qué |
-|---------|------|---------|
-| `GEMINI.md` | Always On | Core — siempre necesario |
+| Archivo | Modo | Cuándo carga |
+|---------|------|-------------|
+| `GEMINI.md` | Always On | Siempre |
 | `ui-ux.md` | Model Decision | La IA detecta tareas de UI |
 | `architecture.md` | Model Decision | La IA detecta diseño de estructura |
 | `security.md` | Model Decision | La IA detecta auth/APIs |
 | `cms.md` | Model Decision | La IA detecta tareas de CMS |
 | `operations.md` | Model Decision | La IA detecta infra/CI/CD |
 | `stack-conventions.md` | Glob `**/*.{ts,tsx,js,jsx,py,php,css}` | Al editar cualquier archivo de código |
-| `tools-reference.md` | Manual | Solo en setup — invocar con `/` |
-| `/session-close` | Manual | Al terminar cada tarea |
-| `/deploy-checklist` | Manual | Antes de cada deploy |
+| `tools-reference.md` | Manual `/tools-reference` | Solo en setup |
 
 ---
 
 ## Workflows
 
-| Comando | Cuándo usarlo |
-|---------|--------------|
-| `/session-close` | Al terminar cada tarea con cambios en código o docs |
-| `/deploy-checklist` | Antes de merge a main o deploy a producción |
+4 workflows en el orden natural del trabajo: **inicio → cierre → seguridad → deploy**
+
+| Comando | Cuándo invocarlo |
+|---------|-----------------|
+| `/new-feature` | Antes de empezar cualquier tarea — define el plan, crea la rama, actualiza `06_TASKS.md` |
+| `/session-close` | Al terminar el día o una tarea — verifica docs, código y genera commit sugerido |
+| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles — revisa OWASP Top 10 |
+| `/deploy-checklist` | Antes de subir a producción — checklist completo de código, seguridad, UI y docs |
+
+### Flujo típico del día
+```
+/new-feature        ← empiezas
+  ... trabajas ...
+/session-close      ← terminas el día o la tarea
+/security-audit     ← si tocaste auth, APIs o datos
+/deploy-checklist   ← antes de subir a producción
+```
 
 ---
 
-## Skills de Diseño
+## Skills
 
-| Skill | Momento |
-|-------|---------|
-| `ui-ux-pro-max` | Construyendo UI nueva |
-| `impeccable` | Revisando UI existente |
-| `web-design-guidelines` | Auditando estándares técnicos |
+### Cómo funcionan
 
-Nunca las 3 a la vez — elegir según el momento de la tarea.
+Las skills son conocimiento externo empaquetado. Se activan de dos formas:
+- **Automática (Glob):** el agente detecta el tipo de archivo y carga la skill
+- **Manual:** escribiendo `/nombre-skill` en el chat
+
+No reemplazan `stack-conventions.md` — se complementan:
+
+| | `stack-conventions` | Skills |
+|--|---------------------|--------|
+| Qué es | Tus reglas del proyecto | Conocimiento externo |
+| Ejemplo | "usamos Zod para validación" | "así se evitan waterfalls en React" |
+| Cuándo carga | Glob al editar código | Auto o manual |
+
+---
+
+### Skills de Diseño UI/UX
+
+| Skill | Estado | Cuándo activarla |
+|-------|--------|-----------------|
+| `ui-ux-pro-max` | ⚠️ Placeholder | Construyendo UI nueva |
+| `impeccable` | ⚠️ Placeholder | Revisando UI existente |
+| `web-design-guidelines` | ⚠️ Placeholder | Auditando estándares técnicos |
+
+> ⚠️ Instalar antes de usar — ver Paso 3.
+
+Nunca las 3 a la vez — la IA elige según el contexto de la tarea.
+
+---
+
+### Skills de Stack
+
+> ⚠️ Son **placeholders** en el ZIP. Sin instalarlas la IA solo ve el placeholder, no las reglas reales. Instalar con `npx skills add` antes de usar.
+
+| Skill | Estado | Activa con | Uso manual |
+|-------|--------|-----------|-----------|
+| `react-best-practices` | ⚠️ Placeholder | `*.tsx`, `*.jsx` | `/react-best-practices` |
+| `fastapi` | ⚠️ Placeholder | `*.py` | `/fastapi` |
+| `nodejs` | ⚠️ Placeholder | `*.js`, `*.ts` | `/nodejs` |
+
+---
+
+### Buscar más skills
+
+```bash
+npx skills find "php"
+npx skills find "wordpress"
+npx skills list       # ver todas las instaladas
+npx skills update     # actualizar todas
+```
 
 ---
 
