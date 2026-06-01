@@ -12,8 +12,26 @@ Al ejecutar este workflow, seguir estos pasos antes de escribir código:
 - ¿Qué archivos se van a modificar?
 - ¿Hay decisiones arquitectónicas que tomar antes de empezar?
 
-### 2. Actualizar documentación previa
-- [ ] `06_TASKS.md` — agregar la tarea con estado `in-progress`
+### 2. Actualizar 06_TASKS.md (obligatorio)
+
+Si `/docs/06_TASKS.md` no existe — crearlo con esta estructura:
+
+```markdown
+# Tasks
+
+## In Progress
+- [ ] [NOMBRE DE LA TAREA] — [descripción breve]
+
+## Completed
+
+## Backlog
+```
+
+Si ya existe — agregar la tarea nueva en `## In Progress`:
+```
+- [ ] [NOMBRE DE LA TAREA] — [descripción breve]
+```
+
 - [ ] `07_DECISIONS.md` — si hay decisión arquitectónica, documentarla como ADR antes de codificar
 
 ### 3. Crear rama git
