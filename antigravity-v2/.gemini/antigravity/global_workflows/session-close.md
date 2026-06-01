@@ -1,7 +1,14 @@
 # Workflow: Cierre de Sesión
 # Invocar con: /session-close
 
-Al ejecutar este workflow, emitir el siguiente bloque de cierre antes de la respuesta final:
+Al ejecutar este workflow seguir estos pasos EN ORDEN:
+
+**PASO 1 — ACTUALIZAR DOCS (antes de mostrar el checklist)**
+Revisar qué cambió en la sesión y actualizar físicamente cada doc relevante en `/docs`.
+NO limitarse a reportar — escribir los cambios en el archivo correspondiente.
+Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos ahora.
+
+**PASO 2 — EMITIR EL BLOQUE DE CIERRE**
 
 ---
 
@@ -33,6 +40,8 @@ Al ejecutar este workflow, emitir el siguiente bloque de cierre antes de la resp
 ---
 
 **Reglas:**
-- Doc no modificado → `[ ] no aplica`
-- Doc que debía modificarse y no se hizo → `⚠️ pendiente` + explicación
-- Omitir solo en respuestas puramente informativas (sin cambios en código o docs)
+- Doc actualizado en esta sesión → `[x] motivo`
+- Doc no relevante para esta sesión → `[ ] no aplica`
+- Doc que debía actualizarse y NO se pudo por falta de información → `⚠️ pendiente` + explicación de qué falta
+- **PROHIBIDO** marcar como `⚠️ pendiente` si la información necesaria ya existe en la sesión — en ese caso actualizar el doc directamente
+- Omitir el bloque solo en respuestas puramente informativas (sin cambios en código o docs)
