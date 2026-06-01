@@ -1,117 +1,231 @@
-# Antigravity Rules — Global
+# Antigravity Rules v2 — Guía de Instalación
 
 ---
 
-## 1. Regla de Oro: Planificar Antes de Actuar
-
-**NUNCA generar código o modificar archivos sin pasar primero por estos 3 pasos:**
-
-1. **Analizar:** Desglosa el problema, identifica impactos colaterales y propone la solución conceptualmente.
-2. **Validar:** Detente y pregunta si hay ambigüedad en alguna de estas condiciones:
-   - Hay más de una arquitectura válida con trade-offs distintos
-   - La tarea afecta más de 3 archivos existentes
-   - Hay decisiones irreversibles (migraciones, cambios de schema, eliminación de datos)
-3. **Ejecutar:** Solo cuando la estrategia esté clara y aprobada.
-
----
-
-## 2. Filosofía
-
-- Sistemas **seguros, escalables, mantenibles y listos para producción**.
-- Priorizar: claridad, modularidad, simplicidad y reutilización.
-- Evitar: deuda técnica, hacks rápidos, sobreingeniería.
-- **Código:** siempre en inglés.
-- **Respuestas:** siempre en el idioma del usuario.
-
----
-
-## 3. Stack Base
+## Estructura completa
 
 ```
-Frontend:      React / Next.js / Vanilla JS
-Backend:       Node.js / Python (FastAPI)
-CMS:           WordPress (tradicional)
-Estilos:       Tailwind CSS / CSS puro
-Runtime:       Node.js 20+ / Python 3.11+
-```
+~/.gemini/                                          # GLOBAL — aplica a todos los proyectos
+├── GEMINI.md                                       # Always On — reglas core, stack, naming, docs
+└── antigravity/global_workflows/
+    ├── new-feature.md                              # /new-feature
+    ├── session-close.md                            # /session-close
+    ├── security-audit.md                           # /security-audit
+    └── deploy-checklist.md                         # /deploy-checklist
 
-> Actualizar en cada proyecto: Nombre, Base de datos, y Frontend/Estilos si difieren del base.
-
----
-
-## 4. Naming & Git
-
-**Naming:** `kebab-case` archivos · `camelCase` variables · `PascalCase` clases · `UPPER_SNAKE_CASE` constantes · `/api/v1/recursos` endpoints
-
-**Conventional Commits:**
-```
-feat(scope): descripción   fix(scope): descripción   refactor(scope): descripción
-docs(scope): descripción   chore(scope): descripción  perf(scope): descripción
+[proyecto]/
+└── .agents/                                        # WORKSPACE — override local por proyecto
+    ├── rules/
+    │   ├── ui-ux.md                                # Model Decision
+    │   ├── architecture.md                         # Model Decision
+    │   ├── security.md                             # Model Decision
+    │   ├── cms.md                                  # Model Decision
+    │   ├── operations.md                           # Model Decision
+    │   ├── stack-conventions.md                    # Glob: **/*.{ts,tsx,js,jsx,py,php,css}
+    │   └── tools-reference.md                      # Manual: /tools-reference
+    └── skills/
+        ├── ui-ux-pro-max/                          # ⚠️ Placeholder — instalar global
+        ├── impeccable/                             # ⚠️ Placeholder — instalar global
+        ├── web-design-guidelines/                  # ⚠️ Placeholder — instalar global
+        ├── react-best-practices/                   # ⚠️ Placeholder — instalar global
+        ├── fastapi/                                # ⚠️ Placeholder — instalar global
+        └── nodejs/                                 # ⚠️ Placeholder — instalar global
 ```
 
 ---
 
-## 5. Documentación del Proyecto `/docs`
+## Instalación
 
-| Archivo | Propósito |
-|---------|-----------|
-| `01_PROJECT_PRD.md` | Requisitos de producto |
-| `02_SDD.md` | Diseño del sistema |
-| `03_SYSTEM_SPEC.md` | Especificaciones técnicas |
-| `04_DATA_MODEL.md` | Esquemas y entidades |
-| `05_ARCHITECTURE.md` | Decisiones arquitectónicas |
-| `06_TASKS.md` | Backlog activo |
-| `07_DECISIONS.md` | ADRs |
-| `08_CHANGELOG.md` | Historial de versiones |
+### Paso 1 — Archivos globales (una sola vez, para todos los proyectos)
 
-Actualizar el archivo correspondiente al completar cada tarea.
-
----
-
-## 6. Principios No Negociables
-
-- Nunca confiar en el frontend para seguridad o lógica de negocio.
-- Todo secret en variables de entorno — nunca hardcodeado.
-- Mobile-first desde 320px.
-- Los 5 estados de UI son obligatorios: loading, skeleton, error, success, empty.
-- El código que compila **no** es código terminado — probar el flujo completo.
-
----
-
-## 7. Skills de Diseño
-
-| Skill | Cuándo |
-|-------|--------|
-| `ui-ux-pro-max` | Construyendo UI nueva |
-| `impeccable` | Revisando UI existente |
-| `web-design-guidelines` | Auditando estándares técnicos |
-
-Nunca las 3 a la vez.
-
----
-
-## 8. Context7 MCP
-
-Consultar docs antes de implementar con cualquier librería:
+#### Windows (PowerShell)
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\antigravity\global_workflows"
+Copy-Item ".gemini\GEMINI.md" "$env:USERPROFILE\.gemini\GEMINI.md"
+Copy-Item ".gemini\antigravity\global_workflows\*" "$env:USERPROFILE\.gemini\antigravity\global_workflows\"
 ```
-use context7 to resolve <librería> — <query>
+
+#### macOS / Linux
+```bash
+mkdir -p ~/.gemini/antigravity/global_workflows
+cp .gemini/GEMINI.md ~/.gemini/GEMINI.md
+cp .gemini/antigravity/global_workflows/* ~/.gemini/antigravity/global_workflows/
 ```
 
 ---
 
-## 9. Jerarquía de Reglas
+### Paso 2 — Archivos de workspace (por cada proyecto)
 
-1. Este archivo `GEMINI.md` — máxima prioridad
-2. `.agents/rules/` — workspace (override local)
-3. Skills (ui-ux-pro-max → impeccable → web-design-guidelines)
+#### Windows (PowerShell)
+```powershell
+Copy-Item -Recurse ".agents" ".\"
+```
+
+#### macOS / Linux
+```bash
+cp -r .agents/ ./
+```
 
 ---
 
-## 10. Workflows Disponibles
+### Paso 3 — Instalar skills (tú las ejecutas en tu terminal)
 
-Invocar con `/` en el chat:
+> ⚠️ Todas las skills del ZIP son **placeholders**. Sin instalarlas la IA solo ve
+> la referencia, no el conocimiento real.
 
-| Comando | Descripción |
-|---------|-------------|
-| `/session-close` | Cierre de sesión — docs, verificación y commit |
-| `/deploy-checklist` | Checklist completo pre-deploy |
+**Globales — ejecutar una sola vez en tu máquina:**
+```bash
+# Skills de diseño UI/UX
+npm install -g uipro-cli && uipro init --ai antigravity
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines
+npx skills add vercel-labs/agent-skills --skill react-best-practices
+# impeccable: ver instrucciones en impeccable.style
+
+# Skills de stack
+npx skills add fastapi/fastapi --skill fastapi
+npx skills add mcollina/skills --skill nodejs
+```
+
+**Por proyecto — ejecutar en cada proyecto nuevo:**
+```bash
+# Context7 MCP — documentación de librerías en tiempo real
+npx ctx7 setup
+```
+
+---
+
+### Paso 4 — Actualizar stack por proyecto
+
+Abrir `GEMINI.md` y completar solo si el proyecto difiere del stack base:
+```
+Nombre:        [NOMBRE DEL PROYECTO]           ✏️
+Base de datos: [PostgreSQL / MySQL / MongoDB]   ✏️
+Frontend:      [Vanilla JS]                    ✏️  solo si NO es React/Next.js
+Estilos:       [CSS puro]                      ✏️  solo si NO es Tailwind
+```
+
+---
+
+## Rutas por plataforma
+
+| Plataforma | Ruta global |
+|------------|------------|
+| Windows | `C:\Users\TuUsuario\.gemini\` |
+| macOS | `/Users/TuUsuario/.gemini/` |
+| Linux | `/home/TuUsuario/.gemini/` |
+
+---
+
+## Rules — Modos de Activación
+
+Antigravity escanea `.agents/rules/` automáticamente. Cada regla tiene su modo definido en el frontmatter.
+
+| Archivo | Modo | Cuándo carga |
+|---------|------|-------------|
+| `GEMINI.md` | Always On | Siempre — en cada mensaje |
+| `ui-ux.md` | Model Decision | La IA detecta tareas de UI, diseño o componentes |
+| `architecture.md` | Model Decision | La IA detecta diseño de módulos, APIs o estructura |
+| `security.md` | Model Decision | La IA detecta auth, endpoints o datos sensibles |
+| `cms.md` | Model Decision | La IA detecta tareas de WordPress o CMS headless |
+| `operations.md` | Model Decision | La IA detecta infra, CI/CD o sistemas de IA |
+| `stack-conventions.md` | Glob `**/*.{ts,tsx,js,jsx,py,php,css}` | Al editar cualquier archivo de código |
+| `tools-reference.md` | Manual | Solo invocar con `/tools-reference` en setup |
+
+---
+
+## Workflows
+
+4 workflows que siguen el orden natural del trabajo.
+La IA los ejecuta cuando los invocas — **tú decides cuándo usarlos**.
+
+| Comando | Cuándo invocarlo | Qué hace la IA |
+|---------|-----------------|----------------|
+| `/new-feature` | Antes de empezar cualquier tarea | Define el plan, crea la rama git, crea o actualiza `06_TASKS.md` con la tarea en `In Progress`, documenta ADR si hay decisión arquitectónica |
+| `/session-close` | Al terminar el día o una tarea | Actualiza los docs de `/docs` relevantes, verifica el estado de `06_TASKS.md`, confirma que el código está probado y genera el commit sugerido |
+| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles | Revisa OWASP Top 10, tokens, secrets y datos sensibles. Lista hallazgos con severidad Critical/High/Medium |
+| `/deploy-checklist` | Antes de merge a main o deploy a producción | Checklist completo de código, seguridad, UI, SEO y docs |
+
+### Flujo típico del día
+```
+/new-feature          ← defines la tarea, la IA actualiza 06_TASKS.md
+  ... trabajas ...
+/session-close        ← la IA actualiza docs y marca la tarea como completed
+/security-audit       ← solo si tocaste auth, APIs o datos sensibles
+/deploy-checklist     ← solo antes de subir a producción
+```
+
+### Relación entre /new-feature y /session-close
+- `/new-feature` agrega la tarea en `06_TASKS.md` como `In Progress`
+- `/session-close` la mueve a `Completed` y actualiza los demás docs
+- La IA conecta ambos automáticamente — no tienes que recordárselo
+
+---
+
+## Skills
+
+### Cómo funcionan
+
+Las skills son conocimiento externo empaquetado — mejores prácticas de la comunidad.
+Antigravity escanea `.agents/skills/` automáticamente y activa cada skill según su `glob`.
+
+No reemplazan `stack-conventions.md` — se complementan:
+
+| | `stack-conventions` | Skills |
+|--|---------------------|--------|
+| Qué es | Tus reglas del proyecto | Conocimiento externo |
+| Ejemplo | "usamos Zod para validación" | "así se evitan waterfalls en React" |
+| Cuándo carga | Glob al editar código | Auto por Glob o manual |
+
+---
+
+### Skills de Diseño UI/UX
+
+La IA elige automáticamente según el contexto — nunca las 3 a la vez.
+
+| Skill | Cuándo la activa la IA | Uso manual |
+|-------|----------------------|-----------|
+| `ui-ux-pro-max` | Construyendo UI nueva | `/ui-ux-pro-max` |
+| `impeccable` | Revisando UI existente | `/impeccable audit` |
+| `web-design-guidelines` | Auditando estándares técnicos | `/web-design-guidelines` |
+
+---
+
+### Skills de Stack
+
+Se activan automáticamente por tipo de archivo al editar código.
+
+| Skill | Activa con | Uso manual |
+|-------|-----------|-----------|
+| `react-best-practices` | `*.tsx`, `*.jsx` | `/react-best-practices` |
+| `fastapi` | `*.py` | `/fastapi` |
+| `nodejs` | `*.js`, `*.ts` | `/nodejs` |
+
+> ⚠️ Son placeholders en el ZIP — instalar en Paso 3 para que funcionen con conocimiento real.
+
+---
+
+### Buscar más skills
+
+```bash
+npx skills find "php"
+npx skills find "wordpress"
+npx skills list       # ver todas las instaladas
+npx skills update     # actualizar todas
+```
+
+---
+
+## Consumo de Tokens
+
+| Archivo | Tokens | Cuándo carga |
+|---------|--------|-------------|
+| `GEMINI.md` | ~600 | Siempre |
+| `ui-ux.md` | ~1,484 | Model Decision |
+| `architecture.md` | ~436 | Model Decision |
+| `security.md` | ~707 | Model Decision |
+| `cms.md` | ~585 | Model Decision |
+| `operations.md` | ~955 | Model Decision |
+| `stack-conventions.md` | ~386 | Glob |
+| `tools-reference.md` | ~384 | Manual |
+| **Base siempre activa** | **~600** | — |
+| **Máximo con todo activo** | **~5,537** | — |
