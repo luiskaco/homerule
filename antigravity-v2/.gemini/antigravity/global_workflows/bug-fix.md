@@ -4,7 +4,7 @@
 Al ejecutar este workflow, seguir estos pasos ANTES de escribir código:
 
 ---
-w
+
 ## 🐛 Bug Fix
 
 ### 1. Identificar la causa raíz
