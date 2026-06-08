@@ -111,7 +111,10 @@ use context7 to resolve <librería> — <query>
 
 Invocar con `/` en el chat:
 
-| Comando | Descripción |
-|---------|-------------|
-| `/session-close` | Cierre de sesión — docs, verificación y commit |
-| `/deploy-checklist` | Checklist completo pre-deploy |
+| Comando | Cuándo |
+|---------|--------|
+| `/new-feature` | Antes de iniciar cualquier tarea nueva |
+| `/bug-fix` | Cuando algo está roto — identifica causa raíz antes de codificar |
+| `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
+| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
+| `/deploy-checklist` | Antes de merge a main o deploy a producción |

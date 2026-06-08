@@ -29,9 +29,11 @@ Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos
 - [ ] 08_CHANGELOG.md    — [motivo o "no aplica"]
 
 ### Verificación de código
-- [ ] Flujo completo probado (no solo que compile)
-- [ ] Consola limpia (sin errores ni warnings)
-- [ ] Edge cases considerados
+Ejecutar activamente antes de marcar como completado:
+- [ ] Correr el build — `npm run build` / `python -m pytest` / equivalente
+- [ ] Flujo completo probado manualmente — no solo que compile
+- [ ] Consola limpia — cero errores ni warnings
+- [ ] Edge cases del flujo considerados y probados
 - [ ] Imports válidos, sin dependencias rotas
 
 ### Commit sugerido

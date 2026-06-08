@@ -9,6 +9,7 @@
 ├── GEMINI.md                                       # Always On — reglas core, stack, naming, docs
 └── antigravity/global_workflows/
     ├── new-feature.md                              # /new-feature
+    ├── bug-fix.md                                  # /bug-fix
     ├── session-close.md                            # /session-close
     ├── security-audit.md                           # /security-audit
     └── deploy-checklist.md                         # /deploy-checklist
@@ -135,29 +136,42 @@ Antigravity escanea `.agents/rules/` automáticamente. Cada regla tiene su modo 
 
 ## Workflows
 
-4 workflows que siguen el orden natural del trabajo.
+5 workflows que siguen el orden natural del trabajo.
 La IA los ejecuta cuando los invocas — **tú decides cuándo usarlos**.
 
 | Comando | Cuándo invocarlo | Qué hace la IA |
 |---------|-----------------|----------------|
-| `/new-feature` | Antes de empezar cualquier tarea | Define el plan, crea la rama git, crea o actualiza `06_TASKS.md` con la tarea en `In Progress`, documenta ADR si hay decisión arquitectónica |
-| `/session-close` | Al terminar el día o una tarea | Actualiza los docs de `/docs` relevantes, verifica el estado de `06_TASKS.md`, confirma que el código está probado y genera el commit sugerido |
+| `/new-feature` | Antes de empezar cualquier tarea nueva | Define el plan, crea la rama git, crea o actualiza `06_TASKS.md` con la tarea en `In Progress`, documenta ADR si hay decisión arquitectónica |
+| `/bug-fix` | Cuando algo está roto | Identifica la causa raíz antes de codificar, evalúa impacto, crea rama fix/, verifica que el fix no rompe otra cosa |
+| `/session-close` | Al terminar el día o una tarea | Actualiza físicamente los docs de `/docs`, mueve tarea a `Completed` en `06_TASKS.md`, corre el build, genera commit sugerido |
 | `/security-audit` | Antes de subir features con auth, APIs o datos sensibles | Revisa OWASP Top 10, tokens, secrets y datos sensibles. Lista hallazgos con severidad Critical/High/Medium |
 | `/deploy-checklist` | Antes de merge a main o deploy a producción | Checklist completo de código, seguridad, UI, SEO y docs |
 
 ### Flujo típico del día
 ```
-/new-feature          ← defines la tarea, la IA actualiza 06_TASKS.md
+/new-feature          ← inicias tarea nueva — IA crea rama y actualiza 06_TASKS.md
+/bug-fix              ← si algo está roto — IA identifica causa raíz primero
   ... trabajas ...
-/session-close        ← la IA actualiza docs y marca la tarea como completed
+/session-close        ← IA actualiza docs, corre build y marca tarea como completed
 /security-audit       ← solo si tocaste auth, APIs o datos sensibles
 /deploy-checklist     ← solo antes de subir a producción
 ```
 
-### Relación entre /new-feature y /session-close
-- `/new-feature` agrega la tarea en `06_TASKS.md` como `In Progress`
-- `/session-close` la mueve a `Completed` y actualiza los demás docs
-- La IA conecta ambos automáticamente — no tienes que recordárselo
+### Relación entre workflows
+- `/new-feature` y `/bug-fix` → agregan tarea en `06_TASKS.md` como `In Progress`
+- `/session-close` → mueve la tarea a `Completed` y actualiza todos los docs relevantes
+- `/bug-fix` → si el bug era de seguridad, invoca `/security-audit` automáticamente al terminar
+- `/security-audit` → si encuentra algo Critical, bloquea hasta corregir antes de `/deploy-checklist`
+- La IA conecta el ciclo automáticamente — no tienes que recordárselo
+
+### Comportamiento de /session-close
+La IA sigue este orden estricto:
+1. **Actualiza los docs primero** — escribe los cambios en `/docs` antes de mostrar el checklist
+2. **Mueve la tarea** en `06_TASKS.md` de `In Progress` a `Completed`
+3. **Corre el build** activamente — no asume que compila
+4. **Emite el bloque de cierre** con el estado real de cada doc
+
+Regla importante: si la IA marca un doc como `⚠️ pendiente` teniendo la información disponible en la sesión, es un error — debe actualizar el archivo directamente.
 
 ---
 
