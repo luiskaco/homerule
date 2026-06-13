@@ -1,10 +1,6 @@
 ---
+trigger: model_decision
 description: >
-  Reglas de arquitectura, escalabilidad y estructura de código.
-  Activar cuando se diseñen módulos, servicios, APIs, modelos de datos,
-  relaciones entre capas o estructura de carpetas del proyecto.
-activation: manual
-tags: [architecture, backend, api, modules, structure, scalability]
 ---
 
 # Architecture Rules

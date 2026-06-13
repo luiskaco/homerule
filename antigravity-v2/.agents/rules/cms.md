@@ -1,10 +1,6 @@
 ---
+trigger: model_decision
 description: >
-  Reglas de seguridad y arquitectura para CMS tradicional y headless.
-  Activar cuando se trabaje con WordPress, Drupal, Sanity, Contentful,
-  Strapi, webhooks de CMS, API keys de contenido o migraciones de contenido.
-activation: manual
-tags: [cms, wordpress, strapi, sanity, contentful, headless, webhooks]
 ---
 
 # CMS Rules

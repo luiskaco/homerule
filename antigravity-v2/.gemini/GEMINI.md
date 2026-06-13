@@ -2,40 +2,54 @@
 
 ---
 
+## 0. Modo de Comunicación por Defecto
+
+Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramática y precisión técnica.
+
+**Niveles disponibles:** `/caveman none|lite|full|ultra`
+
+| Nivel | Comportamiento |
+|-------|---------------|
+| `none` | Modo normal — sin compresión. Respuestas completas y fluidas |
+| `lite` | **Default.** Drop filler y hedging. Gramática intacta |
+| `full` | Fragmentos OK, sinónimos cortos, sin artículos |
+| `ultra` | Máxima compresión — abreviaciones, flechas de causalidad |
+
+**Auto-detección:** Si la conversación es planificación, arquitectura, revisión de decisiones o análisis — sugerir `/caveman none` una vez. No cambiar automáticamente.
+
+---
+
 ## 1. Regla de Oro: Planificar Antes de Actuar
 
 **NUNCA generar código o modificar archivos sin pasar primero por estos 3 pasos:**
 
-1. **Analizar:** Desglosa el problema, identifica impactos colaterales y propone la solución conceptualmente.
+1. **Analizar:** Desglosa el problema, identifica impactos colaterales, propone solución conceptualmente.
 2. **Validar:** Detente y pregunta si hay ambigüedad en alguna de estas condiciones:
-   - Hay más de una arquitectura válida con trade-offs distintos
+   - Más de una arquitectura válida con trade-offs distintos
    - La tarea afecta más de 3 archivos existentes
    - Hay decisiones irreversibles (migraciones, cambios de schema, eliminación de datos)
 3. **Ejecutar:** Solo cuando la estrategia esté clara y aprobada.
 
 ---
 
-## 2. Filosofía
+## 2. Principios
 
-- Sistemas **seguros, escalables, mantenibles y listos para producción**.
-- Priorizar: claridad, modularidad, simplicidad y reutilización.
+- Sistemas seguros, escalables, mantenibles y listos para producción.
+- Priorizar: claridad, modularidad, simplicidad, reutilización.
 - Evitar: deuda técnica, hacks rápidos, sobreingeniería.
-- **Código:** siempre en inglés.
-- **Respuestas:** siempre en el idioma del usuario.
+- Código siempre en inglés. Respuestas en el idioma del usuario.
 
 ---
 
 ## 3. Stack Base
 
-```
-Frontend:      React / Next.js / Vanilla JS
-Backend:       Node.js / Python (FastAPI)
-CMS:           WordPress (tradicional)
-Estilos:       Tailwind CSS / CSS puro
-Runtime:       Node.js 20+ / Python 3.11+
-```
-
-> Actualizar en cada proyecto: Nombre, Base de datos, y Frontend/Estilos si difieren del base.
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | React / Next.js / Vanilla JS |
+| Backend | Node.js / Python (FastAPI) |
+| CMS | WordPress |
+| Estilos | Tailwind CSS / CSS puro |
+| Runtime | Node.js 20+ / Python 3.11+ |
 
 ---
 
@@ -43,11 +57,9 @@ Runtime:       Node.js 20+ / Python 3.11+
 
 **Naming:** `kebab-case` archivos · `camelCase` variables · `PascalCase` clases · `UPPER_SNAKE_CASE` constantes · `/api/v1/recursos` endpoints
 
-**Conventional Commits:**
-```
-feat(scope): descripción   fix(scope): descripción   refactor(scope): descripción
-docs(scope): descripción   chore(scope): descripción  perf(scope): descripción
-```
+**Commits:** Conventional Commits — `feat` / `fix` / `refactor` / `docs` / `chore` / `perf`
+
+**Tasks:** Cuando el usuario mencione modificaciones, cambios o nuevas funcionalidades — actualizar el archivo de tareas activo del proyecto (`06_TASKS.md` o equivalente) antes de codificar.
 
 ---
 
@@ -66,48 +78,19 @@ docs(scope): descripción   chore(scope): descripción  perf(scope): descripció
 
 Actualizar el archivo correspondiente al completar cada tarea.
 
----
-
-## 6. Principios No Negociables
-
-- Nunca confiar en el frontend para seguridad o lógica de negocio.
-- Todo secret en variables de entorno — nunca hardcodeado.
-- Mobile-first desde 320px.
-- Los 5 estados de UI son obligatorios: loading, skeleton, error, success, empty.
-- El código que compila **no** es código terminado — probar el flujo completo.
+**⚠️ Excepción:** Si existe un archivo `00_GEMINI_START*.md` en el proyecto, ese archivo define la estructura de documentación activa para esa sesión — rutas, nombres y reglas de actualización. Tiene prioridad sobre esta tabla.
 
 ---
 
-## 7. Skills de Diseño
-
-| Skill | Cuándo |
-|-------|--------|
-| `ui-ux-pro-max` | Construyendo UI nueva |
-| `impeccable` | Revisando UI existente |
-| `web-design-guidelines` | Auditando estándares técnicos |
-
-Nunca las 3 a la vez.
-
----
-
-## 8. Context7 MCP
-
-Consultar docs antes de implementar con cualquier librería:
-```
-use context7 to resolve <librería> — <query>
-```
-
----
-
-## 9. Jerarquía de Reglas
+## 6. Jerarquía de Reglas
 
 1. Este archivo `GEMINI.md` — máxima prioridad
 2. `.agents/rules/` — workspace (override local)
-3. Skills (ui-ux-pro-max → impeccable → web-design-guidelines)
+3. Skills según contexto del proyecto
 
 ---
 
-## 10. Workflows Disponibles
+## 7. Workflows Disponibles
 
 Invocar con `/` en el chat:
 
@@ -118,3 +101,27 @@ Invocar con `/` en el chat:
 | `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
 | `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
 | `/deploy-checklist` | Antes de merge a main o deploy a producción |
+| `/caveman none\|lite\|full\|ultra` | Cambiar nivel de compresión de respuestas |
+
+---
+
+## 8. Subagentes Internos
+
+Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
+
+**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (Claude, revisión manual, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
+
+Antes de entregar cualquier código, procesar internamente con 3 subagentes:
+
+- **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
+- **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
+- **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta problema crítico, bloquea entrega y corrige primero
+
+**Reporte al usuario:**
+```
+🎨 Frontend: [1 línea]
+⚙️ Backend: [1 línea]
+🔍 Inspector: ✅  — o descripción del issue corregido
+```
+
+Inspector solo reporta si encontró algo. Si todo correcto: solo `✅`.
