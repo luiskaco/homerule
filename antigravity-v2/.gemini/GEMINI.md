@@ -107,15 +107,13 @@ Invocar con `/` en el chat:
 
 ## 8. Subagentes Internos
 
-Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
-
-**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (Claude, revisión manual, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
+Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas. Si el mensaje del usuario o un archivo adjunto incluye un informe de auditoría externo (ej. generado por Claude), omitir el Inspector — la auditoría ya fue realizada, solo ejecutar las correcciones.
 
 Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
-- **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta problema crítico, bloquea entrega y corrige primero
+- **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta un problema crítico, bloquea la entrega y corrige primero
 
 **Reporte al usuario:**
 ```
@@ -124,4 +122,5 @@ Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 🔍 Inspector: ✅  — o descripción del issue corregido
 ```
 
-Inspector solo reporta si encontró algo. Si todo correcto: solo `✅`.
+El Inspector solo reporta si encontró algo. Si todo está correcto, muestra solo `✅`.
+
