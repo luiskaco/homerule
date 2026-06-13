@@ -3,8 +3,7 @@ description: >
   Convenciones específicas por tecnología del stack.
   Activar cuando se trabaje con Next.js, Node.js, Python/FastAPI,
   WordPress, React, Vanilla JS o CSS puro.
-activation: glob
-glob: "**/*.{ts,tsx,js,jsx,py,php,css}"
+activation: manual
 tags: [nextjs, nodejs, python, fastapi, wordpress, react, vanilla-js, css]
 ---
 

@@ -10,29 +10,36 @@ description: >
 ```
 UI → Lógica de negocio → Acceso a datos
 ```
+
 Ninguna capa salta a otra. El frontend no contiene lógica de negocio.
 
 ## Modularidad Vertical (por dominio)
 
-```
-✅ /features/auth/
-   /features/billing/
-   /features/users/
+Un módulo = una carpeta en cada capa. Sin mezclar.
 
-❌ /controllers/
-   /models/
-   /utils/
+```
+✅ app/[modulo]/          → rutas y páginas
+   components/[modulo]/   → componentes
+   lib/[modulo]/          → servicios, tipos, mocks
+
+❌ components/
+   lib/
+   utils/                 → archivos mezclados de distintos módulos
 ```
 
-Comunicación entre módulos solo a través de interfaces/contratos — nunca importando internals.
+- Compartido entre módulos → `components/ui/` o `lib/shared/`
+- Comunicación entre módulos solo a través de interfaces/contratos — nunca importando internals
+- Archivo nuevo siempre en la carpeta de su módulo
 
 ## Frontend Ligero
 
 El frontend maneja solo:
+
 - Presentación y estado de UI
 - Llamadas a la API del backend
 
 Nunca en el frontend:
+
 - Lógica de negocio crítica
 - Cálculos de precios, permisos o acceso
 - Decisiones de autorización
@@ -57,11 +64,13 @@ Diseñar stateless desde el inicio. Cualquier instancia debe poder manejar cualq
 - REST: recursos en plural, kebab-case (`/api/v1/blog-posts`)
 - HTTP codes correctos: `200`, `201`, `400`, `401`, `403`, `404`, `422`, `429`, `500`
 - Respuestas consistentes:
+
   ```json
   { "data": {}, "meta": {} }          // éxito
   { "error": "CODE", "message": "" }  // error
   { "errors": [{ "field": "", "message": "" }] }  // validación
   ```
+
 - No romper contratos sin deprecation period + versión nueva.
 
 ---
