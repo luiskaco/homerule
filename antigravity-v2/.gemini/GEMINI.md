@@ -101,19 +101,22 @@ Invocar con `/` en el chat:
 | `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
 | `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
 | `/deploy-checklist` | Antes de merge a main o deploy a producción |
+| `/tools-reference` | Setup inicial o cuando necesites ver skills y herramientas disponibles |
 | `/caveman none\|lite\|full\|ultra` | Cambiar nivel de compresión de respuestas |
 
 ---
 
 ## 8. Subagentes Internos
 
-Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas. Si el mensaje del usuario o un archivo adjunto incluye un informe de auditoría externo (ej. generado por Claude), omitir el Inspector — la auditoría ya fue realizada, solo ejecutar las correcciones.
+Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
+
+**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (Claude, revisión manual, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
 
 Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
-- **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta un problema crítico, bloquea la entrega y corrige primero
+- **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta problema crítico, bloquea entrega y corrige primero
 
 **Reporte al usuario:**
 ```
@@ -122,5 +125,4 @@ Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 🔍 Inspector: ✅  — o descripción del issue corregido
 ```
 
-El Inspector solo reporta si encontró algo. Si todo está correcto, muestra solo `✅`.
-
+Inspector solo reporta si encontró algo. Si todo correcto: solo `✅`.
