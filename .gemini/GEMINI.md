@@ -65,44 +65,28 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 
 ## 5. Documentación del Proyecto `/docs`
 
-| Archivo | Propósito |
-|---------|-----------|
-| `01_PROJECT_PRD.md` | Requisitos de producto |
-| `02_SDD.md` | Diseño del sistema |
-| `03_SYSTEM_SPEC.md` | Especificaciones técnicas |
-| `04_DATA_MODEL.md` | Esquemas y entidades |
-| `05_ARCHITECTURE.md` | Decisiones arquitectónicas |
-| `06_TASKS.md` | Backlog activo |
-| `07_DECISIONS.md` | ADRs |
-| `08_CHANGELOG.md` | Historial de versiones |
-
+8 archivos numerados (`01_PROJECT_PRD.md` → `08_CHANGELOG.md`: PRD, diseño de
+sistema, specs técnicas, modelo de datos, arquitectura, tasks, ADRs, changelog).
 Actualizar el archivo correspondiente al completar cada tarea.
 
-**⚠️ Excepción:** Si existe un archivo `00_GEMINI_START*.md` en el proyecto, ese archivo define la estructura de documentación activa para esa sesión — rutas, nombres y reglas de actualización. Tiene prioridad sobre esta tabla.
+**⚠️ Excepción:** Si existe un archivo `00_GEMINI_START*.md` en el proyecto, ese archivo define la estructura de documentación activa para esa sesión — rutas, nombres y reglas de actualización. Tiene prioridad sobre esta lista.
 
 ---
 
 ## 6. Jerarquía de Reglas
 
 1. Este archivo `GEMINI.md` — máxima prioridad
-2. `.agents/rules/` — workspace (override local)
-3. Skills según contexto del proyecto
+2. `.agents/rules/` (`security.md`, `architecture.md`, `ui-ux.md`, `operations.md`, `cms.md`, `stack-conventions.md`) — workspace, override local
+3. Workflows (`/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un workflow resume una regla que también vive en `.agents/rules/`, el archivo de `.agents/rules/` es la fuente de verdad si hay discrepancia
+4. Skills según contexto del proyecto
 
 ---
 
 ## 7. Workflows Disponibles
 
-Invocar con `/` en el chat:
+`/new-feature` `/bug-fix` `/session-close` `/security-audit` `/deploy-checklist` `/tools-reference` — detalle de cuándo usar cada uno en `tools-reference.md` o el README del sistema.
 
-| Comando | Cuándo |
-|---------|--------|
-| `/new-feature` | Antes de iniciar cualquier tarea nueva |
-| `/bug-fix` | Cuando algo está roto — identifica causa raíz antes de codificar |
-| `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
-| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
-| `/deploy-checklist` | Antes de merge a main o deploy a producción |
-| `/tools-reference` | Setup inicial o cuando necesites ver skills y herramientas disponibles |
-| `/caveman none\|lite\|full\|ultra` | Cambiar nivel de compresión de respuestas |
+`/caveman none|lite|full|ultra` — cambiar nivel de compresión de respuestas (ver § 0).
 
 ---
 

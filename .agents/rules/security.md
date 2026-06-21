@@ -1,10 +1,6 @@
 ---
-description: >
-  Reglas de seguridad, autenticación, autorización y protección de datos.
-  Activar cuando se trabaje en auth, endpoints de API, manejo de tokens,
-  uploads, formularios con datos sensibles, RBAC o configuración de headers.
-activation: manual
-tags: [security, auth, api, tokens, rbac, owasp, headers, secrets]
+trigger: model_decision
+description: Activar al escribir o revisar autenticación, endpoints de API, validación de inputs, uploads, manejo de secrets, CORS, o cualquier código que reciba datos del cliente
 ---
 
 # Security Rules

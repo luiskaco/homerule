@@ -1,10 +1,6 @@
 ---
-description: >
-  Reglas de UI/UX, diseño, accesibilidad y performance frontend.
-  Activar cuando se trabaje en componentes, vistas, layouts, formularios,
-  animaciones, diseño responsive o auditoría visual.
-activation: manual
-tags: [ui, ux, design, frontend, accessibility, forms, animation]
+trigger: model_decision
+description: Activar al construir o revisar interfaces, componentes visuales, formularios, estados de carga/error, accesibilidad, o meta tags/SEO de páginas
 ---
 
 # UI/UX Rules
@@ -133,11 +129,13 @@ tags: [ui, ux, design, frontend, accessibility, forms, animation]
 **Nunca activar las 3 a la vez.** Elegir según el momento de la tarea.
 
 ### Jerarquía si hay conflicto
+
 1. `web-design-guidelines` — estándares técnicos (a11y, WCAG, forms)
 2. `ui-ux-pro-max` — sistema de diseño por industria
 3. `impeccable` — vocabulario y auditoría de diseño
 
 ### Instalación
+
 ```bash
 npm install -g uipro-cli && uipro init --ai antigravity
 npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
@@ -149,6 +147,7 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 ## SEO Técnico
 
 ### Meta Tags Obligatorios (toda página)
+
 - `<title>` único y descriptivo — 50–60 caracteres máximo.
 - `<meta name="description">` — 120–160 caracteres, incluir keyword principal.
 - `<link rel="canonical">` siempre presente, incluso en la página principal.
@@ -156,6 +155,7 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 - `<meta name="robots">` explícito en páginas que no deben indexarse (`noindex, nofollow`).
 
 ### Open Graph y Twitter Cards
+
 ```html
 <!-- Open Graph -->
 <meta property="og:title" content="..." />
@@ -171,10 +171,12 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 <meta name="twitter:description" content="..." />
 <meta name="twitter:image" content="...1200x630.jpg" />
 ```
+
 - Imagen OG: mínimo 1200×630px, < 1MB, formato JPG o PNG.
 - Nunca reutilizar el mismo `og:image` en todas las páginas.
 
 ### Estructura Semántica para SEO
+
 - Un solo `<h1>` por página — describe el tema principal.
 - Jerarquía `<h1>`–`<h6>` sin saltos (refuerza la regla de accesibilidad).
 - `alt` descriptivo en todas las imágenes con contenido (no decorativas).
@@ -182,11 +184,13 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 - `<a>` con texto descriptivo — nunca "click aquí" o "ver más" sin contexto.
 
 ### Structured Data (Schema.org)
+
 - Agregar JSON-LD en páginas que lo justifican:
   - Artículos: `Article` o `BlogPosting`
   - Productos: `Product` con `offers`
   - Organización: `Organization` en la home
   - Breadcrumbs: `BreadcrumbList` en rutas anidadas
+
 ```html
 <script type="application/ld+json">
 {
@@ -200,12 +204,15 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 ```
 
 ### Core Web Vitals como Ranking Factor
+
 Los mismos targets de performance ya definidos aplican directamente al SEO:
+
 - **LCP** < 2.5s (Largest Contentful Paint)
 - **CLS** < 0.1 (Cumulative Layout Shift) — ya cubierto por reglas de skeletons
 - **INP** < 200ms (Interaction to Next Paint)
 
 ### Auditoría en CI
+
 - Lighthouse SEO score ≥ 90 antes de merge a `main`.
 - Lighthouse Performance score ≥ 80.
 - Herramienta recomendada: `@lhci/cli` (Lighthouse CI).
@@ -217,6 +224,7 @@ lhci autorun
 ```
 
 ### Anti-patterns SEO — Nunca
+
 - Mismo `<title>` o `<meta description>` en múltiples páginas.
 - Páginas importantes con `noindex` accidentalmente.
 - Imágenes sin `alt` con contenido relevante.

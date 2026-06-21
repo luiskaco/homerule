@@ -1,4 +1,10 @@
+---
+trigger: manual
+description: Antes de subir features con auth, APIs o datos sensibles — revisa OWASP Top 10
+---
+
 # Workflow: Nueva Feature
+
 # Invocar con: /new-feature
 
 Al ejecutar este workflow, seguir estos pasos antes de escribir código:
@@ -8,6 +14,7 @@ Al ejecutar este workflow, seguir estos pasos antes de escribir código:
 ## 🚀 Inicio de Feature
 
 ### 1. Definir la tarea
+
 - ¿Qué problema resuelve esta feature?
 - ¿Qué archivos se van a modificar?
 - ¿Hay decisiones arquitectónicas que tomar antes de empezar?
@@ -28,6 +35,7 @@ Si `/docs/06_TASKS.md` no existe — crearlo con esta estructura:
 ```
 
 Si ya existe — agregar la tarea nueva en `## In Progress`:
+
 ```
 - [ ] [NOMBRE DE LA TAREA] — [descripción breve]
 ```
@@ -35,6 +43,7 @@ Si ya existe — agregar la tarea nueva en `## In Progress`:
 - [ ] `07_DECISIONS.md` — si hay decisión arquitectónica, documentarla como ADR antes de codificar
 
 ### 3. Crear rama git
+
 ```bash
 git checkout -b feat/nombre-descriptivo
 # o
@@ -42,11 +51,13 @@ git checkout -b fix/nombre-descriptivo
 ```
 
 ### 4. Verificar contexto
+
 - [ ] ¿El stack del proyecto está definido en `GEMINI.md`? (Nombre y base de datos)
 - [ ] ¿Hay dependencias que instalar antes de empezar?
 - [ ] ¿Afecta el modelo de datos? → revisar `04_DATA_MODEL.md` primero
 
 ### 5. Plan de ejecución
+
 Describir en 3-5 pasos concretos qué se va a implementar antes de escribir código.
 Esperar aprobación del plan antes de proceder.
 

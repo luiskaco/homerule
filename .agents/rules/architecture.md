@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: >
+description: Activar al crear un módulo, archivo o feature nueva, o al decidir en qué carpeta/capa va un componente, servicio o endpoint
 ---
 
 # Architecture Rules

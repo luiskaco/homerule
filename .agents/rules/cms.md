@@ -1,10 +1,6 @@
 ---
-description: >
-  Reglas de seguridad y arquitectura para CMS tradicional y headless.
-  Activar cuando se trabaje con WordPress, Drupal, Sanity, Contentful,
-  Strapi, webhooks de CMS, API keys de contenido o migraciones de contenido.
-activation: manual
-tags: [cms, wordpress, strapi, sanity, contentful, headless, webhooks]
+trigger: model_decision
+description: Activar al trabajar con WordPress, Drupal, o un CMS headless (Sanity, Contentful, Strapi) — hardening, API keys, webhooks
 ---
 
 # CMS Rules
@@ -17,18 +13,21 @@ tags: [cms, wordpress, strapi, sanity, contentful, headless, webhooks]
 > Aplicar seguridad via configuración, no código.
 
 ### Updates
+
 - Updates automáticos: core + plugins de seguridad siempre en última versión.
 - Plugins: mantenedor activo, +10k instalaciones, último update < 6 meses.
 - Auditoría mensual — desinstalar plugins que no se usan.
 - Herramientas: WPScan (WordPress), Drupal Security Advisories.
 
 ### Acceso Admin
+
 - Usuario admin nunca llamado "admin", "administrator" o "root".
 - 2FA obligatorio en todas las cuentas con acceso al panel.
 - Panel admin protegido con IP allowlist o autenticación HTTP adicional.
 - Rate limiting en login + bloqueo tras 5 intentos fallidos.
 
 ### Hardening
+
 - Deshabilitar XML-RPC si no se usa.
 - `DISALLOW_FILE_EDIT = true` en WordPress.
 - Ocultar versión del CMS en headers y metadatos.
@@ -36,6 +35,7 @@ tags: [cms, wordpress, strapi, sanity, contentful, headless, webhooks]
 - Permisos: directorios `755`, archivos `644`, config `600`.
 
 ### Backups
+
 - Automáticos diarios: base de datos + archivos.
 - Retención mínima 30 días, almacenados fuera del servidor (S3 u otro).
 - Verificar restore funcional al menos una vez al mes.
@@ -61,6 +61,7 @@ tags: [cms, wordpress, strapi, sanity, contentful, headless, webhooks]
 - Variables separadas por ambiente: dev, staging y prod.
 
 ### Webhooks
+
 - Validar firma HMAC antes de procesar cualquier payload.
 - Rechazar sin firma válida con `401`.
 - Idempotencia: manejar reenvíos sin efectos duplicados.
@@ -76,6 +77,7 @@ tags: [cms, wordpress, strapi, sanity, contentful, headless, webhooks]
 Toda escritura pasa por el backend — que valida, sanitiza y autoriza primero.
 
 ### Strapi Self-Hosted
+
 - Panel admin en URL diferente a la API pública.
 - Revisar roles y permisos — por defecto son permisivos.
 - Deshabilitar registro público si no es necesario.

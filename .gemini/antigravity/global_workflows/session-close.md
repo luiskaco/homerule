@@ -1,4 +1,10 @@
+---
+trigger: manual
+description: Al terminar el día o una tarea — verifica docs, código y genera commit sugerido
+---
+
 # Workflow: Cierre de Sesión
+
 # Invocar con: /session-close
 
 Al ejecutar este workflow seguir estos pasos EN ORDEN:
@@ -29,7 +35,9 @@ Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos
 - [ ] 08_CHANGELOG.md    — [motivo o "no aplica"]
 
 ### Verificación de código
+
 Ejecutar activamente antes de marcar como completado:
+
 - [ ] Correr el build — `npm run build` / `python -m pytest` / equivalente
 - [ ] Flujo completo probado manualmente — no solo que compile
 - [ ] Consola limpia — cero errores ni warnings
@@ -37,11 +45,13 @@ Ejecutar activamente antes de marcar como completado:
 - [ ] Imports válidos, sin dependencias rotas
 
 ### Commit sugerido
+
 `tipo(scope): descripción en imperativo`
 
 ---
 
 **Reglas:**
+
 - Doc actualizado en esta sesión → `[x] motivo`
 - Doc no relevante para esta sesión → `[ ] no aplica`
 - Doc que debía actualizarse y NO se pudo por falta de información → `⚠️ pendiente` + explicación de qué falta

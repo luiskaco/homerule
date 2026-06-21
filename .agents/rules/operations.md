@@ -1,10 +1,6 @@
 ---
-description: >
-  Reglas de operaciones, infraestructura, CI/CD, observabilidad, resiliencia
-  y seguridad de sistemas de IA. Activar cuando se trabaje en pipelines de deploy,
-  configuración de cloud, logging, monitoreo, agentes de IA o workflows automatizados.
-activation: manual
-tags: [devops, cicd, cloud, observability, logging, resilience, ai-security, infrastructure]
+trigger: model_decision
+description: Activar al configurar CI/CD, logging, manejo de errores externos/timeouts, infraestructura, o al integrar un agente/LLM que ejecute tool calls
 ---
 
 # Operations, AI Security & Quality Rules
@@ -14,11 +10,13 @@ tags: [devops, cicd, cloud, observability, logging, resilience, ai-security, inf
 ## AI Security
 
 ### Prompt Injection
+
 - Nunca interpolar inputs del usuario directamente en system prompts.
 - Sanitizar con allowlist antes de pasar contexto al modelo.
 - Separar instrucciones del sistema de datos del usuario — nunca en el mismo string.
 
 ### Aislamiento y Gobernanza
+
 - Contexto por usuario — nunca compartir contexto entre sesiones de diferentes usuarios.
 - Secretos nunca en el contexto del modelo (API keys, passwords, tokens).
 - Validar y sanitizar todos los outputs del modelo antes de ejecutar o renderizar.
@@ -27,6 +25,7 @@ tags: [devops, cicd, cloud, observability, logging, resilience, ai-security, inf
 - Límites operacionales: el agente no puede ejecutar operaciones destructivas sin confirmación humana.
 
 ### Validación de Outputs
+
 - Nunca ejecutar código generado por IA sin revisión en producción.
 - Validar schema de respuestas estructuradas antes de usar el dato.
 - Rate limiting en endpoints que consumen LLMs — son costosos y lentos.
@@ -74,6 +73,7 @@ tags: [devops, cicd, cloud, observability, logging, resilience, ai-security, inf
 ### Logging Estructurado (JSON)
 
 Todo log debe seguir esta estructura:
+
 ```json
 {
   "timestamp": "2026-05-28T10:00:00Z",
@@ -91,10 +91,12 @@ Todo log debe seguir esta estructura:
 - Loggear siempre: auth failures, cambios de permisos, acciones destructivas, errores 5xx.
 
 ### Request Tracing
+
 - `request_id` único en cada request, propagado en todos los servicios.
 - Correlacionar logs de entrada → procesamiento → respuesta con el mismo `request_id`.
 
 ### Monitoreo
+
 - Alertas en: error rate > 1%, latencia p95 > 2s, CPU/memoria > 80%.
 - Audit logs para acciones sensibles (cambios de rol, eliminaciones, accesos admin).
 - Tracking de auth failures por IP (detectar brute force).
@@ -104,21 +106,25 @@ Todo log debe seguir esta estructura:
 ## Control de Calidad y Testing
 
 ### Validaciones Técnicas
+
 - Build exitoso sin errores.
 - Consola limpia — cero warnings ni errores en producción.
 - Imports válidos, sin dependencias rotas.
 
 ### Testing por Prioridad
+
 1. **Crítico:** Flujos de autenticación (login, logout, refresh, MFA).
 2. **Alto:** Flujos de negocio principales (las 3 acciones más frecuentes del usuario).
 3. **Medio:** Edge cases de formularios, validaciones, uploads.
 4. **Bajo:** UI states (loading, error, empty) en componentes secundarios.
 
 ### Cobertura Mínima
+
 - Lógica de negocio crítica: 80% cobertura de tests unitarios.
 - Flujos de auth: 100% cubiertos con tests de integración.
 - APIs públicas: contrato validado con tests de contrato o e2e.
 
 ### Regla Final
+
 **El código que compila no es código terminado.**
 Una tarea está completa cuando la lógica del flujo completo fue probada, no solo que el build pase.
