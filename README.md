@@ -77,7 +77,8 @@ si no hay contexto que lo dispare, así que de todas formas no cuesta nada dejar
 ### Paso 3 — Skills externas (manual, en tu terminal)
 
 ```bash
-# frontend-design (Anthropic) — ya disponible, NO requiere instalación
+# frontend-design (Anthropic)
+npx skills add https://github.com/anthropics/skills --skill frontend-design
 
 # Auditoría técnica de UI (Vercel Web Interface Guidelines)
 npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
@@ -196,6 +197,18 @@ instalación de cada una (`frontend-design`, `ui-ux-pro-max`, `impeccable`,
 `web-design-guidelines`, `vercel-react-best-practices`,
 `vercel-composition-patterns`) está en `tools-reference.md` — no se duplica aquí
 para evitar que las dos copias diverjan.
+
+### Skills de Marketing/SEO
+
+Categoría aparte — no compiten con las skills de diseño de arriba.
+
+| Skill | Cuándo activarla |
+|---|---|
+| `seo-audit` | Auditar o diagnosticar problemas de SEO — caída de tráfico, indexación, ranking. Diagnóstico únicamente: los umbrales concretos (Lighthouse, OG, meta tags) los define `ui-ux.md § SEO Técnico`, no la skill |
+
+Instalación: `npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit`
+(el paquete trae ~30 skills de marketing — solo se instala `seo-audit`, no el paquete completo).
+Detalle en [`.agents/skills/seo-audit/SKILL.md`](.agents/skills/seo-audit/SKILL.md).
 
 ---
 

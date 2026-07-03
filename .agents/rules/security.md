@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Activar al escribir o revisar autenticación, endpoints de API, validación de inputs, uploads, manejo de secrets, CORS, o cualquier código que reciba datos del cliente
+description: Activar al escribir o revisar autenticación, endpoints de API, validación de inputs, uploads, manejo de secrets, CORS, cookies de tracking/analytics, consentimiento o compliance de privacidad, o cualquier código que reciba datos del cliente
 ---
 
 # Security Rules
@@ -97,6 +97,53 @@ REFRESH_TOKEN_EXPIRES_IN=7d
 - `npm audit --audit-level=high` debe pasar en CI antes de deploy.
 - Lockfiles siempre commiteados.
 - Revisar mantenedor + descargas + último update antes de instalar una nueva.
+
+---
+
+## Privacidad y Consentimiento (GDPR/LOPD)
+
+Aplica a cualquier página con scripts de tracking, cookies no esenciales, o
+formularios que capturan datos personales — el caso típico de sitios de
+marketing.
+
+### Cookies y Scripts de Terceros
+
+- Categorizar todo script/cookie: `necessary` (siempre activo), `analytics`,
+  `marketing`, `preferences` — nunca una sola categoría "todo o nada".
+- Scripts de `analytics`/`marketing` (GA4, Meta Pixel, ads de terceros)
+  **bloqueados hasta consentimiento explícito** — nunca cargar y luego pedir
+  permiso ("cargar primero, preguntar después" no es consentimiento válido).
+- Consentimiento granular: el usuario puede aceptar `analytics` y rechazar
+  `marketing` por separado, no un único botón "aceptar todo".
+- Rechazar debe ser tan fácil como aceptar — mismo nivel de prominencia visual
+  en el banner (nunca "Aceptar" grande + "Configurar"/"Rechazar" como link chico).
+- Sin dark patterns: nunca pre-marcar checkboxes de consentimiento opcional,
+  nunca reabrir el banner en loop hasta que acepte todo.
+- Consentimiento registrado con timestamp + versión de política aceptada —
+  auditable, no solo una cookie booleana `consent=true`.
+- Revocable en cualquier momento: link visible ("Preferencias de cookies")
+  en footer, no solo al primer visit.
+
+### Datos Personales
+
+- Base legal explícita antes de capturar cualquier dato personal (consentimiento,
+  contrato, interés legítimo) — documentar cuál aplica a cada formulario.
+- Formularios de captura (leads, newsletter, contacto) con checkbox de
+  consentimiento separado del submit — nunca implícito por enviar el formulario.
+- Link a política de privacidad visible en todo formulario que capture datos.
+- Minimización: solo pedir los campos que el flujo realmente necesita.
+- Derecho al olvido: endpoint o proceso documentado para borrar datos de un
+  usuario a pedido — no solo soft-delete si el requerimiento es borrado real.
+- Retención definida por tipo de dato — nunca "guardar para siempre por defecto".
+
+### Prohibido — Privacidad
+
+- Cargar scripts de analytics/marketing antes de consentimiento.
+- Cookie wall que bloquea el acceso al sitio si no se acepta tracking (salvo
+  que el servicio dependa estrictamente de eso — caso raro).
+- Pre-marcar consentimiento opcional como aceptado por defecto.
+- Combinar consentimiento de cookies con aceptación de Términos y Condiciones
+  en un solo checkbox.
 
 ---
 

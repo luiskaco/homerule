@@ -38,8 +38,8 @@ Instalación:
 # ui-ux-pro-max (uso restringido, ver nota de seguridad)
 npm install -g uipro-cli && uipro init --ai antigravity
 
-# frontend-design (Anthropic) — ya disponible en Claude
-# (no requiere instalación adicional en este entorno)
+# frontend-design (Anthropic)
+npx skills add https://github.com/anthropics/skills --skill frontend-design
 
 # web-design-guidelines
 npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines

@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Activar al construir o revisar interfaces, componentes visuales, formularios, estados de carga/error, accesibilidad, o meta tags/SEO de páginas
+description: Activar al construir o revisar interfaces, componentes visuales, formularios, estados de carga/error, accesibilidad, i18n/traducciones, o meta tags/SEO de páginas
 ---
 
 # UI/UX Rules
@@ -22,6 +22,8 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 | `error` | Mensaje de error + acción de recuperación |
 | `success` | Confirmación visual de acción completada |
 | `empty` | Mensaje útil cuando no hay datos — nunca UI rota |
+
+> Proyecto PWA: agregar `offline` como 6to estado obligatorio — ver [§ PWA](#pwa).
 
 ---
 
@@ -71,6 +73,66 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 
 ---
 
+## Dark Mode
+
+- Tokens semánticos, nunca colores hardcodeados por tema:
+  `--bg-primary`, `--bg-surface`, `--text-primary`, `--text-secondary`,
+  `--border-default` — cada uno con valor light y dark, nunca `dark:bg-gray-900`
+  disperso por todo el código.
+- Contraste **4.5:1** normal / **3:1** texto grande en **ambos** temas — no
+  asumir que dark mode "ya es accesible" por ser oscuro. Verificar cada par
+  fondo/texto en los dos modos.
+- Fuente de la preferencia, en orden:
+  1. Selección explícita del usuario (persistida — cookie o `localStorage`,
+     nunca solo en memoria).
+  2. `prefers-color-scheme` del sistema si no hay selección explícita.
+  3. Nunca forzar un tema sin dar opción de cambiarlo.
+- Evitar negro puro (`#000`) sobre blanco puro (`#fff`) — usar grises con
+  tinte (`#0a0a0a` / `#fafafa`) para reducir fatiga visual y halation.
+- Imágenes/ilustraciones con fondo transparente o versión alternativa para
+  dark — nunca un PNG con fondo blanco flotando sobre `--bg-primary` oscuro.
+- Elevación (cards, modals, dropdowns) se comunica con **superficie más clara**
+  en dark mode, no con `box-shadow` — las sombras casi no se perciben sobre
+  fondos oscuros.
+- Sin flash de tema incorrecto al cargar (FOUC): aplicar el tema antes del
+  primer paint (script inline en `<head>` o SSR del tema desde cookie),
+  nunca setear la clase de tema en un `useEffect` post-hidratación.
+- `color-scheme: light dark` en `:root` para que scrollbars, inputs y
+  controles nativos del navegador respeten el tema automáticamente.
+
+---
+
+## i18n
+
+- Todo string visible al usuario vive en archivos de traducción
+  (`messages/es.json`, `messages/pt.json`, `messages/en.json`…) — nunca texto
+  hardcodeado en el componente, ni siquiera "temporalmente".
+- Key namespacing por módulo, no un solo archivo plano:
+  `checkout.errors.card_declined`, no `error_1` ni un `common.json` gigante.
+- Pluralización con las reglas del formato (ICU MessageFormat o el sistema del
+  framework — `next-intl`, `react-i18next`) — nunca `count === 1 ? "item" : "items"`
+  a mano, no todos los idiomas pluralizan en 2 formas (ej. español "1 producto"
+  / "2 productos" vs. otros idiomas con 3+ formas plurales).
+- Fechas, números, moneda y unidades siempre con `Intl.*` parametrizado por
+  locale — nunca formateo manual (`toLocaleDateString()` sin locale explícito
+  hereda el del server, no el del usuario). Refuerza la regla ya existente en
+  `§ Anti-patterns`.
+- Ruteo de idioma explícito en la URL (`/es/`, `/pt/`) — nunca solo por
+  cookie/header sin reflejarlo en la URL, rompe SEO multi-idioma y
+  compartir enlaces.
+- `hreflang` + `lang` en `<html>` correctos por página (ya cubierto en
+  `§ SEO Técnico`) — cada versión de idioma con su propio `<link rel="alternate" hreflang="...">`.
+- Layout a prueba de expansión de texto: alemán/español pueden ser 30-40% más
+  largos que inglés — nunca `width` fijo en botones/labels que dependen de texto
+  traducido, usar `min-width` + contenido flexible.
+- Si el mercado lo requiere, `dir="rtl"` a nivel `<html>` y CSS lógico
+  (`margin-inline-start` en vez de `margin-left`) en vez de overrides por idioma.
+- Nunca concatenar strings traducidos para formar oraciones
+  (`t("hello") + " " + name + t("welcome")`) — el orden gramatical cambia
+  entre idiomas. Usar interpolación dentro de la key: `t("welcome", { name })`.
+
+---
+
 ## Performance Frontend
 
 - Lazy loading en imágenes below-fold (`loading="lazy"`).
@@ -81,6 +143,53 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 - `<link rel="preconnect">` en dominios CDN/assets.
 - Nunca `transition: all` — listar propiedades explícitamente.
 - No leer layout en render (`getBoundingClientRect`, `offsetHeight`).
+
+---
+
+## PWA
+
+Aplica solo si el proyecto es una PWA (manifest + service worker). Sigue
+siendo web — todo lo demás de este archivo (5 estados, a11y, performance,
+SEO) aplica igual, esto es una capa adicional.
+
+### Manifest
+
+- `manifest.json` con `name`, `short_name`, `icons` (mínimo 192×192 y 512×512,
+  incluir `purpose: "maskable"`), `theme_color`, `background_color`.
+- `display: "standalone"` (o `"fullscreen"` si el caso de uso lo justifica).
+- `start_url` explícito — nunca depender del default del navegador.
+
+### Service Worker
+
+- Estrategia de cache por tipo de recurso, nunca una sola global:
+  - `cache-first` para assets estáticos versionados (JS/CSS con hash, fonts).
+  - `network-first` para HTML y datos que cambian frecuentemente.
+  - `stale-while-revalidate` para imágenes y recursos semi-estáticos.
+- Versionar el cache (`CACHE_NAME = "app-v${BUILD_ID}"`) — invalidar caches
+  viejos en el evento `activate`.
+- Nunca cachear responses de error (4xx/5xx) ni endpoints con datos sensibles/auth.
+
+### Estado Offline
+
+- `offline` es el 6to estado obligatorio de UI en proyectos PWA — ver
+  [tabla de estados](#5-estados-obligatorios-de-ui). Nunca pantalla en blanco
+  sin conexión: mostrar qué está disponible desde cache y qué requiere red.
+- Indicador visual de estado de conexión si la app depende de datos en vivo.
+- Acciones que requieren red (submits, mutaciones) deshabilitadas o encoladas
+  con feedback claro — nunca fallar en silencio.
+
+### Update Flow
+
+- Detectar SW nuevo esperando (`waiting` state) y avisar al usuario —
+  nunca actualizar de forma forzada sin aviso (pierde estado no guardado).
+- Botón/banner "Nueva versión disponible" que dispara `skipWaiting()` +
+  reload solo con acción explícita del usuario.
+
+### Auditoría
+
+- Lighthouse PWA score ≥ 90 antes de merge a `main` (mismo criterio que
+  SEO/Performance en [§ SEO Técnico](#seo-técnico)).
+- Verificar installability: HTTPS, manifest válido, SW registrado y activo.
 
 ---
 
@@ -115,6 +224,8 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 - Cards dentro de cards
 - `bounce`/`elastic` easing
 - Purple-to-blue gradients por defecto
+- Colores de tema hardcodeados (`dark:bg-gray-900` disperso) en vez de tokens semánticos
+- Aplicar tema en `useEffect` post-hidratación (causa flash de tema incorrecto)
 
 ---
 
@@ -122,22 +233,26 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 
 | Skill | Momento | Qué hace |
 |-------|---------|----------|
-| `ui-ux-pro-max` | Al **iniciar** una UI nueva | Genera sistema de diseño: estilo, paleta, tipografía por industria |
-| `impeccable` | Al **revisar** UI existente | Audita, pule y critica con 23 comandos |
+| `ui-ux-pro-max` | Al **iniciar** UI nueva **sin** sistema de diseño definido | Genera sistema de diseño: estilo, paleta, tipografía por industria |
+| `frontend-design` | Al **iniciar** UI nueva **con** sistema de diseño ya definido (caso habitual en Orange Latam) | Dirección estética dentro de ese sistema — tipografía, jerarquía visual, evita defaults genéricos |
+| `impeccable` | Al **revisar** UI existente — requiere que `frontend-design` ya haya corrido antes | Audita, pule y critica con 23 comandos |
 | `web-design-guidelines` | Al **auditar** estándares | Verifica a11y, forms, performance técnica |
 
-**Nunca activar las 3 a la vez.** Elegir según el momento de la tarea.
+**Nunca activar más de 2-3 a la vez.** Elegir según el momento de la tarea.
+`ui-ux-pro-max` y `frontend-design` son mutuamente excluyentes — el trigger es
+si el proyecto ya tiene sistema de diseño o no, nunca se activan juntas.
 
 ### Jerarquía si hay conflicto
 
 1. `web-design-guidelines` — estándares técnicos (a11y, WCAG, forms)
-2. `ui-ux-pro-max` — sistema de diseño por industria
+2. `ui-ux-pro-max` / `frontend-design` — sistema de diseño o dirección estética (mutuamente excluyentes, ver arriba)
 3. `impeccable` — vocabulario y auditoría de diseño
 
 ### Instalación
 
 ```bash
 npm install -g uipro-cli && uipro init --ai antigravity
+npx skills add https://github.com/anthropics/skills --skill frontend-design
 npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
 # impeccable: ver instrucciones en impeccable.style
 ```
@@ -145,6 +260,12 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 ---
 
 ## SEO Técnico
+
+> Esta sección es la fuente de verdad de SEO del proyecto. Skills externas de
+> auditoría SEO (ej. `seo-audit` de `coreyhaines31/marketingskills`) sirven
+> para **diagnóstico** — detectar qué está roto — pero los umbrales y specs
+> concretos de acá (Lighthouse ≥90/≥80, OG 1200×630px, largo de title/description,
+> etc.) mandan sobre cualquier sugerencia genérica que la skill proponga.
 
 ### Meta Tags Obligatorios (toda página)
 
