@@ -47,6 +47,14 @@ description: Convenciones específicas por lenguaje/framework — aplica automá
 - Organizar en módulos por responsabilidad (no un solo `main.js` con todo)
 - `use context7 to resolve javascript` para APIs del browser que puedan haber cambiado
 
+**Vue**
+
+- Composition API (`<script setup>`) por defecto — Options API solo en código legacy
+- Pinia para estado global — nunca Vuex en proyectos nuevos (Vuex solo si el proyecto ya lo usa)
+- Componentes de un solo archivo (`.vue`) organizados por feature, no por tipo
+- `defineProps`/`defineEmits` tipados con TypeScript
+- `use context7 to resolve vue` antes de implementar patrones nuevos
+
 **CSS Puro**
 
 - Variables CSS (`--color-primary`) para todos los valores reutilizables

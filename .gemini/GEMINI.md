@@ -65,11 +65,20 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 
 ## 5. Documentación del Proyecto `/docs`
 
-8 archivos numerados (`01_PROJECT_PRD.md` → `08_CHANGELOG.md`: PRD, diseño de
-sistema, specs técnicas, modelo de datos, arquitectura, tasks, ADRs, changelog).
+| Archivo | Propósito |
+|---------|-----------|
+| `01_PROJECT_PRD.md` | Requisitos de producto |
+| `02_SDD.md` | Diseño del sistema |
+| `03_SYSTEM_SPEC.md` | Especificaciones técnicas |
+| `04_DATA_MODEL.md` | Esquemas y entidades |
+| `05_ARCHITECTURE.md` | Decisiones arquitectónicas |
+| `06_TASKS.md` | Backlog activo |
+| `07_DECISIONS.md` | ADRs |
+| `08_CHANGELOG.md` | Historial de versiones |
+
 Actualizar el archivo correspondiente al completar cada tarea.
 
-**⚠️ Excepción:** Si existe un archivo `00_GEMINI_START*.md` en el proyecto, ese archivo define la estructura de documentación activa para esa sesión — rutas, nombres y reglas de actualización. Tiene prioridad sobre esta lista.
+**⚠️ Excepción:** Si existe un archivo `00_GEMINI_START*.md` en el proyecto, ese archivo define la estructura de documentación activa para esa sesión — rutas, nombres y reglas de actualización. Tiene prioridad sobre esta tabla.
 
 ---
 
@@ -84,9 +93,17 @@ Actualizar el archivo correspondiente al completar cada tarea.
 
 ## 7. Workflows Disponibles
 
-`/new-feature` `/bug-fix` `/session-close` `/security-audit` `/deploy-checklist` `/tools-reference` — detalle de cuándo usar cada uno en `tools-reference.md` o el README del sistema.
+Invocar con `/` en el chat:
 
-`/caveman none|lite|full|ultra` — cambiar nivel de compresión de respuestas (ver § 0).
+| Comando | Cuándo |
+|---------|--------|
+| `/new-feature` | Antes de iniciar cualquier tarea nueva |
+| `/bug-fix` | Cuando algo está roto — identifica causa raíz antes de codificar |
+| `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
+| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
+| `/deploy-checklist` | Antes de merge a main o deploy a producción |
+| `/tools-reference` | Setup inicial o cuando necesites ver skills y herramientas disponibles |
+| `/caveman none\|lite\|full\|ultra` | Cambiar nivel de compresión de respuestas |
 
 ---
 
@@ -103,6 +120,7 @@ Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 - **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta problema crítico, bloquea entrega y corrige primero
 
 **Reporte al usuario:**
+
 ```
 🎨 Frontend: [1 línea]
 ⚙️ Backend: [1 línea]
@@ -110,3 +128,27 @@ Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 ```
 
 Inspector solo reporta si encontró algo. Si todo correcto: solo `✅`.
+
+<!-- codebase-memory-mcp:start -->
+# Codebase Knowledge Graph (codebase-memory-mcp)
+
+This project uses codebase-memory-mcp to maintain a knowledge graph of the codebase.
+ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
+
+## Priority Order
+1. `search_graph` — find functions, classes, routes, variables by pattern
+2. `trace_path` — trace who calls a function or what it calls
+3. `get_code_snippet` — read specific function/class source code
+4. `query_graph` — run Cypher queries for complex patterns
+5. `get_architecture` — high-level project summary
+
+## When to fall back to grep/glob
+- Searching for string literals, error messages, config values
+- Searching non-code files (Dockerfiles, shell scripts, configs)
+- When MCP tools return insufficient results
+
+## Examples
+- Find a handler: `search_graph(name_pattern=".*OrderHandler.*")`
+- Who calls it: `trace_path(function_name="OrderHandler", direction="inbound")`
+- Read source: `get_code_snippet(qualified_name="pkg/orders.OrderHandler")`
+<!-- codebase-memory-mcp:end -->

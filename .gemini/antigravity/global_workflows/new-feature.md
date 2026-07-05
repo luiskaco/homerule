@@ -1,6 +1,6 @@
 ---
 trigger: manual
-description: Antes de subir features con auth, APIs o datos sensibles — revisa OWASP Top 10
+description: Antes de iniciar cualquier tarea nueva — define el plan, crea la rama git y actualiza 06_TASKS.md
 ---
 
 # Workflow: Nueva Feature
