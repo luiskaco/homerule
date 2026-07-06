@@ -136,7 +136,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
             {preset.externalTools.map((t) => (
               <li key={t.name} className="text-sm">
                 <span className="font-medium">{t.name}</span>
-                <code className="ml-2 rounded bg-neutral-100 px-2 py-0.5 text-xs dark:bg-neutral-900">
+                <code className="ml-2 inline-block break-all rounded bg-neutral-100 px-2 py-0.5 text-xs dark:bg-neutral-900">
                   {t.installCommand}
                 </code>
                 {t.note && <p className="mt-1 text-xs text-neutral-500">{t.note}</p>}
@@ -146,7 +146,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
         </section>
       )}
 
-      <div className="sticky bottom-4 flex items-center justify-between rounded-lg border border-neutral-200 bg-white/90 p-4 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90">
+      <div className="sticky bottom-4 flex flex-col gap-3 rounded-lg border border-neutral-200 bg-white/90 p-4 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90 sm:flex-row sm:items-center sm:justify-between">
         <span className="text-sm text-neutral-600 dark:text-neutral-400">
           {selected.size} items seleccionados · ~{totalTokens} tokens
         </span>

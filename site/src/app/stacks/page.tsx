@@ -40,7 +40,7 @@ export default function StacksPage() {
             key={preset.id}
             className="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800"
           >
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div>
                 <h2 className="font-semibold">{preset.label}</h2>
                 <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
@@ -49,7 +49,7 @@ export default function StacksPage() {
               </div>
               <Link
                 href={`/build?tool=antigravity&preset=${preset.id}`}
-                className="whitespace-nowrap rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900"
+                className="self-start whitespace-nowrap rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900 sm:self-auto"
               >
                 Armar este stack →
               </Link>
@@ -79,7 +79,7 @@ export default function StacksPage() {
                   {preset.externalTools.map((tool) => (
                     <li key={tool.name} className="text-sm">
                       <span className="font-medium">{tool.name}</span>
-                      <code className="ml-2 rounded bg-neutral-100 px-2 py-0.5 text-xs dark:bg-neutral-900">
+                      <code className="ml-2 inline-block break-all rounded bg-neutral-100 px-2 py-0.5 text-xs dark:bg-neutral-900">
                         {tool.installCommand}
                       </code>
                       {tool.note && (

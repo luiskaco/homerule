@@ -13,11 +13,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es">
       <body>
         <header className="border-b border-neutral-200 dark:border-neutral-800">
-          <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+          <nav className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <Link href="/" className="font-semibold tracking-tight">
               Antigravity Rules Hub
             </Link>
-            <div className="flex gap-6 text-sm">
+            <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
               <Link href="/" className="hover:underline">
                 Antigravity
               </Link>
@@ -33,9 +33,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </nav>
         </header>
-        <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
-        <footer className="border-t border-neutral-200 px-6 py-6 text-sm text-neutral-500 dark:border-neutral-800">
-          <div className="mx-auto flex max-w-5xl items-center justify-between">
+        <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">{children}</main>
+        <footer className="border-t border-neutral-200 px-4 py-6 text-sm text-neutral-500 dark:border-neutral-800 sm:px-6">
+          <div className="mx-auto flex max-w-5xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <span>Antigravity Rules Hub</span>
             <a
               href="https://www.skills.sh/"
