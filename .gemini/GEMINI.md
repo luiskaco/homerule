@@ -85,7 +85,7 @@ Actualizar el archivo correspondiente al completar cada tarea.
 ## 6. Jerarquía de Reglas
 
 1. Este archivo `GEMINI.md` — máxima prioridad
-2. `.agents/rules/` (`security.md`, `architecture.md`, `ui-ux.md`, `operations.md`, `cms.md`, `stack-conventions.md`) — workspace, override local
+2. `.agents/rules/` (`security.md`, `architecture.md`, `ui-ux.md`, `seo.md`, `pwa.md`, `operations.md`, `cms.md`, `stack-conventions.md`) — workspace, override local
 3. Workflows (`/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un workflow resume una regla que también vive en `.agents/rules/`, el archivo de `.agents/rules/` es la fuente de verdad si hay discrepancia
 4. Skills según contexto del proyecto
 
@@ -107,13 +107,13 @@ Invocar con `/` en el chat:
 
 ---
 
-## 8. Subagentes Internos
+## 8. Auto-revisión Interna
 
 Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
 
 **⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (Claude, revisión manual, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
 
-Antes de entregar cualquier código, procesar internamente con 3 subagentes:
+Antes de entregar cualquier código, revisar internamente con 3 pasadas:
 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
@@ -128,6 +128,13 @@ Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 ```
 
 Inspector solo reporta si encontró algo. Si todo correcto: solo `✅`.
+
+> Esto es una **auto-revisión inline** en el mismo turno, no delegación. Para
+> trabajo **delegado** en contexto aislado, Antigravity tiene subagentes reales
+> vía `invoke_subagent` (built-in: `research` para exploración de codebase,
+> `browser` para tareas web sandboxed, `self` para clonar el agente actual) —
+> corren en su propia ventana y no contaminan el contexto principal. Usarlos
+> por decisión explícita, no en cada tarea de código.
 
 <!-- codebase-memory-mcp:start -->
 # Codebase Knowledge Graph (codebase-memory-mcp)

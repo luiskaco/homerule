@@ -1,8 +1,15 @@
-# Antigravity Rules — Guía del Sistema
+# AI Rules Hub — Guía del Sistema
 
-Sistema de reglas para el workflow dual-AI de Orange Latam (Gemini/Antigravity como
-desarrollador principal, Claude como PM/auditor). Carga selectiva por contexto —
-nada se lee completo en cada mensaje salvo lo estrictamente "Always On".
+Sistema de reglas para dos formas de trabajo con IA:
+
+- **Híbrida** — Gemini/Antigravity como desarrollador principal, Claude como
+  PM/auditor.
+- **Claude Code individual** — Claude como desarrollador completo, con la misma
+  base de reglas convertida a formato nativo (`CLAUDE.md` + `.claude/skills` +
+  `.claude/commands` + `.claude/agents`).
+
+Carga selectiva por contexto — nada se lee completo en cada mensaje salvo lo
+estrictamente "Always On".
 
 ---
 
@@ -25,6 +32,8 @@ nada se lee completo en cada mensaje salvo lo estrictamente "Always On".
     │   ├── security.md                       # Model Decision
     │   ├── architecture.md                   # Model Decision
     │   ├── ui-ux.md                          # Model Decision
+    │   ├── seo.md                            # Model Decision
+    │   ├── pwa.md                            # Model Decision — solo proyectos PWA
     │   ├── operations.md                     # Model Decision
     │   ├── cms.md                            # Model Decision
     │   └── stack-conventions.md              # Glob: *.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css
@@ -67,7 +76,7 @@ Copy-Item "new-feature.md","bug-fix.md","session-close.md","security-audit.md","
 
 ```bash
 mkdir -p .agents/rules
-cp security.md architecture.md ui-ux.md operations.md cms.md stack-conventions.md .agents/rules/
+cp security.md architecture.md ui-ux.md seo.md pwa.md operations.md cms.md stack-conventions.md .agents/rules/
 ```
 
 Si el proyecto es WordPress puro o no usa alguna de las reglas (ej. un sitio sin CMS
@@ -122,7 +131,9 @@ uno define su modo en el frontmatter (`trigger`) y, salvo `manual`, una
 |---|---|---|
 | `security.md` | Model Decision | Auth, endpoints de API, validación de inputs, uploads, secrets, CORS |
 | `architecture.md` | Model Decision | Módulo o archivo nuevo, decisión de en qué capa/carpeta va algo |
-| `ui-ux.md` | Model Decision | Interfaces, componentes visuales, formularios, estados de carga/error, SEO de páginas |
+| `ui-ux.md` | Model Decision | Interfaces, componentes visuales, formularios, estados de carga/error, accesibilidad, dark mode, i18n |
+| `seo.md` | Model Decision | Meta tags, Open Graph, structured data, canonical, hreflang, Core Web Vitals como ranking factor |
+| `pwa.md` | Model Decision | Manifest, service worker, cache, estado offline, update flow — **solo si el proyecto es una PWA** |
 | `operations.md` | Model Decision | CI/CD, logging, infraestructura, integración de agentes/LLM |
 | `cms.md` | Model Decision | WordPress, Drupal, o CMS headless (Sanity, Contentful, Strapi) |
 | `stack-conventions.md` | Glob `*.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css` | Al editar cualquier archivo de esos tipos |
@@ -204,7 +215,7 @@ Categoría aparte — no compiten con las skills de diseño de arriba.
 
 | Skill | Cuándo activarla |
 |---|---|
-| `seo-audit` | Auditar o diagnosticar problemas de SEO — caída de tráfico, indexación, ranking. Diagnóstico únicamente: los umbrales concretos (Lighthouse, OG, meta tags) los define `ui-ux.md § SEO Técnico`, no la skill |
+| `seo-audit` | Auditar o diagnosticar problemas de SEO — caída de tráfico, indexación, ranking. Diagnóstico únicamente: los umbrales concretos (Lighthouse, OG, meta tags) los define `seo.md`, no la skill |
 
 Instalación: `npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit`
 (el paquete trae ~30 skills de marketing — solo se instala `seo-audit`, no el paquete completo).
@@ -218,22 +229,25 @@ Estimación por caracteres/4 — no es el tokenizer real, sirve como orden de ma
 
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
-| `GEMINI.md` | ~1,160 | Siempre |
-| `security.md` | ~940 | Model Decision |
-| `architecture.md` | ~600 | Model Decision |
-| `ui-ux.md` | ~2,010 | Model Decision |
-| `operations.md` | ~1,240 | Model Decision |
-| `cms.md` | ~690 | Model Decision |
-| `stack-conventions.md` | ~500 | Glob |
-| `tools-reference.md` | ~490 | Manual |
-| `new-feature.md` | ~365 | Manual |
-| `bug-fix.md` | ~345 | Manual |
-| `session-close.md` | ~530 | Manual |
-| `security-audit.md` | ~655 | Manual |
-| `deploy-checklist.md` | ~410 | Manual |
-| **Base siempre activa** | **~1,160** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~2,400–3,400** | sesión normal de código |
-| **Máximo con todo activo** | **~9,825** | improbable — varias reglas casi nunca se activan juntas |
+| `GEMINI.md` | ~1,725 | Siempre |
+| `security.md` | ~1,575 | Model Decision |
+| `architecture.md` | ~615 | Model Decision |
+| `ui-ux.md` | ~2,410 | Model Decision |
+| `seo.md` | ~1,045 | Model Decision |
+| `pwa.md` | ~550 | Model Decision — solo PWA |
+| `operations.md` | ~1,260 | Model Decision |
+| `cms.md` | ~700 | Model Decision |
+| `database.md` | ~725 | Model Decision |
+| `stack-conventions.md` | ~610 | Glob |
+| `tools-reference.md` | ~980 | Manual |
+| `new-feature.md` | ~380 | Manual |
+| `bug-fix.md` | ~355 | Manual |
+| `session-close.md` | ~545 | Manual |
+| `security-audit.md` | ~670 | Manual |
+| `deploy-checklist.md` | ~415 | Manual |
+| **Base siempre activa** | **~1,725** | `GEMINI.md` |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~4,000–6,100** | sesión normal de código |
+| **Máximo con todo activo** | **~11,165** | improbable — varias reglas casi nunca se activan juntas |
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +
 CMS en el mismo mensaje), no el caso real. En la práctica, una tarea de feature

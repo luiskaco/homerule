@@ -38,12 +38,15 @@ export default function HomePage() {
         <Link href="/stacks" className="underline">
           Stacks
         </Link>
-        . ¿Trabajás con Claude Code, Codex, OpenCode o Cursor en vez de
-        Antigravity?{" "}
+. ¿Usás{" "}
         <Link href="/agents" className="underline">
-          Otros agentes
-        </Link>
-        .
+          Claude Code
+        </Link>{" "}
+        de forma individual en vez del híbrido con Antigravity? También hay{" "}
+        <Link href="/subagentes" className="underline">
+          subagentes
+        </Link>{" "}
+        (<code>.claude/agents/</code>) listos para descargar.
       </section>
 
       <section className="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800">

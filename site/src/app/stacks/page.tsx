@@ -20,10 +20,10 @@ export default function StacksPage() {
         <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
           Referencia de solo lectura — qué rules y skills están asociadas a
           cada stack. Para cambiar una asociación hay que editar{" "}
-          <code>site/src/lib/presets.ts</code> en el repo. Para Claude Code,
-          Codex, OpenCode y Cursor mirá{" "}
+          <code>site/src/lib/presets.ts</code> en el repo. Para usar Claude
+          Code de forma individual mirá{" "}
           <Link href="/agents" className="underline">
-            Otros agentes
+            Claude Code
           </Link>
           .
         </p>

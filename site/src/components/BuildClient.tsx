@@ -11,6 +11,7 @@ const SECTIONS: { category: ItemCategory; title: string }[] = [
   { category: "global", title: "Global" },
   { category: "rule", title: "Rules (.agents/rules/)" },
   { category: "skill", title: "Skills" },
+  { category: "agent", title: "Subagentes (.claude/agents/)" },
   { category: "command", title: "Comandos" },
   { category: "database", title: "Base de datos (opcional, cualquier stack)" },
   { category: "template", title: "Plantillas SDD (docs/)" },

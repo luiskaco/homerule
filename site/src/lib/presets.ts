@@ -51,6 +51,19 @@ const ANTIGRAVITY_GLOBAL_ITEM_IDS = [
   "global:tools-reference.md",
 ];
 
+/**
+ * Claude Code-only subagentes (.claude/agents/*.md) — kit independiente del
+ * layer híbrido con Gemini/Antigravity, igual para los 8 stacks.
+ */
+const CLAUDE_AGENT_ITEM_IDS = [
+  "claude-code:agent:explorer",
+  "claude-code:agent:planner",
+  "claude-code:agent:code-reviewer",
+  "claude-code:agent:security-auditor",
+  "claude-code:agent:debugger",
+  "claude-code:agent:docs-writer",
+];
+
 interface StackShape {
   rules: string[];
   skills: string[];
@@ -58,15 +71,15 @@ interface StackShape {
 
 const STACKS: Record<string, StackShape> = {
   "nextjs-branded": {
-    rules: ["architecture", "ui-ux", "stack-conventions", "security", "operations"],
+    rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
     skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "react-best-practices", "nodejs"],
   },
   "nextjs-unbranded": {
-    rules: ["architecture", "ui-ux", "stack-conventions", "security", "operations"],
+    rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
     skills: ["ui-ux-pro-max", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "react-best-practices", "nodejs"],
   },
   "wordpress-cms": {
-    rules: ["cms", "security", "stack-conventions", "operations"],
+    rules: ["cms", "seo", "security", "stack-conventions", "operations"],
     skills: ["seo-audit", "web-design-guidelines"],
   },
   "fastapi-python": {
@@ -74,15 +87,15 @@ const STACKS: Record<string, StackShape> = {
     skills: ["fastapi", "error-handling-patterns"],
   },
   "html-plano": {
-    rules: ["architecture", "ui-ux", "stack-conventions", "security", "operations"],
+    rules: ["architecture", "ui-ux", "seo", "stack-conventions", "security", "operations"],
     skills: ["web-design-guidelines", "impeccable"],
   },
   "react-spa": {
-    rules: ["architecture", "ui-ux", "stack-conventions", "security", "operations"],
+    rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
     skills: ["frontend-design", "impeccable", "web-design-guidelines", "react-best-practices", "nodejs"],
   },
   vue: {
-    rules: ["architecture", "ui-ux", "stack-conventions", "security", "operations"],
+    rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
     skills: ["frontend-design", "impeccable", "web-design-guidelines", "nodejs"],
   },
   manual: { rules: [], skills: [] },
@@ -137,6 +150,7 @@ function toolItemIds(tool: ToolId, shape: StackShape): string[] {
     ...TEMPLATE_ITEM_IDS,
     ...shape.rules.map((r) => `${tool}:rule:${r}`),
     ...shape.skills.map((s) => `${tool}:skill:${s}`),
+    ...(tool === "claude-code" ? CLAUDE_AGENT_ITEM_IDS : []),
   ];
 }
 
@@ -196,26 +210,12 @@ const antigravityPresets: Preset[] = Object.keys(STACKS).map((stackId) =>
   buildPreset("antigravity", stackId, ANTIGRAVITY_STACK_TOOLS[stackId] ?? [CONTEXT7])
 );
 
-// Claude Code y Cursor: mismos 8 stacks, contenido nativo (skills / .cursor rules).
+// Claude Code: mismos 8 stacks que Antigravity, contenido nativo (skills + subagentes).
 const claudeCodePresets: Preset[] = Object.keys(STACKS).map((stackId) =>
   buildPreset("claude-code", stackId, [SKILLS_SH])
 );
 
-const cursorPresets: Preset[] = Object.keys(STACKS).map((stackId) =>
-  buildPreset("cursor", stackId, [SKILLS_SH])
-);
-
-// Codex y OpenCode: MVP solo con preset Manual — el checklist de /build permite armar a mano.
-const codexPresets: Preset[] = [buildPreset("codex", "manual", [SKILLS_SH])];
-const opencodePresets: Preset[] = [buildPreset("opencode", "manual", [SKILLS_SH])];
-
-export const presets: Preset[] = [
-  ...antigravityPresets,
-  ...claudeCodePresets,
-  ...cursorPresets,
-  ...codexPresets,
-  ...opencodePresets,
-];
+export const presets: Preset[] = [...antigravityPresets, ...claudeCodePresets];
 
 export function getPreset(tool: ToolId, id: string): Preset | undefined {
   return presets.find((p) => p.tool === tool && p.id === id);
@@ -227,8 +227,5 @@ export function getPresetsByTool(tool: ToolId): Preset[] {
 
 export const TOOLS: { id: ToolId; label: string; description: string }[] = [
   { id: "antigravity", label: "Antigravity (Gemini)", description: "GEMINI.md global + .agents/rules + .agents/skills." },
-  { id: "claude-code", label: "Claude Code", description: "CLAUDE.md + .claude/skills + .claude/commands." },
-  { id: "codex", label: "Codex CLI", description: "AGENTS.md + .codex/skills (comandos custom deprecados en Codex)." },
-  { id: "opencode", label: "OpenCode", description: "AGENTS.md + .opencode/skills + .opencode/commands." },
-  { id: "cursor", label: "Cursor", description: ".cursor/rules/*.mdc + .cursor/commands." },
+  { id: "claude-code", label: "Claude Code", description: "CLAUDE.md + .claude/skills + .claude/commands + .claude/agents (subagentes)." },
 ];

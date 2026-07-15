@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-export type ItemCategory = "global" | "rule" | "skill" | "template" | "database" | "command";
+export type ItemCategory = "global" | "rule" | "skill" | "template" | "database" | "command" | "agent";
 
-export type ToolId = "antigravity" | "claude-code" | "codex" | "opencode" | "cursor";
+export type ToolId = "antigravity" | "claude-code";
 
 export interface ManifestFile {
   destPath: string;

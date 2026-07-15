@@ -7,8 +7,8 @@ description: >
   Usar cuando se pida auditar SEO, diagnosticar por qué no rankea, o algo
   vago como "revisá el SEO" o "ayudame con SEO".
   Diagnóstico únicamente — los umbrales y specs concretos de este proyecto
-  viven en .agents/rules/ui-ux.md § SEO Técnico y tienen prioridad sobre
-  cualquier sugerencia genérica de la skill.
+  viven en .agents/rules/seo.md y tienen prioridad sobre cualquier sugerencia
+  genérica de la skill.
   Instalar con: npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit
 ---
 
@@ -24,11 +24,11 @@ Solo se instala `seo-audit`, no el paquete completo.
 Al auditar o diagnosticar problemas de SEO: caídas de tráfico, páginas que no
 indexan, dudas de on-page SEO, o pedidos vagos tipo "revisá el SEO de esto".
 
-No reemplaza [`ui-ux.md § SEO Técnico`](../../rules/ui-ux.md) — esa sección
-es la fuente de verdad del proyecto (specs de title/description, imagen OG,
-umbrales de Lighthouse, structured data). Usar `seo-audit` para **detectar**
-qué está roto; los valores concretos para **corregirlo** son los del archivo
-de reglas, no los que sugiera la skill.
+No reemplaza [`seo.md`](../../rules/seo.md) — esa regla es la fuente de verdad
+del proyecto (specs de title/description, imagen OG, umbrales de Lighthouse,
+structured data). Usar `seo-audit` para **detectar** qué está roto; los valores
+concretos para **corregirlo** son los del archivo de reglas, no los que sugiera
+la skill.
 
 Relacionada con otras skills del mismo paquete si en algún momento se
 necesitan (no instaladas por defecto en este proyecto):
@@ -46,7 +46,7 @@ npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audi
 
 1. Correr la auditoría ante señales de problema (caída de tráfico, páginas
    sin indexar, dudas de on-page SEO).
-2. Cruzar los hallazgos contra `ui-ux.md § SEO Técnico` — si la skill sugiere
-   un umbral distinto al ya definido ahí (ej. Lighthouse, tamaño de OG image),
-   gana el archivo de reglas.
+2. Cruzar los hallazgos contra `seo.md` — si la skill sugiere un umbral
+   distinto al ya definido ahí (ej. Lighthouse, tamaño de OG image), gana el
+   archivo de reglas.
 3. Corregir con las specs del proyecto, no con el default genérico de la skill.

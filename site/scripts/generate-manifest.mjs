@@ -48,17 +48,6 @@ function buildSkillMd(name, description, body) {
   return `---\nname: ${name}\ndescription: ${yamlQuote(description || name)}\n---\n\n${body}`;
 }
 
-function buildCursorMdc(fm, body) {
-  const lines = ["---", `description: ${yamlQuote(fm.description || "")}`];
-  const globSource = fm.trigger === "glob" ? fm.globs : fm.glob;
-  if (globSource) {
-    const globs = globSource.split(",").map((g) => g.trim()).filter(Boolean);
-    lines.push(`globs: [${globs.map((g) => `"${g}"`).join(", ")}]`);
-  }
-  lines.push("alwaysApply: false", "---", "");
-  return lines.join("\n") + body;
-}
-
 function approxTokens(files) {
   const chars = files.reduce((sum, f) => sum + f.content.length, 0);
   return Math.round(chars / 4);
@@ -74,6 +63,7 @@ const WORKFLOWS_DIR = join(REPO_ROOT, ".gemini", "antigravity", "global_workflow
 const TEMPLATES_DIR = join(REPO_ROOT, "docs-templates");
 const CORE_MD_PATH = join(REPO_ROOT, "core", "CORE.md");
 const DATABASE_MD_PATH = join(RULES_DIR, "database.md");
+const CLAUDE_AGENTS_DIR = join(REPO_ROOT, "claude-agents");
 
 const DB_ENGINES = [
   { id: "postgres", label: "PostgreSQL", description: "Relacional, integridad referencial fuerte — default recomendado." },
@@ -89,28 +79,6 @@ const TOOL_CONFIG = {
     coreTitle: "Claude Code — Global",
     skillsDir: ".claude/skills",
     commandsDir: ".claude/commands",
-  },
-  codex: {
-    label: "Codex CLI",
-    coreDestPath: "AGENTS.md",
-    coreTitle: "Codex — Global",
-    skillsDir: ".codex/skills",
-    commandsDir: null,
-  },
-  opencode: {
-    label: "OpenCode",
-    coreDestPath: "AGENTS.md",
-    coreTitle: "OpenCode — Global",
-    skillsDir: ".opencode/skills",
-    commandsDir: ".opencode/commands",
-  },
-  cursor: {
-    label: "Cursor",
-    coreDestPath: ".cursor/rules/000-core.mdc",
-    coreTitle: "Core",
-    rulesDir: ".cursor/rules",
-    commandsDir: ".cursor/commands",
-    isMdcCore: true,
   },
 };
 
@@ -220,7 +188,7 @@ for (const file of readdirSync(TEMPLATES_DIR).sort()) {
 }
 
 // ============================================================
-// Per-tool layers: Claude Code, Codex, OpenCode, Cursor
+// Per-tool layer: Claude Code (memoria + rules→skills + skills + comandos + db)
 // ============================================================
 
 const coreBodyRaw = readFileSync(CORE_MD_PATH, "utf8");
@@ -230,10 +198,7 @@ const databaseBody = stripFrontmatter(databaseRaw);
 
 for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
   // --- Core memory file ---
-  const coreBody = coreBodyRaw.replace(/^# Core Rules — Global/, `# ${cfg.coreTitle}`);
-  const coreContent = cfg.isMdcCore
-    ? `---\ndescription: ${yamlQuote("Reglas globales del proyecto")}\nalwaysApply: true\n---\n\n${coreBody}`
-    : coreBody;
+  const coreContent = coreBodyRaw.replace(/^# Core Rules — Global/, `# ${cfg.coreTitle}`);
   items.push({
     id: `${toolId}:core`,
     category: "global",
@@ -244,19 +209,14 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
     approxTokens: approxTokens([{ content: coreContent }]),
   });
 
-  // --- Rules → native skill (Claude/Codex/OpenCode) or .mdc rule (Cursor) ---
+  // --- Rules → native Claude Code skill ---
   for (const file of readdirSync(RULES_DIR).sort()) {
     if (extname(file) !== ".md" || file === "database.md") continue;
     const raw = readFileSync(join(RULES_DIR, file), "utf8");
     const fm = parseFrontmatter(raw);
     const body = stripFrontmatter(raw);
     const id = file.replace(/\.md$/, "");
-    let files;
-    if (cfg.rulesDir) {
-      files = [{ destPath: `${cfg.rulesDir}/${id}.mdc`, content: buildCursorMdc(fm, body) }];
-    } else {
-      files = [{ destPath: `${cfg.skillsDir}/${id}/SKILL.md`, content: buildSkillMd(id, fm.description, body) }];
-    }
+    const files = [{ destPath: `${cfg.skillsDir}/${id}/SKILL.md`, content: buildSkillMd(id, fm.description, body) }];
     items.push({
       id: `${toolId}:rule:${id}`,
       category: "skill",
@@ -268,11 +228,10 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
     });
   }
 
-  // --- Skills → copied as-is (Claude/Codex/OpenCode) or converted to .mdc (Cursor) ---
+  // --- Skills → copied as-is ---
   for (const skillName of readdirSync(SKILLS_DIR).sort()) {
     const skillPath = join(SKILLS_DIR, skillName);
     if (!statSync(skillPath).isDirectory()) continue;
-    const allFiles = walk(skillPath);
     let fm = {};
     try {
       fm = parseFrontmatter(readFileSync(join(skillPath, "SKILL.md"), "utf8"));
@@ -280,25 +239,10 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
       // no SKILL.md at root
     }
 
-    let files;
-    if (cfg.rulesDir) {
-      let skillMdRaw = "";
-      try {
-        skillMdRaw = readFileSync(join(skillPath, "SKILL.md"), "utf8");
-      } catch {
-        // no SKILL.md — skip main body, keep extra files only
-      }
-      const body = skillMdRaw ? stripFrontmatter(skillMdRaw) : "";
-      // Cursor no auto-carga archivos extra de una skill (solo el .mdc) — no
-      // incluir los archivos de referencia adicionales para no listar algo
-      // que en la práctica no hace nada dentro de Cursor.
-      files = [{ destPath: `${cfg.rulesDir}/${skillName}.mdc`, content: buildCursorMdc(fm, body) }];
-    } else {
-      files = allFiles.map((full) => {
-        const rel = toPosix(relative(skillPath, full));
-        return { destPath: `${cfg.skillsDir}/${skillName}/${rel}`, content: readFileSync(full, "utf8") };
-      });
-    }
+    const files = walk(skillPath).map((full) => {
+      const rel = toPosix(relative(skillPath, full));
+      return { destPath: `${cfg.skillsDir}/${skillName}/${rel}`, content: readFileSync(full, "utf8") };
+    });
 
     items.push({
       id: `${toolId}:skill:${skillName}`,
@@ -311,25 +255,16 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
     });
   }
 
-  // --- Workflows → commands (Claude/OpenCode/Cursor) or skill (Codex, commands deprecated there) ---
+  // --- Workflows → commands ---
   for (const file of readdirSync(WORKFLOWS_DIR).sort()) {
     const raw = readFileSync(join(WORKFLOWS_DIR, file), "utf8");
     const fm = parseFrontmatter(raw);
-    const body = stripFrontmatter(raw);
     const id = file.replace(/\.md$/, "");
     const description = fm.description || `Workflow manual /${id}`;
-    let files;
-    let category;
-    if (cfg.commandsDir) {
-      category = "command";
-      files = [{ destPath: `${cfg.commandsDir}/${file}`, content: raw }];
-    } else {
-      category = "skill";
-      files = [{ destPath: `${cfg.skillsDir}/${id}/SKILL.md`, content: buildSkillMd(id, description, body) }];
-    }
+    const files = [{ destPath: `${cfg.commandsDir}/${file}`, content: raw }];
     items.push({
       id: `${toolId}:workflow:${id}`,
-      category,
+      category: "command",
       tool: toolId,
       label: file,
       description,
@@ -339,9 +274,7 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
   }
 
   // --- Database add-on ---
-  const dbFiles = cfg.rulesDir
-    ? [{ destPath: `${cfg.rulesDir}/database.mdc`, content: buildCursorMdc(databaseFm, databaseBody) }]
-    : [{ destPath: `${cfg.skillsDir}/database/SKILL.md`, content: buildSkillMd("database", databaseFm.description, databaseBody) }];
+  const dbFiles = [{ destPath: `${cfg.skillsDir}/database/SKILL.md`, content: buildSkillMd("database", databaseFm.description, databaseBody) }];
   for (const engine of DB_ENGINES) {
     items.push({
       id: `${toolId}:database:${engine.id}`,
@@ -353,6 +286,29 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
       approxTokens: approxTokens(dbFiles),
     });
   }
+}
+
+// ============================================================
+// Claude Code subagents (independiente del layer híbrido de arriba)
+// tool: "claude-code" únicamente — .claude/agents/*.md es un formato
+// nativo de Claude Code, no tiene equivalente directo en Antigravity.
+// ============================================================
+
+for (const file of readdirSync(CLAUDE_AGENTS_DIR).sort()) {
+  if (extname(file) !== ".md") continue;
+  const content = readFileSync(join(CLAUDE_AGENTS_DIR, file), "utf8");
+  const fm = parseFrontmatter(content);
+  const id = file.replace(/\.md$/, "");
+  const files = [{ destPath: `.claude/agents/${file}`, content }];
+  items.push({
+    id: `claude-code:agent:${id}`,
+    category: "agent",
+    tool: "claude-code",
+    label: file,
+    description: fm.description || "",
+    files,
+    approxTokens: approxTokens(files),
+  });
 }
 
 mkdirSync(join(SITE_DIR, "public"), { recursive: true });

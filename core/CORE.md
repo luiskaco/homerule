@@ -86,7 +86,7 @@ Actualizar el archivo correspondiente al completar cada tarea.
 ## 6. Jerarquía de Reglas
 
 1. Este archivo de memoria del proyecto — máxima prioridad
-2. Skills/rules de convenciones (`security`, `architecture`, `ui-ux`, `operations`, `cms`, `database`, `stack-conventions`) — workspace, override local
+2. Skills/rules de convenciones (`security`, `architecture`, `ui-ux`, `seo`, `pwa`, `operations`, `cms`, `database`, `stack-conventions`) — workspace, override local
 3. Comandos/workflows (`/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un comando resume una convención que también vive en una skill/rule, esa skill/rule es la fuente de verdad si hay discrepancia
 4. Resto de skills según contexto del proyecto
 
@@ -108,13 +108,13 @@ Invocar con `/` en el chat:
 
 ---
 
-## 8. Subagentes Internos
+## 8. Auto-revisión Interna
 
 Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
 
 **⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (revisión manual, otro agente, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
 
-Antes de entregar cualquier código, procesar internamente con 3 subagentes:
+Antes de entregar cualquier código, revisar internamente con 3 pasadas:
 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
@@ -129,6 +129,11 @@ Antes de entregar cualquier código, procesar internamente con 3 subagentes:
 ```
 
 Inspector solo reporta si encontró algo. Si todo correcto: solo `✅`.
+
+> Esto es una **auto-revisión inline** en el mismo turno, no delegación. Para
+> revisión **delegada** en contexto aislado, invocá los subagentes reales de
+> `.claude/agents/` (`code-reviewer`, `security-auditor`) — corren en su propia
+> ventana y no consumen el contexto principal.
 
 <!-- codebase-memory-mcp:start -->
 # Codebase Knowledge Graph (codebase-memory-mcp)

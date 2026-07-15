@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Activar al construir o revisar interfaces, componentes visuales, formularios, estados de carga/error, accesibilidad, i18n/traducciones, o meta tags/SEO de páginas
+description: Activar al construir o revisar interfaces, componentes visuales, formularios, estados de carga/error, accesibilidad, dark mode o i18n/traducciones
 ---
 
 # UI/UX Rules
@@ -23,7 +23,7 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 | `success` | Confirmación visual de acción completada |
 | `empty` | Mensaje útil cuando no hay datos — nunca UI rota |
 
-> Proyecto PWA: agregar `offline` como 6to estado obligatorio — ver [§ PWA](#pwa).
+> Proyecto PWA: agregar `offline` como 6to estado obligatorio — ver `pwa.md`.
 
 ---
 
@@ -121,7 +121,8 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
   cookie/header sin reflejarlo en la URL, rompe SEO multi-idioma y
   compartir enlaces.
 - `hreflang` + `lang` en `<html>` correctos por página (ya cubierto en
-  `§ SEO Técnico`) — cada versión de idioma con su propio `<link rel="alternate" hreflang="...">`.
+  `seo.md § SEO Multi-idioma`) — cada versión de idioma con su propio
+  `<link rel="alternate" hreflang="...">`.
 - Layout a prueba de expansión de texto: alemán/español pueden ser 30-40% más
   largos que inglés — nunca `width` fijo en botones/labels que dependen de texto
   traducido, usar `min-width` + contenido flexible.
@@ -143,53 +144,6 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 - `<link rel="preconnect">` en dominios CDN/assets.
 - Nunca `transition: all` — listar propiedades explícitamente.
 - No leer layout en render (`getBoundingClientRect`, `offsetHeight`).
-
----
-
-## PWA
-
-Aplica solo si el proyecto es una PWA (manifest + service worker). Sigue
-siendo web — todo lo demás de este archivo (5 estados, a11y, performance,
-SEO) aplica igual, esto es una capa adicional.
-
-### Manifest
-
-- `manifest.json` con `name`, `short_name`, `icons` (mínimo 192×192 y 512×512,
-  incluir `purpose: "maskable"`), `theme_color`, `background_color`.
-- `display: "standalone"` (o `"fullscreen"` si el caso de uso lo justifica).
-- `start_url` explícito — nunca depender del default del navegador.
-
-### Service Worker
-
-- Estrategia de cache por tipo de recurso, nunca una sola global:
-  - `cache-first` para assets estáticos versionados (JS/CSS con hash, fonts).
-  - `network-first` para HTML y datos que cambian frecuentemente.
-  - `stale-while-revalidate` para imágenes y recursos semi-estáticos.
-- Versionar el cache (`CACHE_NAME = "app-v${BUILD_ID}"`) — invalidar caches
-  viejos en el evento `activate`.
-- Nunca cachear responses de error (4xx/5xx) ni endpoints con datos sensibles/auth.
-
-### Estado Offline
-
-- `offline` es el 6to estado obligatorio de UI en proyectos PWA — ver
-  [tabla de estados](#5-estados-obligatorios-de-ui). Nunca pantalla en blanco
-  sin conexión: mostrar qué está disponible desde cache y qué requiere red.
-- Indicador visual de estado de conexión si la app depende de datos en vivo.
-- Acciones que requieren red (submits, mutaciones) deshabilitadas o encoladas
-  con feedback claro — nunca fallar en silencio.
-
-### Update Flow
-
-- Detectar SW nuevo esperando (`waiting` state) y avisar al usuario —
-  nunca actualizar de forma forzada sin aviso (pierde estado no guardado).
-- Botón/banner "Nueva versión disponible" que dispara `skipWaiting()` +
-  reload solo con acción explícita del usuario.
-
-### Auditoría
-
-- Lighthouse PWA score ≥ 90 antes de merge a `main` (mismo criterio que
-  SEO/Performance en [§ SEO Técnico](#seo-técnico)).
-- Verificar installability: HTTPS, manifest válido, SW registrado y activo.
 
 ---
 
@@ -250,106 +204,15 @@ si el proyecto ya tiene sistema de diseño o no, nunca se activan juntas.
 
 ### Instalación
 
-```bash
-npm install -g uipro-cli && uipro init --ai antigravity
-npx skills add https://github.com/anthropics/skills --skill frontend-design
-npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
-# impeccable: ver instrucciones en impeccable.style
-```
+Los comandos de instalación de cada skill viven en `tools-reference.md`
+(workflow `/tools-reference`) — fuente de verdad única, no se duplican acá.
 
 ---
 
-## SEO Técnico
+## SEO
 
-> Esta sección es la fuente de verdad de SEO del proyecto. Skills externas de
-> auditoría SEO (ej. `seo-audit` de `coreyhaines31/marketingskills`) sirven
-> para **diagnóstico** — detectar qué está roto — pero los umbrales y specs
-> concretos de acá (Lighthouse ≥90/≥80, OG 1200×630px, largo de title/description,
-> etc.) mandan sobre cualquier sugerencia genérica que la skill proponga.
-
-### Meta Tags Obligatorios (toda página)
-
-- `<title>` único y descriptivo — 50–60 caracteres máximo.
-- `<meta name="description">` — 120–160 caracteres, incluir keyword principal.
-- `<link rel="canonical">` siempre presente, incluso en la página principal.
-- `lang` en `<html>` con el idioma correcto (`es`, `en`, etc.).
-- `<meta name="robots">` explícito en páginas que no deben indexarse (`noindex, nofollow`).
-
-### Open Graph y Twitter Cards
-
-```html
-<!-- Open Graph -->
-<meta property="og:title" content="..." />
-<meta property="og:description" content="..." />
-<meta property="og:image" content="...1200x630.jpg" />
-<meta property="og:url" content="https://..." />
-<meta property="og:type" content="website" />
-<meta property="og:locale" content="es_ES" />
-
-<!-- Twitter Cards -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="..." />
-<meta name="twitter:description" content="..." />
-<meta name="twitter:image" content="...1200x630.jpg" />
-```
-
-- Imagen OG: mínimo 1200×630px, < 1MB, formato JPG o PNG.
-- Nunca reutilizar el mismo `og:image` en todas las páginas.
-
-### Estructura Semántica para SEO
-
-- Un solo `<h1>` por página — describe el tema principal.
-- Jerarquía `<h1>`–`<h6>` sin saltos (refuerza la regla de accesibilidad).
-- `alt` descriptivo en todas las imágenes con contenido (no decorativas).
-- URLs en kebab-case, descriptivas, sin parámetros innecesarios.
-- `<a>` con texto descriptivo — nunca "click aquí" o "ver más" sin contexto.
-
-### Structured Data (Schema.org)
-
-- Agregar JSON-LD en páginas que lo justifican:
-  - Artículos: `Article` o `BlogPosting`
-  - Productos: `Product` con `offers`
-  - Organización: `Organization` en la home
-  - Breadcrumbs: `BreadcrumbList` en rutas anidadas
-
-```html
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "...",
-  "datePublished": "2026-01-01",
-  "author": { "@type": "Person", "name": "..." }
-}
-</script>
-```
-
-### Core Web Vitals como Ranking Factor
-
-Los mismos targets de performance ya definidos aplican directamente al SEO:
-
-- **LCP** < 2.5s (Largest Contentful Paint)
-- **CLS** < 0.1 (Cumulative Layout Shift) — ya cubierto por reglas de skeletons
-- **INP** < 200ms (Interaction to Next Paint)
-
-### Auditoría en CI
-
-- Lighthouse SEO score ≥ 90 antes de merge a `main`.
-- Lighthouse Performance score ≥ 80.
-- Herramienta recomendada: `@lhci/cli` (Lighthouse CI).
-
-```bash
-# Instalar y correr en CI
-npm install -g @lhci/cli
-lhci autorun
-```
-
-### Anti-patterns SEO — Nunca
-
-- Mismo `<title>` o `<meta description>` en múltiples páginas.
-- Páginas importantes con `noindex` accidentalmente.
-- Imágenes sin `alt` con contenido relevante.
-- Texto importante dentro de imágenes (no indexable).
-- `<h1>` ausente o múltiples `<h1>` en la misma página.
-- URLs con parámetros dinámicos sin canonical (`?page=1`, `?sort=asc`).
-- Contenido detrás de JavaScript sin SSR/SSG (no indexable por crawlers).
+El SEO técnico vive en su propia regla: **`seo.md`** — meta tags, Open Graph,
+structured data, canonical, hreflang y Core Web Vitals como ranking factor.
+Varias reglas de este archivo (`§ Accesibilidad`, `§ Skeletons`,
+`§ Performance Frontend`, `§ i18n`) tienen impacto SEO directo y están
+referenciadas desde ahí.

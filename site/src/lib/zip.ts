@@ -4,9 +4,6 @@ import type { ManifestItem, ToolId } from "@/lib/manifest";
 const TOOL_LABELS: Record<ToolId, string> = {
   antigravity: "Antigravity (Gemini)",
   "claude-code": "Claude Code",
-  codex: "Codex CLI",
-  opencode: "OpenCode",
-  cursor: "Cursor",
 };
 
 function destFolder(item: ManifestItem): string {
@@ -86,7 +83,7 @@ function buildInstallMd(selected: ManifestItem[]): string {
 
   const lines: string[] = ["# Instalación\n"];
   lines.push(
-    "Este ZIP fue generado por Antigravity Rules Hub. Cada sección de abajo " +
+    "Este ZIP fue generado por AI Rules Hub. Cada sección de abajo " +
       "corresponde a una carpeta del ZIP — copiá según las instrucciones de tu(s) " +
       "agente(s) elegido(s).\n"
   );

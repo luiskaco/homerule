@@ -5,11 +5,13 @@ export default function AgentsPage() {
   return (
     <div className="flex flex-col gap-10">
       <section>
-        <h1 className="text-3xl font-bold tracking-tight">Otros agentes</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Claude Code</h1>
         <p className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">
-          Además de Antigravity/Gemini, empaquetamos memoria, skills y comandos
-          nativos para Claude Code, Codex CLI, OpenCode y Cursor — investigado
-          contra la documentación oficial de cada uno y el estándar{" "}
+          Además del workflow híbrido con Antigravity/Gemini, empaquetamos la
+          memoria, skills y comandos nativos para usar Claude Code de forma
+          individual — la misma base de reglas convertida al{" "}
+          <code>CLAUDE.md</code> + <code>.claude/skills</code> +{" "}
+          <code>.claude/commands</code>, siguiendo el estándar{" "}
           <code>SKILL.md</code> que usa{" "}
           <a
             href="https://www.skills.sh/"
@@ -19,7 +21,11 @@ export default function AgentsPage() {
           >
             skills.sh
           </a>
-          .
+          . Además hay un kit de{" "}
+          <Link href="/subagentes" className="underline">
+            subagentes independientes
+          </Link>{" "}
+          (<code>.claude/agents/</code>) que se suma a las skills/comandos de acá abajo.
         </p>
       </section>
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Antigravity Rules Hub",
+  title: "AI Rules Hub",
   description:
     "Catálogo descargable de rules, skills y plantillas SDD para arrancar proyectos con el workflow dual-AI.",
 };
@@ -15,14 +15,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b border-neutral-200 dark:border-neutral-800">
           <nav className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <Link href="/" className="font-semibold tracking-tight">
-              Antigravity Rules Hub
+              AI Rules Hub
             </Link>
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
               <Link href="/" className="hover:underline">
                 Antigravity
               </Link>
               <Link href="/agents" className="hover:underline">
-                Otros agentes
+                Claude Code
+              </Link>
+              <Link href="/subagentes" className="hover:underline">
+                Subagentes Claude
               </Link>
               <Link href="/stacks" className="hover:underline">
                 Stacks
@@ -36,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">{children}</main>
         <footer className="border-t border-neutral-200 px-4 py-6 text-sm text-neutral-500 dark:border-neutral-800 sm:px-6">
           <div className="mx-auto flex max-w-5xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <span>Antigravity Rules Hub</span>
+            <span>AI Rules Hub</span>
             <a
               href="https://www.skills.sh/"
               target="_blank"
