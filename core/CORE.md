@@ -52,6 +52,15 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 | Estilos | Tailwind CSS / CSS puro |
 | Runtime | Node.js 20+ / Python 3.11+ |
 
+**📌 Versiones actualizadas — regla obligatoria:**
+
+Antes de escribir o sugerir código que use una librería, framework, SDK o CLI (React, Next.js, Prisma, Tailwind, FastAPI, etc.):
+
+1. **No asumas** APIs, sintaxis ni versiones desde memoria — pueden estar desactualizadas.
+2. **Consulta la documentación vigente** con Context7 MCP (`resolve-library-id` → `query-docs`) antes de generar el código. Si no está disponible, usa web search.
+3. **Respeta el lockfile del proyecto:** revisa `package.json` / `requirements.txt` / `pyproject.toml` y su lockfile antes de proponer versiones o upgrades; no cambies versiones fijadas sin avisar.
+4. **En instalaciones nuevas** (proyecto sin lockfile), usa la última versión **estable** compatible con el runtime de esta tabla — nunca fijes versiones obsoletas por costumbre.
+
 ---
 
 ## 4. Naming & Git

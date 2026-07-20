@@ -51,6 +51,15 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 | Estilos | Tailwind CSS / CSS puro |
 | Runtime | Node.js 20+ / Python 3.11+ |
 
+**📌 Versiones actualizadas — regla obligatoria:**
+
+Antes de escribir o sugerir código que use una librería, framework, SDK o CLI (React, Next.js, Prisma, Tailwind, FastAPI, etc.):
+
+1. **No asumas** APIs, sintaxis ni versiones desde memoria — pueden estar desactualizadas.
+2. **Consulta la documentación vigente** antes de generar el código: Context7 MCP (`resolve-library-id` → `query-docs`) si está configurado; si no, usa búsqueda web o el subagente `browser`.
+3. **Respeta el lockfile del proyecto:** revisa `package.json` / `requirements.txt` / `pyproject.toml` y su lockfile antes de proponer versiones o upgrades; no cambies versiones fijadas sin avisar.
+4. **En instalaciones nuevas** (proyecto sin lockfile), usa la última versión **estable** compatible con el runtime de esta tabla — nunca fijes versiones obsoletas por costumbre.
+
 ---
 
 ## 4. Naming & Git
@@ -85,7 +94,7 @@ Actualizar el archivo correspondiente al completar cada tarea.
 ## 6. Jerarquía de Reglas
 
 1. Este archivo `GEMINI.md` — máxima prioridad
-2. `.agents/rules/` (`security.md`, `architecture.md`, `ui-ux.md`, `seo.md`, `pwa.md`, `operations.md`, `cms.md`, `stack-conventions.md`) — workspace, override local
+2. `.agents/rules/` (`security.md`, `architecture.md`, `database.md`, `ui-ux.md`, `seo.md`, `pwa.md`, `operations.md`, `cms.md`, `stack-conventions.md`) — workspace, override local
 3. Workflows (`/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un workflow resume una regla que también vive en `.agents/rules/`, el archivo de `.agents/rules/` es la fuente de verdad si hay discrepancia
 4. Skills según contexto del proyecto
 
