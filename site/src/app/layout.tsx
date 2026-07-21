@@ -33,6 +33,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/build?tool=antigravity&preset=manual" className="hover:underline">
                 Armar manual
               </Link>
+              <Link href="/mejores-skill" className="hover:underline">
+                Mejores SKILL
+              </Link>
+              <Link href="/proximamente" className="hover:underline">
+                Próximamente
+              </Link>
+              <Link href="/mejores-repos-utilidades" className="hover:underline">
+                Mejores repos de utilidades
+              </Link>
             </div>
           </nav>
         </header>
