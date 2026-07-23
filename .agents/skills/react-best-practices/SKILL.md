@@ -41,6 +41,6 @@ npx skills add vercel-labs/agent-skills --skill react-best-practices
 
 ## Complementa con
 
-- `ui-ux-pro-max` → sistema de diseño visual
+- `frontend-design` → sistema de diseño visual
 - `web-design-guidelines` → estándares de accesibilidad
 - `stack-conventions` → convenciones del proyecto

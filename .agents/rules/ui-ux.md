@@ -187,19 +187,16 @@ description: Activar al construir o revisar interfaces, componentes visuales, fo
 
 | Skill | Momento | Qué hace |
 |-------|---------|----------|
-| `ui-ux-pro-max` | Al **iniciar** UI nueva **sin** sistema de diseño definido | Genera sistema de diseño: estilo, paleta, tipografía por industria |
-| `frontend-design` | Al **iniciar** UI nueva **con** sistema de diseño ya definido (caso habitual en Orange Latam) | Dirección estética dentro de ese sistema — tipografía, jerarquía visual, evita defaults genéricos |
+| `frontend-design` | Al **iniciar** UI nueva, con o sin sistema de diseño ya definido (caso habitual en Orange Latam) | Dirección estética — tipografía, jerarquía visual, evita defaults genéricos; infiere un sistema si no existe |
 | `impeccable` | Al **revisar** UI existente — requiere que `frontend-design` ya haya corrido antes | Audita, pule y critica con 23 comandos |
 | `web-design-guidelines` | Al **auditar** estándares | Verifica a11y, forms, performance técnica |
 
 **Nunca activar más de 2-3 a la vez.** Elegir según el momento de la tarea.
-`ui-ux-pro-max` y `frontend-design` son mutuamente excluyentes — el trigger es
-si el proyecto ya tiene sistema de diseño o no, nunca se activan juntas.
 
 ### Jerarquía si hay conflicto
 
 1. `web-design-guidelines` — estándares técnicos (a11y, WCAG, forms)
-2. `ui-ux-pro-max` / `frontend-design` — sistema de diseño o dirección estética (mutuamente excluyentes, ver arriba)
+2. `frontend-design` — sistema de diseño o dirección estética
 3. `impeccable` — vocabulario y auditoría de diseño
 
 ### Instalación

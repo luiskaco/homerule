@@ -76,7 +76,7 @@ const STACKS: Record<string, StackShape> = {
   },
   "nextjs-unbranded": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["ui-ux-pro-max", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "react-best-practices", "nodejs"],
+    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "react-best-practices", "nodejs"],
   },
   "wordpress-cms": {
     rules: ["cms", "seo", "security", "stack-conventions", "operations"],
@@ -177,11 +177,6 @@ const ANTIGRAVITY_STACK_TOOLS: Record<string, ExternalTool[]> = {
   ],
   "nextjs-unbranded": [
     {
-      name: "ui-ux-pro-max CLI",
-      installCommand: "npm install -g uipro-cli && uipro init --ai antigravity",
-      note: "⚠️ Riesgo Medium — ejecuta scripts Python vía shell sin sandboxing. Usar solo si el proyecto no tiene todavía un sistema de diseño definido.",
-    },
-    {
       name: "vercel-composition-patterns",
       installCommand: "npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-composition-patterns",
     },
@@ -196,11 +191,6 @@ const ANTIGRAVITY_STACK_TOOLS: Record<string, ExternalTool[]> = {
     {
       name: "vercel-composition-patterns",
       installCommand: "npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-composition-patterns",
-    },
-    {
-      name: "ui-ux-pro-max CLI",
-      installCommand: "npm install -g uipro-cli && uipro init --ai antigravity",
-      note: "⚠️ Riesgo Medium — ver advertencia de seguridad.",
     },
     CONTEXT7,
   ],

@@ -98,18 +98,9 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-compos
 
 # impeccable (polish) — ver instrucciones en impeccable.style
 
-# ui-ux-pro-max — SOLO si vas a usarlo (ver advertencia de seguridad abajo)
-npm install -g uipro-cli && uipro init --ai antigravity
-
 # Context7 MCP — documentación de librerías en tiempo real, por proyecto
 npx ctx7 setup
 ```
-
-> ⚠️ **`ui-ux-pro-max`:** auditorías externas (skills.sh Gen Agent Trust Hub, MCPxel)
-> lo marcan como riesgo Medium — ejecuta scripts Python vía shell sin sandboxing.
-> En `tools-reference.md` está restringido a "solo cuando el proyecto no tiene
-> todavía un sistema de diseño definido". Para proyectos con brand ya definido
-> (caso habitual en Orange Latam) usa `frontend-design` en su lugar.
 
 ### Paso 4 — Ajustar stack por proyecto
 
@@ -192,19 +183,18 @@ reemplazan.
 | Ejemplo | "usamos Zod para validación" | "así se evitan waterfalls en React" |
 | Cuándo carga | Glob al editar código | Según criterio definido en `tools-reference.md` |
 
-### Las 6 skills activas
+### Las 5 skills activas
 
 | Skill | Cuándo activarla |
 |---|---|
-| `frontend-design` | Iniciar UI nueva en proyecto **con** sistema de diseño ya definido (caso habitual en Orange Latam) |
-| `ui-ux-pro-max` | Iniciar UI nueva en proyecto **sin** sistema de diseño definido todavía — ver advertencia de seguridad arriba |
+| `frontend-design` | Iniciar UI nueva, con o sin sistema de diseño ya definido (caso habitual en Orange Latam) |
 | `impeccable` (polish) | Revisar UI existente o antes de PR — requiere que `frontend-design` haya corrido antes |
 | `web-design-guidelines` | Auditar a11y, forms, performance contra Web Interface Guidelines de Vercel |
 | `vercel-react-best-practices` | Escribir o revisar componentes React/Next.js — 70 reglas de performance |
 | `vercel-composition-patterns` | Refactorizar componentes con muchos props booleanos, diseñar APIs de componentes reutilizables (shadcn/ui) |
 
 Nunca más de 2-3 activas a la vez. Detalle completo, jerarquía si hay conflicto e
-instalación de cada una (`frontend-design`, `ui-ux-pro-max`, `impeccable`,
+instalación de cada una (`frontend-design`, `impeccable`,
 `web-design-guidelines`, `vercel-react-best-practices`,
 `vercel-composition-patterns`) está en `tools-reference.md` — no se duplica aquí
 para evitar que las dos copias diverjan.

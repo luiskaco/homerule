@@ -15,8 +15,7 @@ Activar según el momento de la tarea — no todas a la vez:
 
 | Skill | Cuándo activarla |
 |-------|-----------------|
-| `ui-ux-pro-max` | **Solo** si el proyecto NO tiene aún sistema de diseño definido (brief de marca, paleta, tipografía). Ver nota de seguridad abajo |
-| `frontend-design` | Al **iniciar** UI nueva en un proyecto que ya tiene sistema de diseño definido (caso habitual en Orange Latam) |
+| `frontend-design` | Al **iniciar** UI nueva, con o sin sistema de diseño ya definido (caso habitual en Orange Latam) |
 | `impeccable` (polish) | Al **revisar** UI existente o antes de hacer PR — requiere que `frontend-design` ya haya corrido antes |
 | `web-design-guidelines` | Al **auditar** estándares técnicos (a11y, forms, performance) contra Web Interface Guidelines de Vercel |
 | `vercel-react-best-practices` | Al **escribir o revisar** componentes React/Next.js — 70 reglas de performance (waterfalls, memoización, bundle) |
@@ -24,20 +23,14 @@ Activar según el momento de la tarea — no todas a la vez:
 
 **Regla para el agente:** nunca activar más de 2-3 a la vez. Elegir según el momento.
 
-- Construyendo UI nueva, proyecto con sistema de diseño ya definido → `frontend-design`
-- Construyendo UI nueva, proyecto sin sistema de diseño (MVP desde cero) → `ui-ux-pro-max` (con criterio, ver nota de seguridad)
+- Construyendo UI nueva (con o sin sistema de diseño definido) → `frontend-design`
 - Revisando algo existente → `impeccable` + `web-design-guidelines`
 - Escribiendo/revisando componentes React → `vercel-react-best-practices`
 - Componente con muchos props booleanos o que se repite en varios proyectos → `vercel-composition-patterns`
 
-**⚠️ Nota de seguridad — `ui-ux-pro-max`:** esta skill ejecuta scripts Python (`search.py`) vía shell sin sandboxing. Auditorías externas (skills.sh Gen Agent Trust Hub, MCPxel) la catalogan como riesgo **Medium** por superficie de ejecución de comandos, no por contenido malicioso conocido. En proyectos internos de Orange Latam (sin input de terceros no confiable) el riesgo real es bajo, pero por eso se restringe a "solo cuando no hay sistema de diseño ya definido" en vez de dejarla como disparador automático en cada tarea de UI.
-
 Instalación:
 
 ```bash
-# ui-ux-pro-max (uso restringido, ver nota de seguridad)
-npm install -g uipro-cli && uipro init --ai antigravity
-
 # frontend-design (Anthropic)
 npx skills add https://github.com/anthropics/skills --skill frontend-design
 

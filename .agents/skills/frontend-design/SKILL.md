@@ -17,12 +17,11 @@ categoría "Example Skills".
 
 ## Cuándo activarla
 
-Al **iniciar** una UI nueva en un proyecto que ya tiene sistema de diseño
-definido. Si el proyecto **no** tiene sistema de diseño todavía, usar
-`ui-ux-pro-max` primero para generarlo (ver nota de seguridad en su
-[SKILL.md](../ui-ux-pro-max/SKILL.md)) — `frontend-design` no genera un
-sistema de diseño desde cero, refina decisiones estéticas dentro de uno
-ya existente o semi-definido.
+Al **iniciar** una UI nueva, tenga o no el proyecto un sistema de diseño
+ya definido. Si existe uno, refina decisiones estéticas dentro de ese
+sistema; si no existe, infiere una dirección de diseño coherente
+(tipografía, paleta, jerarquía) a partir del brief y del contexto del
+proyecto.
 
 Combina con [`impeccable`](../impeccable/SKILL.md) para el pase de pulido
 antes de PR: `frontend-design` primero (dirección estética), `impeccable`
@@ -42,7 +41,7 @@ puede estar disponible sin este paso según el entorno — verificar con
 ## Flujo de uso
 
 1. Definir o confirmar el sistema de diseño del proyecto (marca, paleta,
-   tipografía) — si no existe, generarlo con `ui-ux-pro-max` antes.
+   tipografía) — si no existe, inferirlo a partir del brief antes de construir.
 2. Invocar la skill al construir la UI nueva: guía decisiones de
    tipografía, jerarquía visual y dirección estética dentro de ese sistema.
 3. Antes de PR, pasar por `impeccable` (`polish`, `harden`) para el
