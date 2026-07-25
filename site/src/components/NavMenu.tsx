@@ -40,7 +40,6 @@ const GROUPS: NavGroup[] = [
     links: [
       { label: "Catálogo", href: "/mejores-skill" },
       { label: "Por proyecto", href: "/skills-por-proyecto" },
-      { label: "Glosario externo", href: "/glosario" },
       { label: "Templates de prompt", href: "/prompts" },
     ],
   },
