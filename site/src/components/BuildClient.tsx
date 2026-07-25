@@ -84,46 +84,69 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
       {SECTIONS.map(({ category, title }) => {
         const sectionItems = items.filter((i) => i.category === category);
         if (sectionItems.length === 0) return null;
+
+        // Para Claude Code, la sección "Skills" mezcla skills reales
+        // (externas, instalables aparte) con rules del proyecto convertidas
+        // a SKILL.md nativo — se separan visualmente para que no se vean
+        // como si Claude tuviera 8 skills propias en vez de las 2-3 reales.
+        const realSkills =
+          category === "skill" ? sectionItems.filter((i) => !i.id.includes(":rule:")) : sectionItems;
+        const ruleSkills =
+          category === "skill" ? sectionItems.filter((i) => i.id.includes(":rule:")) : [];
+
+        function renderRow(item: ManifestItem) {
+          return (
+            <label
+              key={item.id}
+              className="flex items-start gap-3 rounded-md border border-neutral-200 p-3 text-sm dark:border-neutral-800"
+            >
+              <input
+                type="checkbox"
+                className="mt-1"
+                checked={selected.has(item.id)}
+                onChange={() => toggle(item.id)}
+              />
+              <span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPreviewItem(item);
+                  }}
+                  className="font-medium underline decoration-dotted underline-offset-2 hover:decoration-solid"
+                >
+                  {item.label.replace(/\.md$/, "")}
+                </button>
+                {item.description && (
+                  <span className="block text-neutral-600 dark:text-neutral-400">
+                    {item.description}
+                  </span>
+                )}
+                <span className="block text-xs text-neutral-400">~{item.approxTokens} tokens</span>
+              </span>
+            </label>
+          );
+        }
+
         return (
           <section key={category}>
             <h2 className="text-sm font-medium uppercase tracking-wide text-neutral-500">
               {title}
             </h2>
-            <div className="mt-3 flex flex-col gap-2">
-              {sectionItems.map((item) => (
-                <label
-                  key={item.id}
-                  className="flex items-start gap-3 rounded-md border border-neutral-200 p-3 text-sm dark:border-neutral-800"
-                >
-                  <input
-                    type="checkbox"
-                    className="mt-1"
-                    checked={selected.has(item.id)}
-                    onChange={() => toggle(item.id)}
-                  />
-                  <span>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setPreviewItem(item);
-                      }}
-                      className="font-medium underline decoration-dotted underline-offset-2 hover:decoration-solid"
-                    >
-                      {item.label.replace(/\.md$/, "")}
-                    </button>
-                    {item.description && (
-                      <span className="block text-neutral-600 dark:text-neutral-400">
-                        {item.description}
-                      </span>
-                    )}
-                    <span className="block text-xs text-neutral-400">
-                      ~{item.approxTokens} tokens
-                    </span>
-                  </span>
-                </label>
-              ))}
-            </div>
+            <div className="mt-3 flex flex-col gap-2">{realSkills.map(renderRow)}</div>
+
+            {ruleSkills.length > 0 && (
+              <div className="mt-5">
+                <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
+                  Reglas del proyecto (convertidas a skill nativa)
+                </h3>
+                <p className="mt-1 text-xs text-neutral-500">
+                  No son skills externas — es la misma convención de <code>.agents/rules/</code>{" "}
+                  en formato <code>SKILL.md</code>, para que Claude Code las siga igual que Gemini.
+                </p>
+                <div className="mt-3 flex flex-col gap-2">{ruleSkills.map(renderRow)}</div>
+              </div>
+            )}
           </section>
         );
       })}

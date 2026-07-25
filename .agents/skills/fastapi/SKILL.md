@@ -8,6 +8,7 @@ activation: auto
 glob: "**/*.py"
 tags: [fastapi, python, pydantic, async, api, backend]
 source: fastapi/fastapi
+install: "npx skills add fastapi/fastapi --skill fastapi"
 ---
 
 # FastAPI — Skill Oficial

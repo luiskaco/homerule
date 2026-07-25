@@ -9,7 +9,7 @@ description: >
   Diagnóstico únicamente — los umbrales y specs concretos de este proyecto
   viven en .agents/rules/seo.md y tienen prioridad sobre cualquier sugerencia
   genérica de la skill.
-  Instalar con: npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit
+install: "npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit"
 ---
 
 # SEO Audit

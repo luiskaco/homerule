@@ -16,6 +16,7 @@ export interface ManifestItem {
   tool: ToolId;
   label: string;
   description: string;
+  install?: string;
   files: ManifestFile[];
   approxTokens: number;
 }

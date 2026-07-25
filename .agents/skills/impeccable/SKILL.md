@@ -4,10 +4,16 @@ description: >
   Vocabulario de diseño con 23 comandos y auditoría de anti-patterns.
   Usar cuando se necesite auditar, pulir, criticar o mejorar interfaces.
   Cubre tipografía, color, motion, espaciado, interacción, responsive y UX writing.
-  Instalar siguiendo instrucciones en impeccable.style
+source: pbakaus/impeccable
+install: "npx skills add pbakaus/impeccable --skill impeccable"
 ---
 
 # Impeccable
+
+Skill de Paul Bakaus ([pbakaus/impeccable](https://github.com/pbakaus/impeccable)) —
+205K+ installs en skills.sh. El repo también publica cada comando como skill
+individual instalable por separado (`critique`, `audit`, `animate`, `adapt`,
+`clarify`, etc.) si no se necesita el paquete completo.
 
 Comandos disponibles via `/impeccable <comando>`:
 

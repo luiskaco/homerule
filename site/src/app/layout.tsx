@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import NavMenu from "@/components/NavMenu";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,32 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="font-semibold tracking-tight">
               AI Rules Hub
             </Link>
-            <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              <Link href="/" className="hover:underline">
-                Antigravity
-              </Link>
-              <Link href="/agents" className="hover:underline">
-                Claude Code
-              </Link>
-              <Link href="/subagentes" className="hover:underline">
-                Subagentes Claude
-              </Link>
-              <Link href="/stacks" className="hover:underline">
-                Stacks
-              </Link>
-              <Link href="/build?tool=antigravity&preset=manual" className="hover:underline">
-                Armar manual
-              </Link>
-              <Link href="/mejores-skill" className="hover:underline">
-                Mejores SKILL
-              </Link>
-              <Link href="/proximamente" className="hover:underline">
-                Próximamente
-              </Link>
-              <Link href="/mejores-repos-utilidades" className="hover:underline">
-                Mejores repos de utilidades
-              </Link>
-            </div>
+            <NavMenu />
           </nav>
         </header>
         <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">{children}</main>

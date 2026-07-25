@@ -7,7 +7,7 @@ description: >
   Usar al iniciar cualquier UI nueva en un proyecto que ya tiene sistema de
   diseño definido (brief de marca, paleta, tipografía) — caso habitual en
   Orange Latam.
-  Instalar con: npx skills add https://github.com/anthropics/skills --skill frontend-design
+install: "npx skills add https://github.com/anthropics/skills --skill frontend-design"
 ---
 
 # Frontend Design (Anthropic)

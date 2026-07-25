@@ -24,14 +24,32 @@ function walk(dir) {
 function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
+  const lines = match[1].split(/\r?\n/);
   const fm = {};
-  for (const line of match[1].split(/\r?\n/)) {
-    const m = line.match(/^([a-zA-Z_]+):\s*(.*)$/);
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^([a-zA-Z_]+):\s*(.*)$/);
     if (!m) continue;
-    let value = m[2].trim();
-    if (value === ">" || value === "|" || value === "") continue;
-    value = value.replace(/^["']|["']$/g, "");
-    fm[m[1]] = value;
+    const key = m[1];
+    const value = m[2].trim();
+
+    // YAML block scalar: `key: >` (folded) or `key: |` (literal) — consume
+    // the following more-indented lines instead of discarding them.
+    if (/^[>|][-+]?$/.test(value)) {
+      const folded = value.startsWith(">");
+      const collected = [];
+      let j = i + 1;
+      while (j < lines.length && (/^\s+\S/.test(lines[j]) || lines[j].trim() === "")) {
+        collected.push(lines[j].replace(/^\s+/, ""));
+        j++;
+      }
+      while (collected.length && collected[collected.length - 1] === "") collected.pop();
+      fm[key] = folded ? collected.join(" ").replace(/\s+/g, " ").trim() : collected.join("\n").trimEnd();
+      i = j - 1;
+      continue;
+    }
+
+    if (value === "") continue;
+    fm[key] = value.replace(/^["']|["']$/g, "");
   }
   return fm;
 }
@@ -151,6 +169,7 @@ for (const skillName of readdirSync(SKILLS_DIR).sort()) {
     tool: "antigravity",
     label: skillName,
     description: fm.description || "",
+    ...(fm.install ? { install: fm.install } : {}),
     files: fileEntries,
     approxTokens: approxTokens(fileEntries),
   });
@@ -250,6 +269,7 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
       tool: toolId,
       label: skillName,
       description: fm.description || "",
+      ...(fm.install ? { install: fm.install } : {}),
       files,
       approxTokens: approxTokens(files),
     });

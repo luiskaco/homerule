@@ -4,7 +4,7 @@ description: >
   Audita código de UI contra las Vercel Web Interface Guidelines.
   Usar cuando se pida revisar UI, verificar accesibilidad, auditar diseño,
   revisar UX, o chequear cumplimiento de estándares de interfaz.
-  Instalar con: npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
+install: "npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines"
 ---
 
 # Web Interface Guidelines

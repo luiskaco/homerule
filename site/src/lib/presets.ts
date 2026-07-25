@@ -72,15 +72,15 @@ interface StackShape {
 const STACKS: Record<string, StackShape> = {
   "nextjs-branded": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "react-best-practices", "nodejs"],
+    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
   },
   "nextjs-unbranded": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "react-best-practices", "nodejs"],
+    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
   },
   "wordpress-cms": {
     rules: ["cms", "seo", "security", "stack-conventions", "operations"],
-    skills: ["seo-audit", "web-design-guidelines"],
+    skills: ["seo-audit", "web-design-guidelines", "wordpress-block-theming"],
   },
   "fastapi-python": {
     rules: ["architecture", "security", "operations", "stack-conventions"],
@@ -92,11 +92,11 @@ const STACKS: Record<string, StackShape> = {
   },
   "react-spa": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines", "react-best-practices", "nodejs"],
+    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-composition-patterns"],
   },
   vue: {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines", "nodejs"],
+    skills: ["frontend-design", "impeccable", "web-design-guidelines"],
   },
   manual: { rules: [], skills: [] },
 };
@@ -167,33 +167,14 @@ function buildPreset(tool: ToolId, stackId: keyof typeof STACKS, externalTools: 
 }
 
 const ANTIGRAVITY_STACK_TOOLS: Record<string, ExternalTool[]> = {
-  "nextjs-branded": [
-    {
-      name: "vercel-composition-patterns",
-      installCommand: "npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-composition-patterns",
-      note: "Refactorizar componentes con muchos props booleanos, diseñar APIs de componentes reutilizables (shadcn/ui).",
-    },
-    CONTEXT7,
-  ],
-  "nextjs-unbranded": [
-    {
-      name: "vercel-composition-patterns",
-      installCommand: "npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-composition-patterns",
-    },
-    CONTEXT7,
-  ],
+  "nextjs-branded": [CONTEXT7],
+  "nextjs-unbranded": [CONTEXT7],
   "wordpress-cms": [CONTEXT7],
   "fastapi-python": [CONTEXT7],
   "html-plano": [CONTEXT7],
   "react-spa": [CONTEXT7],
   vue: [CONTEXT7],
-  manual: [
-    {
-      name: "vercel-composition-patterns",
-      installCommand: "npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-composition-patterns",
-    },
-    CONTEXT7,
-  ],
+  manual: [CONTEXT7],
 };
 
 const antigravityPresets: Preset[] = Object.keys(STACKS).map((stackId) =>
