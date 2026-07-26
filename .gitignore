@@ -1,0 +1,7 @@
+# Skills de terceros instaladas con `npx skills add` / `uipro init`.
+# No se versionan: son código de otros repos, reproducibles desde
+# skills-lock.json (ver README de skills-desktop en el commit).
+.claude/skills/
+
+# ZIPs generados para subir a Claude Desktop.
+skills-desktop/
