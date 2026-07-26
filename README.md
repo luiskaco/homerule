@@ -211,6 +211,46 @@ Instalación: `npx skills add https://github.com/coreyhaines31/marketingskills -
 (el paquete trae ~30 skills de marketing — solo se instala `seo-audit`, no el paquete completo).
 Detalle en [`.agents/skills/seo-audit/SKILL.md`](.agents/skills/seo-audit/SKILL.md).
 
+### Skills de diseño de terceros (`.claude/skills/`)
+
+Vendorizadas en el repo — Claude Code las levanta solo al abrir el proyecto.
+A diferencia de las de `.agents/skills/`, **no** entran en el ZIP de `/build`:
+son código de otros repos, con su propia licencia y su propio ciclo de
+actualización.
+
+| Origen | Skills |
+|---|---|
+| [nutlope/hallmark](https://github.com/nutlope/hallmark) | `hallmark` |
+| [emilkowalski/skills](https://github.com/emilkowalski/skill) | `emil-design-eng`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`, `apple-design`, `pick-ui-library` |
+| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design`, `design-system`, `brand`, `ui-styling`, `banner-design`, `slides` |
+
+Reinstalar o actualizar (`skills-lock.json` registra el hash de cada una):
+
+```bash
+npx skills add nutlope/hallmark --copy
+npx skills add emilkowalski/skills --copy
+npx ui-ux-pro-max-cli init --ai claude
+```
+
+#### Subirlas a Claude Desktop
+
+Claude Desktop las toma como skill personal en formato ZIP. Para generarlos:
+
+```bash
+python scripts/make-desktop-zips.py
+```
+
+Deja un `.zip` por skill en `skills-desktop/` (gitignored), cada uno con su
+`SKILL.md` en la raíz de la carpeta. **No alcanza con copiar solo el
+`SKILL.md`** salvo en las de un único archivo: `hallmark` son 106 archivos y
+`ui-ux-pro-max` 39 — sin su `references/` o su `data/` la skill queda
+apuntando a archivos que no existen.
+
+> `ui-ux-pro-max` funciona parcialmente en Desktop: su `SKILL.md` invoca
+> `python3 skills/ui-ux-pro-max/scripts/search.py`, una ruta relativa al
+> proyecto que ahí no existe. Los CSV de datos se leen igual, pero la búsqueda
+> automatizada del design system no corre.
+
 ---
 
 ## Consumo de Tokens (aproximado)
