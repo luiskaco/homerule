@@ -222,7 +222,7 @@ actualización.
 |---|---|
 | [nutlope/hallmark](https://github.com/nutlope/hallmark) | `hallmark` |
 | [emilkowalski/skills](https://github.com/emilkowalski/skill) | `emil-design-eng`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`, `apple-design`, `pick-ui-library` |
-| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design`, `design-system`, `brand`, `ui-styling`, `banner-design`, `slides` |
+| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design-system`, `ui-styling` |
 
 Reinstalar o actualizar (`skills-lock.json` registra el hash de cada una):
 
@@ -231,6 +231,12 @@ npx skills add nutlope/hallmark --copy
 npx skills add emilkowalski/skills --copy
 npx ui-ux-pro-max-cli init --ai claude
 ```
+
+> `uipro init` instala además `design`, `brand`, `banner-design` y `slides`
+> —un paquete propio de diseño gráfico (logos, identidad corporativa,
+> banners de redes, presentaciones) que su README no menciona. Se borraron
+> a mano por quedar fuera del alcance del repo: si volvés a correr `uipro
+> init`, reaparecen.
 
 #### Subirlas a Claude Desktop
 
