@@ -7,6 +7,12 @@
       "skillPath": "skills/animation-vocabulary/SKILL.md",
       "computedHash": "280c6688ef2568ad92f40c4dc638f0cc5cde0f49bdd6debd097410aa9945f44f"
     },
+    "api-security-best-practices": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/api-security-best-practices/SKILL.md",
+      "computedHash": "3be34f9394f01452dde7230652831ccc4d8aca568f585e3a62e7b211c440b0ce"
+    },
     "apple-design": {
       "source": "emilkowalski/skills",
       "sourceType": "github",

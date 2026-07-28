@@ -100,6 +100,9 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-compos
 
 # Context7 MCP — documentación de librerías en tiempo real, por proyecto
 npx ctx7 setup
+
+# api-security-best-practices — patrones de seguridad de API (ver § Skills de Seguridad)
+npx skills add sickn33/antigravity-awesome-skills --skill api-security-best-practices
 ```
 
 ### Paso 4 — Ajustar stack por proyecto
@@ -210,6 +213,21 @@ Categoría aparte — no compiten con las skills de diseño de arriba.
 Instalación: `npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit`
 (el paquete trae ~30 skills de marketing — solo se instala `seo-audit`, no el paquete completo).
 Detalle en [`.agents/skills/seo-audit/SKILL.md`](.agents/skills/seo-audit/SKILL.md).
+
+### Skills de Seguridad
+
+Complementa `security.md`: la regla define los umbrales y checklist del proyecto
+(rate limits, headers obligatorios, hashing), la skill trae los patrones de
+implementación paso a paso.
+
+| Skill | Cuándo activarla |
+|---|---|
+| `api-security-best-practices` | Diseñar o revisar endpoints de API — auth, validación de inputs, rate limiting, protección contra inyección/SSRF/DDoS. No la uses para elegir los umbrales del proyecto (eso lo define `security.md`), sí para los patrones de implementación (JWT, Zod, rate limiters, headers) |
+
+Instalación: `npx skills add sickn33/antigravity-awesome-skills --skill api-security-best-practices`
+(el repo fuente es una colección "awesome" grande — ~1900 skills, varias con
+frontmatter inválido — se instala solo esta, no el paquete completo).
+Detalle en [`.agents/skills/api-security-best-practices/SKILL.md`](.agents/skills/api-security-best-practices/SKILL.md).
 
 ### Skills de diseño de terceros (`.claude/skills/`)
 
