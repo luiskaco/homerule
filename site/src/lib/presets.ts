@@ -84,7 +84,7 @@ const STACKS: Record<string, StackShape> = {
   },
   "fastapi-python": {
     rules: ["architecture", "security", "operations", "stack-conventions"],
-    skills: ["fastapi", "error-handling-patterns"],
+    skills: ["fastapi", "error-handling-patterns", "api-security-best-practices"],
   },
   "html-plano": {
     rules: ["architecture", "ui-ux", "seo", "stack-conventions", "security", "operations"],

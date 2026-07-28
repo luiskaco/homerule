@@ -128,4 +128,66 @@ Entregame:
 # Regla
 Esperá mi aprobación del diseño antes de crear o modificar cualquier archivo.`,
   },
+  {
+    id: "social-media-content",
+    title: "Creación de Contenido para Redes Sociales (Post / Carrusel)",
+    whenToUse:
+      "Para redactar publicaciones atractivas en LinkedIn, Instagram, Twitter/X o Facebook con hooks potentes y llamadas a la acción.",
+    skillRefs: ["ai-seo", "brainstorming"],
+    template: `# Rol
+Actuás como un Content Strategist & Copywriter de alto nivel para redes sociales.
+
+# Contexto
+- Red social principal: [Instagram / LinkedIn / Twitter / TikTok / Facebook]
+- Formato: [Post individual / Carrusel informativo / Hilo / Infografía]
+- Nicho / Producto: [Detallar temática o servicio]
+- Público objetivo: [Describir a quién va dirigido]
+- Objetivo del post: [Generar engagement / Educar / Convertir a venta / Generar tráfico]
+
+# Tarea
+Creá una propuesta de contenido que incluya:
+1. **Hook (Gancho):** 3 opciones de primera línea disruptiva o intriga para detener el scroll.
+2. **Cuerpo del post (Copywriting):** Mensaje directo estructurado con historia (PAS o AIDA), viñetas legibles y emojis moderados.
+3. **Diapositivas (si es carrusel):** Estructura slide por slide (Texto en portada, 3-5 slides de valor, slide de cierre).
+4. **Call to Action (CTA):** Indicación clara de respuesta (guardar, comentar, enviar DM).
+5. **Hashtags & Palabras clave:** 5-8 hashtags relevantes y keywords para SEO en redes.
+
+# Reglas
+- Adaptar el tono exactamente al público (Profesional, informático, desenfadado, etc.).
+- Sin clichés ni lenguaje robótico de IA.
+- Puntos breves y escaneables visualmente.`,
+  },
+  {
+    id: "video-scripting",
+    title: "Guion de Video para Formato Corto o Largo (Reels / TikTok / YouTube)",
+    whenToUse:
+      "Cuando necesitás estructurar un guion paso a paso para un video de formato corto (Reels/TikTok/Shorts) o largo (YouTube).",
+    skillRefs: ["brainstorming"],
+    template: `# Rol
+Actuás como Guionista de Video y Creador de Contenido audiovisual experimentado.
+
+# Contexto
+- Plataforma: [YouTube / Reels / TikTok / YouTube Shorts]
+- Duración estimada: [30 segundos / 60 segundos / 5-10 minutos]
+- Tema del video: [Explicar el tema o concepto a tratar]
+- Estilo/Tono: [Dinámico, humorístico, educativo, narrativo, entrevista]
+- Llamado a la acción (CTA): [Suscribirse / Hacer click en enlace / Comentar]
+
+# Tarea
+Desarrollá el guion completo estructurado en formato de 2 columnas o secciones claras:
+1. **El Hook (Primeros 3-5 segundos):** Acción visual + Frase de alto impacto para evitar saltar el video.
+2. **Introducción rápida (Segundos 5-15):** Promesa del video / Problema a resolver.
+3. **Cuerpo / Desarrollo:** Dividido en puntos clave con notas de dirección (Audio, B-roll, texto en pantalla, efectos de sonido).
+4. **Clímax o Conclusión:** Resolutiva y de alto valor.
+5. **CTA Final (Últimos 5 segundos):** Cierre claro y orgánico.
+
+# Estructura del Guion
+- **[AUDIO / VOZ EN OFF]:** Transcripción exacta palabra por palabra de lo que se dice.
+- **[VISUAL / B-ROLL]:** Qué aparece en pantalla (planos, gestos, texto en pantalla o apoyo gráfico).
+- **[RECURSOS]:** Sonidos (SFX) o música de fondo recomendada.
+
+# Reglas
+- Mantener un ritmo ágil sin palabras de relleno.
+- Incluir patrones de interrupción visuales cada 5-8 segundos para mantener la retención.`,
+  },
 ];

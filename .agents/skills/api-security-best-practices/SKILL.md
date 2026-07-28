@@ -4,6 +4,7 @@ description: "Implement secure API design patterns including authentication, aut
 risk: unknown
 source: community
 date_added: "2026-02-27"
+install: "npx skills add https://github.com/sickn33/antigravity-awesome-skills --skill api-security-best-practices"
 ---
 
 # API Security Best Practices

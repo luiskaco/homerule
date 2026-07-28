@@ -67,6 +67,23 @@ const HUB_SKILL_META: Record<string, HubSkillMeta> = {
       },
     ],
   },
+  "api-security-best-practices": {
+    author: "OWASP / Comunidad Security",
+    whenToUse: [
+      "Diseñar nuevos endpoints de API REST, GraphQL o WebSockets.",
+      "Implementar esquemas de autenticación (JWT, OAuth 2.0) y autorización (RBAC/IDOR).",
+      "Proteger endpoints contra vulnerabilidades del OWASP API Top 10 (SQLi, XSS, Inyección).",
+      "Configurar limitación de tasa (Rate Limiting), throttling y cabeceras de seguridad.",
+      "Preparar APIs para auditorías o revisiones de seguridad.",
+    ],
+    usage: [
+      "Se activa sola al escribir o revisar autenticación, validación de datos o endpoints de API.",
+      "Revisa la estructura de tokens, sanitización con Zod/DOMPurify y protección de rate limit.",
+    ],
+    notes: [
+      "Cubre patrones de seguridad en Node.js, Express, Fastify, FastAPI y Python.",
+    ],
+  },
   brainstorming: {
     author: "obra/superpowers",
     repo: "https://github.com/obra/superpowers",

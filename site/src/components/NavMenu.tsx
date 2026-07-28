@@ -22,6 +22,7 @@ const GROUPS: NavGroup[] = [
     links: [
       { label: "Inicio", href: "/" },
       { label: "Stacks", href: "/stacks" },
+      { label: "Stacks Apps", href: "/stacks-app" },
       { label: "Armar manual", href: "/build?tool=antigravity&preset=manual" },
     ],
   },
