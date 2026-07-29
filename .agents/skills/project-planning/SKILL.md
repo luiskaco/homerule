@@ -25,9 +25,10 @@ no crea archivos, carpetas ni convenciones propias.
 
 ## Antes de empezar
 
-1. Revisar si existe `00_GEMINI_START.md` en la raíz del proyecto. Si existe,
-   define rutas y nombres de documentación distintos a la tabla de abajo y
-   tiene prioridad sobre ella.
+1. En proyectos Antigravity, revisar si existe `00_GEMINI_START.md` en la
+   raíz del proyecto. Si existe, define rutas y nombres de documentación
+   distintos a la tabla de abajo y tiene prioridad sobre ella. (No aplica a
+   Claude Code, que no usa ese archivo.)
 2. Revisar si ya hay una idea validada con el usuario — por ejemplo un spec
    escrito por el skill `brainstorming`, o otra conversación previa. Si
    existe, es el insumo del paso 1 del proceso: su contenido se vuelca en

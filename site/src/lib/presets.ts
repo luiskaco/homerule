@@ -16,8 +16,8 @@ export interface Preset {
   externalTools: ExternalTool[];
 }
 
-const TEMPLATE_ITEM_IDS = [
-  "template:00_GEMINI_START",
+/** Templates de /docs comunes a cualquier tool. */
+const SHARED_TEMPLATE_ITEM_IDS = [
   "template:01_PROJECT_PRD",
   "template:02_SDD",
   "template:03_SYSTEM_SPEC",
@@ -27,6 +27,9 @@ const TEMPLATE_ITEM_IDS = [
   "template:07_DECISIONS",
   "template:08_CHANGELOG",
 ];
+
+/** Override de stack por proyecto — específico de Antigravity, no aplica a Claude Code. */
+const ANTIGRAVITY_ONLY_TEMPLATE_ITEM_IDS = ["template:00_GEMINI_START"];
 
 const CONTEXT7: ExternalTool = {
   name: "Context7 MCP",
@@ -140,14 +143,15 @@ function toolItemIds(tool: ToolId, shape: StackShape): string[] {
   if (tool === "antigravity") {
     return [
       ...ANTIGRAVITY_GLOBAL_ITEM_IDS,
-      ...TEMPLATE_ITEM_IDS,
+      ...ANTIGRAVITY_ONLY_TEMPLATE_ITEM_IDS,
+      ...SHARED_TEMPLATE_ITEM_IDS,
       ...shape.rules.map((r) => `rule:${r}`),
       ...shape.skills.map((s) => `skill:${s}`),
     ];
   }
   return [
     `${tool}:core`,
-    ...TEMPLATE_ITEM_IDS,
+    ...SHARED_TEMPLATE_ITEM_IDS,
     ...shape.rules.map((r) => `${tool}:rule:${r}`),
     ...shape.skills.map((s) => `${tool}:skill:${s}`),
     ...(tool === "claude-code" ? CLAUDE_AGENT_ITEM_IDS : []),
