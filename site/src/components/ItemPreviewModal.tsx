@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import type { ManifestItem } from "@/lib/manifest";
 
@@ -10,6 +11,7 @@ export default function ItemPreviewModal({
   item: ManifestItem;
   onClose: () => void;
 }) {
+  const t = useTranslations("Build");
   const [activeFile, setActiveFile] = useState(0);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function ItemPreviewModal({
           </div>
           <button
             onClick={onClose}
-            aria-label="Cerrar"
+            aria-label={t("close")}
             className="rounded-md px-2 py-1 text-sm text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
           >
             ✕

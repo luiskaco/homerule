@@ -1,40 +1,43 @@
+import { useTranslations } from "next-intl";
 import type { CatalogSkill } from "@/lib/skill-catalog";
 
 /** Tarjeta de detalle de una skill en el catálogo. */
 export default function SkillCard({ skill }: { skill: CatalogSkill }) {
+  const t = useTranslations("SkillCard");
+
   return (
     <section
       id={skill.label}
-      className="scroll-mt-6 rounded-lg border border-neutral-200 p-5 dark:border-neutral-800 sm:p-6"
+      className="scroll-mt-20 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-slate-700 sm:p-7"
     >
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h2 className="font-mono text-lg font-semibold">{skill.label}</h2>
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+        <h2 className="font-mono text-xl font-bold text-white tracking-tight">{skill.label}</h2>
         <span
-          className={`rounded-full border px-2 py-0.5 text-xs ${
+          className={`rounded-full px-3 py-0.5 text-xs font-semibold border ${
             skill.origin === "hub"
-              ? "border-neutral-300 text-neutral-600 dark:border-neutral-700 dark:text-neutral-400"
-              : "border-amber-400/60 text-amber-700 dark:text-amber-400"
+              ? "border-violet-500/30 bg-violet-500/10 text-violet-300"
+              : "border-amber-500/30 bg-amber-500/10 text-amber-300"
           }`}
         >
-          {skill.origin === "hub" ? "Del hub" : "Externa"}
+          {skill.origin === "hub" ? t("originHub") : t("originExternal")}
         </span>
-        <span className="text-xs text-neutral-500">por {skill.author}</span>
+        <span className="text-xs text-slate-400 font-medium">{t("byAuthor", { author: skill.author })}</span>
       </div>
 
-      <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+      <p className="mt-3 text-sm text-slate-300 leading-relaxed">
         {skill.summary}
       </p>
 
       {(skill.site || skill.repo) && (
-        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold">
           {skill.site && (
             <a
               href={skill.site}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:no-underline"
+              className="text-violet-400 hover:text-violet-300 transition-colors inline-flex items-center gap-1"
             >
-              Sitio oficial ↗
+              {t("officialSite")}
             </a>
           )}
           {skill.repo && (
@@ -42,51 +45,54 @@ export default function SkillCard({ skill }: { skill: CatalogSkill }) {
               href={skill.repo}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:no-underline"
+              className="text-cyan-400 hover:text-cyan-300 transition-colors inline-flex items-center gap-1"
             >
-              Repositorio ↗
+              {t("repository")}
             </a>
           )}
         </div>
       )}
 
       {skill.whatItDoes && (
-        <div className="mt-5">
-          <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-            Para qué sirve
+        <div className="mt-6 border-t border-slate-800/80 pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            {t("whatItDoes")}
           </h3>
-          <p className="mt-1.5 text-sm text-neutral-600 dark:text-neutral-400">
+          <p className="mt-2 text-sm text-slate-300 leading-relaxed">
             {skill.whatItDoes}
           </p>
         </div>
       )}
 
       {skill.whenToUse.length > 0 && (
-        <div className="mt-5">
-          <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-            Cuándo usarla
+        <div className="mt-6 border-t border-slate-800/80 pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            {t("whenToUse")}
           </h3>
-          <ul className="mt-1.5 flex list-disc flex-col gap-1 pl-5 text-sm text-neutral-600 dark:text-neutral-400">
+          <ul className="mt-2 flex flex-col gap-1.5 text-sm text-slate-300">
             {skill.whenToUse.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item} className="flex items-start gap-2">
+                <span className="text-violet-400 font-bold">•</span>
+                <span>{item}</span>
+              </li>
             ))}
           </ul>
         </div>
       )}
 
       {skill.includes && (
-        <div className="mt-5">
-          <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-            Qué incluye ({skill.includes.length} skills)
+        <div className="mt-6 border-t border-slate-800/80 pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            {t("includes", { count: skill.includes.length })}
           </h3>
-          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {skill.includes.map((sub) => (
               <div
                 key={sub.name}
-                className="rounded-md border border-neutral-200 p-3 dark:border-neutral-800"
+                className="rounded-xl border border-slate-800 bg-slate-950/60 p-3.5"
               >
-                <p className="font-mono text-sm font-semibold">{sub.name}</p>
-                <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
+                <p className="font-mono text-xs font-bold text-violet-300">{sub.name}</p>
+                <p className="mt-1 text-xs text-slate-400 leading-relaxed">
                   {sub.description}
                 </p>
               </div>
@@ -96,19 +102,19 @@ export default function SkillCard({ skill }: { skill: CatalogSkill }) {
       )}
 
       {skill.install.length > 0 && (
-        <div className="mt-5">
-          <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-            Cómo se instala
+        <div className="mt-6 border-t border-slate-800/80 pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            {t("howToInstall")}
           </h3>
-          <div className="mt-2 flex flex-col gap-3">
+          <div className="mt-3 flex flex-col gap-3">
             {skill.install.map((step) => (
               <div key={step.tool}>
-                <p className="text-xs font-medium text-neutral-500">{step.tool}</p>
-                <pre className="mt-1 overflow-x-auto rounded bg-neutral-100 px-3 py-2 text-xs dark:bg-neutral-900">
+                <p className="text-xs font-semibold text-slate-300">{step.tool}</p>
+                <pre className="mt-1.5 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 font-mono text-xs text-emerald-400">
                   <code>{step.command}</code>
                 </pre>
                 {step.note && (
-                  <p className="mt-1 text-xs text-neutral-500">{step.note}</p>
+                  <p className="mt-1 text-xs text-slate-400">{step.note}</p>
                 )}
               </div>
             ))}
@@ -117,41 +123,31 @@ export default function SkillCard({ skill }: { skill: CatalogSkill }) {
       )}
 
       {skill.usage.length > 0 && (
-        <div className="mt-5">
-          <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-            Cómo se usa
+        <div className="mt-6 border-t border-slate-800/80 pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            {t("howToUse")}
           </h3>
-          <ul className="mt-1.5 flex list-disc flex-col gap-1 pl-5 text-sm text-neutral-600 dark:text-neutral-400">
+          <ul className="mt-2 flex flex-col gap-1.5 text-sm text-slate-300">
             {skill.usage.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {skill.notes && (
-        <div className="mt-5">
-          <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-            A tener en cuenta
-          </h3>
-          <ul className="mt-1.5 flex list-disc flex-col gap-1 pl-5 text-sm text-neutral-600 dark:text-neutral-400">
-            {skill.notes.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item} className="flex items-start gap-2">
+                <span className="text-cyan-400 font-bold">•</span>
+                <span>{item}</span>
+              </li>
             ))}
           </ul>
         </div>
       )}
 
       {skill.stacks.length > 0 && (
-        <div className="mt-5">
-          <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-            Ya incluida en estos stacks de /build
+        <div className="mt-6 border-t border-slate-800/80 pt-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            {t("includedInStacks")}
           </h3>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="mt-3 flex flex-wrap gap-2">
             {skill.stacks.map((stack) => (
               <span
                 key={stack.id}
-                className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-xs dark:border-neutral-700"
+                className="rounded-full border border-slate-700 bg-slate-800/80 px-3 py-1 text-xs font-semibold text-slate-200"
               >
                 {stack.label}
               </span>
@@ -162,3 +158,4 @@ export default function SkillCard({ skill }: { skill: CatalogSkill }) {
     </section>
   );
 }
+

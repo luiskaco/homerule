@@ -1,9 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import type { PromptTemplate } from "@/lib/prompt-templates";
 
 export default function PromptTemplateCard({ template }: { template: PromptTemplate }) {
+  const t = useTranslations("Prompts");
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -37,7 +39,7 @@ export default function PromptTemplateCard({ template }: { template: PromptTempl
           onClick={handleCopy}
           className="shrink-0 rounded-md border border-neutral-300 px-3 py-1.5 text-xs hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900"
         >
-          {copied ? "Copiado ✓" : "Copiar"}
+          {copied ? t("copied") : t("copy")}
         </button>
       </div>
 

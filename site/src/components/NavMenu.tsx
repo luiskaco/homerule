@@ -1,63 +1,71 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { Link, usePathname } from "@/i18n/navigation";
 
 interface NavLink {
-  label: string;
+  /** Clave del namespace `Nav` en messages/*.json. */
+  labelKey: string;
   href: string;
 }
 
-interface NavGroup {
-  id: string;
-  label: string;
-  links: NavLink[];
-}
+type NavEntry =
+  | { id: string; labelKey: string; href: string }
+  | { id: string; labelKey: string; links: NavLink[] };
 
-const GROUPS: NavGroup[] = [
+const ENTRIES: NavEntry[] = [
   {
-    id: "antigravity",
-    label: "Antigravity (Gemini)",
+    id: "antigravity-solo",
+    labelKey: "antigravitySolo",
     links: [
-      { label: "Inicio", href: "/" },
-      { label: "Stacks", href: "/stacks" },
-      { label: "Stacks Apps", href: "/stacks-app" },
-      { label: "Armar manual", href: "/build?tool=antigravity&preset=manual" },
+      { labelKey: "presetsByStack", href: "/antigravity" },
+      { labelKey: "rulesAndSkillsByStack", href: "/stacks" },
+      { labelKey: "buildCustom", href: "/build?tool=antigravity&preset=manual" },
     ],
   },
   {
-    id: "claude-code",
-    label: "Claude Code",
+    id: "antigravity-claude",
+    labelKey: "antigravityClaude",
+    href: "/subagentes",
+  },
+  {
+    id: "claude-solo",
+    labelKey: "claudeSolo",
     links: [
-      { label: "Inicio", href: "/agents" },
-      { label: "Subagentes Claude", href: "/subagentes" },
-      { label: "Armar manual", href: "/build?tool=claude-code&preset=manual" },
+      { labelKey: "presetsByStack", href: "/agents" },
+      { labelKey: "buildCustom", href: "/build?tool=claude-code&preset=manual" },
     ],
   },
   {
     id: "skills",
-    label: "Skills",
+    labelKey: "skillsPrompts",
     links: [
-      { label: "Catálogo", href: "/mejores-skill" },
-      { label: "Por proyecto", href: "/skills-por-proyecto" },
-      { label: "Templates de prompt", href: "/prompts" },
+      { labelKey: "skillCatalog", href: "/mejores-skill" },
+      { labelKey: "skillsByProject", href: "/skills-por-proyecto" },
+      { labelKey: "promptTemplates", href: "/prompts" },
     ],
   },
 ];
 
 function NavDropdown({
-  group,
+  labelKey,
+  links,
   open,
   onToggle,
   onClose,
+  currentPathname,
 }: {
-  group: NavGroup;
+  labelKey: string;
+  links: NavLink[];
   open: boolean;
   onToggle: () => void;
   onClose: () => void;
+  currentPathname: string;
 }) {
+  const t = useTranslations("Nav");
   const ref = useRef<HTMLDivElement>(null);
+  const isGroupActive = links.some((l) => l.href === currentPathname);
 
   useEffect(() => {
     if (!open) return;
@@ -83,10 +91,17 @@ function NavDropdown({
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={onToggle}
-        className="flex items-center gap-1 hover:underline"
+        className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-all ${
+          isGroupActive || open
+            ? "bg-slate-800/80 text-violet-300 ring-1 ring-violet-500/30"
+            : "text-slate-300 hover:bg-slate-900 hover:text-white"
+        }`}
       >
-        {group.label}
-        <span aria-hidden="true" className="text-xs text-neutral-400">
+        {t(labelKey)}
+        <span
+          aria-hidden="true"
+          className={`text-xs transition-transform duration-200 text-slate-400 ${open ? "rotate-180 text-violet-400" : ""}`}
+        >
           ▾
         </span>
       </button>
@@ -94,19 +109,27 @@ function NavDropdown({
       {open && (
         <div
           role="menu"
-          className="absolute left-0 z-10 mt-2 flex min-w-[200px] flex-col gap-0.5 rounded-lg border border-neutral-200 bg-white p-1.5 shadow-lg dark:border-neutral-800 dark:bg-neutral-900"
+          className="absolute right-0 sm:left-0 z-50 mt-2 flex min-w-[220px] flex-col gap-1 rounded-xl border border-slate-800 bg-slate-900/95 p-2 shadow-2xl shadow-black/80 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-150"
         >
-          {group.links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              role="menuitem"
-              onClick={onClose}
-              className="rounded-md px-3 py-1.5 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isActive = currentPathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                role="menuitem"
+                onClick={onClose}
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-violet-600/20 text-violet-300 border border-violet-500/30"
+                    : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                }`}
+              >
+                <span>{t(link.labelKey)}</span>
+                {isActive && <span className="h-1.5 w-1.5 rounded-full bg-violet-400"></span>}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
@@ -114,6 +137,7 @@ function NavDropdown({
 }
 
 export default function NavMenu() {
+  const t = useTranslations("Nav");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -134,58 +158,98 @@ export default function NavMenu() {
 
   return (
     <>
-      {/* Desktop: dropdowns inline */}
-      <div className="hidden flex-wrap items-center gap-x-5 gap-y-2 text-sm sm:flex">
-        {GROUPS.map((group) => (
-          <NavDropdown
-            key={group.id}
-            group={group}
-            open={openMenu === group.id}
-            onToggle={() => setOpenMenu((current) => (current === group.id ? null : group.id))}
-            onClose={() => setOpenMenu(null)}
-          />
-        ))}
+      {/* Desktop: dropdowns y links directos inline */}
+      <div className="hidden items-center gap-1.5 text-sm sm:flex">
+        {ENTRIES.map((entry) =>
+          "href" in entry ? (
+            <Link
+              key={entry.id}
+              href={entry.href}
+              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all ${
+                pathname === entry.href
+                  ? "bg-slate-800/80 text-violet-300 ring-1 ring-violet-500/30"
+                  : "text-slate-300 hover:bg-slate-900 hover:text-white"
+              }`}
+            >
+              {t(entry.labelKey)}
+            </Link>
+          ) : (
+            <NavDropdown
+              key={entry.id}
+              labelKey={entry.labelKey}
+              links={entry.links}
+              open={openMenu === entry.id}
+              onToggle={() => setOpenMenu((current) => (current === entry.id ? null : entry.id))}
+              onClose={() => setOpenMenu(null)}
+              currentPathname={pathname}
+            />
+          )
+        )}
       </div>
 
-      {/* Mobile: botón hamburguesa */}
+      {/* Mobile: hamburguesa */}
       <button
         type="button"
-        aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+        aria-label={mobileOpen ? t("closeMenu") : t("openMenu")}
         aria-expanded={mobileOpen}
         onClick={() => setMobileOpen((v) => !v)}
-        className="flex h-9 w-9 items-center justify-center rounded-md border border-neutral-300 sm:hidden dark:border-neutral-700"
+        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:text-white sm:hidden"
       >
-        <span aria-hidden="true" className="text-lg leading-none">
+        <span aria-hidden="true" className="text-base leading-none">
           {mobileOpen ? "✕" : "☰"}
         </span>
       </button>
 
-      {/* Mobile: panel colapsable */}
+      {/* Mobile: panel desplegable */}
       {mobileOpen && (
-        <div className="absolute inset-x-0 top-full z-20 border-b border-neutral-200 bg-white px-4 py-4 shadow-lg sm:hidden dark:border-neutral-800 dark:bg-neutral-950">
-          <div className="mx-auto flex max-w-5xl flex-col gap-5">
-            {GROUPS.map((group) => (
-              <div key={group.id}>
-                <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
-                  {group.label}
-                </p>
-                <div className="mt-2 flex flex-col">
-                  {group.links.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="rounded-md px-2 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-900"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
+        <div className="absolute inset-x-0 top-full z-50 border-b border-slate-800 bg-slate-950/95 px-4 py-5 shadow-2xl backdrop-blur-xl sm:hidden">
+          <div className="mx-auto flex max-w-5xl flex-col gap-6">
+            {ENTRIES.map((entry) => {
+              if ("href" in entry) {
+                return (
+                  <Link
+                    key={entry.id}
+                    href={entry.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                      pathname === entry.href ? "text-violet-300" : "text-violet-400 hover:text-violet-300"
+                    }`}
+                  >
+                    {t(entry.labelKey)}
+                  </Link>
+                );
+              }
+              return (
+                <div key={entry.id}>
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-violet-400">
+                    {t(entry.labelKey)}
+                  </p>
+                  <div className="mt-2 flex flex-col gap-1">
+                    {entry.links.map((link) => {
+                      const isActive = pathname === link.href;
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setMobileOpen(false)}
+                          className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                            isActive
+                              ? "bg-violet-600/20 text-violet-300 font-semibold"
+                              : "text-slate-300 hover:bg-slate-900 hover:text-white"
+                          }`}
+                        >
+                          {t(link.labelKey)}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
     </>
   );
 }
+

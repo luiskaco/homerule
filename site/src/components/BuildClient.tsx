@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import type { ItemCategory, ManifestItem, ToolId } from "@/lib/manifest";
 import { fetchManifestItems } from "@/lib/manifest-client";
@@ -7,17 +8,18 @@ import { getPreset, TOOLS } from "@/lib/presets";
 import { buildZip, downloadBlob } from "@/lib/zip";
 import ItemPreviewModal from "@/components/ItemPreviewModal";
 
-const SECTIONS: { category: ItemCategory; title: string }[] = [
-  { category: "global", title: "Global" },
-  { category: "rule", title: "Rules (.agents/rules/)" },
-  { category: "skill", title: "Skills" },
-  { category: "agent", title: "Subagentes (.claude/agents/)" },
-  { category: "command", title: "Comandos" },
-  { category: "database", title: "Base de datos (opcional, cualquier stack)" },
-  { category: "template", title: "Plantillas SDD (docs/)" },
+const SECTIONS: { category: ItemCategory; titleKey: string }[] = [
+  { category: "global", titleKey: "sectionGlobal" },
+  { category: "rule", titleKey: "sectionRule" },
+  { category: "skill", titleKey: "sectionSkill" },
+  { category: "agent", titleKey: "sectionAgent" },
+  { category: "command", titleKey: "sectionCommand" },
+  { category: "database", titleKey: "sectionDatabase" },
+  { category: "template", titleKey: "sectionTemplate" },
 ];
 
 export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId: string }) {
+  const t = useTranslations("Build");
   const preset = getPreset(tool, presetId) ?? getPreset(tool, "manual")!;
   const toolMeta = TOOLS.find((t) => t.id === tool)!;
 
@@ -68,7 +70,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
   }
 
   if (!allItems) {
-    return <p className="text-sm text-neutral-500">Cargando catálogo…</p>;
+    return <p className="text-sm text-neutral-500">{t("loading")}</p>;
   }
 
   return (
@@ -81,7 +83,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
         </p>
       </div>
 
-      {SECTIONS.map(({ category, title }) => {
+      {SECTIONS.map(({ category, titleKey }) => {
         const sectionItems = items.filter((i) => i.category === category);
         if (sectionItems.length === 0) return null;
 
@@ -122,7 +124,9 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
                     {item.description}
                   </span>
                 )}
-                <span className="block text-xs text-neutral-400">~{item.approxTokens} tokens</span>
+                <span className="block text-xs text-neutral-400">
+                  {t("approxTokens", { count: item.approxTokens })}
+                </span>
               </span>
             </label>
           );
@@ -131,18 +135,20 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
         return (
           <section key={category}>
             <h2 className="text-sm font-medium uppercase tracking-wide text-neutral-500">
-              {title}
+              {t(titleKey)}
             </h2>
             <div className="mt-3 flex flex-col gap-2">{realSkills.map(renderRow)}</div>
 
             {ruleSkills.length > 0 && (
               <div className="mt-5">
                 <h3 className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-                  Reglas del proyecto (convertidas a skill nativa)
+                  {t("projectRulesTitle")}
                 </h3>
                 <p className="mt-1 text-xs text-neutral-500">
-                  No son skills externas — es la misma convención de <code>.agents/rules/</code>{" "}
-                  en formato <code>SKILL.md</code>, para que Claude Code las siga igual que Gemini.
+                  {t.rich("projectRulesBody", {
+                    rulesDir: () => <code>.agents/rules/</code>,
+                    skillMd: () => <code>SKILL.md</code>,
+                  })}
                 </p>
                 <div className="mt-3 flex flex-col gap-2">{ruleSkills.map(renderRow)}</div>
               </div>
@@ -154,7 +160,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
       {preset.externalTools.length > 0 && (
         <section className="rounded-lg border border-dashed border-neutral-300 p-4 dark:border-neutral-700">
           <h2 className="text-sm font-medium uppercase tracking-wide text-neutral-500">
-            Herramientas externas (no van en el ZIP)
+            {t("externalToolsHeading")}
           </h2>
           <ul className="mt-3 flex flex-col gap-2">
             {preset.externalTools.map((t) => (
@@ -172,14 +178,14 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
 
       <div className="sticky bottom-4 flex flex-col gap-3 rounded-lg border border-neutral-200 bg-white/90 p-4 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90 sm:flex-row sm:items-center sm:justify-between">
         <span className="text-sm text-neutral-600 dark:text-neutral-400">
-          {selected.size} items seleccionados · ~{totalTokens} tokens
+          {t("selectedSummary", { count: selected.size, tokens: totalTokens })}
         </span>
         <button
           onClick={handleDownload}
           disabled={downloading || selected.size === 0}
           className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-neutral-900"
         >
-          {downloading ? "Generando..." : "Descargar ZIP"}
+          {downloading ? t("generating") : t("download")}
         </button>
       </div>
 
