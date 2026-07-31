@@ -276,12 +276,19 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
   }
 
   // --- Workflows → commands ---
+  // Antigravity workflows use `trigger: manual` frontmatter (Windsurf-style),
+  // which Claude Code's slash-command loader doesn't recognize. Re-emit with
+  // native frontmatter (description only) instead of copying the raw file,
+  // so the command actually loads with its intended description and the
+  // stray `trigger` key doesn't leak into the download.
   for (const file of readdirSync(WORKFLOWS_DIR).sort()) {
     const raw = readFileSync(join(WORKFLOWS_DIR, file), "utf8");
     const fm = parseFrontmatter(raw);
+    const body = stripFrontmatter(raw);
     const id = file.replace(/\.md$/, "");
     const description = fm.description || `Workflow manual /${id}`;
-    const files = [{ destPath: `${cfg.commandsDir}/${file}`, content: raw }];
+    const nativeContent = `---\ndescription: ${yamlQuote(description)}\n---\n\n${body}`;
+    const files = [{ destPath: `${cfg.commandsDir}/${file}`, content: nativeContent }];
     items.push({
       id: `${toolId}:workflow:${id}`,
       category: "command",
