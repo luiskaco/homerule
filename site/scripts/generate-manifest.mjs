@@ -175,19 +175,32 @@ for (const skillName of readdirSync(SKILLS_DIR).sort()) {
   });
 }
 
+// Las plantillas de /docs son agnósticas del tool, pero se emiten una vez por
+// tool igual: ningún item del manifest pertenece a los dos a la vez. Así cada
+// ZIP es autocontenido y la vista de /build filtra por `tool` a secas, sin
+// casos especiales por categoría.
+// `00_GEMINI_START.md` es la excepción real de contenido: define el override de
+// stack por proyecto de Antigravity y no tiene sentido en un proyecto Claude.
+const ANTIGRAVITY_ONLY_TEMPLATES = new Set(["00_GEMINI_START.md"]);
+
 for (const file of readdirSync(TEMPLATES_DIR).sort()) {
   if (extname(file) !== ".md") continue;
   const content = readFileSync(join(TEMPLATES_DIR, file), "utf8");
   const id = file.replace(/\.md$/, "");
-  items.push({
-    id: `template:${id}`,
-    category: "template",
-    tool: "antigravity",
-    label: file,
-    description: "",
-    files: [{ destPath: `docs/${file}`, content }],
-    approxTokens: approxTokens([{ content }]),
-  });
+  const tools = ANTIGRAVITY_ONLY_TEMPLATES.has(file)
+    ? ["antigravity"]
+    : ["antigravity", "claude-code"];
+  for (const toolId of tools) {
+    items.push({
+      id: `${toolId}:template:${id}`,
+      category: "template",
+      tool: toolId,
+      label: file,
+      description: "",
+      files: [{ destPath: `docs/${file}`, content }],
+      approxTokens: approxTokens([{ content }]),
+    });
+  }
 }
 
 {
@@ -316,9 +329,10 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
 }
 
 // ============================================================
-// Claude Code subagents (independiente del layer híbrido de arriba)
-// tool: "claude-code" únicamente — .claude/agents/*.md es un formato
-// nativo de Claude Code, no tiene equivalente directo en Antigravity.
+// Claude Code subagents — tool: "claude-code" únicamente.
+// .claude/agents/*.md es un formato nativo de Claude Code y no tiene
+// equivalente declarable en Antigravity (allá los subagentes se crean en
+// runtime vía invoke_subagent, no hay archivo que empaquetar).
 // ============================================================
 
 for (const file of readdirSync(CLAUDE_AGENTS_DIR).sort()) {

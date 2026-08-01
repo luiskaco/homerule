@@ -25,15 +25,11 @@ const ENTRIES: NavEntry[] = [
     ],
   },
   {
-    id: "antigravity-claude",
-    labelKey: "antigravityClaude",
-    href: "/subagentes",
-  },
-  {
     id: "claude-solo",
     labelKey: "claudeSolo",
     links: [
       { labelKey: "presetsByStack", href: "/agents" },
+      { labelKey: "subagents", href: "/subagentes" },
       { labelKey: "buildCustom", href: "/build?tool=claude-code&preset=manual" },
     ],
   },

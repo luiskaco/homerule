@@ -32,22 +32,6 @@ export default async function HomePage({ params }: { params: { locale: string } 
       ],
     },
     {
-      id: "antigravity-claude",
-      eyebrow: tNav("antigravityClaude"),
-      title: t("modeHybridTitle"),
-      description: t("modeHybridDescription"),
-      href: "/subagentes",
-      cta: t("modeHybridCta"),
-      cardClass: "card-vibrant-emerald border-t-2 border-t-emerald-500",
-      accentClass: "text-emerald-400 group-hover:text-emerald-300",
-      badgeClass: "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30",
-      bullets: [
-        t("modeHybridBullet1", { count: agentCount }),
-        t("modeHybridBullet2"),
-        t("modeHybridBullet3"),
-      ],
-    },
-    {
       id: "claude-solo",
       eyebrow: tNav("claudeSolo"),
       title: t("modeClaudeTitle"),
@@ -57,7 +41,11 @@ export default async function HomePage({ params }: { params: { locale: string } 
       cardClass: "card-vibrant-amber border-t-2 border-t-amber-500",
       accentClass: "text-amber-400 group-hover:text-amber-300",
       badgeClass: "bg-amber-500/10 text-amber-300 border border-amber-500/30",
-      bullets: [t("modeClaudeBullet1"), t("modeClaudeBullet2"), t("modeClaudeBullet3")],
+      bullets: [
+        t("modeClaudeBullet1", { count: agentCount }),
+        t("modeClaudeBullet2"),
+        t("modeClaudeBullet3"),
+      ],
     },
   ];
 
@@ -94,7 +82,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
         </div>
       </section>
 
-      {/* Los 3 modos de uso */}
+      {/* Los 2 modos de uso — Antigravity y Claude Code son independientes */}
       <section className="flex flex-col gap-6">
         <div className="flex flex-col gap-1">
           <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
@@ -103,7 +91,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
           <p className="text-sm text-slate-400">{t("modesSubtitle")}</p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-2">
           {modes.map((mode) => (
             <Link
               key={mode.id}
@@ -136,7 +124,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
         </div>
       </section>
 
-      {/* Skills & Prompts — transversal a los 3 modos */}
+      {/* Skills & Prompts — transversal a los dos modos */}
       <section className="rounded-2xl border border-pink-500/20 bg-slate-900/60 p-6 sm:p-8 backdrop-blur-xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-3">

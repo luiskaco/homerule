@@ -37,7 +37,7 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 - Sistemas seguros, escalables, mantenibles y listos para producción.
 - Priorizar: claridad, modularidad, simplicidad, reutilización.
 - Evitar: deuda técnica, hacks rápidos, sobreingeniería.
-- Código siempre en inglés. Respuestas en el idioma del usuario.
+- Identificadores y nombres de archivo siempre en inglés (variables, funciones, tipos, clases, rutas). Comentarios y documentación en español. Respuestas en el idioma del usuario.
 
 ---
 
@@ -120,7 +120,7 @@ Invocar con `/` en el chat:
 
 Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
 
-**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (Claude, revisión manual, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
+**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (revisión manual, herramienta de análisis, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
 
 Antes de entregar cualquier código, revisar internamente con 3 pasadas:
 

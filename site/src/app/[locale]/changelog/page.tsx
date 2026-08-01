@@ -50,24 +50,40 @@ const RELEASES: Release[] = [
       {
         kind: "cambios",
         items: [
+          "Regla de idioma corregida para que refleje la realidad: el núcleo decía “código siempre en inglés”, pero el repo tenía 67 comentarios en español contra 15 en inglés. Ahora es “identificadores y nombres de archivo en inglés; comentarios y documentación en español”. Traducir todo se evaluó y se descartó: 4 de las 14 skills empaquetadas son de terceros y están en inglés, y el español mide solo 3,8% más que el inglés en texto técnico.",
+          "Antigravity y Claude Code pasan a ser kits totalmente independientes: se elimina el modo de uso híbrido. Ningún item pertenece a los dos tools — las plantillas de /docs, las skills externas y el add-on de base de datos se emiten una vez por tool. Cada ZIP es autocontenido y no asume que tengas el otro agente instalado.",
+          "El home pasa de 3 modos de uso a 2, y /subagentes se mueve dentro del menú “Claude solo”.",
+          "code-reviewer ya no promete revisar UI/UX (su checklist nunca lo hizo): ahora deriva a ui-reviewer.",
+          "explorer y planner explicitan qué los diferencia de los agentes Explore y Plan que Claude Code trae de fábrica: conocen la convención /docs 01-08 y las reglas instaladas en .claude/skills/.",
           "Reorganización de la interfaz del sitio: layout, nav, home y tarjetas de skills ajustados.",
           "Se agrega esta bitácora de cambios (CHANGELOG.md + página /changelog).",
-          "Nav reorganizado en 3 secciones: Antigravity solo, Antigravity + Claude y Claude solo; el catálogo de skills queda como ventana independiente.",
           "Labels del nav normalizados: se reemplazan los tres “Inicio” genéricos por labels descriptivos, y un grupo de un solo ítem pasa a ser link directo.",
           "Se fusionan /stacks y /stacks-app en una única página /stacks con el tema visual actual.",
           "El proyecto pasa a usar su propia convención /docs para seguimiento del trabajo (06_TASKS.md y 07_DECISIONS.md).",
-          "/ pasa a ser el índice del hub (los 3 modos de uso, el catálogo de skills y la bitácora); los presets por stack de Antigravity se mudan a su propia página /antigravity.",
+          "/ pasa a ser el índice del hub (los modos de uso, el catálogo de skills y la bitácora); los presets por stack de Antigravity se mudan a su propia página /antigravity.",
+        ],
+      },
+      {
+        kind: "agregado",
+        items: [
+          "Dos subagentes nuevos, de 6 a 8: ui-reviewer (accesibilidad, los 5 estados de UI, responsive, SEO on-page y consistencia con el sistema de diseño) y test-writer (detecta el framework de test del proyecto en vez de asumirlo, y nunca modifica el código bajo prueba).",
         ],
       },
       {
         kind: "arreglado",
         items: [
+          "Los comandos de Claude Code no se descargaban: los 6 existían y se mostraban en /build, pero ningún preset los preseleccionaba, así que el ZIP salía sin la carpeta .claude/commands/.",
+          "code-reviewer apuntaba a .agents/rules/*, rutas que no existen en un ZIP de Claude Code — esas reglas se instalan como .claude/skills/<id>/SKILL.md. Solo funcionaba si además habías bajado el ZIP de Antigravity.",
+          "Segmentos duplicados en todos los ZIPs generados: docs/docs/… y .agents/.agents/…, que además no coincidían con los comandos de copia del INSTALL.md incluido.",
           "Contenido específico de Antigravity que se filtraba a los ZIPs de Claude Code: 00_GEMINI_START.md ya no se incluye en presets de claude-code, y las referencias sueltas a GEMINI.md en archivos compartidos ahora también apuntan a CORE.md.",
         ],
       },
       {
         kind: "quitado",
-        items: ["Páginas placeholder vacías y sin link en el nav: /proximamente y /mejores-repos-utilidades."],
+        items: [
+          "Modo de uso “Antigravity + Claude”: la entrada del nav y la tarjeta del home. Los subagentes siguen estando, dentro de “Claude solo”.",
+          "Páginas placeholder vacías y sin link en el nav: /proximamente y /mejores-repos-utilidades.",
+        ],
       },
     ],
   },

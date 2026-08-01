@@ -16,20 +16,29 @@ export interface Preset {
   externalTools: ExternalTool[];
 }
 
-/** Templates de /docs comunes a cualquier tool. */
-const SHARED_TEMPLATE_ITEM_IDS = [
-  "template:01_PROJECT_PRD",
-  "template:02_SDD",
-  "template:03_SYSTEM_SPEC",
-  "template:04_DATA_MODEL",
-  "template:05_ARCHITECTURE",
-  "template:06_TASKS",
-  "template:07_DECISIONS",
-  "template:08_CHANGELOG",
+/**
+ * Plantillas de /docs. El contenido es el mismo para los dos tools, pero cada
+ * uno tiene su propio item en el manifest — Antigravity y Claude Code son
+ * catálogos estancos, ningún item pertenece a los dos.
+ */
+const TEMPLATE_IDS = [
+  "01_PROJECT_PRD",
+  "02_SDD",
+  "03_SYSTEM_SPEC",
+  "04_DATA_MODEL",
+  "05_ARCHITECTURE",
+  "06_TASKS",
+  "07_DECISIONS",
+  "08_CHANGELOG",
 ];
 
 /** Override de stack por proyecto — específico de Antigravity, no aplica a Claude Code. */
-const ANTIGRAVITY_ONLY_TEMPLATE_ITEM_IDS = ["template:00_GEMINI_START"];
+const ANTIGRAVITY_ONLY_TEMPLATE_IDS = ["00_GEMINI_START"];
+
+function templateItemIds(tool: ToolId): string[] {
+  const ids = tool === "antigravity" ? [...ANTIGRAVITY_ONLY_TEMPLATE_IDS, ...TEMPLATE_IDS] : TEMPLATE_IDS;
+  return ids.map((id) => `${tool}:template:${id}`);
+}
 
 const CONTEXT7: ExternalTool = {
   name: "Context7 MCP",
@@ -55,15 +64,26 @@ const ANTIGRAVITY_GLOBAL_ITEM_IDS = [
 ];
 
 /**
- * Claude Code-only subagentes (.claude/agents/*.md) — kit independiente del
- * layer híbrido con Gemini/Antigravity, igual para los 8 stacks.
+ * Subagentes de Claude Code (.claude/agents/*.md). Formato nativo sin
+ * equivalente en Antigravity, igual para los 8 stacks.
  */
+const CLAUDE_COMMAND_ITEM_IDS = [
+  "claude-code:workflow:new-feature",
+  "claude-code:workflow:bug-fix",
+  "claude-code:workflow:session-close",
+  "claude-code:workflow:security-audit",
+  "claude-code:workflow:deploy-checklist",
+  "claude-code:workflow:tools-reference",
+];
+
 const CLAUDE_AGENT_ITEM_IDS = [
   "claude-code:agent:explorer",
   "claude-code:agent:planner",
   "claude-code:agent:code-reviewer",
+  "claude-code:agent:ui-reviewer",
   "claude-code:agent:security-auditor",
   "claude-code:agent:debugger",
+  "claude-code:agent:test-writer",
   "claude-code:agent:docs-writer",
 ];
 
@@ -143,18 +163,17 @@ function toolItemIds(tool: ToolId, shape: StackShape): string[] {
   if (tool === "antigravity") {
     return [
       ...ANTIGRAVITY_GLOBAL_ITEM_IDS,
-      ...ANTIGRAVITY_ONLY_TEMPLATE_ITEM_IDS,
-      ...SHARED_TEMPLATE_ITEM_IDS,
+      ...templateItemIds(tool),
       ...shape.rules.map((r) => `rule:${r}`),
       ...shape.skills.map((s) => `skill:${s}`),
     ];
   }
   return [
     `${tool}:core`,
-    ...SHARED_TEMPLATE_ITEM_IDS,
+    ...templateItemIds(tool),
     ...shape.rules.map((r) => `${tool}:rule:${r}`),
     ...shape.skills.map((s) => `${tool}:skill:${s}`),
-    ...(tool === "claude-code" ? CLAUDE_AGENT_ITEM_IDS : []),
+    ...(tool === "claude-code" ? [...CLAUDE_COMMAND_ITEM_IDS, ...CLAUDE_AGENT_ITEM_IDS] : []),
   ];
 }
 
