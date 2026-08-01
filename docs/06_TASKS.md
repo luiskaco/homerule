@@ -18,6 +18,11 @@
 
 ## Completado
 
+- [x] **Separación definitiva de Antigravity y Claude Code** (ADR-006): fin del modo híbrido. Ningún item del manifest pertenece a los dos tools; cada ZIP es autocontenido. Home de 3 modos a 2, `/subagentes` movido dentro de "Claude solo".
+- [x] **Kit de subagentes de 6 a 8** (ADR-007): se agregan `ui-reviewer` y `test-writer`; `explorer` y `planner` diferenciados de los agentes `Explore`/`Plan` que Claude Code trae de fábrica.
+- [x] Fix: los `.claude/commands/` existían en el manifest pero ningún preset de Claude Code los preseleccionaba — el ZIP se bajaba sin ellos.
+- [x] Fix: `code-reviewer` referenciaba `.agents/rules/*`, rutas inexistentes en un ZIP de Claude Code.
+- [x] Fix: segmentos duplicados en todos los ZIPs (`docs/docs/`, `.agents/.agents/`) por el prefijo de `destFolder()` (ADR-008).
 - [x] Bitácora de cambios: `CHANGELOG.md` en la raíz + página pública `/changelog`.
 - [x] Nav reorganizado en 3 secciones: Antigravity solo, Antigravity + Claude, Claude solo — con el catálogo de skills como ventana independiente.
 - [x] Etiquetas del nav normalizadas: se eliminaron los tres "Inicio" genéricos por labels descriptivos; el grupo de un solo ítem pasó a ser link directo.

@@ -6,6 +6,12 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Antigravity y Claude Code pasan a ser kits totalmente independientes** (ADR-006): se elimina el modo de uso híbrido "Antigravity + Claude". Ningún item del manifest pertenece a los dos tools — las plantillas de `/docs`, las skills externas y el add-on de base de datos se emiten una vez por tool, con su propio `id`. Cada ZIP es autocontenido y no menciona ni asume al otro agente. La fuente en disco sigue siendo única: `.agents/rules/` se edita una sola vez y el generador emite los dos formatos.
+- El home pasa de 3 modos de uso a 2 y el nav pierde la entrada "Antigravity + Claude"; `/subagentes` se mueve dentro del menú "Claude solo".
+- `BuildClient` filtra los items por `tool` a secas — se elimina el caso especial `|| i.category === "template"`, que era el último punto donde los dos catálogos se mezclaban.
+- `GEMINI.md` § 8 deja de nombrar a Claude en la regla de auditoría externa: la regla se generaliza a "revisión manual, herramienta de análisis, etc." en vez de eliminarse.
+- El `description` de `code-reviewer` ya no promete revisar UI/UX (su cuerpo nunca lo hizo); ahora deriva explícitamente a `ui-reviewer`.
+- `explorer` y `planner` explicitan en su `description` qué los diferencia de los agentes `Explore` y `Plan` que Claude Code trae de fábrica: conocen la convención `/docs` 01-08 y las reglas instaladas en `.claude/skills/`.
 - Reorganización de la interfaz del sitio: layout, nav, home y tarjetas de skills ajustados.
 - Se agrega esta bitácora de cambios (`CHANGELOG.md` + página `/changelog`).
 - Nav reorganizado en 3 secciones claras: **Antigravity solo**, **Antigravity + Claude** y **Claude solo**; el catálogo de skills se mantiene como ventana independiente.
@@ -16,14 +22,19 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Agregado
 
+- **Dos subagentes nuevos, de 6 a 8** (ADR-007): `ui-reviewer` (accesibilidad, los 5 estados de UI, responsive, SEO on-page y consistencia con el sistema de diseño) y `test-writer` (detecta el framework de test del proyecto en vez de asumirlo, y nunca modifica el código bajo prueba). Cubren los dos huecos del kit: 6 de los 8 stacks entregan interfaz y ninguno tenía revisión de UI, y ningún agente escribía tests.
 - Versión en inglés del sitio: i18n con `next-intl`, ruteo `/es` y `/en` (la raíz redirige a `/es`), mensajes en `messages/es.json` y `messages/en.json`, `hreflang` por idioma, `lang` correcto en `<html>` y selector de idioma en el header. Alcance: interfaz del sitio — el contenido empaquetado en los ZIPs sigue en español.
 
 ### Quitado
 
+- Modo de uso "Antigravity + Claude": la entrada del nav y la tarjeta del home. Los subagentes no desaparecen — pasan a vivir dentro de "Claude solo", que es a quien pertenecen.
 - Páginas placeholder vacías y sin link en el nav: `/proximamente` y `/mejores-repos-utilidades`.
 
 ### Arreglado
 
+- **Los `.claude/commands/` no se descargaban.** Los 6 comandos existían en el manifest y se mostraban en `/build`, pero ningún preset de Claude Code los preseleccionaba, así que el ZIP salía sin ellos (`site/src/lib/presets.ts`). La rama de Antigravity sí incluía sus workflows equivalentes.
+- **`code-reviewer` apuntaba a rutas inexistentes.** Referenciaba `.agents/rules/security.md` y `.agents/rules/architecture.md`, que no existen en un ZIP de Claude Code — el generador convierte esas rules a `.claude/skills/<id>/SKILL.md`. Solo funcionaba si además se había bajado el ZIP de Antigravity.
+- **Segmentos duplicados en todos los ZIPs** (ADR-008): `destFolder()` agregaba un prefijo encima de `destPath`, que ya era la ruta final, generando `docs/docs/01_PROJECT_PRD.md` y `.agents/.agents/rules/architecture.md`. Además no coincidían con los `cp -r` del `INSTALL.md` incluido.
 - Contenido específico de Antigravity que se filtraba a los ZIPs de Claude Code: `00_GEMINI_START.md` ya no se incluye en presets de `claude-code` (`site/src/lib/presets.ts`); se generalizaron referencias a `GEMINI.md` en `docs-templates/06_TASKS.md` y en el workflow `new-feature.md` para que también apliquen a `CORE.md` (Claude Code).
 
 ## 2026-07-29

@@ -120,7 +120,7 @@ Invocar con `/` en el chat:
 
 Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
 
-**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (Claude, revisión manual, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
+**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (revisión manual, herramienta de análisis, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
 
 Antes de entregar cualquier código, revisar internamente con 3 pasadas:
 

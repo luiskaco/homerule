@@ -33,8 +33,14 @@ una rule, skill o plantilla, hay que reiniciar el dev server (o correr
   `model`. Se levanta solo (categoría `agent`, tool `claude-code`) y se
   incluye por default en todos los stacks de Claude Code — sumarlo/sacarlo
   de un stack puntual se hace en `CLAUDE_AGENT_ITEM_IDS` en `presets.ts`.
-  Es contenido independiente del layer híbrido con Gemini/Antigravity — no
-  se genera a partir de `.agents/rules/`.
+  No se genera a partir de `.agents/rules/`: se escribe a mano y es exclusivo
+  de Claude Code.
+
+**Regla de oro del catálogo:** Antigravity y Claude Code son kits estancos.
+Ningún item del manifest pertenece a los dos — lo que aplica a ambos (skills
+externas, plantillas de `/docs`, el add-on de base de datos) se emite una vez
+por tool, con su propio `id` prefijado. La vista de `/build` filtra por `tool`
+a secas, sin excepciones por categoría, y cada ZIP es autocontenido.
 
 El generador de manifest recoge todo automáticamente por carpeta — no hace
 falta tocar `scripts/generate-manifest.mjs` salvo que cambie la estructura de

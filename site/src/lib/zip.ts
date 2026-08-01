@@ -6,11 +6,19 @@ const TOOL_LABELS: Record<ToolId, string> = {
   "claude-code": "Claude Code",
 };
 
+/**
+ * Prefijo de carpeta dentro del ZIP. Los `destPath` del manifest ya son rutas
+ * relativas a la raíz del proyecto (`docs/x.md`, `.agents/rules/x.md`,
+ * `.claude/agents/x.md`), así que por defecto no lleva prefijo — agregarlo
+ * duplicaba el segmento (`docs/docs/…`, `.agents/.agents/…`).
+ *
+ * La excepción es el global de Antigravity: `GEMINI.md` y los workflows se
+ * instalan en `~/.gemini/`, no en el proyecto, y se aíslan en `global/` para
+ * que el `cp -r` de la raíz no se los lleve por error.
+ */
 function destFolder(item: ManifestItem): string {
-  if (item.category === "template") return "docs";
-  if (item.tool !== "antigravity") return "";
-  if (item.category === "global") return "global";
-  return ".agents";
+  if (item.tool === "antigravity" && item.category === "global") return "global";
+  return "";
 }
 
 function buildAntigravitySection(items: ManifestItem[]): string {
@@ -83,9 +91,9 @@ function buildInstallMd(selected: ManifestItem[]): string {
 
   const lines: string[] = ["# Instalación\n"];
   lines.push(
-    "Este ZIP fue generado por AI Rules Hub. Cada sección de abajo " +
-      "corresponde a una carpeta del ZIP — copiá según las instrucciones de tu(s) " +
-      "agente(s) elegido(s).\n"
+    "Este ZIP fue generado por AI Rules Hub y es autocontenido: todo lo que hay " +
+      "acá adentro es para un solo agente. Cada sección de abajo corresponde a una " +
+      "carpeta del ZIP.\n"
   );
 
   const byTool = new Map<ToolId, ManifestItem[]>();

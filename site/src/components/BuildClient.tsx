@@ -38,11 +38,9 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
     };
   }, []);
 
-  // Items visibles para este tool: los propios del tool + las plantillas SDD (universales).
-  const items = useMemo(
-    () => (allItems ?? []).filter((i) => i.tool === tool || i.category === "template"),
-    [allItems, tool]
-  );
+  // Items visibles para este tool. Antigravity y Claude Code son catálogos
+  // estancos: no hay items compartidos, así que alcanza con filtrar por `tool`.
+  const items = useMemo(() => (allItems ?? []).filter((i) => i.tool === tool), [allItems, tool]);
 
   const totalTokens = useMemo(() => {
     return items
