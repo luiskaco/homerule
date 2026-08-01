@@ -103,3 +103,27 @@ La **fuente en disco sigue siendo única** (`.agents/rules/` se sigue editando u
 **Decisión:** El `destPath` del manifest es la ruta final dentro del ZIP. `destFolder()` devuelve `""` salvo una excepción justificada: el global de Antigravity (`GEMINI.md` y los workflows) se aísla en `global/` porque se instala en `~/.gemini/`, no en la raíz del proyecto, y sin ese aislamiento un `cp -r ./*` a la raíz se lo llevaría por error.
 
 **Consecuencias:** Al sumar una categoría nueva al manifest, el `destPath` debe escribirse ya como la ruta final en el proyecto destino. No hay que tocar `destFolder()`.
+
+## ADR-009 — Identificadores en inglés, comentarios y documentación en español
+
+**Fecha:** 2026-07-31
+**Estado:** Aceptada
+
+**Contexto:** El § 2 de `CORE.md` y `GEMINI.md` decía "Código siempre en inglés", pero la realidad del repo era 67 comentarios en español contra 15 en inglés — concentrados en `skill-catalog.ts` (15), `generate-manifest.mjs` (9), `external-skills.ts` (8), `presets.ts` (7) y `zip.ts` (7). Una regla que el propio proyecto incumple sistemáticamente, y que además se distribuye a todos los proyectos que bajan el kit, enseña a ignorar las reglas.
+
+Se evaluó traducir todo a inglés en vez de cambiar la regla. Tres mediciones lo descartaron:
+
+- **No es alcanzable.** De las 14 skills que se empaquetan, 4 son de terceros y están en inglés (`vercel-react-best-practices`, `api-security-best-practices`, `error-handling-patterns`, `brainstorming`). Traducirlas obliga a forkearlas y perder las actualizaciones upstream. Cualquier kit instalado va a ser mixto igual.
+- **El argumento de compacidad no aplica.** Medido sobre los 58 pares de strings equivalentes de `messages/es.json` y `messages/en.json`, el español es apenas **3,8%** más largo. El texto técnico está lleno de identificadores y rutas que no se traducen.
+- **El límite de 12.000 chars de Antigravity no aprieta.** La rule más grande (`ui-ux.md`) usa el 78% del presupuesto; traducirla ahorraría ~355 chars, 3 puntos porcentuales.
+
+**Decisión:** La línea va entre **código y prosa**, no entre idiomas. Identificadores y nombres de archivo en inglés (variables, funciones, tipos, clases, rutas) — convención universal que ya se cumplía. Comentarios y documentación en español. Respuestas en el idioma del usuario. Las skills de terceros quedan en su idioma original.
+
+Es coherente con ADR-005, que ya había decidido que el contenido empaquetado en los ZIPs queda en español aunque la interfaz del sitio esté en ES/EN.
+
+**Alternativas consideradas:** Traducir los 67 comentarios a inglés — se descartó por lo de arriba: costo real, beneficio cosmético, y el resultado seguiría siendo mixto por las skills de terceros. Dejar la regla como estaba y "tratar de cumplirla" — se descartó porque llevaba meses sin cumplirse.
+
+**Consecuencias:**
+- 67 comentarios pasan de estar en infracción a estar bien, sin tocar una línea de código.
+- La regla ahora es auditable de verdad: un identificador en español es un hallazgo objetivo; un comentario en español ya no.
+- Si el hub se hiciera público para audiencia internacional, esta decisión hay que revisarla junto con ADR-005 — traducir el contenido empaquetado es un proyecto aparte, ya anotado en `06_TASKS.md`.

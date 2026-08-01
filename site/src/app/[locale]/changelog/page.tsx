@@ -50,6 +50,7 @@ const RELEASES: Release[] = [
       {
         kind: "cambios",
         items: [
+          "Regla de idioma corregida para que refleje la realidad: el núcleo decía “código siempre en inglés”, pero el repo tenía 67 comentarios en español contra 15 en inglés. Ahora es “identificadores y nombres de archivo en inglés; comentarios y documentación en español”. Traducir todo se evaluó y se descartó: 4 de las 14 skills empaquetadas son de terceros y están en inglés, y el español mide solo 3,8% más que el inglés en texto técnico.",
           "Antigravity y Claude Code pasan a ser kits totalmente independientes: se elimina el modo de uso híbrido. Ningún item pertenece a los dos tools — las plantillas de /docs, las skills externas y el add-on de base de datos se emiten una vez por tool. Cada ZIP es autocontenido y no asume que tengas el otro agente instalado.",
           "El home pasa de 3 modos de uso a 2, y /subagentes se mueve dentro del menú “Claude solo”.",
           "code-reviewer ya no promete revisar UI/UX (su checklist nunca lo hizo): ahora deriva a ui-reviewer.",

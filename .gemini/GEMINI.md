@@ -37,7 +37,7 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 - Sistemas seguros, escalables, mantenibles y listos para producción.
 - Priorizar: claridad, modularidad, simplicidad, reutilización.
 - Evitar: deuda técnica, hacks rápidos, sobreingeniería.
-- Código siempre en inglés. Respuestas en el idioma del usuario.
+- Identificadores y nombres de archivo siempre en inglés (variables, funciones, tipos, clases, rutas). Comentarios y documentación en español. Respuestas en el idioma del usuario.
 
 ---
 
