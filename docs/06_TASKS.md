@@ -6,6 +6,7 @@
 ## En progreso
 
 - [ ] Reorganización de la interfaz del sitio — cambios hechos pero todavía sin commitear.
+- [ ] Set SDD completo en `/docs`: los 8 archivos ya existen, copiados desde `docs-templates/`. Falta redactar el contenido real de makeRuleIA en `01`–`05` y `08`, que siguen en blanco. `00_GEMINI_START.md` se queda solo en `docs-templates/` por ahora — es específico de Antigravity y está pendiente de decidir si makeRuleIA le da algún uso propio.
 
 ## Pendiente
 
@@ -14,7 +15,6 @@
 - [ ] Unificar el tema visual en las páginas que quedaron con el estilo viejo (`neutral-*`, light/dark): `/mejores-skill`, `/skills-por-proyecto`, `/prompts`, `/subagentes`. El resto ya usa Vibrant Flat UI 3.0.
 - [ ] Decidir si `/mejores-skill` (catálogo plano) y `/skills-por-proyecto` (agrupado por tipo de trabajo) se mantienen separados o se fusionan en una página con dos vistas. Hoy muestran el mismo set de skills con distinto corte.
 - [ ] Evaluar si `/changelog` debería estar en el nav principal además del footer.
-- [ ] Completar el resto de los documentos de `/docs` si se quiere el set SDD completo (hoy solo están `06_TASKS.md` y `07_DECISIONS.md`; las plantillas están en `docs-templates/`).
 
 ## Completado
 
