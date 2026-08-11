@@ -30,6 +30,9 @@ const TEMPLATE_IDS = [
   "06_TASKS",
   "07_DECISIONS",
   "08_CHANGELOG",
+  // Sin numerar a propósito: los 01-08 son documentos de fase, CONTEXT es un
+  // glosario vivo que se actualiza continuamente (ADR-012).
+  "CONTEXT",
 ];
 
 /** Override de stack por proyecto — específico de Antigravity, no aplica a Claude Code. */
@@ -55,6 +58,7 @@ const SKILLS_SH: ExternalTool = {
 /** Antigravity-only global workflow items (GEMINI.md + comandos manuales). */
 const ANTIGRAVITY_GLOBAL_ITEM_IDS = [
   "global:GEMINI.md",
+  "global:grill.md",
   "global:new-feature.md",
   "global:bug-fix.md",
   "global:session-close.md",
@@ -68,6 +72,7 @@ const ANTIGRAVITY_GLOBAL_ITEM_IDS = [
  * equivalente en Antigravity, igual para los 8 stacks.
  */
 const CLAUDE_COMMAND_ITEM_IDS = [
+  "claude-code:workflow:grill",
   "claude-code:workflow:new-feature",
   "claude-code:workflow:bug-fix",
   "claude-code:workflow:session-close",
@@ -95,31 +100,31 @@ interface StackShape {
 const STACKS: Record<string, StackShape> = {
   "nextjs-branded": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
+    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
   },
   "nextjs-unbranded": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
+    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
   },
   "wordpress-cms": {
     rules: ["cms", "seo", "security", "stack-conventions", "operations"],
-    skills: ["seo-audit", "web-design-guidelines", "wordpress-block-theming"],
+    skills: ["domain-modeling", "seo-audit", "web-design-guidelines", "wordpress-block-theming"],
   },
   "fastapi-python": {
     rules: ["architecture", "security", "operations", "stack-conventions"],
-    skills: ["fastapi", "error-handling-patterns", "api-security-best-practices"],
+    skills: ["domain-modeling", "fastapi", "error-handling-patterns", "api-security-best-practices"],
   },
   "html-plano": {
     rules: ["architecture", "ui-ux", "seo", "stack-conventions", "security", "operations"],
-    skills: ["web-design-guidelines", "impeccable"],
+    skills: ["domain-modeling", "web-design-guidelines", "impeccable"],
   },
   "react-spa": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines", "vercel-composition-patterns"],
+    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines", "vercel-composition-patterns"],
   },
   vue: {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["frontend-design", "impeccable", "web-design-guidelines"],
+    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines"],
   },
   manual: { rules: [], skills: [] },
 };

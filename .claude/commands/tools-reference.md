@@ -47,6 +47,19 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-compos
 
 ---
 
+### Skill de dominio
+
+| Skill | Cuándo activarla |
+|-------|------------------|
+| `domain-modeling` | Al aparecer un término del dominio nuevo o ambiguo, al detectar que la conversación y el código le dan sentidos distintos a la misma palabra, o al nombrar entidades, tipos y endpoints |
+
+No compite con las de diseño — es transversal y de bajo costo, así que no
+cuenta para el límite de 2-3 skills activas. Mantiene el glosario
+`docs/CONTEXT.md`: lenguaje del negocio, no esquema técnico (eso es
+`04_DATA_MODEL.md`) ni decisiones con trade-offs (eso es `07_DECISIONS.md`).
+
+---
+
 ### MCP: Context7
 
 Context7 está instalado como MCP. Provee documentación actualizada de librerías en tiempo real.

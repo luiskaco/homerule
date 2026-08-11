@@ -31,6 +31,7 @@ RULE_LOAD = {
 }
 WORKFLOW_ORDER = [
     "tools-reference.md",
+    "grill.md",
     "new-feature.md",
     "bug-fix.md",
     "session-close.md",
@@ -41,6 +42,21 @@ WORKFLOW_ORDER = [
 
 def tokens(path: Path) -> int:
     return round(len(path.read_text(encoding="utf-8")) / 4)
+
+
+def check_coverage(directory: Path, known: set[str], label: str) -> None:
+    """Un archivo nuevo sin entrada acá quedaría fuera de la tabla en silencio."""
+    on_disk = {f.name for f in directory.glob("*.md")}
+    missing = sorted(on_disk - known)
+    if missing:
+        raise SystemExit(
+            f"{label} sin entrada en el script: {', '.join(missing)}.\n"
+            f"Agregalos a {'RULE_LOAD' if label == 'Rules' else 'WORKFLOW_ORDER'} en scripts/update-token-table.py."
+        )
+
+
+check_coverage(RULES_DIR, set(RULE_LOAD), "Rules")
+check_coverage(WORKFLOWS_DIR, set(WORKFLOW_ORDER), "Workflows")
 
 
 def fmt(n: int) -> str:

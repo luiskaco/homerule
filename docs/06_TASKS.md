@@ -14,11 +14,15 @@
 - [ ] Unificar el tema visual en las páginas que quedaron con el estilo viejo (`neutral-*`, light/dark): `/mejores-skill`, `/skills-por-proyecto`, `/prompts`, `/subagentes`. El resto ya usa Vibrant Flat UI 3.0.
 - [ ] Decidir si `/mejores-skill` (catálogo plano) y `/skills-por-proyecto` (agrupado por tipo de trabajo) se mantienen separados o se fusionan en una página con dos vistas. Hoy muestran el mismo set de skills con distinto corte.
 - [ ] Evaluar si `/changelog` debería estar en el nav principal además del footer.
-- [ ] **Empaquetar el kit de Claude Code como plugin nativo** además de los ZIPs: un plugin agrupa comandos + agentes + skills + hooks, se instala con un comando y se actualiza desde git — resuelve que los ZIPs sean copias congeladas. El sitio quedaría como escaparate; el ZIP como opción manual.
+- [ ] **Empaquetar el kit de Claude Code como plugin nativo.** La dirección ya está decidida en ADR-011 (se suma a los ZIPs, no los reemplaza). Falta: `.claude-plugin/plugin.json` con el array explícito de rutas de skills, decidir el esquema de versión — hoy el proyecto no versiona — y el paso de release que suba plugin y repo juntos.
 - [ ] Afinar el campo `model` por subagente: `explorer` puede correr en Haiku (búsqueda barata); `planner` y `security-auditor` justifican modelo grande.
 
 ## Completado
 
+- [x] **Skill `domain-modeling` + plantilla `CONTEXT.md`** (ADR-012): glosario vivo del vocabulario del dominio, sin numerar a propósito (los 01-08 son documentos de fase). Preseleccionada en los 7 stacks reales. Hueco detectado comparando con `mattpocock/skills`.
+- [x] **Workflow `/grill`**: interrogatorio de a una pregunta por turno que le da forma concreta a la Regla de Oro de `CORE.md § 1` — hasta ahora "detenete si hay ambigüedad" quedaba a criterio del modelo. Fuente única: se emite como workflow de Antigravity y comando de Claude Code.
+- [x] **ADR-011** — dirección definida para empaquetar el kit como plugin nativo de Claude Code (se suma a los ZIPs, no los reemplaza). Implementación pendiente arriba.
+- [x] Guard en `update-token-table.py`: una rule o workflow nuevo sin entrada en el script hacía que quedara fuera de la tabla en silencio; ahora falla con el nombre del archivo faltante.
 - [x] **Trigger `glob` replicado en Claude Code**: hook `PostToolUse` en `.claude/settings.json` (`scripts/hooks/stack-conventions-reminder.mjs`) que recuerda aplicar `stack-conventions` al editar archivos de código — una vez por sesión. Verificado en vivo.
 - [x] `.claude/settings.json` con allowlist de permisos para los scripts del repo y git de solo lectura.
 - [x] Las 9 rules también se emiten como skills locales (`.claude/skills/<id>/SKILL.md`) vía `sync-claude-kit.mjs` — los subagentes que referencian esas rutas ya las encuentran en este repo, igual que en un ZIP instalado.

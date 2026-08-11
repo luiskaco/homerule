@@ -19,6 +19,7 @@ estrictamente "Always On".
 ~/.gemini/                                    # GLOBAL — una sola vez, aplica a todos los proyectos
 ├── GEMINI.md                                 # Always On — núcleo: principios, stack base, naming, jerarquía
 └── antigravity/global_workflows/
+    ├── grill.md                              # /grill
     ├── new-feature.md                        # /new-feature
     ├── bug-fix.md                            # /bug-fix
     ├── session-close.md                      # /session-close
@@ -42,7 +43,7 @@ estrictamente "Always On".
 ```
 
 > **¿Por qué global + workspace?** Trabajas varios proyectos a la vez (Media Hub,
-> Abencia, Agency CRM, sitios de cliente). `GEMINI.md` y los 6 workflows no cambian
+> Abencia, Agency CRM, sitios de cliente). `GEMINI.md` y los 7 workflows no cambian
 > de un proyecto a otro — van en `~/.gemini/` una sola vez. Las reglas técnicas
 > (`security.md`, `architecture.md`, etc.) sí pueden variar por proyecto — un sitio
 > WordPress no necesita las mismas convenciones que Abencia en Next.js — así que
@@ -61,7 +62,7 @@ estrictamente "Always On".
 ```bash
 mkdir -p ~/.gemini/antigravity/global_workflows
 cp GEMINI.md ~/.gemini/GEMINI.md
-cp new-feature.md bug-fix.md session-close.md security-audit.md deploy-checklist.md tools-reference.md \
+cp grill.md new-feature.md bug-fix.md session-close.md security-audit.md deploy-checklist.md tools-reference.md \
    ~/.gemini/antigravity/global_workflows/
 ```
 
@@ -69,7 +70,7 @@ cp new-feature.md bug-fix.md session-close.md security-audit.md deploy-checklist
 ```powershell
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\antigravity\global_workflows"
 Copy-Item "GEMINI.md" "$env:USERPROFILE\.gemini\GEMINI.md"
-Copy-Item "new-feature.md","bug-fix.md","session-close.md","security-audit.md","deploy-checklist.md","tools-reference.md" `
+Copy-Item "grill.md","new-feature.md","bug-fix.md","session-close.md","security-audit.md","deploy-checklist.md","tools-reference.md" `
   "$env:USERPROFILE\.gemini\antigravity\global_workflows\"
 ```
 
@@ -147,13 +148,14 @@ operativos, no la documentación completa.
 
 ## Workflows
 
-6 workflows, todos `trigger: manual` — **se invocan escribiendo el comando en el
+7 workflows, todos `trigger: manual` — **se invocan escribiendo el comando en el
 chat, la IA no los dispara por su cuenta.** Las líneas tipo "Recordatorio: invocar
 `/session-close`" dentro de cada workflow son avisos para que tú escribas el
 siguiente comando — no encadenan automáticamente.
 
 | Comando | Cuándo invocarlo | Qué hace |
 |---|---|---|
+| `/grill` | Antes de `/new-feature`, cuando el plan todavía es difuso o traés una idea en vez de un requerimiento | Interrogatorio de a una pregunta por turno hasta dejar resueltos problema real, bordes, fuera de alcance, decisiones irreversibles y criterio de terminado. Cierra con un resumen que alimenta al workflow siguiente |
 | `/new-feature` | Antes de empezar cualquier tarea nueva | Define el plan, crea la rama git (`feat/...` o `fix/...`), crea o actualiza `06_TASKS.md`, documenta ADR si hay decisión arquitectónica. Espera tu aprobación del plan antes de codificar |
 | `/bug-fix` | Algo está roto | Identifica causa raíz antes de tocar código, evalúa impacto, crea rama `fix/...`, plantea plan de 2-3 pasos y espera aprobación |
 | `/session-close` | Al terminar el día o una tarea | Actualiza físicamente los docs de `/docs` relevantes, verifica build y flujo probado, marca la tarea como completed en `06_TASKS.md`, genera commit sugerido |
@@ -164,6 +166,7 @@ siguiente comando — no encadenan automáticamente.
 ### Flujo típico de una tarea
 
 ```
+/grill                  ← opcional, si el plan está difuso: la IA interroga hasta afilarlo
 /new-feature           ← defines la tarea, se crea la rama y se actualiza 06_TASKS.md
   ... trabajas ...
 /security-audit         ← si tocaste auth, APIs o datos sensibles
@@ -215,6 +218,16 @@ Categoría aparte — no compiten con las skills de diseño de arriba.
 Instalación: `npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit`
 (el paquete trae ~30 skills de marketing — solo se instala `seo-audit`, no el paquete completo).
 Detalle en [`.agents/skills/seo-audit/SKILL.md`](.agents/skills/seo-audit/SKILL.md).
+
+### Skill de dominio
+
+| Skill | Cuándo activarla |
+|---|---|
+| `domain-modeling` | Mientras se trabaja, no como paso aparte: al aparecer un término del dominio nuevo o ambiguo, o al nombrar entidades, tipos y endpoints. Mantiene el glosario `docs/CONTEXT.md` — que es lenguaje del negocio, no esquema técnico (eso es `04_DATA_MODEL.md`) |
+
+Viene preseleccionada en los 7 stacks reales. La plantilla del glosario está en
+`docs-templates/CONTEXT.md` y se crea recién cuando hay 3 términos que lo
+justifiquen (ADR-012).
 
 ### Skills de Seguridad
 
@@ -292,7 +305,7 @@ no editarla a mano.
 <!-- token-table:start -->
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
-| `GEMINI.md` | ~1,953 | Siempre |
+| `GEMINI.md` | ~2,014 | Siempre |
 | `security.md` | ~1,559 | Model Decision |
 | `architecture.md` | ~600 | Model Decision |
 | `ui-ux.md` | ~2,281 | Model Decision |
@@ -302,15 +315,16 @@ no editarla a mano.
 | `cms.md` | ~690 | Model Decision |
 | `database.md` | ~708 | Model Decision |
 | `stack-conventions.md` | ~602 | Glob |
-| `tools-reference.md` | ~726 | Manual |
+| `tools-reference.md` | ~872 | Manual |
+| `grill.md` | ~616 | Manual |
 | `new-feature.md` | ~372 | Manual |
 | `bug-fix.md` | ~345 | Manual |
 | `session-close.md` | ~527 | Manual |
 | `security-audit.md` | ~653 | Manual |
 | `deploy-checklist.md` | ~408 | Manual |
-| **Base siempre activa** | **~1,953** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~2,898–6,519** | sesión normal de código |
-| **Máximo con todo activo** | **~11,926** | improbable — varias reglas casi nunca se activan juntas |
+| **Base siempre activa** | **~2,014** | `GEMINI.md` |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~2,959–6,726** | sesión normal de código |
+| **Máximo con todo activo** | **~12,133** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

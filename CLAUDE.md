@@ -35,6 +35,13 @@ distribuye (dogfooding) — las reglas globales se importan del archivo fuente:
   editarlas — se actualizan reinstalando (ver `skills-lock.json` y README
   § Skills de diseño de terceros).
 
+## Dónde va cada cosa en `/docs`
+
+- `04_DATA_MODEL.md` — entidades y campos técnicos.
+- `07_DECISIONS.md` — decisiones con alternativas evaluadas y trade-offs (ADR).
+- `CONTEXT.md` — glosario del dominio, sin numerar (ADR-012). Lenguaje del
+  negocio, no esquema ni decisiones. Lo mantiene la skill `domain-modeling`.
+
 ## Jerarquía de skills de diseño (para no dispararlas en cadena)
 
 Para trabajo de UI en `site/`, usar **una** skill por tarea, elegida así:

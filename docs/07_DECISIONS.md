@@ -171,3 +171,49 @@ motivo (dos copias).
 - Los agentes referencian `.claude/skills/<regla>/SKILL.md`, que en este repo
   no existe (las rules viven en `.agents/rules/`) — degradan con aviso, y
   `CLAUDE.md` documenta la equivalencia.
+
+## ADR-011 — El kit de Claude Code se empaquetará como plugin nativo, sin abandonar los ZIPs
+
+**Fecha:** 2026-08-10
+**Estado:** Aceptada en la dirección, pendiente de implementación (ver `06_TASKS.md`)
+
+**Contexto:** Los kits se distribuyen como ZIP: el usuario descarga, descomprime y copia. El ZIP es una **copia congelada** — un proyecto instalado en marzo no recibe ninguna corrección posterior de las rules, y no hay forma de saber qué versión tiene instalada. Los tres bugs corregidos en julio (comandos ausentes, rutas rotas en `code-reviewer`, segmentos duplicados) siguen presentes en cualquier kit descargado antes de esos fixes.
+
+Claude Code tiene un sistema de plugins nativo que agrupa comandos + agentes + skills + hooks en una unidad instalable y **actualizable desde git**. `mattpocock/skills` lo usa en producción: `.claude-plugin/plugin.json` declara un array de rutas explícitas de skills, lo que permite publicar un subconjunto curado sin exponer carpetas internas (deprecated, en progreso).
+
+**Decisión:** Agregar el empaquetado como plugin nativo de Claude Code **además** de los ZIPs, no en reemplazo. El ZIP sigue siendo la ruta para quien quiere archivos editables y para Antigravity, que no tiene sistema de plugins equivalente.
+
+La fuente en disco no cambia: el plugin se arma desde las mismas carpetas que hoy alimentan el manifest. El sitio pasa a ser escaparate y generador de ZIPs; el plugin es el canal de actualización continua.
+
+**Alternativas consideradas:**
+
+- **Reemplazar los ZIPs por el plugin** — descartado: dejaría a Antigravity sin canal (no tiene plugins declarables) y quita la opción de archivos editables, que es justamente lo que permite adaptar una rule por proyecto.
+- **Symlinks para curar el subconjunto publicado** — descartado por lo documentado en el ADR-0002 de `mattpocock/skills`: los instaladores copian el árbol resolviendo symlinks y las skills quedan vacías.
+
+**Consecuencias:**
+
+- Hay que mantener un array explícito de rutas en el manifest del plugin: una skill nueva que no se agregue ahí no se publica. Es el mismo costo que ya tiene `presets.ts`.
+- La versión del plugin y la del repo tienen que subir juntas en cada release — hoy el proyecto no versiona (los cambios se agrupan por fecha en el `CHANGELOG.md`), así que habrá que decidir un esquema de versión antes de publicar.
+- Antigravity queda con un canal menos moderno. Es asimetría real, no descuido: la limitación es del tool, no del kit.
+
+## ADR-012 — `CONTEXT.md` es un glosario vivo, sin número de fase
+
+**Fecha:** 2026-08-10
+**Estado:** Aceptada
+
+**Contexto:** El kit define 8 documentos numerados (`01_PROJECT_PRD.md` … `08_CHANGELOG.md`) y ninguno cubre el **vocabulario del dominio**: qué significa exactamente cada término del negocio en este proyecto. `04_DATA_MODEL.md` describe entidades y campos técnicos, que es otra cosa — un término del dominio puede no tener tabla, y una tabla puede no ser un término del dominio. Sin ese glosario, el mismo concepto aparece con tres nombres distintos en tres capas, y el agente "se adapta" en silencio al término que use el usuario en cada mensaje.
+
+**Decisión:** Se agrega `CONTEXT.md` a las plantillas de `/docs`, **sin numerar**, más la skill `domain-modeling` que lo mantiene vivo.
+
+La falta de número es la decisión, no un olvido: los 01–08 son documentos de fase — se escriben en orden, en un momento del proyecto, y se actualizan al completar tareas. `CONTEXT.md` es un glosario que se toca continuamente, cada vez que aparece un término nuevo o ambiguo. Numerarlo `09_` lo haría parecer "el paso que va después del changelog", que es exactamente lo contrario de cómo se usa.
+
+**Alternativas consideradas:**
+
+- **`09_CONTEXT.md`** — descartado por lo anterior, y porque tocaba la convención "8 archivos" repetida en `CORE.md § 5`, `GEMINI.md § 5`, el README, la skill `project-planning` y la skill global `project-docs-scaffold`. Blast radius alto para empeorar la semántica.
+- **Meterlo dentro de `04_DATA_MODEL.md`** — descartado: mezcla lenguaje de negocio con esquema técnico, que es justamente la confusión que el glosario viene a resolver.
+
+**Consecuencias:**
+
+- La convención pasa a ser "8 documentos de fase + 1 glosario". Al describir el kit hay que decirlo así, no "9 archivos".
+- `CONTEXT.md` se crea recién cuando hay al menos 3 términos que lo justifiquen — un proyecto chico no lo necesita, y un glosario vacío es peor que ninguno.
+- La skill `domain-modeling` queda preseleccionada en los 7 stacks reales (todos tienen vocabulario); `manual` no preselecciona nada por definición.

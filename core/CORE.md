@@ -85,6 +85,7 @@ Antes de escribir o sugerir código que use una librería, framework, SDK o CLI 
 | `06_TASKS.md` | Backlog activo |
 | `07_DECISIONS.md` | ADRs |
 | `08_CHANGELOG.md` | Historial de versiones |
+| `CONTEXT.md` | Glosario del dominio — sin numerar: es un glosario vivo, no un documento de fase (opcional, desde 3 términos) |
 
 Actualizar el archivo correspondiente al completar cada tarea.
 
@@ -96,7 +97,7 @@ Actualizar el archivo correspondiente al completar cada tarea.
 
 1. Este archivo de memoria del proyecto — máxima prioridad
 2. Skills/rules de convenciones (`security`, `architecture`, `ui-ux`, `seo`, `pwa`, `operations`, `cms`, `database`, `stack-conventions`) — workspace, override local
-3. Comandos/workflows (`/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un comando resume una convención que también vive en una skill/rule, esa skill/rule es la fuente de verdad si hay discrepancia
+3. Comandos/workflows (`/grill`, `/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un comando resume una convención que también vive en una skill/rule, esa skill/rule es la fuente de verdad si hay discrepancia
 4. Resto de skills según contexto del proyecto
 
 ---
@@ -107,6 +108,7 @@ Invocar con `/` en el chat:
 
 | Comando | Cuándo |
 |---------|--------|
+| `/grill` | Antes de `/new-feature`, cuando el plan todavía es difuso — la IA interroga hasta afilarlo |
 | `/new-feature` | Antes de iniciar cualquier tarea nueva |
 | `/bug-fix` | Cuando algo está roto — identifica causa raíz antes de codificar |
 | `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
