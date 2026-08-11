@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/*)",
+      "Bash(python scripts/*)",
+      "Bash(npm run generate-manifest*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/hooks/stack-conventions-reminder.mjs",
+            "timeout": 10,
+            "statusMessage": "Verificando stack-conventions"
+          }
+        ]
+      }
+    ]
+  }
+}

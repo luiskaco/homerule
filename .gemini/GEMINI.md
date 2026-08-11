@@ -45,9 +45,10 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 
 | Capa | Tecnología |
 |------|-----------|
-| Frontend | React / Next.js / Vanilla JS |
+| Frontend | React / Next.js / Vue / Vanilla JS |
 | Backend | Node.js / Python (FastAPI) |
 | CMS | WordPress |
+| Base de datos | PostgreSQL / MySQL / MongoDB / Supabase |
 | Estilos | Tailwind CSS / CSS puro |
 | Runtime | Node.js 20+ / Python 3.11+ |
 

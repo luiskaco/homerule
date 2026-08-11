@@ -1,7 +1,7 @@
 # AI Rules Hub
 
 Sitio Next.js que empaqueta el contenido de este repo (`.gemini/`,
-`.agents/rules/`, `.agents/skills/`, `claude-agents/`, `docs-templates/`) en
+`.agents/rules/`, `.agents/skills/`, `.claude/agents/`, `docs-templates/`) en
 ZIPs descargables por stack, para Antigravity/Gemini y Claude Code.
 
 ## Desarrollo local
@@ -28,7 +28,7 @@ una rule, skill o plantilla, hay que reiniciar el dev server (o correr
   `site/src/lib/presets.ts` — no requiere tocar el generador de manifest.
 - **Plantilla SDD**: agregar el `.md` a `docs-templates/` en la raíz del
   repo.
-- **Subagente de Claude Code nuevo**: agregar el `.md` a `claude-agents/` en
+- **Subagente de Claude Code nuevo**: agregar el `.md` a `.claude/agents/` en
   la raíz del repo, con frontmatter `name`, `description`, `tools` y
   `model`. Se levanta solo (categoría `agent`, tool `claude-code`) y se
   incluye por default en todos los stacks de Claude Code — sumarlo/sacarlo

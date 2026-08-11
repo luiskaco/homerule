@@ -81,7 +81,7 @@ const WORKFLOWS_DIR = join(REPO_ROOT, ".gemini", "antigravity", "global_workflow
 const TEMPLATES_DIR = join(REPO_ROOT, "docs-templates");
 const CORE_MD_PATH = join(REPO_ROOT, "core", "CORE.md");
 const DATABASE_MD_PATH = join(RULES_DIR, "database.md");
-const CLAUDE_AGENTS_DIR = join(REPO_ROOT, "claude-agents");
+const CLAUDE_AGENTS_DIR = join(REPO_ROOT, ".claude", "agents");
 
 const DB_ENGINES = [
   { id: "postgres", label: "PostgreSQL", description: "Relacional, integridad referencial fuerte — default recomendado." },

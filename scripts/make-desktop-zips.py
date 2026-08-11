@@ -18,6 +18,15 @@ import zipfile
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(REPO_ROOT, ".claude", "skills")
 DEST = os.path.join(REPO_ROOT, "skills-desktop")
+RULES_DIR = os.path.join(REPO_ROOT, ".agents", "rules")
+
+
+def derived_rule_skills() -> set[str]:
+    """Las rules convertidas por sync-claude-kit.mjs viven en .claude/skills/
+    pero son reglas del proyecto, no skills para Claude Desktop — se excluyen."""
+    if not os.path.isdir(RULES_DIR):
+        return set()
+    return {f[:-3] for f in os.listdir(RULES_DIR) if f.endswith(".md")}
 
 
 def build(name: str) -> tuple[int, int]:
@@ -50,8 +59,9 @@ def main() -> None:
         shutil.rmtree(DEST)
     os.makedirs(DEST)
 
+    excluded = derived_rule_skills()
     for name in sorted(os.listdir(SRC)):
-        if not os.path.isdir(os.path.join(SRC, name)):
+        if not os.path.isdir(os.path.join(SRC, name)) or name in excluded:
             continue
         kb, count = build(name)
         print(f"{name:<32} {kb:>5} KB  {count:>3} archivos")
