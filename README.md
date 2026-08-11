@@ -36,6 +36,7 @@ estrictamente "Always On".
     │   ├── pwa.md                            # Model Decision — solo proyectos PWA
     │   ├── operations.md                     # Model Decision
     │   ├── cms.md                            # Model Decision
+    │   ├── database.md                       # Model Decision — schema, migraciones, pooling, índices
     │   └── stack-conventions.md              # Glob: *.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css
     └── skills/                               # opcional — ver § Skills
 ```
@@ -76,7 +77,7 @@ Copy-Item "new-feature.md","bug-fix.md","session-close.md","security-audit.md","
 
 ```bash
 mkdir -p .agents/rules
-cp security.md architecture.md ui-ux.md seo.md pwa.md operations.md cms.md stack-conventions.md .agents/rules/
+cp security.md architecture.md ui-ux.md seo.md pwa.md operations.md cms.md database.md stack-conventions.md .agents/rules/
 ```
 
 Si el proyecto es WordPress puro o no usa alguna de las reglas (ej. un sitio sin CMS
@@ -130,6 +131,7 @@ uno define su modo en el frontmatter (`trigger`) y, salvo `manual`, una
 | `pwa.md` | Model Decision | Manifest, service worker, cache, estado offline, update flow — **solo si el proyecto es una PWA** |
 | `operations.md` | Model Decision | CI/CD, logging, infraestructura, integración de agentes/LLM |
 | `cms.md` | Model Decision | WordPress, Drupal, o CMS headless (Sanity, Contentful, Strapi) |
+| `database.md` | Model Decision | Diseño de schema, migraciones, elección de ORM, pooling, índices, credenciales de DB |
 | `stack-conventions.md` | Glob `*.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css` | Al editar cualquier archivo de esos tipos |
 
 > `tools-reference.md` **no** está en esta tabla a propósito — es workflow
@@ -242,7 +244,11 @@ actualización.
 | [emilkowalski/skills](https://github.com/emilkowalski/skill) | `emil-design-eng`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`, `apple-design`, `pick-ui-library` |
 | [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design-system`, `ui-styling` |
 
-Reinstalar o actualizar (`skills-lock.json` registra el hash de cada una):
+Reinstalar o actualizar. `skills-lock.json` registra el hash de las instaladas
+vía `npx skills` (las 9 de nutlope/emilkowalski + `api-security-best-practices`);
+las tres de `uipro init` (`ui-ux-pro-max`, `design-system`, `ui-styling`) y la
+propia `project-docs-scaffold` **no** están en el lock — el CLI de uipro no lo
+escribe, así que su única referencia de versión es este repo (git):
 
 ```bash
 npx skills add nutlope/hallmark --copy
@@ -279,29 +285,33 @@ apuntando a archivos que no existen.
 
 ## Consumo de Tokens (aproximado)
 
-Estimación por caracteres/4 — no es el tokenizer real, sirve como orden de magnitud.
+Estimación por caracteres/4 — no es el tokenizer real, sirve como orden de
+magnitud. La tabla se regenera con `python scripts/update-token-table.py` —
+no editarla a mano.
 
+<!-- token-table:start -->
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
-| `GEMINI.md` | ~1,725 | Siempre |
-| `security.md` | ~1,575 | Model Decision |
-| `architecture.md` | ~615 | Model Decision |
-| `ui-ux.md` | ~2,410 | Model Decision |
-| `seo.md` | ~1,045 | Model Decision |
-| `pwa.md` | ~550 | Model Decision — solo PWA |
-| `operations.md` | ~1,260 | Model Decision |
-| `cms.md` | ~700 | Model Decision |
-| `database.md` | ~725 | Model Decision |
-| `stack-conventions.md` | ~610 | Glob |
-| `tools-reference.md` | ~980 | Manual |
-| `new-feature.md` | ~380 | Manual |
-| `bug-fix.md` | ~355 | Manual |
-| `session-close.md` | ~545 | Manual |
-| `security-audit.md` | ~670 | Manual |
-| `deploy-checklist.md` | ~415 | Manual |
-| **Base siempre activa** | **~1,725** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~4,000–6,100** | sesión normal de código |
-| **Máximo con todo activo** | **~11,165** | improbable — varias reglas casi nunca se activan juntas |
+| `GEMINI.md` | ~1,953 | Siempre |
+| `security.md` | ~1,559 | Model Decision |
+| `architecture.md` | ~600 | Model Decision |
+| `ui-ux.md` | ~2,281 | Model Decision |
+| `seo.md` | ~1,024 | Model Decision |
+| `pwa.md` | ~539 | Model Decision — solo PWA |
+| `operations.md` | ~1,244 | Model Decision |
+| `cms.md` | ~690 | Model Decision |
+| `database.md` | ~708 | Model Decision |
+| `stack-conventions.md` | ~602 | Glob |
+| `tools-reference.md` | ~726 | Manual |
+| `new-feature.md` | ~372 | Manual |
+| `bug-fix.md` | ~345 | Manual |
+| `session-close.md` | ~527 | Manual |
+| `security-audit.md` | ~653 | Manual |
+| `deploy-checklist.md` | ~408 | Manual |
+| **Base siempre activa** | **~1,953** | `GEMINI.md` |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~2,898–6,519** | sesión normal de código |
+| **Máximo con todo activo** | **~11,926** | improbable — varias reglas casi nunca se activan juntas |
+<!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +
 CMS en el mismo mensaje), no el caso real. En la práctica, una tarea de feature

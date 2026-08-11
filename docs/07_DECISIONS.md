@@ -127,3 +127,47 @@ Es coherente con ADR-005, que ya había decidido que el contenido empaquetado en
 - 67 comentarios pasan de estar en infracción a estar bien, sin tocar una línea de código.
 - La regla ahora es auditable de verdad: un identificador en español es un hallazgo objetivo; un comentario en español ya no.
 - Si el hub se hiciera público para audiencia internacional, esta decisión hay que revisarla junto con ADR-005 — traducir el contenido empaquetado es un proyecto aparte, ya anotado en `06_TASKS.md`.
+
+## ADR-010 — El repo consume su propio kit (dogfooding)
+
+**Fecha:** 2026-08-10
+**Estado:** Aceptada
+
+**Contexto:** El hub distribuía `CLAUDE.md`, `.claude/commands/` y
+`.claude/agents/` a los proyectos consumidores, pero él mismo no tenía ninguno
+de los tres: no había `CLAUDE.md` en la raíz (con lo que `core/CORE.md` nunca
+se cargaba en una sesión de Claude Code acá), los subagentes vivían en
+`claude-agents/` donde Claude Code no los levanta, y los comandos no existían
+localmente. Los tres bugs corregidos en el ciclo anterior (comandos ausentes
+del ZIP, `code-reviewer` con rutas inexistentes, segmentos duplicados) eran
+exactamente la clase de error que usar el propio kit habría detectado al
+primer uso.
+
+**Decisión:**
+
+- `claude-agents/` se mueve a `.claude/agents/` — pasa a ser fuente del
+  manifest **y** instalación local a la vez (un solo cambio de ruta en el
+  generador).
+- `.claude/commands/` se genera desde los workflows con
+  `scripts/sync-claude-kit.mjs`, con la misma conversión de frontmatter
+  que usa el generador del sitio. Es un derivado: no se edita a mano.
+- `CLAUDE.md` en la raíz importa `core/CORE.md` vía `@core/CORE.md` (no se
+  copia — evita una tercera copia que divergiría) y agrega las
+  particularidades del repo: mapa fuente/derivado, regla de paridad
+  CORE↔GEMINI y jerarquía de skills de diseño.
+
+**Alternativas consideradas:** Copiar `CORE.md` como `CLAUDE.md` — descartado
+por crear una tercera copia a sincronizar a mano. Dejar los agentes en
+`claude-agents/` y copiarlos a `.claude/agents/` — descartado por el mismo
+motivo (dos copias).
+
+**Consecuencias:**
+
+- Toda sesión de Claude Code en este repo carga las reglas del kit y tiene
+  los 8 subagentes y los 6 comandos disponibles — los errores de rutas o
+  formato se detectan usándolos.
+- Tras editar un workflow hay que correr `sync-claude-kit.mjs` (anotado
+  en `CLAUDE.md`).
+- Los agentes referencian `.claude/skills/<regla>/SKILL.md`, que en este repo
+  no existe (las rules viven en `.agents/rules/`) — degradan con aviso, y
+  `CLAUDE.md` documenta la equivalencia.
