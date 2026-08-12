@@ -4,7 +4,7 @@
     "brandTagline": "Dual-AI System",
     "metaTitle": "AI Rules Hub | Dual-AI Workflow Packs",
     "metaDescription": "Catálogo descargable de rules, skills y plantillas SDD para arrancar proyectos con el workflow dual-AI.",
-    "footerTagline": "AI Rules Hub — Impulsando tu workflow de IA",
+    "footerTagline": "AI Rules Hub — rules, skills y plantillas listas para bajar",
     "footerChangelog": "Bitácora de cambios",
     "footerDirectory": "Directorio skills.sh ↗",
     "footerTools": "Antigravity + Claude Code",
@@ -25,7 +25,7 @@
     "promptTemplates": "Templates de prompt"
   },
   "Home": {
-    "badge": "🚀 Workflow Dual-AI Integrado",
+    "badge": "🚀 Antigravity + Claude Code",
     "titleStart": "Rules, skills y plantillas",
     "titleAccent": "listas para descargar",
     "intro": "Un catálogo único de reglas de gobernanza, skills verificadas y plantillas SDD — empaquetado para el agente que uses. Elegí tu modo de trabajo y bajá el ZIP listo para tirar en la raíz del proyecto.",
@@ -47,7 +47,7 @@
     "modeClaudeBullet2": "CLAUDE.md + .claude/skills",
     "modeClaudeBullet3": "Comandos nativos + /docs",
     "skillsTitle": "Catálogo de skills y prompts",
-    "skillsBody": "Transversal a los tres modos: qué hace cada skill, cuándo usarla y cómo instalarla — más templates de prompt para los pedidos más frecuentes. Se consulta aparte del armador de packs.",
+    "skillsBody": "Vale para los tres modos: qué hace cada skill, cuándo usarla y cómo instalarla — más templates de prompt para los pedidos más frecuentes. Va aparte del armador de packs.",
     "skillsCta": "Ver catálogo →",
     "changelogTitle": "¿Qué cambió últimamente?",
     "changelogBody": "El historial de cambios en rules, skills y el sitio está en la bitácora.",
@@ -85,7 +85,7 @@
     "cta": "Usar este stack →"
   },
   "Agents": {
-    "badge": "🤖 Modo Autónomo Claude Code",
+    "badge": "🤖 Claude Code",
     "title": "Claude Code Packs",
     "intro": "El kit completo para trabajar con Claude Code — memoria, skills y comandos en formato nativo: <claudeMd></claudeMd> + <skillsDir></skillsDir> + <commandsDir></commandsDir>, siguiendo el estándar <skillMd></skillMd> que usa <skillsShLink></skillsShLink>. Incluye además un kit de <subagentsLink></subagentsLink> (<agentsDir></agentsDir>) y las plantillas SDD de /docs. Es autocontenido: no depende de ningún otro agente.",
     "introSubagentsLink": "subagentes independientes",
