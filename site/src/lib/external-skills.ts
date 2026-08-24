@@ -184,4 +184,89 @@ export const EXTERNAL_SKILLS: ExternalSkill[] = [
       "Ojo: esta skill se sacó del ZIP de /build — su rol quedó consolidado en la skill propia frontend-design. Queda acá como referencia por si querés la base de datos completa.",
     ],
   },
+  {
+    id: "webapp-testing",
+    label: "webapp-testing",
+    author: "Anthropic",
+    site: "https://skills.sh/s/anthropics/skills/webapp-testing",
+    repo: "https://github.com/anthropics/skills",
+    summary:
+      "Patrones de testing para apps web — cuándo probar unitario, integración o end-to-end, y qué mockear.",
+    whatItDoes:
+      "Da el criterio para elegir el nivel de prueba correcto según lo que se está verificando, en vez de que el agente escriba tests que solo cubren la implementación y siempre pasan.",
+    whenToUse: [
+      "Escribir tests nuevos para una feature — antes de decidir si es unitario, de integración o e2e.",
+      "Revisar una suite existente que tiene alta cobertura pero no atrapa regresiones reales.",
+      "Decidir qué mockear y qué probar contra la implementación real.",
+    ],
+    install: [
+      {
+        tool: "Claude Code / Cursor / Codex",
+        command: "npx skills add anthropics/skills --skill webapp-testing",
+      },
+    ],
+    usage: [
+      "Se activa sola al pedir tests para código de una app web.",
+      "También se puede invocar por nombre al revisar una suite existente.",
+    ],
+    notes: ["Parte del mismo repo oficial que frontend-design y canvas-design."],
+  },
+  {
+    id: "test-driven-development",
+    label: "test-driven-development",
+    author: "obra (superpowers)",
+    site: "https://skills.sh/s/obra/superpowers/test-driven-development",
+    repo: "https://github.com/obra/superpowers",
+    summary:
+      "Loop de TDD: test que falla primero, cambio mínimo para pasarlo, verificación, recién ahí refactor.",
+    whatItDoes:
+      "Fuerza el orden correcto — test antes que implementación — para que el agente no escriba código primero y le agregue tests de relleno después, que es lo que produce cobertura sin protección real.",
+    whenToUse: [
+      "Implementar una función o endpoint donde el comportamiento esperado ya se puede describir de antemano.",
+      "Arreglar un bug — escribir primero el test que lo reproduce, después el fix.",
+      "Cuando la cobertura existe pero nadie confía en que atrapa regresiones.",
+    ],
+    install: [
+      {
+        tool: "Claude Code / Cursor / Codex",
+        command: "npx skills add obra/superpowers --skill test-driven-development",
+      },
+    ],
+    usage: [
+      "Se activa sola al implementar una feature nueva con comportamiento verificable.",
+      "Se puede invocar por nombre: \"usá test-driven-development para esto\".",
+    ],
+    notes: [
+      "Parte del paquete superpowers — incluye también brainstorming, systematic-debugging y otras skills de proceso.",
+    ],
+  },
+  {
+    id: "copywriting",
+    label: "copywriting",
+    author: "Corey Haines",
+    site: "https://skills.sh/s/coreyhaines31/marketingskills/copywriting",
+    repo: "https://github.com/coreyhaines31/marketingskills",
+    summary:
+      "Copy persuasivo para headlines, landing pages, email y ads — claridad y beneficios concretos antes que creatividad.",
+    whatItDoes:
+      "Da un framework de copywriting orientado a conversión: beneficios sobre features, lenguaje del cliente sobre jerga de producto, un CTA claro por sección. Sirve para redactar de cero o para revisar copy ya escrito que suena genérico.",
+    whenToUse: [
+      "Escribir el copy de una landing, feature page o pricing page desde cero.",
+      "Pulir un texto ya escrito que suena a folleto ('robusto', 'innovador', frases largas parejas).",
+      "Redactar CTAs, headlines o subject lines de email.",
+    ],
+    install: [
+      {
+        tool: "Claude Code / Cursor / Codex",
+        command: "npx skills add coreyhaines31/marketingskills --skill copywriting",
+      },
+    ],
+    usage: [
+      "Se activa sola al pedir copy de marketing o revisar texto de interfaz.",
+      "Pide contexto de producto/audiencia si no lo tiene — mejor dárselo de entrada.",
+    ],
+    notes: [
+      "Parte de un paquete de 20 skills de marketing del mismo autor (SEO, CRO, email, ads) — se pueden instalar sueltas o todas juntas.",
+    ],
+  },
 ];

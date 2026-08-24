@@ -1,13 +1,13 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getItemsByCategory, type ManifestItem } from "@/lib/manifest";
+import { getCatalogSkills, type CatalogSkill } from "@/lib/skill-catalog";
 import { JOB_TYPES, getSkillNamesForJobType } from "@/lib/skill-job-types";
 
 export default async function SkillsPorProyectoPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
   const t = await getTranslations("SkillsByProject");
 
-  const skills = getItemsByCategory("skill").filter((i) => i.tool === "antigravity");
+  const skills = getCatalogSkills();
   const byName = new Map(skills.map((s) => [s.label, s]));
 
   return (
@@ -28,7 +28,7 @@ export default async function SkillsPorProyectoPage({ params }: { params: { loca
       {JOB_TYPES.map((jobType) => {
         const items = getSkillNamesForJobType(jobType.id)
           .map((name) => byName.get(name))
-          .filter((i): i is ManifestItem => Boolean(i))
+          .filter((i): i is CatalogSkill => Boolean(i))
           .sort((a, b) => a.label.localeCompare(b.label));
 
         return (
@@ -41,10 +41,10 @@ export default async function SkillsPorProyectoPage({ params }: { params: { loca
                 <div key={item.id} className="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800">
                   <h3 className="font-mono font-semibold">{item.label}</h3>
                   <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-                    {item.description || "—"}
+                    {item.summary || "—"}
                   </p>
                   <code className="mt-3 block break-words rounded bg-neutral-100 px-2 py-1 text-xs dark:bg-neutral-900">
-                    {item.install || t("noInstallFallback")}
+                    {item.install[0]?.command ?? t("noInstallFallback")}
                   </code>
                 </div>
               ))}

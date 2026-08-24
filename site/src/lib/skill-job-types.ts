@@ -1,4 +1,4 @@
-export type JobTypeId = "seo" | "web" | "backend" | "general";
+export type JobTypeId = "seo" | "web" | "backend" | "testing" | "redaccion" | "general";
 
 export interface JobType {
   id: JobTypeId;
@@ -23,6 +23,16 @@ export const JOB_TYPES: JobType[] = [
     description: "Servicios, APIs, manejo de errores, runtime.",
   },
   {
+    id: "testing",
+    label: "Testing",
+    description: "Escribir y automatizar pruebas — TDD, unitarias, end-to-end.",
+  },
+  {
+    id: "redaccion",
+    label: "Redacción",
+    description: "Copy, contenido y comunicación persuasiva.",
+  },
+  {
     id: "general",
     label: "General",
     description: "Transversales — no atadas a una capa técnica.",
@@ -43,6 +53,9 @@ export const SKILL_JOB_TYPES: Record<string, JobTypeId[]> = {
   "prisma-database-setup": ["backend"],
   "error-handling-patterns": ["backend", "general"],
   brainstorming: ["general"],
+  "webapp-testing": ["testing"],
+  "test-driven-development": ["testing"],
+  copywriting: ["redaccion"],
 };
 
 export function getJobTypesForSkill(skillName: string): JobType[] {
