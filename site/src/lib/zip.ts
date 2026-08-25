@@ -90,11 +90,18 @@ function buildInstallMd(selected: ManifestItem[]): string {
   const rest = selected.filter((i) => i.category !== "template");
 
   const lines: string[] = ["# Instalación\n"];
-  lines.push(
-    "Este ZIP fue generado por AI Rules Hub y es autocontenido: todo lo que hay " +
-      "acá adentro es para un solo agente. Cada sección de abajo corresponde a una " +
-      "carpeta del ZIP.\n"
-  );
+  if (rest.length > 0) {
+    lines.push(
+      "Este ZIP fue generado por AI Rules Hub y es autocontenido: todo lo que hay " +
+        "acá adentro es para un solo agente. Cada sección de abajo corresponde a una " +
+        "carpeta del ZIP.\n"
+    );
+  } else {
+    lines.push(
+      "Este ZIP fue generado por AI Rules Hub — son las plantillas SDD de `docs/`, " +
+        "independientes del agente que uses.\n"
+    );
+  }
 
   const byTool = new Map<ToolId, ManifestItem[]>();
   for (const item of rest) {

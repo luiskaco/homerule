@@ -50,7 +50,6 @@ export default async function AntigravityPage({ params }: { params: { locale: st
             {t.rich("intro", {
               geminiMd: () => codeChip("text-amber-300", "GEMINI.md"),
               agentsDir: () => codeChip("text-cyan-300", ".agents/"),
-              docsDir: () => codeChip("text-pink-300", "/docs"),
             })}
           </p>
 
@@ -60,9 +59,6 @@ export default async function AntigravityPage({ params }: { params: { locale: st
             </div>
             <div className="flex items-center gap-2 rounded-lg bg-slate-900/60 px-3 py-1.5 border border-slate-800">
               <span className="text-cyan-400">✓</span> {t("chip2")}
-            </div>
-            <div className="flex items-center gap-2 rounded-lg bg-slate-900/60 px-3 py-1.5 border border-slate-800">
-              <span className="text-violet-400">✓</span> {t("chip3")}
             </div>
           </div>
         </div>

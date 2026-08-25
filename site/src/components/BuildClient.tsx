@@ -15,7 +15,6 @@ const SECTIONS: { category: ItemCategory; titleKey: string }[] = [
   { category: "agent", titleKey: "sectionAgent" },
   { category: "command", titleKey: "sectionCommand" },
   { category: "database", titleKey: "sectionDatabase" },
-  { category: "template", titleKey: "sectionTemplate" },
 ];
 
 export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId: string }) {
@@ -40,7 +39,11 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
 
   // Items visibles para este tool. Antigravity y Claude Code son catálogos
   // estancos: no hay items compartidos, así que alcanza con filtrar por `tool`.
-  const items = useMemo(() => (allItems ?? []).filter((i) => i.tool === tool), [allItems, tool]);
+  // Las plantillas SDD (categoría "template") se bajan aparte, desde /plantillas.
+  const items = useMemo(
+    () => (allItems ?? []).filter((i) => i.tool === tool && i.category !== "template"),
+    [allItems, tool]
+  );
 
   const totalTokens = useMemo(() => {
     return items

@@ -22,7 +22,8 @@
     "buildCustom": "Armar a medida",
     "skillCatalog": "Catálogo de skills",
     "skillsByProject": "Skills por proyecto",
-    "promptTemplates": "Templates de prompt"
+    "promptTemplates": "Templates de prompt",
+    "docTemplates": "Plantillas SDD"
   },
   "Home": {
     "badge": "🚀 Antigravity + Claude Code",
@@ -35,17 +36,16 @@
     "modesTitle": "Elegí tu modo de trabajo",
     "modesSubtitle": "Dos kits independientes. Elegí tu agente y bajás todo lo suyo, sin piezas del otro.",
     "modeAntigravityTitle": "Gemini con GEMINI.md",
-    "modeAntigravityDescription": "El workflow completo para Antigravity: memoria global, rules y skills en .agents/, y las plantillas SDD de /docs.",
+    "modeAntigravityDescription": "El workflow completo para Antigravity: memoria global, rules y skills en .agents/.",
     "modeAntigravityCta": "Ver presets por stack",
     "modeAntigravityBullet1": "{count, plural, one {# stack preconfigurado} other {# stacks preconfigurados}}",
     "modeAntigravityBullet2": "GEMINI.md + .agents/",
-    "modeAntigravityBullet3": "Plantillas /docs",
     "modeClaudeTitle": "Claude Code nativo",
-    "modeClaudeDescription": "El workflow completo para Claude Code en formato nativo: CLAUDE.md, skills, comandos, subagentes y las plantillas SDD de /docs.",
+    "modeClaudeDescription": "El workflow completo para Claude Code en formato nativo: CLAUDE.md, skills, comandos y subagentes.",
     "modeClaudeCta": "Ver presets por stack",
     "modeClaudeBullet1": "{count, plural, one {# subagente listo} other {# subagentes listos}}",
     "modeClaudeBullet2": "CLAUDE.md + .claude/skills",
-    "modeClaudeBullet3": "Comandos nativos + /docs",
+    "modeClaudeBullet3": "Comandos nativos",
     "skillsTitle": "Catálogo de skills y prompts",
     "skillsBody": "Vale para los tres modos: qué hace cada skill, cuándo usarla y cómo instalarla — más templates de prompt para los pedidos más frecuentes. Va aparte del armador de packs.",
     "skillsCta": "Ver catálogo →",
@@ -59,10 +59,9 @@
     "badge": "🚀 Antigravity / Gemini",
     "titleStart": "Arrancá tu próximo proyecto",
     "titleAccent": "en un click",
-    "intro": "Elegí el stack de tu proyecto y descargá un paquete ZIP completo con el <geminiMd></geminiMd> global, las rules y skills de <agentsDir></agentsDir>, y plantillas SDD de <docsDir></docsDir> organizadas y listas para usar.",
+    "intro": "Elegí el stack de tu proyecto y descargá un paquete ZIP completo con el <geminiMd></geminiMd> global y las rules y skills de <agentsDir></agentsDir>, listo para usar.",
     "chip1": "GEMINI.md global",
     "chip2": ".agents/ rules + skills",
-    "chip3": "Plantillas /docs",
     "presetsTitle": "Presets recomendados por stack",
     "presetsSubtitle": "Seleccioná una arquitectura preconfigurada para descargar tu bundle listo.",
     "presetBadge": "Preset",
@@ -87,7 +86,7 @@
   "Agents": {
     "badge": "🤖 Claude Code",
     "title": "Claude Code Packs",
-    "intro": "El kit completo para trabajar con Claude Code — memoria, skills y comandos en formato nativo: <claudeMd></claudeMd> + <skillsDir></skillsDir> + <commandsDir></commandsDir>, siguiendo el estándar <skillMd></skillMd> que usa <skillsShLink></skillsShLink>. Incluye además un kit de <subagentsLink></subagentsLink> (<agentsDir></agentsDir>) y las plantillas SDD de /docs. Es autocontenido: no depende de ningún otro agente.",
+    "intro": "El kit completo para trabajar con Claude Code — memoria, skills y comandos en formato nativo: <claudeMd></claudeMd> + <skillsDir></skillsDir> + <commandsDir></commandsDir>, siguiendo el estándar <skillMd></skillMd> que usa <skillsShLink></skillsShLink>. Incluye además un kit de <subagentsLink></subagentsLink> (<agentsDir></agentsDir>). Es autocontenido: no depende de ningún otro agente.",
     "introSubagentsLink": "subagentes independientes",
     "toolBadge": "Tool Pack",
     "stacksAvailable": "{count, plural, one {# stack disponible} other {# stacks disponibles}}",
@@ -160,7 +159,6 @@
     "sectionAgent": "Subagentes (.claude/agents/)",
     "sectionCommand": "Comandos",
     "sectionDatabase": "Base de datos (opcional, cualquier stack)",
-    "sectionTemplate": "Plantillas SDD (docs/)",
     "projectRulesTitle": "Reglas del proyecto (convertidas a skill nativa)",
     "projectRulesBody": "No son skills externas — es la misma convención de <rulesDir></rulesDir> en formato <skillMd></skillMd>, para que Claude Code las siga igual que Gemini.",
     "externalToolsHeading": "Herramientas externas (no van en el ZIP)",
@@ -169,5 +167,15 @@
     "download": "Descargar ZIP",
     "generating": "Generando...",
     "close": "Cerrar"
+  },
+  "DocTemplates": {
+    "metaTitle": "Plantillas SDD | AI Rules Hub",
+    "metaDescription": "Las plantillas de docs/ — qué va en cada archivo, del PRD al changelog.",
+    "title": "Plantillas SDD",
+    "intro": "Los archivos de docs/ que estructuran un proyecto de PRD a changelog. Independientes del agente que uses — se bajan aparte de los packs de Antigravity y Claude Code.",
+    "onlyAntigravity": "Solo Antigravity",
+    "downloadBody": "Un ZIP con los 10 archivos, listos para copiar a docs/ en la raíz de tu proyecto.",
+    "download": "Descargar ZIP",
+    "generating": "Generando..."
   }
 }

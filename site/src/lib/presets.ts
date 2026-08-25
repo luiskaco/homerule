@@ -16,33 +16,6 @@ export interface Preset {
   externalTools: ExternalTool[];
 }
 
-/**
- * Plantillas de /docs. El contenido es el mismo para los dos tools, pero cada
- * uno tiene su propio item en el manifest — Antigravity y Claude Code son
- * catálogos estancos, ningún item pertenece a los dos.
- */
-const TEMPLATE_IDS = [
-  "01_PROJECT_PRD",
-  "02_SDD",
-  "03_SYSTEM_SPEC",
-  "04_DATA_MODEL",
-  "05_ARCHITECTURE",
-  "06_TASKS",
-  "07_DECISIONS",
-  "08_CHANGELOG",
-  // Sin numerar a propósito: los 01-08 son documentos de fase, CONTEXT es un
-  // glosario vivo que se actualiza continuamente (ADR-012).
-  "CONTEXT",
-];
-
-/** Override de stack por proyecto — específico de Antigravity, no aplica a Claude Code. */
-const ANTIGRAVITY_ONLY_TEMPLATE_IDS = ["00_GEMINI_START"];
-
-function templateItemIds(tool: ToolId): string[] {
-  const ids = tool === "antigravity" ? [...ANTIGRAVITY_ONLY_TEMPLATE_IDS, ...TEMPLATE_IDS] : TEMPLATE_IDS;
-  return ids.map((id) => `${tool}:template:${id}`);
-}
-
 const CONTEXT7: ExternalTool = {
   name: "Context7 MCP",
   installCommand: "npx ctx7 setup",
@@ -168,14 +141,12 @@ function toolItemIds(tool: ToolId, shape: StackShape): string[] {
   if (tool === "antigravity") {
     return [
       ...ANTIGRAVITY_GLOBAL_ITEM_IDS,
-      ...templateItemIds(tool),
       ...shape.rules.map((r) => `rule:${r}`),
       ...shape.skills.map((s) => `skill:${s}`),
     ];
   }
   return [
     `${tool}:core`,
-    ...templateItemIds(tool),
     ...shape.rules.map((r) => `${tool}:rule:${r}`),
     ...shape.skills.map((s) => `${tool}:skill:${s}`),
     ...(tool === "claude-code" ? [...CLAUDE_COMMAND_ITEM_IDS, ...CLAUDE_AGENT_ITEM_IDS] : []),

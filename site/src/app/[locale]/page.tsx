@@ -25,11 +25,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
       cardClass: "card-vibrant-purple border-t-2 border-t-violet-500",
       accentClass: "text-violet-400 group-hover:text-violet-300",
       badgeClass: "bg-violet-500/10 text-violet-300 border border-violet-500/30",
-      bullets: [
-        t("modeAntigravityBullet1", { count: stackCount }),
-        t("modeAntigravityBullet2"),
-        t("modeAntigravityBullet3"),
-      ],
+      bullets: [t("modeAntigravityBullet1", { count: stackCount }), t("modeAntigravityBullet2")],
     },
     {
       id: "claude-solo",

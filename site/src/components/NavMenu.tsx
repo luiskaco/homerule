@@ -42,6 +42,11 @@ const ENTRIES: NavEntry[] = [
       { labelKey: "promptTemplates", href: "/prompts" },
     ],
   },
+  {
+    id: "doc-templates",
+    labelKey: "docTemplates",
+    href: "/plantillas",
+  },
 ];
 
 function NavDropdown({
