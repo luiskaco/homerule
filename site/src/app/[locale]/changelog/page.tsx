@@ -50,6 +50,8 @@ const RELEASES: Release[] = [
       {
         kind: "cambios",
         items: [
+          "/subagentes pasa a mostrar los dos catálogos (4 de Antigravity + 8 de Claude Code) con el formato nativo de cada tool, y aparece también en el menú “Antigravity solo”. Antes filtraba únicamente claude-code.",
+          "Tema visual unificado en las páginas que quedaban con el estilo viejo: /subagentes, /mejores-skill, /skills-por-proyecto, /prompts y /plantillas. Se arrastraban también el armador de ZIP, su modal de preview (se abría con fondo blanco sobre el sitio oscuro) y el bloque de descarga de plantillas.",
           "Regla de idioma corregida para que refleje la realidad: el núcleo decía “código siempre en inglés”, pero el repo tenía 67 comentarios en español contra 15 en inglés. Ahora es “identificadores y nombres de archivo en inglés; comentarios y documentación en español”. Traducir todo se evaluó y se descartó: 4 de las 14 skills empaquetadas son de terceros y están en inglés, y el español mide solo 3,8% más que el inglés en texto técnico.",
           "Antigravity y Claude Code pasan a ser kits totalmente independientes: se elimina el modo de uso híbrido. Ningún item pertenece a los dos tools — las plantillas de /docs, las skills externas y el add-on de base de datos se emiten una vez por tool. Cada ZIP es autocontenido y no asume que tengas el otro agente instalado.",
           "El home pasa de 3 modos de uso a 2, y /subagentes se mueve dentro del menú “Claude solo”.",
@@ -66,6 +68,7 @@ const RELEASES: Release[] = [
       {
         kind: "agregado",
         items: [
+          "Cuatro subagentes para Antigravity: auditor y security (solo lectura) más backend y frontend (implementan y verifican su propio trabajo en sandbox). Antigravity soporta subagentes declarables en archivo — .agents/agents/<nombre>/agent.md — y el kit lo daba por imposible. Vienen preseleccionados en los 8 presets de Antigravity.",
           "Dos subagentes nuevos, de 6 a 8: ui-reviewer (accesibilidad, los 5 estados de UI, responsive, SEO on-page y consistencia con el sistema de diseño) y test-writer (detecta el framework de test del proyecto en vez de asumirlo, y nunca modifica el código bajo prueba).",
         ],
       },

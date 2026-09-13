@@ -26,18 +26,20 @@ export default function PromptTemplateCard({ template }: { template: PromptTempl
   }
 
   return (
-    <div className="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800">
+    <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-slate-700">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="font-semibold">{template.title}</h2>
-          <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-            {template.whenToUse}
-          </p>
+          <h2 className="font-bold text-white">{template.title}</h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-400">{template.whenToUse}</p>
         </div>
         <button
           type="button"
           onClick={handleCopy}
-          className="shrink-0 rounded-md border border-neutral-300 px-3 py-1.5 text-xs hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900"
+          className={`shrink-0 rounded-xl border px-3 py-1.5 text-xs font-bold transition ${
+            copied
+              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
+              : "border-slate-700 bg-slate-800/60 text-slate-300 hover:border-violet-500/50 hover:text-white"
+          }`}
         >
           {copied ? t("copied") : t("copy")}
         </button>
@@ -47,14 +49,14 @@ export default function PromptTemplateCard({ template }: { template: PromptTempl
         {template.skillRefs.map((skill) => (
           <span
             key={skill}
-            className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-xs dark:border-neutral-700"
+            className="rounded-full border border-violet-500/30 bg-violet-500/10 px-2.5 py-0.5 font-mono text-xs text-violet-300"
           >
             {skill}
           </span>
         ))}
       </div>
 
-      <pre className="mt-4 whitespace-pre-wrap break-words rounded-md bg-neutral-100 p-3 font-mono text-xs leading-relaxed text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200">
+      <pre className="mt-4 overflow-x-auto whitespace-pre-wrap break-words rounded-xl border border-slate-800 bg-slate-950/80 p-4 font-mono text-xs leading-relaxed text-slate-300">
         {template.template}
       </pre>
     </div>

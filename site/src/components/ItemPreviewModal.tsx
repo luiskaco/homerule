@@ -26,18 +26,18 @@ export default function ItemPreviewModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-lg bg-white shadow-xl dark:bg-neutral-900"
+        className="glass-panel flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-4 border-b border-neutral-200 p-4 dark:border-neutral-800">
+        <div className="flex items-start justify-between gap-4 border-b border-slate-800 p-4">
           <div>
-            <h3 className="font-semibold">{item.label.replace(/\.md$/, "")}</h3>
+            <h3 className="font-mono font-bold text-white">{item.label.replace(/\.md$/, "")}</h3>
             {item.description && (
-              <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+              <p className="mt-1 text-sm leading-relaxed text-slate-400">
                 {item.description}
               </p>
             )}
@@ -45,22 +45,22 @@ export default function ItemPreviewModal({
           <button
             onClick={onClose}
             aria-label={t("close")}
-            className="rounded-md px-2 py-1 text-sm text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            className="rounded-lg px-2 py-1 text-sm text-slate-400 transition hover:bg-slate-800 hover:text-white"
           >
             ✕
           </button>
         </div>
 
         {item.files.length > 1 && (
-          <div className="flex flex-wrap gap-1 border-b border-neutral-200 px-4 py-2 dark:border-neutral-800">
+          <div className="flex flex-wrap gap-1 border-b border-slate-800 px-4 py-2">
             {item.files.map((f, i) => (
               <button
                 key={f.destPath}
                 onClick={() => setActiveFile(i)}
-                className={`rounded px-2 py-1 text-xs ${
+                className={`rounded-lg px-2 py-1 font-mono text-xs transition ${
                   i === activeFile
-                    ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-                    : "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
+                    ? "bg-violet-500 text-white"
+                    : "bg-slate-800/60 text-slate-400 hover:text-slate-200"
                 }`}
               >
                 {f.destPath}
@@ -70,8 +70,8 @@ export default function ItemPreviewModal({
         )}
 
         <div className="overflow-auto p-4">
-          <p className="mb-2 font-mono text-xs text-neutral-400">{file.destPath}</p>
-          <pre className="whitespace-pre-wrap break-words font-mono text-xs leading-relaxed text-neutral-800 dark:text-neutral-200">
+          <p className="mb-2 font-mono text-xs text-slate-500">{file.destPath}</p>
+          <pre className="whitespace-pre-wrap break-words font-mono text-xs leading-relaxed text-slate-300">
             {file.content}
           </pre>
         </div>

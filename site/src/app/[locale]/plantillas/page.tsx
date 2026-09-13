@@ -21,14 +21,14 @@ export default async function PlantillasPage({ params }: { params: { locale: str
     <div className="flex flex-col gap-10">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="mt-2 max-w-2xl text-sm text-neutral-600 dark:text-neutral-400">{t("intro")}</p>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">{t("intro")}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {templates.map((template) => (
           <div
             key={template.file}
-            className="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800"
+            className="card-vibrant-purple rounded-2xl p-5"
           >
             <div className="flex items-start justify-between gap-2">
               <h3 className="font-mono text-sm font-semibold">{template.file}</h3>
@@ -38,7 +38,7 @@ export default async function PlantillasPage({ params }: { params: { locale: str
                 </span>
               )}
             </div>
-            <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">{template.description}</p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">{template.description}</p>
           </div>
         ))}
       </div>

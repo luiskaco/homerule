@@ -11,15 +11,15 @@
 
 - [ ] Traducir el **contenido de datos** del sitio al inglés — hoy la interfaz está en ES/EN pero estos archivos siguen solo en español: `lib/skill-catalog.ts` (~295 líneas), `lib/external-skills.ts` (~187), `lib/prompt-templates.ts` (~193), las descripciones de `STACK_LABELS` en `lib/presets.ts`, las entradas de `RELEASES` en `/changelog`, y las descripciones que salen del frontmatter de las rules/skills vía `manifest.json`. Requiere decidir si se mueven a `messages/*.json` o si llevan un campo por locale.
 
-- [ ] Unificar el tema visual en las páginas que quedaron con el estilo viejo (`neutral-*`, light/dark): `/mejores-skill`, `/skills-por-proyecto`, `/prompts`, `/subagentes`. El resto ya usa Vibrant Flat UI 3.0.
 - [ ] Decidir si `/mejores-skill` (catálogo plano) y `/skills-por-proyecto` (agrupado por tipo de trabajo) se mantienen separados o se fusionan en una página con dos vistas. Hoy muestran el mismo set de skills con distinto corte.
 - [ ] Evaluar si `/changelog` debería estar en el nav principal además del footer.
 - [ ] **Empaquetar el kit de Claude Code como plugin nativo.** La dirección ya está decidida en ADR-011 (se suma a los ZIPs, no los reemplaza). Falta: `.claude-plugin/plugin.json` con el array explícito de rutas de skills, decidir el esquema de versión — hoy el proyecto no versiona — y el paso de release que suba plugin y repo juntos.
-- [ ] Afinar el campo `model` por subagente: `explorer` puede correr en Haiku (búsqueda barata); `planner` y `security-auditor` justifican modelo grande.
-- [ ] Decidir si `/subagentes` pasa a mostrar los dos catálogos (hoy filtra solo `claude-code`, así que los 4 de Antigravity no aparecen aunque sí se descargan desde `/build`). Requiere tocar `messages/es.json` y `messages/en.json` — los textos de la página hablan de `.claude/agents/` como si fuera el único formato.
 
 ## Completado
 
+- [x] **`/subagentes` muestra los dos catálogos**: 4 de Antigravity + 8 de Claude Code, con el formato y la ruta de cada tool, badges de "escribe"/"solo lectura" y tier de modelo derivados del frontmatter real del agente (no de una lista a mano, para que no se desactualice). Sumada también al menú "Antigravity solo".
+- [x] **Tema visual unificado**: `/mejores-skill`, `/skills-por-proyecto`, `/prompts`, `/subagentes` y `/plantillas` pasan a Vibrant Flat UI 3.0. Arrastraban el estilo viejo también `BuildClient`, `ItemPreviewModal` (el modal de preview se abría con fondo blanco sobre el sitio oscuro) y `DocTemplatesDownload`. Ya no queda ninguna clase `neutral-*` en `site/src`.
+- [x] **Campo `model` por subagente** — verificado, ya estaba bien: `explorer` y `docs-writer` en haiku, `planner` y `security-auditor` en opus, el resto en sonnet. Del lado Antigravity, `security` en `pro` y el resto en `inherit`.
 - [x] **4 subagentes de Antigravity** (ADR-013): `auditor`, `backend`, `frontend` y `security` en `.agents/agents/<nombre>/agent.md` — el path de descubrimiento nativo del workspace, así que la fuente del repo es también la instalación. Se suman al manifest como items `antigravity:agent:*` y quedan preseleccionados en los 8 presets. Corrige de paso el comentario de `generate-manifest.mjs` que daba por hecho que Antigravity no tenía subagentes declarables.
 
 - [x] **Skill `domain-modeling` + plantilla `CONTEXT.md`** (ADR-012): glosario vivo del vocabulario del dominio, sin numerar a propósito (los 01-08 son documentos de fase). Preseleccionada en los 7 stacks reales. Hueco detectado comparando con `mattpocock/skills`.

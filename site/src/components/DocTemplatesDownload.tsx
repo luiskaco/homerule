@@ -28,14 +28,14 @@ export default function DocTemplatesDownload() {
   }
 
   return (
-    <div className="rounded-lg border border-neutral-200 p-6 dark:border-neutral-800">
+    <div className="glass-panel rounded-2xl p-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">{t("downloadBody")}</p>
+        <p className="text-sm leading-relaxed text-slate-400">{t("downloadBody")}</p>
         <button
           type="button"
           onClick={handleDownload}
           disabled={downloading}
-          className="shrink-0 rounded-lg bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+          className="shrink-0 rounded-xl bg-violet-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-violet-400 disabled:opacity-50"
         >
           {downloading ? t("generating") : t("download")}
         </button>

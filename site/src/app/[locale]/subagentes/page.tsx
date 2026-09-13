@@ -1,73 +1,178 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getItemsByCategory } from "@/lib/manifest";
+import type { ManifestItem } from "@/lib/manifest";
 import { getPreset } from "@/lib/presets";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: "Subagentes" });
+  return { title: t("metaTitle"), description: t("metaDescription") };
+}
+
+/**
+ * Tools que escriben archivos, en los dos formatos. Se detectan sobre el
+ * frontmatter real del agente en vez de mantener una lista a mano acá — así un
+ * agente nuevo o un cambio de tools no deja la ficha desactualizada en silencio.
+ */
+const WRITE_TOOLS = [
+  "write_to_file",
+  "replace_file_content",
+  "multi_replace_file_content",
+  "Write",
+  "Edit",
+  "NotebookEdit",
+];
+
+function frontmatterOf(item: ManifestItem): string {
+  const content = item.files[0]?.content ?? "";
+  return content.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? "";
+}
+
+function writesFiles(item: ManifestItem): boolean {
+  const fm = frontmatterOf(item);
+  return WRITE_TOOLS.some((tool) => new RegExp(`\\b${tool}\\b`).test(fm));
+}
+
+function modelOf(item: ManifestItem): string | null {
+  return frontmatterOf(item).match(/^model:\s*(\S+)/m)?.[1] ?? null;
+}
+
+/** `auditor/agent.md` → `auditor` · `code-reviewer.md` → `code-reviewer` */
+function agentName(item: ManifestItem): string {
+  return item.label.replace(/\/agent\.md$/, "").replace(/\.md$/, "");
+}
+
+function AgentCard({ item, accent, t }: { item: ManifestItem; accent: string; t: (k: string) => string }) {
+  const writes = writesFiles(item);
+  const model = modelOf(item);
+
+  return (
+    <div className={`${accent} rounded-2xl p-5`}>
+      <div className="flex flex-wrap items-center gap-2">
+        <h3 className="font-mono text-sm font-bold text-white">{agentName(item)}</h3>
+        <span
+          className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
+            writes
+              ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+              : "border-cyan-500/30 bg-cyan-500/10 text-cyan-300"
+          }`}
+        >
+          {writes ? t("badgeWrites") : t("badgeReadOnly")}
+        </span>
+        {model && (
+          <span className="rounded-full border border-slate-700 bg-slate-800/60 px-2 py-0.5 font-mono text-[10px] text-slate-400">
+            {model}
+          </span>
+        )}
+      </div>
+      <p className="mt-2 text-sm leading-relaxed text-slate-400">{item.description}</p>
+    </div>
+  );
+}
 
 export default async function SubagentesPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
   const t = await getTranslations("Subagentes");
 
-  const agents = getItemsByCategory("agent").filter((i) => i.tool === "claude-code");
-  const preset = getPreset("claude-code", "manual")!;
+  const all = getItemsByCategory("agent");
+  const antigravityAgents = all.filter((i) => i.tool === "antigravity");
+  const claudeAgents = all.filter((i) => i.tool === "claude-code");
+
+  const antigravityPreset = getPreset("antigravity", "manual")!;
+  const claudePreset = getPreset("claude-code", "manual")!;
 
   return (
     <div className="flex flex-col gap-10">
-      <section>
-        <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
-        <p className="mt-3 max-w-2xl text-neutral-600 dark:text-neutral-400">
-          {t.rich("intro", {
-            agentsGlob: () => <code>.claude/agents/*.md</code>,
-            description: () => <code>description</code>,
-          })}
-        </p>
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl sm:p-12">
+        <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
+        <div className="relative z-10 flex flex-col items-start gap-4">
+          <div className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 px-4 py-1.5 text-xs font-bold tracking-wide text-violet-300 ring-1 ring-inset ring-violet-500/30 backdrop-blur-md">
+            {t("badge", { count: antigravityAgents.length + claudeAgents.length })}
+          </div>
+          <h1 className="max-w-3xl text-3xl font-black tracking-tight sm:text-5xl">
+            {t("titleStart")} <span className="text-gradient-purple">{t("titleAccent")}</span>
+          </h1>
+          <p className="max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">{t("intro")}</p>
+        </div>
       </section>
 
-      <section className="rounded-lg border border-dashed border-neutral-300 p-5 text-sm text-neutral-600 dark:border-neutral-700 dark:text-neutral-400">
-        <h2 className="font-semibold text-neutral-900 dark:text-neutral-100">{t("whatIsTitle")}</h2>
-        <p className="mt-2">
-          {t.rich("whatIsBody", {
-            md: () => <code>.md</code>,
-            name: () => <code>name</code>,
-            description: () => <code>description</code>,
-            description2: () => <code>description</code>,
-            tools: () => <code>tools</code>,
-            model: () => <code>model</code>,
-            agentsDir: () => <code>.claude/agents/</code>,
-          })}
-        </p>
+      <section className="glass-panel rounded-2xl p-5 sm:p-6">
+        <h2 className="text-lg font-bold text-white">{t("whatIsTitle")}</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">{t("whatIsBody")}</p>
+
+        <div className="mt-5 overflow-x-auto">
+          <table className="w-full min-w-[36rem] border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-b border-slate-800 text-xs uppercase tracking-wide text-slate-500">
+                <th className="py-2 pr-4 font-bold">{t("formatTool")}</th>
+                <th className="py-2 pr-4 font-bold">{t("formatPath")}</th>
+                <th className="py-2 font-bold">{t("formatInvoke")}</th>
+              </tr>
+            </thead>
+            <tbody className="text-slate-400">
+              <tr className="border-b border-slate-800/60">
+                <td className="py-2.5 pr-4 font-semibold text-slate-200">Antigravity</td>
+                <td className="py-2.5 pr-4 font-mono text-xs">.agents/agents/&lt;nombre&gt;/agent.md</td>
+                <td className="py-2.5 font-mono text-xs">invoke_subagent</td>
+              </tr>
+              <tr>
+                <td className="py-2.5 pr-4 font-semibold text-slate-200">Claude Code</td>
+                <td className="py-2.5 pr-4 font-mono text-xs">.claude/agents/&lt;nombre&gt;.md</td>
+                <td className="py-2.5 font-mono text-xs">Task tool</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-500">{t("formatNote")}</p>
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold">{t("listTitle", { count: agents.length })}</h2>
+        <div className="flex flex-wrap items-baseline gap-3">
+          <h2 className="text-xl font-bold text-white">
+            {t("antigravityTitle", { count: antigravityAgents.length })}
+          </h2>
+          <span className="text-sm text-slate-500">{t("antigravitySubtitle")}</span>
+        </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          {agents.map((agent) => (
-            <div key={agent.id} className="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800">
-              <h3 className="font-mono font-semibold">{agent.label.replace(/\.md$/, "")}</h3>
-              <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">{agent.description}</p>
-            </div>
+          {antigravityAgents.map((item) => (
+            <AgentCard key={item.id} item={item} accent="card-vibrant-emerald" t={t} />
           ))}
         </div>
       </section>
 
-      <section className="rounded-lg border border-neutral-200 p-5 dark:border-neutral-800">
-        <h2 className="font-semibold">{t("downloadTitle")}</h2>
-        <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-          {t.rich("downloadBody", {
-            buildPath: () => <code>/build</code>,
-          })}
-        </p>
+      <section>
+        <div className="flex flex-wrap items-baseline gap-3">
+          <h2 className="text-xl font-bold text-white">{t("claudeTitle", { count: claudeAgents.length })}</h2>
+          <span className="text-sm text-slate-500">{t("claudeSubtitle")}</span>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {claudeAgents.map((item) => (
+            <AgentCard key={item.id} item={item} accent="card-vibrant-purple" t={t} />
+          ))}
+        </div>
+      </section>
+
+      <section className="glass-panel rounded-2xl p-5 sm:p-6">
+        <h2 className="text-lg font-bold text-white">{t("downloadTitle")}</h2>
+        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-400">{t("downloadBody")}</p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link
-            href={`/build?tool=claude-code&preset=${preset.id}`}
-            className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white dark:bg-white dark:text-neutral-900"
+            href={`/build?tool=antigravity&preset=${antigravityPreset.id}`}
+            className="rounded-xl bg-emerald-500 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-emerald-400"
           >
-            {t("downloadCta")}
+            {t("downloadAntigravity")}
           </Link>
           <Link
-            href="/agents"
-            className="rounded-md border border-neutral-300 px-4 py-2 text-sm hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900"
+            href={`/build?tool=claude-code&preset=${claudePreset.id}`}
+            className="rounded-xl bg-violet-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-violet-400"
           >
-            {t("seePresets")}
+            {t("downloadClaude")}
           </Link>
         </div>
       </section>

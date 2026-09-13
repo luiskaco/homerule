@@ -21,6 +21,7 @@ const ENTRIES: NavEntry[] = [
     links: [
       { labelKey: "presetsByStack", href: "/antigravity" },
       { labelKey: "rulesAndSkillsByStack", href: "/stacks" },
+      { labelKey: "subagents", href: "/subagentes" },
       { labelKey: "buildCustom", href: "/build?tool=antigravity&preset=manual" },
     ],
   },
