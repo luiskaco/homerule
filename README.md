@@ -39,6 +39,11 @@ estrictamente "Always On".
     │   ├── cms.md                            # Model Decision
     │   ├── database.md                       # Model Decision — schema, migraciones, pooling, índices
     │   └── stack-conventions.md              # Glob: *.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css
+    ├── agents/                               # subagentes de Antigravity — ver § Subagentes
+    │   ├── auditor/agent.md                  # review de diff — solo lectura
+    │   ├── backend/agent.md                  # implementa servidor, datos, migraciones
+    │   ├── frontend/agent.md                 # implementa interfaz
+    │   └── security/agent.md                 # auditoría de seguridad — solo lectura
     └── skills/                               # opcional — ver § Skills
 ```
 
@@ -79,6 +84,9 @@ Copy-Item "grill.md","new-feature.md","bug-fix.md","session-close.md","security-
 ```bash
 mkdir -p .agents/rules
 cp security.md architecture.md ui-ux.md seo.md pwa.md operations.md cms.md database.md stack-conventions.md .agents/rules/
+
+# subagentes (opcional) — Antigravity los descubre solo al abrir el workspace
+cp -r agents/ .agents/agents/
 ```
 
 Si el proyecto es WordPress puro o no usa alguna de las reglas (ej. un sitio sin CMS
@@ -177,6 +185,40 @@ siguiente comando — no encadenan automáticamente.
 `/bug-fix` reemplaza a `/new-feature` cuando el punto de partida es algo roto, no
 una feature nueva — el resto del flujo (`/security-audit`, `/deploy-checklist`,
 `/session-close`) aplica igual.
+
+---
+
+## Subagentes
+
+Los dos tools tienen subagentes declarables en archivo, con formatos distintos que
+**no se convierten entre sí** (ADR-006): Antigravity lee
+`.agents/agents/<nombre>/agent.md` del workspace, Claude Code lee
+`.claude/agents/<nombre>.md`.
+
+### Antigravity — 4 subagentes
+
+Los invoca el agente principal con `invoke_subagent` cuando la tarea lo amerita
+(o los elegís a mano desde el panel `/agents`). Corren en contexto aislado: el
+detalle de su trabajo no contamina la ventana del agente principal.
+
+| Subagente | Qué hace | Escribe código |
+|---|---|---|
+| `auditor` | Review del diff contra las rules: correctness, arquitectura, convenciones, datos, reuse | No — solo lectura |
+| `backend` | Endpoints, servicios, acceso a datos, migraciones. Verifica con tests/typecheck antes de devolver | Sí |
+| `frontend` | Componentes, páginas, estilos, los 5 estados de UI, accesibilidad | Sí |
+| `security` | Auditoría OWASP: auth, inputs, inyección, secrets, uploads, CORS, privacidad | No — solo lectura |
+
+Los cuatro corren con `commandExecutionPolicy: sandbox` y heredan los permisos de
+terminal que ya tengas configurados. `auditor` y `security` tienen `run_command`
+únicamente para inspección (`git diff`, `npm audit`) — no tienen ninguna tool de
+escritura de archivos. `security` corre en tier `pro`; el resto hereda el modelo
+de la sesión.
+
+### Claude Code — 8 subagentes
+
+`explorer`, `planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`,
+`debugger`, `test-writer`, `docs-writer`. Detalle en la página `/subagentes` del
+sitio.
 
 ---
 

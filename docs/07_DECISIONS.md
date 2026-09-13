@@ -217,3 +217,30 @@ La falta de número es la decisión, no un olvido: los 01–08 son documentos de
 - La convención pasa a ser "8 documentos de fase + 1 glosario". Al describir el kit hay que decirlo así, no "9 archivos".
 - `CONTEXT.md` se crea recién cuando hay al menos 3 términos que lo justifiquen — un proyecto chico no lo necesita, y un glosario vacío es peor que ninguno.
 - La skill `domain-modeling` queda preseleccionada en los 7 stacks reales (todos tienen vocabulario); `manual` no preselecciona nada por definición.
+
+## ADR-013 — Antigravity también lleva subagentes declarables en archivo
+
+**Fecha:** 2026-09-13
+**Estado:** Aceptada
+
+**Contexto:** El generador del kit asumía que los subagentes eran una función exclusiva de Claude Code: `generate-manifest.mjs` decía textualmente que `.claude/agents/*.md` "no tiene equivalente declarable en Antigravity (allá los subagentes se crean en runtime vía `invoke_subagent`, no hay archivo que empaquetar)". La documentación actual de Antigravity lo desmiente: los subagentes se declaran en `.agents/agents/<nombre>/agent.md` (workspace) o `~/.gemini/config/agents/` (global), con frontmatter YAML propio — `tools`, `model`, `subagent`, `mainAgent`, `commandExecutionPolicy`. El lado Antigravity del kit quedaba sin delegación mientras el lado Claude tenía 8 subagentes.
+
+**Decisión:** Se agregan 4 subagentes de Antigravity como fuente del repo, en el mismo path que Antigravity usa para descubrirlos — así el repo los dogfoodea sin derivado que sincronizar:
+
+- `auditor` y `security` — solo lectura, sin tools de escritura.
+- `backend` y `frontend` — implementan, con `run_command` en `sandbox` para verificar su propio trabajo (tests, typecheck, build) antes de devolver.
+
+`security` corre en tier `pro` (mismo criterio que `security-auditor` en opus del lado Claude); el resto usa `model: inherit`.
+
+**Alternativas consideradas:**
+
+- **Convertir los 8 subagentes de Claude al formato de Antigravity.** Descartado por ADR-006 (catálogos estancos) y porque el reparto no es equivalente: en Antigravity conviene que `backend` y `frontend` *implementen*, mientras que en Claude esos dos roles son pasadas de auto-revisión inline (`CORE.md § 8`), no agentes.
+- **Dejar `auditor` y `security` sin `run_command`.** Descartado en la práctica: sin shell no pueden leer el diff (`git diff`) ni correr `npm audit`, que es justamente su insumo. "Solo lectura" se garantiza por la ausencia de tools de escritura, no por sacarles el shell — es el mismo diseño que el ejemplo `code-auditor` de la documentación de Antigravity.
+- **Los 4 en tier `inherit`.** Descartado para `security`: una auditoría que se pierde un bypass de autorización cuesta más que la diferencia de tier.
+
+**Consecuencias:**
+
+- El manifest suma la categoría `agent` para el tool `antigravity` (items `antigravity:agent:*`); el sitio ya tenía la sección y no necesitó cambios.
+- Los 4 vienen preseleccionados en los 8 presets de Antigravity, igual que los 8 de Claude Code en los suyos.
+- Quedan sin cubrir del lado Antigravity los roles `debugger`, `docs-writer`, `explorer`, `planner` y `test-writer`. Es deliberado: se suman si el uso real los pide, no por simetría con el catálogo de Claude.
+- La página `/subagentes` del sitio sigue filtrando solo `claude-code` — pendiente decidir si pasa a mostrar los dos catálogos.

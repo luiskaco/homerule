@@ -77,6 +77,7 @@ function toPosix(p) {
 
 const RULES_DIR = join(REPO_ROOT, ".agents", "rules");
 const SKILLS_DIR = join(REPO_ROOT, ".agents", "skills");
+const ANTIGRAVITY_AGENTS_DIR = join(REPO_ROOT, ".agents", "agents");
 const WORKFLOWS_DIR = join(REPO_ROOT, ".gemini", "antigravity", "global_workflows");
 const TEMPLATES_DIR = join(REPO_ROOT, "docs-templates");
 const CORE_MD_PATH = join(REPO_ROOT, "core", "CORE.md");
@@ -170,6 +171,33 @@ for (const skillName of readdirSync(SKILLS_DIR).sort()) {
     label: skillName,
     description: fm.description || "",
     ...(fm.install ? { install: fm.install } : {}),
+    files: fileEntries,
+    approxTokens: approxTokens(fileEntries),
+  });
+}
+
+// Subagentes de Antigravity. `.agents/agents/<name>/agent.md` es el path de
+// descubrimiento nativo a nivel workspace — el mismo que este repo usa como
+// fuente, así que no hay derivado que sincronizar.
+for (const agentName of readdirSync(ANTIGRAVITY_AGENTS_DIR).sort()) {
+  const agentDir = join(ANTIGRAVITY_AGENTS_DIR, agentName);
+  if (!statSync(agentDir).isDirectory()) continue;
+  const fileEntries = walk(agentDir).map((full) => {
+    const rel = toPosix(relative(agentDir, full));
+    return { destPath: `.agents/agents/${agentName}/${rel}`, content: readFileSync(full, "utf8") };
+  });
+  let fm = {};
+  try {
+    fm = parseFrontmatter(readFileSync(join(agentDir, "agent.md"), "utf8"));
+  } catch {
+    // subagente sin agent.md en la raíz
+  }
+  items.push({
+    id: `antigravity:agent:${agentName}`,
+    category: "agent",
+    tool: "antigravity",
+    label: `${agentName}/agent.md`,
+    description: fm.description || "",
     files: fileEntries,
     approxTokens: approxTokens(fileEntries),
   });
@@ -330,9 +358,9 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
 
 // ============================================================
 // Claude Code subagents — tool: "claude-code" únicamente.
-// .claude/agents/*.md es un formato nativo de Claude Code y no tiene
-// equivalente declarable en Antigravity (allá los subagentes se crean en
-// runtime vía invoke_subagent, no hay archivo que empaquetar).
+// `.claude/agents/*.md` es el formato nativo de Claude Code. Antigravity tiene
+// su propio formato declarable (`.agents/agents/<name>/agent.md`, emitido más
+// arriba): los dos catálogos son estancos y no se convierten entre sí (ADR-006).
 // ============================================================
 
 for (const file of readdirSync(CLAUDE_AGENTS_DIR).sort()) {

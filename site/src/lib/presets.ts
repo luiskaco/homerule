@@ -41,8 +41,9 @@ const ANTIGRAVITY_GLOBAL_ITEM_IDS = [
 ];
 
 /**
- * Subagentes de Claude Code (.claude/agents/*.md). Formato nativo sin
- * equivalente en Antigravity, igual para los 8 stacks.
+ * Comandos y subagentes de Claude Code (.claude/commands/*, .claude/agents/*.md),
+ * iguales para los 8 stacks. Antigravity tiene sus propios subagentes en formato
+ * nativo (.agents/agents/<name>/agent.md); los dos catálogos no se mezclan.
  */
 const CLAUDE_COMMAND_ITEM_IDS = [
   "claude-code:workflow:grill",
@@ -63,6 +64,13 @@ const CLAUDE_AGENT_ITEM_IDS = [
   "claude-code:agent:debugger",
   "claude-code:agent:test-writer",
   "claude-code:agent:docs-writer",
+];
+
+const ANTIGRAVITY_AGENT_ITEM_IDS = [
+  "antigravity:agent:auditor",
+  "antigravity:agent:backend",
+  "antigravity:agent:frontend",
+  "antigravity:agent:security",
 ];
 
 interface StackShape {
@@ -143,6 +151,7 @@ function toolItemIds(tool: ToolId, shape: StackShape): string[] {
       ...ANTIGRAVITY_GLOBAL_ITEM_IDS,
       ...shape.rules.map((r) => `rule:${r}`),
       ...shape.skills.map((s) => `skill:${s}`),
+      ...ANTIGRAVITY_AGENT_ITEM_IDS,
     ];
   }
   return [

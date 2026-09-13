@@ -16,8 +16,11 @@
 - [ ] Evaluar si `/changelog` debería estar en el nav principal además del footer.
 - [ ] **Empaquetar el kit de Claude Code como plugin nativo.** La dirección ya está decidida en ADR-011 (se suma a los ZIPs, no los reemplaza). Falta: `.claude-plugin/plugin.json` con el array explícito de rutas de skills, decidir el esquema de versión — hoy el proyecto no versiona — y el paso de release que suba plugin y repo juntos.
 - [ ] Afinar el campo `model` por subagente: `explorer` puede correr en Haiku (búsqueda barata); `planner` y `security-auditor` justifican modelo grande.
+- [ ] Decidir si `/subagentes` pasa a mostrar los dos catálogos (hoy filtra solo `claude-code`, así que los 4 de Antigravity no aparecen aunque sí se descargan desde `/build`). Requiere tocar `messages/es.json` y `messages/en.json` — los textos de la página hablan de `.claude/agents/` como si fuera el único formato.
 
 ## Completado
+
+- [x] **4 subagentes de Antigravity** (ADR-013): `auditor`, `backend`, `frontend` y `security` en `.agents/agents/<nombre>/agent.md` — el path de descubrimiento nativo del workspace, así que la fuente del repo es también la instalación. Se suman al manifest como items `antigravity:agent:*` y quedan preseleccionados en los 8 presets. Corrige de paso el comentario de `generate-manifest.mjs` que daba por hecho que Antigravity no tenía subagentes declarables.
 
 - [x] **Skill `domain-modeling` + plantilla `CONTEXT.md`** (ADR-012): glosario vivo del vocabulario del dominio, sin numerar a propósito (los 01-08 son documentos de fase). Preseleccionada en los 7 stacks reales. Hueco detectado comparando con `mattpocock/skills`.
 - [x] **Workflow `/grill`**: interrogatorio de a una pregunta por turno que le da forma concreta a la Regla de Oro de `CORE.md § 1` — hasta ahora "detenete si hay ambigüedad" quedaba a criterio del modelo. Fuente única: se emite como workflow de Antigravity y comando de Claude Code.
