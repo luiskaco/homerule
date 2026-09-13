@@ -16,15 +16,12 @@ const FIRST_VERSIONS = "@@firstVersions";
 
 type EntryKind = "agregado" | "cambios" | "arreglado" | "quitado" | "docs";
 
-interface Entry {
-  kind: EntryKind;
-  items: string[];
-}
-
 interface Release {
+  /** Clave de `ChangelogData.<key>` en messages. */
+  key: string;
   date: string;
   title?: string;
-  entries: Entry[];
+  kinds: EntryKind[];
 }
 
 const KIND_KEY: Record<EntryKind, string> = {
@@ -43,190 +40,39 @@ const KIND_STYLE: Record<EntryKind, string> = {
   docs: "bg-amber-500/10 text-amber-300 border-amber-500/30",
 };
 
+/**
+ * Solo la estructura: qué releases hay, en qué orden y con qué tipos de
+ * entrada. El texto de cada ítem vive traducido en `messages/*.json`, bajo
+ * `ChangelogData.<release>.<kind>` (array, se lee con `t.raw`).
+ */
 const RELEASES: Release[] = [
+  { key: "unreleased", date: UNRELEASED, kinds: ["cambios", "agregado", "arreglado", "quitado"] },
+  { key: "2026-07-29", date: "2026-07-29", kinds: ["agregado"] },
+  { key: "2026-07-28", date: "2026-07-28", kinds: ["agregado"] },
+  { key: "2026-07-25", date: "2026-07-25", kinds: ["agregado", "quitado"] },
+  { key: "2026-07-22", date: "2026-07-22", kinds: ["cambios"] },
+  { key: "2026-07-20", date: "2026-07-20", kinds: ["agregado", "cambios"] },
+  { key: "2026-07-15", date: "2026-07-15", kinds: ["cambios"] },
+  { key: "2026-07-05", date: "2026-07-05", kinds: ["agregado", "arreglado"] },
+  { key: "2026-07-02", date: "2026-07-02", kinds: ["agregado"] },
+  { key: "2026-06-21", date: "2026-06-21", kinds: ["cambios"] },
+  { key: "2026-06-13", date: "2026-06-13", kinds: ["cambios", "agregado"] },
+  { key: "2026-06-11", date: "2026-06-11", kinds: ["agregado"] },
+  { key: "2026-06-07", date: "2026-06-07", kinds: ["docs"] },
+  { key: "2026-06-01", date: "2026-06-01", kinds: ["docs"] },
+  { key: "2026-05-31", date: "2026-05-31", kinds: ["agregado"] },
   {
-    date: UNRELEASED,
-    entries: [
-      {
-        kind: "cambios",
-        items: [
-          "/subagentes pasa a mostrar los dos catálogos (4 de Antigravity + 8 de Claude Code) con el formato nativo de cada tool, y aparece también en el menú “Antigravity solo”. Antes filtraba únicamente claude-code.",
-          "Tema visual unificado en las páginas que quedaban con el estilo viejo: /subagentes, /mejores-skill, /skills-por-proyecto, /prompts y /plantillas. Se arrastraban también el armador de ZIP, su modal de preview (se abría con fondo blanco sobre el sitio oscuro) y el bloque de descarga de plantillas.",
-          "Regla de idioma corregida para que refleje la realidad: el núcleo decía “código siempre en inglés”, pero el repo tenía 67 comentarios en español contra 15 en inglés. Ahora es “identificadores y nombres de archivo en inglés; comentarios y documentación en español”. Traducir todo se evaluó y se descartó: 4 de las 14 skills empaquetadas son de terceros y están en inglés, y el español mide solo 3,8% más que el inglés en texto técnico.",
-          "Antigravity y Claude Code pasan a ser kits totalmente independientes: se elimina el modo de uso híbrido. Ningún item pertenece a los dos tools — las plantillas de /docs, las skills externas y el add-on de base de datos se emiten una vez por tool. Cada ZIP es autocontenido y no asume que tengas el otro agente instalado.",
-          "El home pasa de 3 modos de uso a 2, y /subagentes se mueve dentro del menú “Claude solo”.",
-          "code-reviewer ya no promete revisar UI/UX (su checklist nunca lo hizo): ahora deriva a ui-reviewer.",
-          "explorer y planner explicitan qué los diferencia de los agentes Explore y Plan que Claude Code trae de fábrica: conocen la convención /docs 01-08 y las reglas instaladas en .claude/skills/.",
-          "Reorganización de la interfaz del sitio: layout, nav, home y tarjetas de skills ajustados.",
-          "Se agrega esta bitácora de cambios (CHANGELOG.md + página /changelog).",
-          "Labels del nav normalizados: se reemplazan los tres “Inicio” genéricos por labels descriptivos, y un grupo de un solo ítem pasa a ser link directo.",
-          "Se fusionan /stacks y /stacks-app en una única página /stacks con el tema visual actual.",
-          "El proyecto pasa a usar su propia convención /docs para seguimiento del trabajo (06_TASKS.md y 07_DECISIONS.md).",
-          "/ pasa a ser el índice del hub (los modos de uso, el catálogo de skills y la bitácora); los presets por stack de Antigravity se mudan a su propia página /antigravity.",
-        ],
-      },
-      {
-        kind: "agregado",
-        items: [
-          "Cuatro subagentes para Antigravity: auditor y security (solo lectura) más backend y frontend (implementan y verifican su propio trabajo en sandbox). Antigravity soporta subagentes declarables en archivo — .agents/agents/<nombre>/agent.md — y el kit lo daba por imposible. Vienen preseleccionados en los 8 presets de Antigravity.",
-          "Dos subagentes nuevos, de 6 a 8: ui-reviewer (accesibilidad, los 5 estados de UI, responsive, SEO on-page y consistencia con el sistema de diseño) y test-writer (detecta el framework de test del proyecto en vez de asumirlo, y nunca modifica el código bajo prueba).",
-        ],
-      },
-      {
-        kind: "arreglado",
-        items: [
-          "Los comandos de Claude Code no se descargaban: los 6 existían y se mostraban en /build, pero ningún preset los preseleccionaba, así que el ZIP salía sin la carpeta .claude/commands/.",
-          "code-reviewer apuntaba a .agents/rules/*, rutas que no existen en un ZIP de Claude Code — esas reglas se instalan como .claude/skills/<id>/SKILL.md. Solo funcionaba si además habías bajado el ZIP de Antigravity.",
-          "Segmentos duplicados en todos los ZIPs generados: docs/docs/… y .agents/.agents/…, que además no coincidían con los comandos de copia del INSTALL.md incluido.",
-          "Contenido específico de Antigravity que se filtraba a los ZIPs de Claude Code: 00_GEMINI_START.md ya no se incluye en presets de claude-code, y las referencias sueltas a GEMINI.md en archivos compartidos ahora también apuntan a CORE.md.",
-        ],
-      },
-      {
-        kind: "quitado",
-        items: [
-          "Modo de uso “Antigravity + Claude”: la entrada del nav y la tarjeta del home. Los subagentes siguen estando, dentro de “Claude solo”.",
-          "Páginas placeholder vacías y sin link en el nav: /proximamente y /mejores-repos-utilidades.",
-        ],
-      },
-    ],
-  },
-  {
-    date: "2026-07-29",
-    entries: [{ kind: "agregado", items: ["Skill project-planning para cerrar el gap entre brainstorming y ejecución."] }],
-  },
-  {
-    date: "2026-07-28",
-    entries: [
-      {
-        kind: "agregado",
-        items: [
-          'Rediseño del sitio a "Vibrant Flat UI 3.0".',
-          "Nueva pestaña /stacks-app.",
-          "Nuevos templates de prompt.",
-          "Skill api-security-best-practices sumada al catálogo.",
-        ],
-      },
-    ],
-  },
-  {
-    date: "2026-07-25",
-    entries: [
-      {
-        kind: "agregado",
-        items: [
-          "Skills de diseño de terceros versionadas en .claude/skills/.",
-          "Catálogo unificado con la estructura de tarjetas del glosario.",
-          "Skills externas sumadas al catálogo + glosario con detalle.",
-          "Menú hamburguesa para navegación responsive.",
-          "Reorganización del nav en menús agrupados + catálogo de skills y templates de prompt.",
-        ],
-      },
-      { kind: "quitado", items: ["Skills de diseño gráfico removidas del bundle de uipro."] },
-    ],
-  },
-  {
-    date: "2026-07-22",
-    entries: [{ kind: "cambios", items: ["Se remueve la skill ui-ux-pro-max, consolidando su rol en frontend-design."] }],
-  },
-  {
-    date: "2026-07-20",
-    entries: [
-      { kind: "agregado", items: ['Pestañas placeholder: "Mejores SKILL", "Próximamente" y "Mejores repos de utilidades".'] },
-      { kind: "cambios", items: ["Se exige el uso de versiones actualizadas y se corrige la lista de rules."] },
-    ],
-  },
-  {
-    date: "2026-07-15",
-    entries: [{ kind: "cambios", items: ["El proyecto se enfoca en el workflow Gemini + Claude; se agregan subagentes y se corrige el límite de rules."] }],
-  },
-  {
-    date: "2026-07-05",
-    entries: [
-      { kind: "agregado", items: ['Sitio "Rules Hub" descargable con soporte multi-agente y de base de datos.'] },
-      { kind: "arreglado", items: ["Responsividad mobile del nav, footer y páginas de build."] },
-    ],
-  },
-  {
-    date: "2026-07-02",
-    entries: [
-      {
-        kind: "agregado",
-        items: [
-          "Secciones de PWA, dark mode, i18n y privacidad en las rules.",
-          "Documentación de las skills frontend-design y seo-audit.",
-        ],
-      },
-    ],
-  },
-  {
-    date: "2026-06-21",
-    entries: [{ kind: "cambios", items: ["Reorganización de la estructura del repo a la raíz del proyecto; README actualizado."] }],
-  },
-  {
-    date: "2026-06-13",
-    entries: [
-      {
-        kind: "cambios",
-        items: [
-          "Reorganización de reglas de antigravity-v2, eliminación de reglas obsoletas.",
-          "Actualización de las opciones de workflow y la lógica de subagentes en GEMINI.md.",
-        ],
-      },
-      { kind: "agregado", items: ["Rules de Antigravity y actualización de instrucciones de agente."] },
-    ],
-  },
-  {
-    date: "2026-06-11",
-    entries: [{ kind: "agregado", items: ["Documentación de los procesos internos de subagentes para tareas de código."] }],
-  },
-  {
-    date: "2026-06-07",
-    entries: [
-      {
-        kind: "docs",
-        items: ["Corrección de typo en el workflow de bug-fix.", "Actualización de workflows y README de Antigravity."],
-      },
-    ],
-  },
-  {
-    date: "2026-06-01",
-    entries: [
-      {
-        kind: "docs",
-        items: [
-          "Revisión de README para instalación de Antigravity Rules v2.",
-          "Actualización de session-close.md, new-feature.md y GEMINI.md.",
-        ],
-      },
-    ],
-  },
-  {
-    date: "2026-05-31",
-    entries: [
-      {
-        kind: "agregado",
-        items: ["README raíz del proyecto.", "Actualización de workflows de agentes, skills y documentación."],
-      },
-    ],
-  },
-  {
+    key: "2026-05-24 — 2026-05-30",
     date: "2026-05-24 — 2026-05-30",
     title: FIRST_VERSIONS,
-    entries: [
-      {
-        kind: "agregado",
-        items: [
-          "Primeras rules de gobernanza de IA (ia_antigravity-rules, README global, reglas v3/v4).",
-          "Commit inicial del proyecto.",
-        ],
-      },
-    ],
+    kinds: ["agregado"],
   },
 ];
 
 export default async function ChangelogPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
   const t = await getTranslations("Changelog");
+  const data = await getTranslations("ChangelogData");
 
   const label = (value: string) =>
     value === UNRELEASED ? t("unreleased") : value === FIRST_VERSIONS ? t("firstVersions") : value;
@@ -252,7 +98,7 @@ export default async function ChangelogPage({ params }: { params: { locale: stri
         <div className="absolute bottom-2 left-[7px] top-2 w-px bg-gradient-to-b from-violet-500/60 via-slate-700 to-transparent sm:left-[11px]" />
 
         {RELEASES.map((release) => (
-          <div key={release.date} className="relative">
+          <div key={release.key} className="relative">
             <span className="absolute -left-6 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-slate-950 bg-violet-500 shadow shadow-violet-500/50 sm:-left-8" />
             <div className="glass-panel rounded-2xl p-5 sm:p-6">
               <div className="flex flex-wrap items-baseline gap-2">
@@ -261,23 +107,26 @@ export default async function ChangelogPage({ params }: { params: { locale: stri
               </div>
 
               <div className="mt-4 flex flex-col gap-4">
-                {release.entries.map((entry, i) => (
-                  <div key={i}>
-                    <span
-                      className={`inline-block rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${KIND_STYLE[entry.kind]}`}
-                    >
-                      {t(KIND_KEY[entry.kind])}
-                    </span>
-                    <ul className="mt-2 flex flex-col gap-1.5 text-sm text-slate-300 leading-relaxed">
-                      {entry.items.map((item, j) => (
-                        <li key={j} className="flex gap-2">
-                          <span className="text-violet-400">•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                {release.kinds.map((kind) => {
+                  const items = data.raw(`${release.key}.${kind}`) as string[];
+                  return (
+                    <div key={kind}>
+                      <span
+                        className={`inline-block rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${KIND_STYLE[kind]}`}
+                      >
+                        {t(KIND_KEY[kind])}
+                      </span>
+                      <ul className="mt-2 flex flex-col gap-1.5 text-sm leading-relaxed text-slate-300">
+                        {items.map((item, j) => (
+                          <li key={j} className="flex gap-2">
+                            <span className="text-violet-400">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

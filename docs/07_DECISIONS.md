@@ -175,7 +175,7 @@ motivo (dos copias).
 ## ADR-011 — El kit de Claude Code se empaquetará como plugin nativo, sin abandonar los ZIPs
 
 **Fecha:** 2026-08-10
-**Estado:** Aceptada en la dirección, pendiente de implementación (ver `06_TASKS.md`)
+**Estado:** Implementada el 2026-09-13 (esquema de versión en ADR-014)
 
 **Contexto:** Los kits se distribuyen como ZIP: el usuario descarga, descomprime y copia. El ZIP es una **copia congelada** — un proyecto instalado en marzo no recibe ninguna corrección posterior de las rules, y no hay forma de saber qué versión tiene instalada. Los tres bugs corregidos en julio (comandos ausentes, rutas rotas en `code-reviewer`, segmentos duplicados) siguen presentes en cualquier kit descargado antes de esos fixes.
 
@@ -244,3 +244,27 @@ La falta de número es la decisión, no un olvido: los 01–08 son documentos de
 - Los 4 vienen preseleccionados en los 8 presets de Antigravity, igual que los 8 de Claude Code en los suyos.
 - Quedan sin cubrir del lado Antigravity los roles `debugger`, `docs-writer`, `explorer`, `planner` y `test-writer`. Es deliberado: se suman si el uso real los pide, no por simetría con el catálogo de Claude.
 - La página `/subagentes` del sitio sigue filtrando solo `claude-code` — pendiente decidir si pasa a mostrar los dos catálogos.
+
+## ADR-014 — El plugin versiona por fecha (CalVer), no por semver
+
+**Fecha:** 2026-09-13
+**Estado:** Aceptada
+
+**Contexto:** ADR-011 dejó el plugin nativo decidido pero bloqueado en un punto: el proyecto no versiona nada — el `CHANGELOG.md` agrupa por fecha y no hay tags. El campo `version` de `plugin.json` es opcional, pero sin él Claude Code no puede detectar que hay una actualización disponible, que es justamente lo que el plugin viene a resolver frente al ZIP congelado.
+
+**Decisión:** `version` es CalVer `YYYY.M.D` — sin ceros a la izquierda, para que siga siendo parseable como semver (`2026.9.13` es válido; `2026.09.13` no lo es). Lo genera `scripts/build-plugin.mjs` con la fecha del día; `--version=` permite forzar otra.
+
+El mismo script genera `.claude-plugin/marketplace.json`, así que el repo es a la vez marketplace y plugin: se instala con `/plugin marketplace add luiskaco/-makeRuleIA` y después `/plugin install ai-rules-hub@ai-rules-hub`.
+
+**Alternativas consideradas:**
+
+- **Semver `0.1.0` en adelante** — descartado: exige decidir en cada release si un cambio de rule es *major*, *minor* o *patch*, y en un kit de reglas esa distinción no tiene un significado claro. ¿Reescribir el checklist de `security.md` es breaking? No hay API que romper, y la pregunta no se contesta sola.
+- **Dejar `version` afuera** (el doc dice que cae al tag de git o al marketplace) — descartado: obligaría a mantener tags que hoy no existen, y sin versión declarada el usuario no ve que hay algo nuevo.
+
+**Consecuencias:**
+
+- Dos releases el mismo día colisionan en la misma versión. Es aceptable: el kit no se publica varias veces por día, y si pasa se fuerza con `--version=`.
+- La versión no comunica magnitud del cambio. El `CHANGELOG.md` ya cumple esa función y con más detalle del que daría un número.
+- El plugin publica **solo contenido propio**: las 9 rules como skills nativas, los 7 comandos, los 8 subagentes y las 2 skills escritas acá (`domain-modeling`, `project-planning`). Las skills de terceros vendorizadas quedan afuera a propósito — se instalan desde su repo original con su propio comando, y redistribuirlas en el plugin sería apropiarse de trabajo ajeno. `scripts/build-plugin.mjs` las detecta por `skills-lock.json` y por el `install:` del frontmatter, y falla si alguna se cuela en la lista de propias.
+- El array de rutas es explícito, como advertía ADR-011. El guard `--check` cubre el costo: falla si el manifest quedó atrás respecto de la fuente, o si una rule todavía no fue convertida a skill nativa.
+- El plugin **no** puede instalar `CLAUDE.md` en el proyecto del usuario: los plugins aportan comandos, agentes y skills, no memoria de proyecto. Quien quiera el núcleo global sigue necesitando el ZIP. Es una razón más para no reemplazar un canal por el otro.

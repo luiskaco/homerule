@@ -21,9 +21,9 @@
     "rulesAndSkillsByStack": "Rules y skills por stack",
     "buildCustom": "Armar a medida",
     "skillCatalog": "Catálogo de skills",
-    "skillsByProject": "Skills por proyecto",
     "promptTemplates": "Templates de prompt",
-    "docTemplates": "Plantillas SDD"
+    "docTemplates": "Plantillas SDD",
+    "changelog": "Bitácora"
   },
   "Home": {
     "badge": "🚀 Antigravity + Claude Code",
@@ -118,17 +118,39 @@
   },
   "SkillCatalog": {
     "title": "Catálogo de Skills",
-    "intro": "Todas las skills en un solo lugar para decidir qué instalar en el proyecto que tenés entre manos: para qué sirve cada una, cuándo usarla, el comando exacto de instalación y cómo se invoca. ¿Preferís verlas agrupadas por tipo de trabajo (SEO, Web, Backend...)? <byProjectLink></byProjectLink>.",
-    "introByProjectLink": "Ir a Skills por proyecto",
+    "intro": "Todas las skills en un solo lugar para decidir qué instalar en el proyecto que tenés entre manos: para qué sirve cada una, cuándo usarla, el comando exacto de instalación y cómo se invoca. Podés verlas como lista completa o agrupadas por tipo de trabajo.",
     "origins": "Las marcadas <hub></hub> son las que ya vienen armadas acá y se pueden bajar juntas desde <buildLink></buildLink>. Las <external></external> son de terceros: se instalan aparte, con su propio comando.",
     "originHub": "Del hub",
-    "originExternal": "Externas"
-  },
-  "SkillsByProject": {
-    "title": "Skills por tipo de proyecto",
-    "intro": "Skills combinadas según el tipo de trabajo que estés haciendo — una misma skill puede aparecer en más de una categoría. ¿Preferís verlas todas juntas en una sola tabla? <catalogLink></catalogLink>.",
-    "introCatalogLink": "Ir al Catálogo de Skills",
-    "noInstallFallback": "Se incluye directamente en el ZIP de /build — no requiere instalación aparte."
+    "originExternal": "Externas",
+    "viewFlat": "Lista completa",
+    "viewByProject": "Por tipo de proyecto",
+    "noInstallFallback": "Se incluye directamente en el ZIP de /build — no requiere instalación aparte.",
+    "jobType": {
+      "seo": {
+        "label": "SEO",
+        "description": "Auditoría y optimización para buscadores."
+      },
+      "web": {
+        "label": "Web / Frontend",
+        "description": "Diseño de interfaz, UX, performance de UI."
+      },
+      "backend": {
+        "label": "Backend / API",
+        "description": "Servicios, APIs, manejo de errores, runtime."
+      },
+      "testing": {
+        "label": "Testing",
+        "description": "Escribir y automatizar pruebas — TDD, unitarias, end-to-end."
+      },
+      "redaccion": {
+        "label": "Redacción",
+        "description": "Copy, contenido y comunicación persuasiva."
+      },
+      "general": {
+        "label": "General",
+        "description": "Transversales — no atadas a una capa técnica."
+      }
+    }
   },
   "SkillCard": {
     "originHub": "Del hub",
@@ -141,13 +163,51 @@
     "includes": "{count, plural, one {Qué incluye (# skill)} other {Qué incluye (# skills)}}",
     "howToInstall": "Cómo se instala",
     "howToUse": "Cómo se usa",
-    "includedInStacks": "Ya incluida en estos stacks de /build"
+    "includedInStacks": "Ya incluida en estos stacks de /build",
+    "notes": "Notas"
   },
   "Prompts": {
     "title": "Templates de Prompt",
     "intro": "Estructura base para arrancar los pedidos más frecuentes — asignar rol y contexto antes de la tarea puntual. Completá los corchetes y ajustá según el caso.",
     "copy": "Copiar",
-    "copied": "Copiado ✓"
+    "copied": "Copiado ✓",
+    "items": {
+      "seo-audit": {
+        "title": "Auditoría SEO de un sitio (con link)",
+        "whenToUse": "Cuando compartís la URL de un sitio (propio o de un cliente) y pedís que se audite o diagnostique el SEO.",
+        "template": "# Rol\nActuás como experto en SEO técnico y en AEO/GEO (que el contenido sea citado por IA).\n\n# Contexto\n- Sitio a auditar: [URL]\n- Qué es: [tipo de sitio / stack / negocio]\n- Objetivo: [rankear, generar leads, ser citado por IA, todo]\n\n# Tarea\n1. Usá `seo-audit` para el diagnóstico técnico (meta tags, indexación, Core Web Vitals, structured data, canonical/hreflang).\n2. Usá `ai-seo` para evaluar citabilidad por IA (AI Overviews, ChatGPT, Perplexity): estructura del contenido, llms.txt, extraibilidad.\n\n# Reglas\n- Diagnóstico primero — NO apliques cambios todavía.\n- Priorizá los hallazgos por severidad: Critical / High / Medium.\n- Si hay reglas del proyecto en `.agents/rules/seo.md`, esos umbrales mandan sobre los defaults de la skill.\n- Esperá mi aprobación antes de tocar nada."
+      },
+      "seo-image": {
+        "title": "Crear imagen optimizada para SEO",
+        "whenToUse": "Cuando necesitás generar una imagen (Open Graph, hero, ilustración) que además cumpla las specs de SEO.",
+        "template": "# Rol\nActuás como diseñador visual con criterio de SEO técnico.\n\n# Contexto\n- Página/artículo destino: [URL o título]\n- Tema y mensaje clave: [de qué trata]\n- Formato: [Open Graph 1200x630 / hero / ilustración inline]\n- Estilo: [minimalista, fotográfico, ilustrado, con texto embebido]\n\n# Tarea\nProponé el concepto visual y generá la imagen. Si hay reglas en `.agents/rules/seo.md`, sus specs de imagen OG mandan sobre estas."
+      },
+      "seo-browser-tool": {
+        "title": "SEO con herramienta que usa el navegador",
+        "whenToUse": "Cuando el diagnóstico SEO requiere operar una herramienta web (Ahrefs, Semrush, Search Console, PageSpeed) automatizando el navegador.",
+        "template": "# Rol\nActuás como analista SEO que opera herramientas web vía navegador.\n\n# Contexto\n- Sitio: [URL]\n- Herramienta a usar: [Ahrefs / Semrush / Search Console / PageSpeed Insights / otra]\n- Qué necesito medir: [backlinks, keywords, Core Web Vitals, cobertura de indexación, etc.]\n- Acceso: [ya estoy logueado en el navegador / credenciales / es pública]\n\n# Tarea\n1. Usá `agent-browser` para abrir la herramienta y navegar hasta el reporte que necesito.\n2. Extraé los datos concretos (números, no capturas) y, si aplica, tomá screenshot como respaldo.\n3. Cruzá los hallazgos con `seo-audit` para interpretarlos y priorizarlos.\n\n# Reglas\n- No toques configuración ni ejecutes acciones destructivas en la herramienta — solo lectura/navegación.\n- Si algo requiere login y no hay sesión activa, pará y avisá — no inventes credenciales.\n- Entregame los datos + una lista priorizada de acciones (Critical/High/Medium)."
+      },
+      "frontend-design": {
+        "title": "Pedido de diseño de UI",
+        "whenToUse": "Cuando le pedís a Claude que diseñe o rediseñe una pantalla/componente — la estructura mínima antes de la tarea puntual.",
+        "template": "# Rol\nActuás como diseñador líder de un estudio boutique — buscás una identidad visual propia, no un default de framework.\n\n# Contexto\n- Proyecto: [nombre / stack]\n- Sistema de diseño: [ya existe: paleta/tipografía/marca — o \"no existe, inferí una dirección coherente\"]\n- Público y objetivo de la pantalla: [quién la usa y para qué]\n\n# Tarea\n[Pantalla o componente a diseñar]\n\n# Flujo\n1. Usá `frontend-design` para la dirección estética (tipografía, jerarquía, paleta).\n2. Cuando esté el primer pase, pasalo por `impeccable` (`polish` y `harden`) antes de darlo por terminado.\n3. Si el proyecto ya tiene sistema de diseño, refiná dentro de él — no lo reinventes."
+      },
+      "planificacion-modulos": {
+        "title": "Planificación de módulos de un sistema",
+        "whenToUse": "Cuando vas a diseñar la arquitectura o los módulos de un sistema nuevo (o una feature grande) antes de escribir código.",
+        "template": "# Rol\nActuás como arquitecto de software senior.\n\n# Contexto\n- Sistema/feature a planificar: [nombre y objetivo]\n- Stack y restricciones: [tecnologías, límites]\n- Qué ya existe hoy: [módulos actuales, deuda técnica]\n\n# Tarea\nUsá `brainstorming` para explorar intención y requisitos antes de proponer módulos — no asumas que \"es simple\" y te saltees el paso.\n\nEntregame:\n1. Los módulos/capas principales y la responsabilidad de cada uno (sin código todavía).\n2. Cómo se comunican entre sí (dependencias, contratos, flujo de datos).\n3. Decisiones irreversibles o con más de una arquitectura válida — ahí parás y me preguntás.\n\n# Regla\nEsperá mi aprobación del diseño antes de crear o modificar cualquier archivo."
+      },
+      "social-media-content": {
+        "title": "Creación de Contenido para Redes Sociales (Post / Carrusel)",
+        "whenToUse": "Para redactar publicaciones atractivas en LinkedIn, Instagram, Twitter/X o Facebook con hooks potentes y llamadas a la acción.",
+        "template": "# Rol\nActuás como un Content Strategist & Copywriter de alto nivel para redes sociales.\n\n# Contexto\n- Red social principal: [Instagram / LinkedIn / Twitter / TikTok / Facebook]\n- Formato: [Post individual / Carrusel informativo / Hilo / Infografía]\n- Nicho / Producto: [Detallar temática o servicio]\n- Público objetivo: [Describir a quién va dirigido]\n- Objetivo del post: [Generar engagement / Educar / Convertir a venta / Generar tráfico]\n\n# Tarea\nCreá una propuesta de contenido que incluya:\n1. **Hook (Gancho):** 3 opciones de primera línea disruptiva o intriga para detener el scroll.\n2. **Cuerpo del post (Copywriting):** Mensaje directo estructurado con historia (PAS o AIDA), viñetas legibles y emojis moderados.\n3. **Diapositivas (si es carrusel):** Estructura slide por slide (Texto en portada, 3-5 slides de valor, slide de cierre).\n4. **Call to Action (CTA):** Indicación clara de respuesta (guardar, comentar, enviar DM).\n5. **Hashtags & Palabras clave:** 5-8 hashtags relevantes y keywords para SEO en redes.\n\n# Reglas\n- Adaptar el tono exactamente al público (Profesional, informático, desenfadado, etc.).\n- Sin clichés ni lenguaje robótico de IA.\n- Puntos breves y escaneables visualmente."
+      },
+      "video-scripting": {
+        "title": "Guion de Video para Formato Corto o Largo (Reels / TikTok / YouTube)",
+        "whenToUse": "Cuando necesitás estructurar un guion paso a paso para un video de formato corto (Reels/TikTok/Shorts) o largo (YouTube).",
+        "template": "# Rol\nActuás como Guionista de Video y Creador de Contenido audiovisual experimentado.\n\n# Contexto\n- Plataforma: [YouTube / Reels / TikTok / YouTube Shorts]\n- Duración estimada: [30 segundos / 60 segundos / 5-10 minutos]\n- Tema del video: [Explicar el tema o concepto a tratar]\n- Estilo/Tono: [Dinámico, humorístico, educativo, narrativo, entrevista]\n- Llamado a la acción (CTA): [Suscribirse / Hacer click en enlace / Comentar]\n\n# Tarea\nDesarrollá el guion completo estructurado en formato de 2 columnas o secciones claras:\n1. **El Hook (Primeros 3-5 segundos):** Acción visual + Frase de alto impacto para evitar saltar el video.\n2. **Introducción rápida (Segundos 5-15):** Promesa del video / Problema a resolver.\n3. **Cuerpo / Desarrollo:** Dividido en puntos clave con notas de dirección (Audio, B-roll, texto en pantalla, efectos de sonido).\n4. **Clímax o Conclusión:** Resolutiva y de alto valor.\n5. **CTA Final (Últimos 5 segundos):** Cierre claro y orgánico.\n\n# Estructura del Guion\n- **[AUDIO / VOZ EN OFF]:** Transcripción exacta palabra por palabra de lo que se dice.\n- **[VISUAL / B-ROLL]:** Qué aparece en pantalla (planos, gestos, texto en pantalla o apoyo gráfico).\n- **[RECURSOS]:** Sonidos (SFX) o música de fondo recomendada.\n\n# Reglas\n- Mantener un ritmo ágil sin palabras de relleno.\n- Incluir patrones de interrupción visuales cada 5-8 segundos para mantener la retención."
+      }
+    }
   },
   "Changelog": {
     "metaTitle": "Bitácora de cambios | AI Rules Hub",
@@ -189,6 +249,666 @@
     "onlyAntigravity": "Solo Antigravity",
     "downloadBody": "Un ZIP con los 10 archivos, listos para copiar a docs/ en la raíz de tu proyecto.",
     "download": "Descargar ZIP",
-    "generating": "Generando..."
+    "generating": "Generando...",
+    "descriptions": {
+      "00_GEMINI_START": "Punto de entrada de la sesión — si existe, define la estructura de docs activa y tiene prioridad sobre esta tabla.",
+      "01_PROJECT_PRD": "Requisitos de producto.",
+      "02_SDD": "Diseño del sistema.",
+      "03_SYSTEM_SPEC": "Especificaciones técnicas.",
+      "04_DATA_MODEL": "Esquemas y entidades.",
+      "05_ARCHITECTURE": "Decisiones arquitectónicas.",
+      "06_TASKS": "Backlog activo.",
+      "07_DECISIONS": "ADRs — decisiones con alternativas evaluadas y trade-offs.",
+      "08_CHANGELOG": "Historial de versiones.",
+      "CONTEXT": "Glosario del dominio — vivo, no de fase (opcional, desde 3 términos)."
+    }
+  },
+  "SkillData": {
+    "skill:ai-seo": {
+      "author": "Anthropic — nativa de Claude Code",
+      "summary": "Optimización para que el contenido sea citado por motores de IA (Google AI Overviews, ChatGPT, Perplexity, Claude, Gemini, Copilot) — AEO/GEO, llms.txt, formato agent-readable.",
+      "whatItDoes": "Usar cuando se pida optimizar para que la IA cite el sitio, mejorar visibilidad en respuestas generadas por IA, o se mencione \"AI SEO\", \"AEO\", \"GEO\", \"llms.txt\" o \"zero-click search\". Complementa a seo-audit (SEO técnico tradicional) — no lo reemplaza: una cubre indexación/crawl clásico, la otra citabilidad por LLMs.",
+      "whenToUse": [
+        "Optimizar contenido para que aparezca citado en AI Overviews, ChatGPT, Perplexity, Claude o Gemini.",
+        "Portales de contenido o reportes donde la visibilidad en IA ya pesa tanto como el SEO clásico.",
+        "Cuando se menciona AEO, GEO, llms.txt o zero-click search."
+      ],
+      "usage": [
+        "Se activa sola al pedir optimización para motores de IA.",
+        "Complementa a seo-audit, no la reemplaza: una cubre indexación/crawl clásico, la otra citabilidad por LLMs."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code",
+          "note": "Skill nativa de Claude Code, no publicada en el registro de npx skills add. No requiere instalación."
+        }
+      ]
+    },
+    "skill:api-security-best-practices": {
+      "author": "OWASP / Comunidad Security",
+      "summary": "Implement secure API design patterns including authentication, authorization, input validation, rate limiting, and protection against common API vulnerabilities",
+      "whenToUse": [
+        "Diseñar nuevos endpoints de API REST, GraphQL o WebSockets.",
+        "Implementar esquemas de autenticación (JWT, OAuth 2.0) y autorización (RBAC/IDOR).",
+        "Proteger endpoints contra vulnerabilidades del OWASP API Top 10 (SQLi, XSS, Inyección).",
+        "Configurar limitación de tasa (Rate Limiting), throttling y cabeceras de seguridad.",
+        "Preparar APIs para auditorías o revisiones de seguridad."
+      ],
+      "usage": [
+        "Se activa sola al escribir o revisar autenticación, validación de datos o endpoints de API.",
+        "Revisa la estructura de tokens, sanitización con Zod/DOMPurify y protección de rate limit."
+      ],
+      "notes": [
+        "Cubre patrones de seguridad en Node.js, Express, Fastify, FastAPI y Python."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "skill:brainstorming": {
+      "author": "obra/superpowers",
+      "summary": "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior.",
+      "whatItDoes": "Explores user intent, requirements and design before implementation.",
+      "whenToUse": [
+        "Antes de cualquier trabajo creativo: crear features, construir componentes, agregar funcionalidad o cambiar comportamiento.",
+        "Cuando la idea todavía es difusa y hace falta convertirla en un diseño concreto antes de escribir código."
+      ],
+      "usage": [
+        "Hace preguntas de a una para refinar la idea, presenta el diseño y espera tu aprobación.",
+        "Tiene un hard gate: no escribe código ni scaffolding hasta que apruebes el diseño — incluso en proyectos que parecen triviales."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "copywriting": {
+      "author": "Corey Haines",
+      "summary": "Copy persuasivo para headlines, landing pages, email y ads — claridad y beneficios concretos antes que creatividad.",
+      "whatItDoes": "Da un framework de copywriting orientado a conversión: beneficios sobre features, lenguaje del cliente sobre jerga de producto, un CTA claro por sección. Sirve para redactar de cero o para revisar copy ya escrito que suena genérico.",
+      "whenToUse": [
+        "Escribir el copy de una landing, feature page o pricing page desde cero.",
+        "Pulir un texto ya escrito que suena a folleto ('robusto', 'innovador', frases largas parejas).",
+        "Redactar CTAs, headlines o subject lines de email."
+      ],
+      "usage": [
+        "Se activa sola al pedir copy de marketing o revisar texto de interfaz.",
+        "Pide contexto de producto/audiencia si no lo tiene — mejor dárselo de entrada."
+      ],
+      "notes": [
+        "Parte de un paquete de 20 skills de marketing del mismo autor (SEO, CRO, email, ads) — se pueden instalar sueltas o todas juntas."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Cursor / Codex"
+        }
+      ]
+    },
+    "skill:domain-modeling": {
+      "author": "—",
+      "summary": "Usar mientras se trabaja, no como paso aparte: al aparecer un término del dominio nuevo o ambiguo, al detectar que dos personas (o el código y la conversación) le dan sentidos distintos a la misma palabra, o al nombrar entidades, tablas, tipos y endpoints.",
+      "whatItDoes": "Mantiene vivo el glosario del proyecto en `docs/CONTEXT.md`.",
+      "whenToUse": [],
+      "usage": [],
+      "install": []
+    },
+    "emilkowalski-skills": {
+      "author": "Emil Kowalski (ex Vercel / Linear)",
+      "summary": "Paquete de 7 skills de design engineering: animación, motion y criterio de UI destilados de años de oficio.",
+      "whatItDoes": "Los agentes no tienen buen gusto: eligen ease-in para una animación de entrada cuando corresponde ease-out, o un borde sólido donde iba una sombra semitransparente. Estas skills enumeran esos errores chicos que se acumulan y explican cómo corregirlos, para que el agente tome las decisiones que tomaría un design engineer.",
+      "whenToUse": [
+        "Cuando la UI funciona pero se siente rígida o barata y no sabés qué tocar.",
+        "Antes de mergear un PR con animaciones — para que alguien las revise con criterio estricto.",
+        "Cuando querés pedirle una animación a la IA y no tenés la palabra exacta para describirla.",
+        "Cuando el agente está por escribir a mano un toast, un dropdown o un modal en vez de usar una librería probada."
+      ],
+      "includes": [
+        {
+          "name": "emil-design-eng",
+          "description": "La skill principal — sobre todo animación, más algo de criterio de diseño."
+        },
+        {
+          "name": "review-animations",
+          "description": "Revisa tus animaciones de forma estricta contra sus reglas."
+        },
+        {
+          "name": "improve-animations",
+          "description": "Audita todas las animaciones del codebase y devuelve planes priorizados y autocontenidos que puede ejecutar cualquier agente."
+        },
+        {
+          "name": "find-animation-opportunities",
+          "description": "Busca lugares de la UI que realmente ganarían con movimiento — y te dice qué NO animar."
+        },
+        {
+          "name": "animation-vocabulary",
+          "description": "Glosario inverso: describís el efecto con palabras vagas y te devuelve el término exacto para prompear."
+        },
+        {
+          "name": "apple-design",
+          "description": "Principios de interfaz y motion de Apple, destilados de sus charlas de WWDC y traducidos a la web."
+        },
+        {
+          "name": "pick-ui-library",
+          "description": "Que el agente elija la librería correcta entre las que Emil usa y confía, en vez de improvisar o instalar un paquete abandonado."
+        }
+      ],
+      "usage": [
+        "Se activan solas al pedir trabajo de UI o animación.",
+        "También se pueden invocar por nombre: \"usá improve-animations en src/components\"."
+      ],
+      "notes": [
+        "Complemento del curso animations.dev y de aiforui.dev."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Cursor / Codex",
+          "note": "Instala las 7 skills de una. El repo es emilkowalski/skill (singular) pero el comando usa skills (plural)."
+        }
+      ]
+    },
+    "skill:error-handling-patterns": {
+      "author": "wshobson/agents",
+      "summary": "Master error handling patterns across languages including exceptions, Result types, error propagation, and graceful degradation to build resilient applications.",
+      "whatItDoes": "Use when implementing error handling, designing APIs, or improving application reliability.",
+      "whenToUse": [
+        "Implementar manejo de errores en features nuevas.",
+        "Diseñar APIs resilientes a fallos.",
+        "Debuggear problemas de producción o mejorar la confiabilidad de la app.",
+        "Implementar retry, circuit breaker o manejo de errores async/concurrentes."
+      ],
+      "usage": [
+        "Se activa sola al implementar manejo de errores o diseñar APIs.",
+        "Cubre excepciones, tipos Result, propagación de errores y degradación elegante — transversal a lenguajes."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "skill:fastapi": {
+      "author": "Equipo oficial de FastAPI",
+      "summary": "Mejores prácticas oficiales de FastAPI — se activa automáticamente al trabajar con archivos .py que usen FastAPI o Pydantic.",
+      "whatItDoes": "Siempre actualizada con las últimas versiones y features del framework.",
+      "whenToUse": [
+        "Cualquier trabajo sobre un backend FastAPI o modelos Pydantic."
+      ],
+      "usage": [
+        "Activación automática: se dispara sola al tocar archivos .py que usen FastAPI o Pydantic."
+      ],
+      "notes": [
+        "Es la skill del repositorio oficial — se mantiene actualizada con cada versión del framework."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "skill:frontend-design": {
+      "author": "Anthropic",
+      "summary": "Dirección estética intencional al construir UI nueva o rediseñar una existente.",
+      "whatItDoes": "Ayuda con tipografía, dirección visual y decisiones que evitan que la interfaz se vea como un default genérico de framework (\"AI slop\"). Usar al iniciar cualquier UI nueva en un proyecto que ya tiene sistema de diseño definido (brief de marca, paleta, tipografía) — caso habitual en Orange Latam.",
+      "whenToUse": [
+        "Al iniciar cualquier UI nueva, tenga o no el proyecto un sistema de diseño definido.",
+        "Al rediseñar una interfaz existente que se ve como un default genérico de framework."
+      ],
+      "usage": [
+        "Si ya hay sistema de diseño (brief de marca, paleta, tipografía) refina decisiones dentro de ese sistema.",
+        "Si no lo hay, infiere una dirección coherente a partir del brief y el contexto del proyecto."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "hallmark": {
+      "author": "Together AI (nutlope)",
+      "summary": "Skill de diseño web que se niega a producir páginas con cara de generadas por IA.",
+      "whatItDoes": "Elige una macroestructura según el brief, la viste con uno de sus veinte temas y pasa la página por 57 'slop-test gates' antes de devolverla. Está construida para evitar los defaults en los que todo LLM cae: gradiente violeta, todo centrado, tarjetas con iconito, sans-serif genérica. Dos briefs distintos dan sitios distintos, no el mismo template con otro color.",
+      "whenToUse": [
+        "Landing pages, sitios de producto o páginas de marketing donde el diseño tiene que diferenciarse.",
+        "Rediseñar una página existente sin tocar el copy ni la arquitectura de información.",
+        "Auditar una UI que ya escribiste y que 'se ve a IA' pero no sabés por qué.",
+        "Extraer el ADN visual (estructura, tipografía, color) de un sitio que te gusta."
+      ],
+      "usage": [
+        "Sin verbo: pedís UI nueva y la skill arranca sola — \"armá una landing para un SaaS de facturación\".",
+        "hallmark audit <archivo> — puntúa el código existente contra los anti-patterns. Solo diagnóstico, no edita.",
+        "hallmark redesign <archivo> — tira la estructura, conserva copy + IA + marca, reconstruye con otra huella.",
+        "hallmark study <captura | URL> — extrae el ADN de un diseño que admirás. Se niega a clonar pixel a pixel."
+      ],
+      "notes": [
+        "Licencia MIT.",
+        "Emite HTML + CSS autocontenido, con la macroestructura firmada en un comentario del CSS."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Cursor / Codex",
+          "note": "Detecta la herramienta sola. Re-ejecutá el mismo comando para actualizar."
+        },
+        {
+          "tool": "Manual",
+          "note": "En Cursor va a .cursor/rules/hallmark.mdc (solo el cuerpo, sin frontmatter); en Codex a ~/.codex/skills/hallmark/."
+        }
+      ]
+    },
+    "skill:impeccable": {
+      "author": "Paul Bakaus",
+      "summary": "Vocabulario de diseño con 23 comandos y auditoría de anti-patterns.",
+      "whatItDoes": "Usar cuando se necesite auditar, pulir, criticar o mejorar interfaces. Cubre tipografía, color, motion, espaciado, interacción, responsive y UX writing.",
+      "whenToUse": [
+        "Auditar, pulir, criticar o mejorar una interfaz que ya existe.",
+        "Pase final de calidad antes de shipear."
+      ],
+      "usage": [
+        "Se invoca por comando: /impeccable <comando> — audit (a11y, performance, responsive), critique (jerarquía, claridad), polish (pase final), harden (errores, i18n, overflow, edge cases), entre 23 en total."
+      ],
+      "notes": [
+        "205K+ instalaciones en skills.sh.",
+        "El repo publica cada comando como skill individual, si no querés el paquete completo."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "skill:prisma-database-setup": {
+      "author": "Equipo oficial de Prisma",
+      "summary": "Guía oficial de Prisma para diseñar schema, configurar el datasource y correr migraciones — PostgreSQL, MySQL y el resto de providers soportados.",
+      "whatItDoes": "Usar al iniciar un proyecto con Prisma, al diseñar o modificar el schema (`schema.prisma`), o al configurar migraciones por primera vez. Relevante para proyectos con backend PostgreSQL relacional grande (ej. un CRM con decenas de tablas).",
+      "whenToUse": [
+        "Iniciar un proyecto nuevo con Prisma.",
+        "Diseñar o modificar modelos en schema.prisma.",
+        "Configurar el datasource (PostgreSQL, MySQL, SQLite...) o correr prisma migrate por primera vez."
+      ],
+      "usage": [
+        "Se activa sola al tocar schema.prisma o configurar migraciones."
+      ],
+      "notes": [
+        "Especialmente útil en schemas relacionales grandes, donde un mal diseño temprano se paga caro después."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "skill:project-planning": {
+      "author": "—",
+      "summary": "Usar antes de codificar un proyecto nuevo o una iniciativa grande (afecta más de 3 archivos, tiene más de una arquitectura válida, o incluye una decisión irreversible).",
+      "whatItDoes": "Convierte una idea ya validada en los 8 documentos de `/docs` que define este kit (`01_PROJECT_PRD.md` … `08_CHANGELOG.md`), en orden, antes de escribir código.",
+      "whenToUse": [],
+      "usage": [],
+      "install": []
+    },
+    "skill:seo-audit": {
+      "author": "coreyhaines31/marketingskills",
+      "summary": "Audita, revisa o diagnostica problemas de SEO en el sitio — SEO técnico, meta tags, page speed, Core Web Vitals, errores de crawl/indexación, caídas de tráfico o ranking.",
+      "whatItDoes": "Usar cuando se pida auditar SEO, diagnosticar por qué no rankea, o algo vago como \"revisá el SEO\" o \"ayudame con SEO\". Diagnóstico únicamente — los umbrales y specs concretos de este proyecto viven en .agents/rules/seo.md y tienen prioridad sobre cualquier sugerencia genérica de la skill.",
+      "whenToUse": [
+        "Caídas de tráfico o de ranking.",
+        "Páginas que no indexan, errores de crawl, dudas de on-page SEO.",
+        "Pedidos vagos tipo \"revisá el SEO de esto\"."
+      ],
+      "usage": [
+        "Diagnóstico únicamente — no aplica cambios.",
+        "Los umbrales y specs concretos del proyecto viven en .agents/rules/seo.md y tienen prioridad sobre cualquier sugerencia genérica de la skill."
+      ],
+      "notes": [
+        "Se instala solo seo-audit, no el paquete de marketing completo."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "test-driven-development": {
+      "author": "obra (superpowers)",
+      "summary": "Loop de TDD: test que falla primero, cambio mínimo para pasarlo, verificación, recién ahí refactor.",
+      "whatItDoes": "Fuerza el orden correcto — test antes que implementación — para que el agente no escriba código primero y le agregue tests de relleno después, que es lo que produce cobertura sin protección real.",
+      "whenToUse": [
+        "Implementar una función o endpoint donde el comportamiento esperado ya se puede describir de antemano.",
+        "Arreglar un bug — escribir primero el test que lo reproduce, después el fix.",
+        "Cuando la cobertura existe pero nadie confía en que atrapa regresiones."
+      ],
+      "usage": [
+        "Se activa sola al implementar una feature nueva con comportamiento verificable.",
+        "Se puede invocar por nombre: \"usá test-driven-development para esto\"."
+      ],
+      "notes": [
+        "Parte del paquete superpowers — incluye también brainstorming, systematic-debugging y otras skills de proceso."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Cursor / Codex"
+        }
+      ]
+    },
+    "ui-ux-pro-max": {
+      "author": "nextlevelbuilder",
+      "summary": "Base de datos consultable de estilos de UI, paletas, pares tipográficos y reglas de UX por industria.",
+      "whatItDoes": "Ante un pedido de UI busca en su base — 84 estilos (Glassmorphism, Neumorphism, Brutalism, Aurora UI...), 192 paletas de color por tipo de producto, 74 pares de fuentes de Google Fonts y 161 reglas de razonamiento por industria — y genera un design system completo con el código para el stack que uses (22 soportados: React, Next.js, Vue, Svelte, Tailwind, Flutter, SwiftUI, React Native...).",
+      "whenToUse": [
+        "Arrancar de cero y necesitar un design system coherente antes de escribir componentes.",
+        "No saber qué estilo visual le va a un rubro (fintech, spa, gaming) y querer opciones fundamentadas.",
+        "Elegir paleta y tipografía sin improvisar."
+      ],
+      "usage": [
+        "Se activa sola al pedir trabajo de UI: \"armá una landing para mi SaaS\".",
+        "uipro update — refresca los archivos de la skill desde el paquete instalado.",
+        "uipro uninstall --ai claude — la saca."
+      ],
+      "notes": [
+        "Requiere Python 3.x para el script de búsqueda (solo librería estándar, sin llamadas de red).",
+        "Tiene tier Premium; el core es open source.",
+        "Ojo: esta skill se sacó del ZIP de /build — su rol quedó consolidado en la skill propia frontend-design. Queda acá como referencia por si querés la base de datos completa."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code (marketplace)"
+        },
+        {
+          "tool": "CLI (recomendado)",
+          "note": "El paquete npm es ui-ux-pro-max-cli pero el comando sigue siendo uipro. Los releases viejos de uipro-cli están stale."
+        },
+        {
+          "tool": "Global (todos los proyectos)",
+          "note": "Instala en ~/.claude/skills/ en vez de en el proyecto."
+        }
+      ]
+    },
+    "skill:vercel-composition-patterns": {
+      "author": "Vercel Engineering",
+      "summary": "Patrones de composición de componentes React/Next.js — refactorizar componentes con muchos props booleanos, diseñar APIs de componentes reutilizables al estilo shadcn/ui (slots, compound components, render props en vez de flags).",
+      "whatItDoes": "Usar cuando se necesite refactorizar un componente que acumuló muchos props `is*`/`show*`, o al diseñar la API pública de un componente reutilizable.",
+      "whenToUse": [
+        "Un componente acumuló muchos props booleanos (isOpen, showFooter, variant...) que empiezan a combinarse de formas inválidas.",
+        "Diseñar desde cero la API pública de un componente reutilizable."
+      ],
+      "usage": [
+        "Propone slots, compound components y render props al estilo shadcn/ui en vez de flags."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "skill:vercel-react-best-practices": {
+      "author": "Vercel Engineering",
+      "summary": "React and Next.js performance optimization guidelines from Vercel Engineering.",
+      "whatItDoes": "This skill should be used when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.",
+      "whenToUse": [
+        "Escribir componentes React o páginas Next.js nuevas.",
+        "Implementar data fetching (cliente o servidor).",
+        "Revisar o refactorizar código buscando problemas de performance.",
+        "Optimizar bundle size o tiempos de carga."
+      ],
+      "usage": [
+        "70 reglas en 8 categorías, priorizadas por impacto — pensadas para guiar refactors automáticos."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "skill:web-design-guidelines": {
+      "author": "Vercel Engineering",
+      "summary": "Audita código de UI contra las Vercel Web Interface Guidelines.",
+      "whatItDoes": "Usar cuando se pida revisar UI, verificar accesibilidad, auditar diseño, revisar UX, o chequear cumplimiento de estándares de interfaz.",
+      "whenToUse": [
+        "Revisar UI, verificar accesibilidad, auditar diseño o chequear cumplimiento de estándares de interfaz."
+      ],
+      "usage": [
+        "Descarga las Web Interface Guidelines actualizadas y revisa los archivos indicados contra todas sus reglas.",
+        "Reporta en formato archivo:línea — descripción del issue."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    },
+    "webapp-testing": {
+      "author": "Anthropic",
+      "summary": "Patrones de testing para apps web — cuándo probar unitario, integración o end-to-end, y qué mockear.",
+      "whatItDoes": "Da el criterio para elegir el nivel de prueba correcto según lo que se está verificando, en vez de que el agente escriba tests que solo cubren la implementación y siempre pasan.",
+      "whenToUse": [
+        "Escribir tests nuevos para una feature — antes de decidir si es unitario, de integración o e2e.",
+        "Revisar una suite existente que tiene alta cobertura pero no atrapa regresiones reales.",
+        "Decidir qué mockear y qué probar contra la implementación real."
+      ],
+      "usage": [
+        "Se activa sola al pedir tests para código de una app web.",
+        "También se puede invocar por nombre al revisar una suite existente."
+      ],
+      "notes": [
+        "Parte del mismo repo oficial que frontend-design y canvas-design."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Cursor / Codex"
+        }
+      ]
+    },
+    "skill:wordpress-block-theming": {
+      "author": "Automattic",
+      "summary": "Desarrollo de themes de WordPress con Full Site Editing (FSE) — bloques, `theme.json`, block templates y block patterns.",
+      "whatItDoes": "Usar al construir o modificar un theme de WordPress moderno (basado en bloques, no en PHP templates clásicos), o al configurar `theme.json` (paleta, tipografía, spacing).",
+      "whenToUse": [
+        "Construir o modificar un theme de WordPress basado en bloques (Full Site Editing).",
+        "Configurar theme.json — paleta, tipografía, spacing.",
+        "Trabajar con templates/*.html, parts/*.html, block patterns o bloques custom."
+      ],
+      "usage": [
+        "No aplica a themes clásicos basados solo en PHP (index.php, header.php...)."
+      ],
+      "notes": [
+        "Skill oficial de la empresa detrás de WordPress.com y WooCommerce — la fuente más directa para convenciones de theming con bloques."
+      ],
+      "install": [
+        {
+          "tool": "Claude Code / Antigravity"
+        }
+      ]
+    }
+  },
+  "StackLabels": {
+    "nextjs-branded": {
+      "label": "Next.js / React — con sistema de diseño",
+      "description": "Proyecto Next.js que ya tiene brand, paleta y tipografía definidos (caso habitual en Orange Latam)."
+    },
+    "nextjs-unbranded": {
+      "label": "Next.js / React — sin sistema de diseño",
+      "description": "Proyecto Next.js arrancando de cero, sin brief de marca ni paleta todavía."
+    },
+    "wordpress-cms": {
+      "label": "WordPress / CMS",
+      "description": "Sitio WordPress puro o headless (Sanity, Contentful, Strapi)."
+    },
+    "fastapi-python": {
+      "label": "FastAPI / Python",
+      "description": "Backend Python con FastAPI."
+    },
+    "html-plano": {
+      "label": "HTML / CSS / JS plano",
+      "description": "Sitio estático sin framework — HTML, CSS puro y Vanilla JS."
+    },
+    "react-spa": {
+      "label": "React — SPA (sin Next.js)",
+      "description": "Proyecto React puro (Vite/CRA), sin framework full-stack."
+    },
+    "vue": {
+      "label": "Vue",
+      "description": "Proyecto Vue (Composition API + Pinia)."
+    },
+    "manual": {
+      "label": "Manual / desde cero",
+      "description": "Sin preselección — elegís cada pieza a mano."
+    }
+  },
+  "ChangelogData": {
+    "unreleased": {
+      "cambios": [
+        "/subagentes pasa a mostrar los dos catálogos (4 de Antigravity + 8 de Claude Code) con el formato nativo de cada tool, y aparece también en el menú “Antigravity solo”. Antes filtraba únicamente claude-code.",
+        "Tema visual unificado en las páginas que quedaban con el estilo viejo: /subagentes, /mejores-skill, /skills-por-proyecto, /prompts y /plantillas. Se arrastraban también el armador de ZIP, su modal de preview (se abría con fondo blanco sobre el sitio oscuro) y el bloque de descarga de plantillas.",
+        "Las dos vistas de skills se fusionan en una sola página: el catálogo plano y el agrupado por tipo de proyecto pasan a ser pestañas de /mejores-skill. La ruta vieja redirige.",
+        "El contenido de datos del sitio se muda a messages/*.json: skills, templates de prompt, labels de stack, tipos de proyecto y esta bitácora quedan traducidos en vez de estar solo en español.",
+        "Regla de idioma corregida para que refleje la realidad: el núcleo decía “código siempre en inglés”, pero el repo tenía 67 comentarios en español contra 15 en inglés. Ahora es “identificadores y nombres de archivo en inglés; comentarios y documentación en español”. Traducir todo se evaluó y se descartó: 4 de las 14 skills empaquetadas son de terceros y están en inglés, y el español mide solo 3,8% más que el inglés en texto técnico.",
+        "Antigravity y Claude Code pasan a ser kits totalmente independientes: se elimina el modo de uso híbrido. Ningún item pertenece a los dos tools — las plantillas de /docs, las skills externas y el add-on de base de datos se emiten una vez por tool. Cada ZIP es autocontenido y no asume que tengas el otro agente instalado.",
+        "El home pasa de 3 modos de uso a 2, y /subagentes se mueve dentro del menú “Claude solo”.",
+        "code-reviewer ya no promete revisar UI/UX (su checklist nunca lo hizo): ahora deriva a ui-reviewer.",
+        "explorer y planner explicitan qué los diferencia de los agentes Explore y Plan que Claude Code trae de fábrica: conocen la convención /docs 01-08 y las reglas instaladas en .claude/skills/.",
+        "Reorganización de la interfaz del sitio: layout, nav, home y tarjetas de skills ajustados.",
+        "Se agrega esta bitácora de cambios (CHANGELOG.md + página /changelog).",
+        "Labels del nav normalizados: se reemplazan los tres “Inicio” genéricos por labels descriptivos, y un grupo de un solo ítem pasa a ser link directo.",
+        "Se fusionan /stacks y /stacks-app en una única página /stacks con el tema visual actual.",
+        "El proyecto pasa a usar su propia convención /docs para seguimiento del trabajo (06_TASKS.md y 07_DECISIONS.md).",
+        "/ pasa a ser el índice del hub (los modos de uso, el catálogo de skills y la bitácora); los presets por stack de Antigravity se mudan a su propia página /antigravity."
+      ],
+      "agregado": [
+        "El kit de Claude Code como plugin nativo: /plugin marketplace add luiskaco/-makeRuleIA instala las 9 rules como skills nativas, los 7 comandos y los 8 subagentes, y se actualiza desde git en vez de quedar congelado como el ZIP. Versionado por fecha (CalVer).",
+        "Cuatro subagentes para Antigravity: auditor y security (solo lectura) más backend y frontend (implementan y verifican su propio trabajo en sandbox). Antigravity soporta subagentes declarables en archivo — .agents/agents/<nombre>/agent.md — y el kit lo daba por imposible. Vienen preseleccionados en los 8 presets de Antigravity.",
+        "Dos subagentes nuevos, de 6 a 8: ui-reviewer (accesibilidad, los 5 estados de UI, responsive, SEO on-page y consistencia con el sistema de diseño) y test-writer (detecta el framework de test del proyecto en vez de asumirlo, y nunca modifica el código bajo prueba)."
+      ],
+      "arreglado": [
+        "Los comandos de Claude Code no se descargaban: los 6 existían y se mostraban en /build, pero ningún preset los preseleccionaba, así que el ZIP salía sin la carpeta .claude/commands/.",
+        "code-reviewer apuntaba a .agents/rules/*, rutas que no existen en un ZIP de Claude Code — esas reglas se instalan como .claude/skills/<id>/SKILL.md. Solo funcionaba si además habías bajado el ZIP de Antigravity.",
+        "Segmentos duplicados en todos los ZIPs generados: docs/docs/… y .agents/.agents/…, que además no coincidían con los comandos de copia del INSTALL.md incluido.",
+        "Contenido específico de Antigravity que se filtraba a los ZIPs de Claude Code: 00_GEMINI_START.md ya no se incluye en presets de claude-code, y las referencias sueltas a GEMINI.md en archivos compartidos ahora también apuntan a CORE.md."
+      ],
+      "quitado": [
+        "Modo de uso “Antigravity + Claude”: la entrada del nav y la tarjeta del home. Los subagentes siguen estando, dentro de “Claude solo”.",
+        "Páginas placeholder vacías y sin link en el nav: /proximamente y /mejores-repos-utilidades."
+      ]
+    },
+    "2026-07-29": {
+      "agregado": [
+        "Skill project-planning para cerrar el gap entre brainstorming y ejecución."
+      ]
+    },
+    "2026-07-28": {
+      "agregado": [
+        "Rediseño del sitio a \"Vibrant Flat UI 3.0\".",
+        "Nueva pestaña /stacks-app.",
+        "Nuevos templates de prompt.",
+        "Skill api-security-best-practices sumada al catálogo."
+      ]
+    },
+    "2026-07-25": {
+      "agregado": [
+        "Skills de diseño de terceros versionadas en .claude/skills/.",
+        "Catálogo unificado con la estructura de tarjetas del glosario.",
+        "Skills externas sumadas al catálogo + glosario con detalle.",
+        "Menú hamburguesa para navegación responsive.",
+        "Reorganización del nav en menús agrupados + catálogo de skills y templates de prompt."
+      ],
+      "quitado": [
+        "Skills de diseño gráfico removidas del bundle de uipro."
+      ]
+    },
+    "2026-07-22": {
+      "cambios": [
+        "Se remueve la skill ui-ux-pro-max, consolidando su rol en frontend-design."
+      ]
+    },
+    "2026-07-20": {
+      "agregado": [
+        "Pestañas placeholder: \"Mejores SKILL\", \"Próximamente\" y \"Mejores repos de utilidades\"."
+      ],
+      "cambios": [
+        "Se exige el uso de versiones actualizadas y se corrige la lista de rules."
+      ]
+    },
+    "2026-07-15": {
+      "cambios": [
+        "El proyecto se enfoca en el workflow Gemini + Claude; se agregan subagentes y se corrige el límite de rules."
+      ]
+    },
+    "2026-07-05": {
+      "agregado": [
+        "Sitio \"Rules Hub\" descargable con soporte multi-agente y de base de datos."
+      ],
+      "arreglado": [
+        "Responsividad mobile del nav, footer y páginas de build."
+      ]
+    },
+    "2026-07-02": {
+      "agregado": [
+        "Secciones de PWA, dark mode, i18n y privacidad en las rules.",
+        "Documentación de las skills frontend-design y seo-audit."
+      ]
+    },
+    "2026-06-21": {
+      "cambios": [
+        "Reorganización de la estructura del repo a la raíz del proyecto; README actualizado."
+      ]
+    },
+    "2026-06-13": {
+      "cambios": [
+        "Reorganización de reglas de antigravity-v2, eliminación de reglas obsoletas.",
+        "Actualización de las opciones de workflow y la lógica de subagentes en GEMINI.md."
+      ],
+      "agregado": [
+        "Rules de Antigravity y actualización de instrucciones de agente."
+      ]
+    },
+    "2026-06-11": {
+      "agregado": [
+        "Documentación de los procesos internos de subagentes para tareas de código."
+      ]
+    },
+    "2026-06-07": {
+      "docs": [
+        "Corrección de typo en el workflow de bug-fix.",
+        "Actualización de workflows y README de Antigravity."
+      ]
+    },
+    "2026-06-01": {
+      "docs": [
+        "Revisión de README para instalación de Antigravity Rules v2.",
+        "Actualización de session-close.md, new-feature.md y GEMINI.md."
+      ]
+    },
+    "2026-05-31": {
+      "agregado": [
+        "README raíz del proyecto.",
+        "Actualización de workflows de agentes, skills y documentación."
+      ]
+    },
+    "2026-05-24 — 2026-05-30": {
+      "agregado": [
+        "Primeras rules de gobernanza de IA (ia_antigravity-rules, README global, reglas v3/v4).",
+        "Commit inicial del proyecto."
+      ]
+    }
+  },
+  "ExternalTools": {
+    "context7": {
+      "name": "Context7 MCP",
+      "note": "Documentación de librerías en tiempo real, por proyecto."
+    },
+    "skillsSh": {
+      "name": "Más skills en skills.sh",
+      "note": "Directorio de skills de la comunidad compatible con este agente — https://www.skills.sh/"
+    }
+  },
+  "Tools": {
+    "antigravity": {
+      "label": "Antigravity (Gemini)",
+      "description": "GEMINI.md global + .agents/rules + .agents/skills."
+    },
+    "claude-code": {
+      "label": "Claude Code",
+      "description": "CLAUDE.md + .claude/skills + .claude/commands + .claude/agents (subagentes)."
+    }
   }
 }

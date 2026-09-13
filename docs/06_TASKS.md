@@ -5,18 +5,18 @@
 
 ## En progreso
 
-- [ ] Reorganización de la interfaz del sitio — cambios hechos pero todavía sin commitear.
+- [ ] Nada en curso.
 
 ## Pendiente
 
-- [ ] Traducir el **contenido de datos** del sitio al inglés — hoy la interfaz está en ES/EN pero estos archivos siguen solo en español: `lib/skill-catalog.ts` (~295 líneas), `lib/external-skills.ts` (~187), `lib/prompt-templates.ts` (~193), las descripciones de `STACK_LABELS` en `lib/presets.ts`, las entradas de `RELEASES` en `/changelog`, y las descripciones que salen del frontmatter de las rules/skills vía `manifest.json`. Requiere decidir si se mueven a `messages/*.json` o si llevan un campo por locale.
-
-- [ ] Decidir si `/mejores-skill` (catálogo plano) y `/skills-por-proyecto` (agrupado por tipo de trabajo) se mantienen separados o se fusionan en una página con dos vistas. Hoy muestran el mismo set de skills con distinto corte.
-- [ ] Evaluar si `/changelog` debería estar en el nav principal además del footer.
-- [ ] **Empaquetar el kit de Claude Code como plugin nativo.** La dirección ya está decidida en ADR-011 (se suma a los ZIPs, no los reemplaza). Falta: `.claude-plugin/plugin.json` con el array explícito de rutas de skills, decidir el esquema de versión — hoy el proyecto no versiona — y el paso de release que suba plugin y repo juntos.
+- [ ] Nada abierto. El backlog se vació con las 4 decisiones del 2026-09-13.
 
 ## Completado
 
+- [x] **Contenido de datos del sitio traducido** — decisión: va a `messages/*.json`. Las 21 skills del catálogo, los 7 templates de prompt, los labels de los 8 stacks, los tipos de proyecto, las descripciones de plantillas SDD y los 56 ítems de la bitácora quedan en ES/EN. Los `lib/*.ts` conservan solo estructura: `skill-catalog.ts` pasa de 295 a 70 líneas, `external-skills.ts` de 272 a 68. Las descripciones del frontmatter del kit son la excepción documentada: el ES es el del archivo empaquetado (ADR-009), y `en.json` guarda solo la traducción con fallback al manifest (`lib/item-description.ts`). El INSTALL.md que se genera dentro del ZIP sigue en español a propósito, por el mismo motivo.
+- [x] **`/mejores-skill` y `/skills-por-proyecto` fusionadas** — decisión: queda `/mejores-skill`, con dos pestañas (lista completa / por tipo de proyecto). La ruta vieja redirige. Las dos vistas van en el HTML estático y se alternan con `hidden`, así no se pierde indexación.
+- [x] **`/changelog` en el nav principal**, además del footer.
+- [x] **Kit de Claude Code empaquetado como plugin nativo** (ADR-011 implementada, esquema de versión en ADR-014): `.claude-plugin/plugin.json` + `marketplace.json` generados por `scripts/build-plugin.mjs`, con CalVer `YYYY.M.D` y guard `--check`. Publica solo contenido propio — las skills de terceros vendorizadas quedan afuera y el script falla si alguna se cuela.
 - [x] **`/subagentes` muestra los dos catálogos**: 4 de Antigravity + 8 de Claude Code, con el formato y la ruta de cada tool, badges de "escribe"/"solo lectura" y tier de modelo derivados del frontmatter real del agente (no de una lista a mano, para que no se desactualice). Sumada también al menú "Antigravity solo".
 - [x] **Tema visual unificado**: `/mejores-skill`, `/skills-por-proyecto`, `/prompts`, `/subagentes` y `/plantillas` pasan a Vibrant Flat UI 3.0. Arrastraban el estilo viejo también `BuildClient`, `ItemPreviewModal` (el modal de preview se abría con fondo blanco sobre el sitio oscuro) y `DocTemplatesDownload`. Ya no queda ninguna clase `neutral-*` en `site/src`.
 - [x] **Campo `model` por subagente** — verificado, ya estaba bien: `explorer` y `docs-writer` en haiku, `planner` y `security-auditor` en opus, el resto en sonnet. Del lado Antigravity, `security` en `pro` y el resto en `inherit`.

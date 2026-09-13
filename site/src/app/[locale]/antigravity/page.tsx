@@ -27,6 +27,7 @@ function codeChip(colorClass: string, text: string): ReactNode {
 export default async function AntigravityPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
   const t = await getTranslations("Antigravity");
+  const stacks = await getTranslations("StackLabels");
   const presets = getPresetsByTool("antigravity");
 
   return (
@@ -95,13 +96,13 @@ export default async function AntigravityPage({ params }: { params: { locale: st
                 <div>
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="text-lg font-bold text-white group-hover:text-violet-300 transition-colors">
-                      {preset.label}
+                      {stacks(`${preset.id}.label`)}
                     </h3>
                     <span className={`rounded-full px-3 py-0.5 text-xs font-bold ${badgeColors[idx % badgeColors.length]}`}>
                       {t("presetBadge")}
                     </span>
                   </div>
-                  <p className="mt-3 text-sm text-slate-300 leading-relaxed">{preset.description}</p>
+                  <p className="mt-3 text-sm text-slate-300 leading-relaxed">{stacks(`${preset.id}.description`)}</p>
                 </div>
                 <div className="mt-6 flex items-center text-xs font-bold text-violet-400 group-hover:text-violet-300">
                   {t("presetCta")}{" "}

@@ -15,7 +15,7 @@ export async function generateMetadata({
 export default async function PlantillasPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
   const t = await getTranslations("DocTemplates");
-  const templates = getDocTemplates();
+    const templates = getDocTemplates();
 
   return (
     <div className="flex flex-col gap-10">
@@ -38,7 +38,7 @@ export default async function PlantillasPage({ params }: { params: { locale: str
                 </span>
               )}
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">{template.description}</p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t(`descriptions.${template.file.replace(/\.md$/, "")}`)}</p>
           </div>
         ))}
       </div>

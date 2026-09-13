@@ -61,6 +61,26 @@ estrictamente "Always On".
 
 ## Instalación
 
+### Claude Code — como plugin (recomendado)
+
+El plugin se actualiza desde git: un `/plugin update` trae las correcciones
+posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
+
+```
+/plugin marketplace add luiskaco/-makeRuleIA
+/plugin install ai-rules-hub@ai-rules-hub
+```
+
+Trae las 9 rules como skills nativas, los 7 comandos y los 8 subagentes. **No**
+trae `CLAUDE.md`: un plugin aporta comandos, agentes y skills, no memoria de
+proyecto — si querés el núcleo global, bajá el ZIP desde `/build`.
+
+Las skills de terceros (`hallmark`, `impeccable`, las de Vercel, etc.) no van en
+el plugin a propósito: se instalan desde su repo original, con el comando que
+figura en el catálogo.
+
+Antigravity no tiene un sistema equivalente — ahí la instalación es la de abajo.
+
 ### Paso 1 — Archivos globales (una sola vez)
 
 **macOS / Linux**

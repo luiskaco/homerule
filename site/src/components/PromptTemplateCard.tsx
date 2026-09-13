@@ -8,12 +8,16 @@ export default function PromptTemplateCard({ template }: { template: PromptTempl
   const t = useTranslations("Prompts");
   const [copied, setCopied] = useState(false);
 
+  const title = t(`items.${template.id}.title`);
+  const whenToUse = t(`items.${template.id}.whenToUse`);
+  const promptText = t(`items.${template.id}.template`);
+
   async function handleCopy() {
     try {
-      await navigator.clipboard.writeText(template.template);
+      await navigator.clipboard.writeText(promptText);
     } catch {
       const textarea = document.createElement("textarea");
-      textarea.value = template.template;
+      textarea.value = promptText;
       textarea.style.position = "fixed";
       textarea.style.opacity = "0";
       document.body.appendChild(textarea);
@@ -29,8 +33,8 @@ export default function PromptTemplateCard({ template }: { template: PromptTempl
     <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-slate-700">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="font-bold text-white">{template.title}</h2>
-          <p className="mt-1 text-sm leading-relaxed text-slate-400">{template.whenToUse}</p>
+          <h2 className="font-bold text-white">{title}</h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-400">{whenToUse}</p>
         </div>
         <button
           type="button"
@@ -57,7 +61,7 @@ export default function PromptTemplateCard({ template }: { template: PromptTempl
       </div>
 
       <pre className="mt-4 overflow-x-auto whitespace-pre-wrap break-words rounded-xl border border-slate-800 bg-slate-950/80 p-4 font-mono text-xs leading-relaxed text-slate-300">
-        {template.template}
+        {promptText}
       </pre>
     </div>
   );

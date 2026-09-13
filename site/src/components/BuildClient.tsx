@@ -6,6 +6,7 @@ import type { ItemCategory, ManifestItem, ToolId } from "@/lib/manifest";
 import { fetchManifestItems } from "@/lib/manifest-client";
 import { getPreset, TOOLS } from "@/lib/presets";
 import { buildZip, downloadBlob } from "@/lib/zip";
+import { resolveItemDescription } from "@/lib/item-description";
 import ItemPreviewModal from "@/components/ItemPreviewModal";
 
 const SECTIONS: { category: ItemCategory; titleKey: string }[] = [
@@ -19,6 +20,10 @@ const SECTIONS: { category: ItemCategory; titleKey: string }[] = [
 
 export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId: string }) {
   const t = useTranslations("Build");
+  const stacks = useTranslations("StackLabels");
+  const descriptions = useTranslations("ItemDescriptions");
+  const tools = useTranslations("Tools");
+  const extTools = useTranslations("ExternalTools");
   const preset = getPreset(tool, presetId) ?? getPreset(tool, "manual")!;
   const toolMeta = TOOLS.find((t) => t.id === tool)!;
 
@@ -77,10 +82,10 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="text-xs font-bold uppercase tracking-wide text-violet-300">{toolMeta.label}</p>
-        <h1 className="mt-1 text-2xl font-black tracking-tight text-white sm:text-3xl">{preset.label}</h1>
+        <p className="text-xs font-bold uppercase tracking-wide text-violet-300">{tools(`${toolMeta.id}.label`)}</p>
+        <h1 className="mt-1 text-2xl font-black tracking-tight text-white sm:text-3xl">{stacks(`${preset.id}.label`)}</h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
-          {preset.description}
+          {stacks(`${preset.id}.description`)}
         </p>
       </div>
 
@@ -122,7 +127,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
                 </button>
                 {item.description && (
                   <span className="block text-slate-400">
-                    {item.description}
+                    {resolveItemDescription(item, descriptions)}
                   </span>
                 )}
                 <span className="block text-xs text-slate-500">
@@ -164,13 +169,13 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
             {t("externalToolsHeading")}
           </h2>
           <ul className="mt-3 flex flex-col gap-2">
-            {preset.externalTools.map((t) => (
-              <li key={t.name} className="text-sm">
-                <span className="font-semibold text-slate-200">{t.name}</span>
+            {preset.externalTools.map((tool) => (
+              <li key={tool.id} className="text-sm">
+                <span className="font-semibold text-slate-200">{extTools(`${tool.id}.name`)}</span>
                 <code className="ml-2 inline-block break-all rounded border border-slate-800 bg-slate-950/80 px-2 py-0.5 font-mono text-xs text-slate-300">
-                  {t.installCommand}
+                  {tool.installCommand}
                 </code>
-                {t.note && <p className="mt-1 text-xs text-slate-500">{t.note}</p>}
+                <p className="mt-1 text-xs text-slate-500">{extTools(`${tool.id}.note`)}</p>
               </li>
             ))}
           </ul>

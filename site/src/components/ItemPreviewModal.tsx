@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import type { ManifestItem } from "@/lib/manifest";
+import { resolveItemDescription } from "@/lib/item-description";
 
 export default function ItemPreviewModal({
   item,
@@ -12,6 +13,7 @@ export default function ItemPreviewModal({
   onClose: () => void;
 }) {
   const t = useTranslations("Build");
+  const descriptions = useTranslations("ItemDescriptions");
   const [activeFile, setActiveFile] = useState(0);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function ItemPreviewModal({
             <h3 className="font-mono font-bold text-white">{item.label.replace(/\.md$/, "")}</h3>
             {item.description && (
               <p className="mt-1 text-sm leading-relaxed text-slate-400">
-                {item.description}
+                {resolveItemDescription(item, descriptions)}
               </p>
             )}
           </div>

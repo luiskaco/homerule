@@ -21,6 +21,8 @@ const BORDER_ACCENT_COLORS = [
 export default async function StacksPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
   const t = await getTranslations("Stacks");
+  const stacks = await getTranslations("StackLabels");
+  const extTools = await getTranslations("ExternalTools");
   const presets = getPresetsByTool("antigravity").filter((p) => p.id !== "manual");
 
   return (
@@ -70,13 +72,13 @@ export default async function StacksPage({ params }: { params: { locale: string 
             >
               <div>
                 <div className="flex items-center justify-between gap-2">
-                  <h2 className="text-lg font-bold text-white">{preset.label}</h2>
+                  <h2 className="text-lg font-bold text-white">{stacks(`${preset.id}.label`)}</h2>
                   <span className="rounded-full bg-slate-800 px-2.5 py-0.5 font-mono text-xs font-semibold text-slate-400">
                     {preset.id}
                   </span>
                 </div>
 
-                <p className="mt-2 text-sm text-slate-300 leading-relaxed">{preset.description}</p>
+                <p className="mt-2 text-sm text-slate-300 leading-relaxed">{stacks(`${preset.id}.description`)}</p>
 
                 {/* Rules asignadas */}
                 <div className="mt-4">
@@ -124,12 +126,14 @@ export default async function StacksPage({ params }: { params: { locale: string 
                     </h3>
                     <ul className="mt-2 flex flex-col gap-2">
                       {preset.externalTools.map((tool) => (
-                        <li key={tool.name} className="text-sm">
-                          <span className="font-medium text-slate-200">{tool.name}</span>
+                        <li key={tool.id} className="text-sm">
+                          <span className="font-medium text-slate-200">
+                            {extTools(`${tool.id}.name`)}
+                          </span>
                           <code className="ml-2 mt-1 block break-all rounded bg-slate-950 px-2 py-1 text-xs text-cyan-300 border border-slate-800 w-fit">
                             {tool.installCommand}
                           </code>
-                          {tool.note && <p className="mt-1 text-xs text-slate-500">{tool.note}</p>}
+                          <p className="mt-1 text-xs text-slate-500">{extTools(`${tool.id}.note`)}</p>
                         </li>
                       ))}
                     </ul>

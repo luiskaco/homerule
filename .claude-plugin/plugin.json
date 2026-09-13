@@ -1,0 +1,53 @@
+{
+  "name": "ai-rules-hub",
+  "displayName": "AI Rules Hub",
+  "version": "2026.9.13",
+  "description": "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 8 subagentes especializados.",
+  "author": {
+    "name": "luiskaco",
+    "url": "https://github.com/luiskaco"
+  },
+  "homepage": "https://github.com/luiskaco/-makeRuleIA",
+  "repository": "https://github.com/luiskaco/-makeRuleIA",
+  "license": "MIT",
+  "keywords": [
+    "rules",
+    "skills",
+    "subagents",
+    "workflows",
+    "code-review",
+    "security"
+  ],
+  "commands": [
+    "./.claude/commands/bug-fix.md",
+    "./.claude/commands/deploy-checklist.md",
+    "./.claude/commands/grill.md",
+    "./.claude/commands/new-feature.md",
+    "./.claude/commands/security-audit.md",
+    "./.claude/commands/session-close.md",
+    "./.claude/commands/tools-reference.md"
+  ],
+  "agents": [
+    "./.claude/agents/code-reviewer.md",
+    "./.claude/agents/debugger.md",
+    "./.claude/agents/docs-writer.md",
+    "./.claude/agents/explorer.md",
+    "./.claude/agents/planner.md",
+    "./.claude/agents/security-auditor.md",
+    "./.claude/agents/test-writer.md",
+    "./.claude/agents/ui-reviewer.md"
+  ],
+  "skills": [
+    "./.claude/skills/architecture/",
+    "./.claude/skills/cms/",
+    "./.claude/skills/database/",
+    "./.claude/skills/operations/",
+    "./.claude/skills/pwa/",
+    "./.claude/skills/security/",
+    "./.claude/skills/seo/",
+    "./.claude/skills/stack-conventions/",
+    "./.claude/skills/ui-ux/",
+    "./.agents/skills/domain-modeling/",
+    "./.agents/skills/project-planning/"
+  ]
+}

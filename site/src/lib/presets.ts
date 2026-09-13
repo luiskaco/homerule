@@ -1,15 +1,14 @@
 import type { ToolId } from "@/lib/manifest";
 
 export interface ExternalTool {
-  name: string;
+  /** Clave de `ExternalTools.<id>` en messages — de ahí salen nombre y nota. */
+  id: string;
   installCommand: string;
-  note?: string;
 }
 
 export interface Preset {
+  /** Clave de `StackLabels.<id>` en messages — de ahí salen label y descripción. */
   id: string;
-  label: string;
-  description: string;
   tool: ToolId;
   /** Manifest item ids preselected for this stack (global/core items are added automatically). */
   itemIds: string[];
@@ -17,15 +16,13 @@ export interface Preset {
 }
 
 const CONTEXT7: ExternalTool = {
-  name: "Context7 MCP",
+  id: "context7",
   installCommand: "npx ctx7 setup",
-  note: "Documentación de librerías en tiempo real, por proyecto.",
 };
 
 const SKILLS_SH: ExternalTool = {
-  name: "Más skills en skills.sh",
+  id: "skillsSh",
   installCommand: "npx skills add <owner/repo> --skill <nombre>",
-  note: "Directorio de skills de la comunidad compatible con este agente — https://www.skills.sh/",
 };
 
 /** Antigravity-only global workflow items (GEMINI.md + comandos manuales). */
@@ -110,41 +107,6 @@ const STACKS: Record<string, StackShape> = {
   manual: { rules: [], skills: [] },
 };
 
-const STACK_LABELS: Record<string, { label: string; description: string }> = {
-  "nextjs-branded": {
-    label: "Next.js / React — con sistema de diseño",
-    description: "Proyecto Next.js que ya tiene brand, paleta y tipografía definidos (caso habitual en Orange Latam).",
-  },
-  "nextjs-unbranded": {
-    label: "Next.js / React — sin sistema de diseño",
-    description: "Proyecto Next.js arrancando de cero, sin brief de marca ni paleta todavía.",
-  },
-  "wordpress-cms": {
-    label: "WordPress / CMS",
-    description: "Sitio WordPress puro o headless (Sanity, Contentful, Strapi).",
-  },
-  "fastapi-python": {
-    label: "FastAPI / Python",
-    description: "Backend Python con FastAPI.",
-  },
-  "html-plano": {
-    label: "HTML / CSS / JS plano",
-    description: "Sitio estático sin framework — HTML, CSS puro y Vanilla JS.",
-  },
-  "react-spa": {
-    label: "React — SPA (sin Next.js)",
-    description: "Proyecto React puro (Vite/CRA), sin framework full-stack.",
-  },
-  vue: {
-    label: "Vue",
-    description: "Proyecto Vue (Composition API + Pinia).",
-  },
-  manual: {
-    label: "Manual / desde cero",
-    description: "Sin preselección — elegís cada pieza a mano.",
-  },
-};
-
 function toolItemIds(tool: ToolId, shape: StackShape): string[] {
   if (tool === "antigravity") {
     return [
@@ -163,11 +125,8 @@ function toolItemIds(tool: ToolId, shape: StackShape): string[] {
 }
 
 function buildPreset(tool: ToolId, stackId: keyof typeof STACKS, externalTools: ExternalTool[]): Preset {
-  const meta = STACK_LABELS[stackId];
   return {
     id: stackId,
-    label: meta.label,
-    description: meta.description,
     tool,
     itemIds: toolItemIds(tool, STACKS[stackId]),
     externalTools,
@@ -204,7 +163,5 @@ export function getPresetsByTool(tool: ToolId): Preset[] {
   return presets.filter((p) => p.tool === tool);
 }
 
-export const TOOLS: { id: ToolId; label: string; description: string }[] = [
-  { id: "antigravity", label: "Antigravity (Gemini)", description: "GEMINI.md global + .agents/rules + .agents/skills." },
-  { id: "claude-code", label: "Claude Code", description: "CLAUDE.md + .claude/skills + .claude/commands + .claude/agents (subagentes)." },
-];
+/** Label y descripción salen de `Tools.<id>` en messages. */
+export const TOOLS: { id: ToolId }[] = [{ id: "antigravity" }, { id: "claude-code" }];

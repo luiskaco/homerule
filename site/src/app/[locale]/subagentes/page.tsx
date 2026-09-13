@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { getItemsByCategory } from "@/lib/manifest";
 import type { ManifestItem } from "@/lib/manifest";
 import { getPreset } from "@/lib/presets";
+import { resolveItemDescription } from "@/lib/item-description";
 
 export async function generateMetadata({
   params,
@@ -47,7 +48,17 @@ function agentName(item: ManifestItem): string {
   return item.label.replace(/\/agent\.md$/, "").replace(/\.md$/, "");
 }
 
-function AgentCard({ item, accent, t }: { item: ManifestItem; accent: string; t: (k: string) => string }) {
+function AgentCard({
+  item,
+  accent,
+  t,
+  description,
+}: {
+  item: ManifestItem;
+  accent: string;
+  t: (k: string) => string;
+  description: string;
+}) {
   const writes = writesFiles(item);
   const model = modelOf(item);
 
@@ -70,7 +81,7 @@ function AgentCard({ item, accent, t }: { item: ManifestItem; accent: string; t:
           </span>
         )}
       </div>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">{item.description}</p>
+      <p className="mt-2 text-sm leading-relaxed text-slate-400">{description}</p>
     </div>
   );
 }
@@ -78,6 +89,7 @@ function AgentCard({ item, accent, t }: { item: ManifestItem; accent: string; t:
 export default async function SubagentesPage({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
   const t = await getTranslations("Subagentes");
+  const descriptions = await getTranslations("ItemDescriptions");
 
   const all = getItemsByCategory("agent");
   const antigravityAgents = all.filter((i) => i.tool === "antigravity");
@@ -141,7 +153,13 @@ export default async function SubagentesPage({ params }: { params: { locale: str
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {antigravityAgents.map((item) => (
-            <AgentCard key={item.id} item={item} accent="card-vibrant-emerald" t={t} />
+            <AgentCard
+              key={item.id}
+              item={item}
+              accent="card-vibrant-emerald"
+              t={t}
+              description={resolveItemDescription(item, descriptions)}
+            />
           ))}
         </div>
       </section>
@@ -153,7 +171,13 @@ export default async function SubagentesPage({ params }: { params: { locale: str
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {claudeAgents.map((item) => (
-            <AgentCard key={item.id} item={item} accent="card-vibrant-purple" t={t} />
+            <AgentCard
+              key={item.id}
+              item={item}
+              accent="card-vibrant-purple"
+              t={t}
+              description={resolveItemDescription(item, descriptions)}
+            />
           ))}
         </div>
       </section>

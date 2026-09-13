@@ -2,41 +2,20 @@ export type JobTypeId = "seo" | "web" | "backend" | "testing" | "redaccion" | "g
 
 export interface JobType {
   id: JobTypeId;
-  label: string;
-  description: string;
 }
 
+/**
+ * Solo los ids y su orden de presentación. El label y la descripción de cada
+ * tipo de trabajo son texto de interfaz: viven en `messages/*.json`
+ * (`SkillCatalog.jobType.<id>`), no acá.
+ */
 export const JOB_TYPES: JobType[] = [
-  {
-    id: "seo",
-    label: "SEO",
-    description: "Auditoría y optimización para buscadores.",
-  },
-  {
-    id: "web",
-    label: "Web / Frontend",
-    description: "Diseño de interfaz, UX, performance de UI.",
-  },
-  {
-    id: "backend",
-    label: "Backend / API",
-    description: "Servicios, APIs, manejo de errores, runtime.",
-  },
-  {
-    id: "testing",
-    label: "Testing",
-    description: "Escribir y automatizar pruebas — TDD, unitarias, end-to-end.",
-  },
-  {
-    id: "redaccion",
-    label: "Redacción",
-    description: "Copy, contenido y comunicación persuasiva.",
-  },
-  {
-    id: "general",
-    label: "General",
-    description: "Transversales — no atadas a una capa técnica.",
-  },
+  { id: "seo" },
+  { id: "web" },
+  { id: "backend" },
+  { id: "testing" },
+  { id: "redaccion" },
+  { id: "general" },
 ];
 
 /** Many-to-many: una skill puede servir para más de un tipo de proyecto. */

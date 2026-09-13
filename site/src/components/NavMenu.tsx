@@ -39,7 +39,6 @@ const ENTRIES: NavEntry[] = [
     labelKey: "skillsPrompts",
     links: [
       { labelKey: "skillCatalog", href: "/mejores-skill" },
-      { labelKey: "skillsByProject", href: "/skills-por-proyecto" },
       { labelKey: "promptTemplates", href: "/prompts" },
     ],
   },
@@ -47,6 +46,11 @@ const ENTRIES: NavEntry[] = [
     id: "doc-templates",
     labelKey: "docTemplates",
     href: "/plantillas",
+  },
+  {
+    id: "changelog",
+    labelKey: "changelog",
+    href: "/changelog",
   },
 ];
 
