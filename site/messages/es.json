@@ -758,6 +758,7 @@
   "ChangelogData": {
     "unreleased": {
       "cambios": [
+        "Cierres de tarea más cortos y claros: primero el resultado, hasta 3 viñetas y la revisión en una sola línea, sin bloque de código. La revisión suma tres pasadas: 🧪 Verificado, 📝 Docs y ⚠️ Riesgo.",
         "/subagentes pasa a mostrar los dos catálogos (4 de Antigravity + 8 de Claude Code) con el formato nativo de cada tool, y aparece también en el menú “Antigravity solo”. Antes filtraba únicamente claude-code.",
         "Tema visual unificado en las páginas que quedaban con el estilo viejo: /subagentes, /mejores-skill, /skills-por-proyecto, /prompts y /plantillas. Se arrastraban también el armador de ZIP, su modal de preview (se abría con fondo blanco sobre el sitio oscuro) y el bloque de descarga de plantillas.",
         "Las dos vistas de skills se fusionan en una sola página: el catálogo plano y el agrupado por tipo de proyecto pasan a ser pestañas de /mejores-skill. La ruta vieja redirige.",

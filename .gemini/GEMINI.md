@@ -17,6 +17,15 @@ Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramá
 
 **Auto-detección:** Si la conversación es planificación, arquitectura, revisión de decisiones o análisis — sugerir `/caveman none` una vez. No cambiar automáticamente.
 
+**Formato de cierre** — al terminar una tarea:
+
+1. **Primera línea:** el resultado en una frase ("Listo: …", o qué falta si quedó a medias).
+2. **Hasta 3 viñetas** con lo que cambia para el usuario — impacto, no listas de archivos, rutas ni valores (colores, tokens, hashes).
+3. **Revisión** en una línea, si hubo código (§ 8).
+4. **Una sola pregunta** al final, solo si hace falta una decisión o acción del usuario.
+
+Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el proceso ("primero revisé…, luego…"). Tablas solo para comparar opciones, no para informar. El detalle técnico, solo si el usuario lo pide.
+
 ---
 
 ## 1. Regla de Oro: Planificar Antes de Actuar
@@ -127,21 +136,20 @@ Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en c
 
 **⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (revisión manual, herramienta de análisis, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
 
-Antes de entregar cualquier código, revisar internamente con 3 pasadas:
+Antes de entregar cualquier código, revisar internamente con estas pasadas — **omitir las que no apliquen** a la tarea (ej. ⚙️ en un cambio solo visual):
 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
+- **🧪 Verificado:** qué se ejecutó de verdad — build, tests, flujo probado. Nunca dar por probado lo que no se corrió
+- **📝 Docs:** `06_TASKS.md` (con el estado de traspaso), `08_CHANGELOG.md` y el ADR si hubo decisión — al día
 - **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta problema crítico, bloquea entrega y corrige primero
+- **⚠️ Riesgo:** solo si hubo algo irreversible — migración, borrado de datos, push o deploy a producción
 
-**Reporte al usuario:**
+**Reporte al usuario:** una sola línea al final del cierre (§ 0), en texto normal — nunca en bloque de código. Pasada sin observaciones: `✅`. 🧪 dice qué se ejecutó. Solo se explica, en pocas palabras, la pasada que encontró o corrigió algo:
 
-```
-🎨 Frontend: [1 línea]
-⚙️ Backend: [1 línea]
-🔍 Inspector: ✅  — o descripción del issue corregido
-```
+> Revisión: 🎨 ✅ · ⚙️ ✅ · 🧪 build + tests · 📝 ✅ · 🔍 ✅
 
-Inspector solo reporta si encontró algo. Si todo correcto: solo `✅`.
+> Revisión: 🎨 ✅ · 🧪 sin verificar: no hay tests · 📝 falta CHANGELOG · 🔍 corregido: XSS en el formulario · ⚠️ push a main
 
 > Esto es una **auto-revisión inline** en el mismo turno, no delegación. Para
 > trabajo **delegado** en contexto aislado, Antigravity tiene subagentes reales
