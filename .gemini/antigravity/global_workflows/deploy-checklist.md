@@ -8,6 +8,11 @@ description: Antes de subir a producción — checklist completo de código, seg
 
 Ejecutar y verificar cada ítem antes de hacer merge a main o deploy a producción.
 
+> **Primer lanzamiento** (o cambio que agrega login, pagos, formularios con
+> datos personales o correo promocional): además de este checklist, correr la
+> skill `prelaunch-compliance-audit` — cubre lo legal, privacidad y
+> consentimiento, que este checklist no revisa.
+
 ---
 
 ## 🚀 Checklist Pre-Deploy

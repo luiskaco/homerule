@@ -31,7 +31,7 @@ const REPO_URL = `https://github.com/${REPO_SLUG}`;
  * traen `install:` en el frontmatter o figuran en `skills-lock.json`, y no se
  * redistribuyen por el plugin.
  */
-const HUB_OWNED_SKILLS = ["domain-modeling", "project-planning"];
+const HUB_OWNED_SKILLS = ["domain-modeling", "prelaunch-compliance-audit", "project-planning"];
 
 /** CalVer sin ceros a la izquierda — también válido como semver (ADR-014). */
 function calver(date = new Date()) {

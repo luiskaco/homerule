@@ -305,6 +305,18 @@ Viene preseleccionada en los 7 stacks reales. La plantilla del glosario está en
 `docs-templates/CONTEXT.md` y se crea recién cuando hay 3 términos que lo
 justifiquen (ADR-012).
 
+### Skill de lanzamiento
+
+| Skill | Cuándo activarla |
+|---|---|
+| `prelaunch-compliance-audit` | Antes de lanzar una web o app (o con una ya publicada): auditoría contra 43 reglas legales, de privacidad, seguridad, accesibilidad, técnicas y SEO. Investiga la normativa vigente del país del proyecto, entrega un reporte por severidad y propone arreglos que no aplica sin aprobación. También redacta privacidad, términos, reembolsos, cookies y aviso legal a partir de los hechos del proyecto |
+
+Viene preseleccionada en los 7 stacks reales y `/deploy-checklist` la recomienda
+en el primer lanzamiento. Carga por partes: `SKILL.md` tiene el flujo y el formato
+del reporte; el catálogo, la normativa por país y los textos legales están en
+`references/` y se leen solo cuando el paso los necesita. No sustituye a un
+abogado ni a una prueba de penetración.
+
 ### Skills de Seguridad
 
 Complementa `security.md`: la regla define los umbrales y checklist del proyecto
