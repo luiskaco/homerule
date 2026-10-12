@@ -355,6 +355,26 @@
       "usage": [],
       "install": []
     },
+    "skill:prelaunch-compliance-audit": {
+      "author": "—",
+      "summary": "Antes de lanzar una web o app, o con una ya publicada: cuando hay que revisar si está lista para producción, su seguridad, el cumplimiento legal en cualquier país, o redactar los textos legales.",
+      "whatItDoes": "Audita el proyecto contra 43 reglas legales, de privacidad, seguridad, accesibilidad, técnicas y de SEO, investiga la normativa vigente del país del proyecto y entrega un reporte por severidad con arreglos que no aplica sin tu aprobación.",
+      "whenToUse": [
+        "Antes del primer lanzamiento, o al sumar login, pagos, formularios con datos personales o correo promocional.",
+        "Cuando necesitás política de privacidad, términos, reembolsos, cookies o aviso legal escritos a partir de lo que el proyecto hace de verdad.",
+        "Para revisar un sitio ya publicado, solo con su URL."
+      ],
+      "usage": [
+        "Pedí una auditoría prelanzamiento; elige el modo legal, seguridad, técnico o completo (por defecto, completo).",
+        "Te pregunta en una sola ronda lo que no puede inferir: países, tipo de negocio, si cobra, si hay menores.",
+        "Revisás el plan de arreglos y aprobás por ítem o por grupo."
+      ],
+      "notes": [
+        "No certifica cumplimiento ni sustituye a un abogado o a una prueba de penetración: el veredicto es cuántos bloqueantes y pendientes quedan.",
+        "Guarda la normativa investigada en docs/compliance/ y la revalida a los 6 meses."
+      ],
+      "install": []
+    },
     "emilkowalski-skills": {
       "author": "Emil Kowalski (ex Vercel / Linear)",
       "summary": "Paquete de 7 skills de design engineering: animación, motion y criterio de UI destilados de años de oficio.",

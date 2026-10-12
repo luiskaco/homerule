@@ -355,6 +355,26 @@
       "usage": [],
       "install": []
     },
+    "skill:prelaunch-compliance-audit": {
+      "author": "—",
+      "summary": "Before launching a website or app, or with one already live: when you need to check whether it's ready for production, its security, legal compliance in any country, or to draft the legal texts.",
+      "whatItDoes": "Audits the project against 43 legal, privacy, security, accessibility, technical and SEO rules, researches the current regulations of the project's country and delivers a report by severity with fixes it won't apply without your approval.",
+      "whenToUse": [
+        "Before the first launch, or when adding login, payments, forms with personal data or promotional email.",
+        "When you need a privacy policy, terms, refunds, cookies or legal notice written from what the project actually does.",
+        "To review a site that's already live, from its URL alone."
+      ],
+      "usage": [
+        "Ask for a prelaunch audit; pick legal, security, technical or full mode (full by default).",
+        "It asks in a single round what it can't infer: countries, business type, whether it charges, whether minors use it.",
+        "You review the fix plan and approve item by item or by group."
+      ],
+      "notes": [
+        "It doesn't certify compliance or replace a lawyer or a penetration test: the verdict is how many blockers and open items remain.",
+        "It saves the regulations it researched in docs/compliance/ and revalidates them after 6 months."
+      ],
+      "install": []
+    },
     "emilkowalski-skills": {
       "author": "Emil Kowalski (ex Vercel / Linear)",
       "summary": "A pack of 7 design-engineering skills: animation, motion and UI judgement distilled from years of craft.",

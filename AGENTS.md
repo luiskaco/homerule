@@ -88,6 +88,12 @@ cd site && npm run build                  # build de producción
   `chore` / `perf`).
 - Finales de línea LF en todo el repo (`.gitattributes`). Los guards `--check`
   comparan byte a byte.
+- Una skill nueva en `.agents/skills/` o una plantilla nueva en `docs-templates/`
+  necesita su texto de interfaz en `site/messages/es.json` y `en.json`
+  (`SkillData.<id>` / `DocTemplates.descriptions.<archivo>`): sin eso el build
+  rompe el prerender. `site/scripts/check-messages.mjs` lo verifica en
+  `predev`/`prebuild`. Antes de abrir un PR que toque el sitio, correr
+  `npm run build`, no solo `tsc`.
 - Antes de codificar un cambio, registrarlo en `docs/06_TASKS.md`; al cerrarlo,
   sumarlo al `CHANGELOG.md` de la raíz (no a `docs/08_CHANGELOG.md`, que solo
   redirige — ADR-004).
