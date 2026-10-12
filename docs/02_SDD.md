@@ -13,7 +13,7 @@ generador emite el formato nativo de cada tool.
 | Componente | Responsabilidad |
 |---|---|
 | `.agents/rules/` | 9 rules técnicas con trigger (`model_decision`/`glob`) — fuente única para ambos tools |
-| `.gemini/GEMINI.md` + `core/CORE.md` | Núcleo Always On por tool — se mantienen en paridad manual (ver `CLAUDE.md` raíz) |
+| `.gemini/GEMINI.md` + `core/CORE.md` | Núcleo Always On por tool — se mantienen en paridad manual (ver `AGENTS.md` raíz) |
 | `.gemini/antigravity/global_workflows/` | 6 workflows manuales — fuente de los comandos de Claude Code |
 | `.claude/agents/` | 8 subagentes de Claude Code (fuente y a la vez instalación local del repo) |
 | `.agents/skills/` + `.claude/skills/` | Skills externas: las primeras se empaquetan, las segundas son vendorizadas para uso local |
@@ -46,7 +46,7 @@ fuente (markdown en raíz)
 ## Riesgos y mitigaciones
 
 - **Deriva CORE/GEMINI** (dos archivos casi idénticos a mano) → regla de
-  paridad en `CLAUDE.md` raíz: replicar en el mismo commit.
+  paridad en `AGENTS.md` raíz: replicar en el mismo commit.
 - **Deriva de derivados** (`.claude/commands/`, tabla de tokens) → scripts de
   regeneración, nunca edición manual.
 - **Skills de terceros desactualizadas** → `skills-lock.json` (las de

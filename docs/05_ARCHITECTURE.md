@@ -6,7 +6,8 @@
 |---|---|
 | `.agents/rules/`, `.agents/skills/` | Fuente Antigravity (rules también alimentan los kits de Claude) |
 | `.gemini/` | Núcleo global + workflows de Antigravity (fuente) |
-| `core/CORE.md` | Fuente del `CLAUDE.md` que reciben los kits de Claude Code |
+| `core/CORE.md` | Fuente del `AGENTS.md` neutral de ambos kits y del `CLAUDE.md` de Claude Code (que lo importa) |
+| `core/agents-map.md` | Mapa del proyecto que se suma al `AGENTS.md` de los kits (ADR-016) |
 | `.claude/agents/` | Subagentes de Claude Code — fuente del manifest e instalación local a la vez |
 | `.claude/commands/` | **Derivado** — regenerar con `scripts/sync-claude-kit.mjs` |
 | `.claude/skills/` | Mixto: skills de diseño de terceros vendorizadas (no se empaquetan) + las 9 rules convertidas (**derivado** de `.agents/rules/`, vía `sync-claude-kit.mjs`) |
@@ -23,7 +24,7 @@
   `skills-desktop/`) se regeneran por script.
 - El sitio sigue las rules del propio kit (App Router, Server Components,
   next-intl, Tailwind) — la excepción App Router de `architecture.md` aplica.
-- Paridad manual `core/CORE.md` ↔ `.gemini/GEMINI.md` (ver `CLAUDE.md` raíz).
+- Paridad manual `core/CORE.md` ↔ `.gemini/GEMINI.md` (ver `AGENTS.md` raíz).
 
 ## Infraestructura
 

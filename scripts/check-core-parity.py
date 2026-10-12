@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Verifica la paridad entre core/CORE.md y .gemini/GEMINI.md.
 
-Los dos núcleos se mantienen a mano en paralelo (ver CLAUDE.md § Paridad).
+Los dos núcleos se mantienen a mano en paralelo (ver AGENTS.md § Paridad CORE/GEMINI).
 Este script falla (exit 1) si divergen en las secciones que deben ser
 idénticas. Divergencias intencionales que NO se comparan:
 
@@ -9,8 +9,6 @@ idénticas. Divergencias intencionales que NO se comparan:
 - § 3, punto 2 de "Versiones actualizadas": el fallback difiere por tool
   (Claude: web search / Antigravity: subagente `browser`) — la línea se
   normaliza antes de comparar el resto de la sección.
-- § 5: el nombre del archivo de excepción (`00_PROJECT_START` vs
-  `00_GEMINI_START`) — se normaliza antes de comparar el resto.
 - § 6 Jerarquía y § 8 Auto-revisión: difieren en nombres propios de cada
   tool; solo se verifica que ambas secciones existan.
 - § 7: el heading difiere ("Comandos" vs "Workflows") — se compara el cuerpo.
@@ -45,7 +43,6 @@ def sections(path: Path) -> dict[str, tuple[str, str]]:
 
 
 def normalize(body: str) -> str:
-    body = body.replace("00_GEMINI_START", "00_PROJECT_START")
     # § 3 punto 2: el fallback de documentación difiere por tool a propósito.
     body = re.sub(
         r"^2\. \*\*Consulta la documentación vigente\*\*.*$",

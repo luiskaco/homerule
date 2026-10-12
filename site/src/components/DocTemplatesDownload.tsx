@@ -13,9 +13,8 @@ export default function DocTemplatesDownload() {
     setDownloading(true);
     try {
       const allItems = await fetchManifestItems();
-      // tool "antigravity" trae el superset de los 10 archivos (incluye
-      // 00_GEMINI_START.md) — el contenido de los otros 9 es idéntico al de
-      // claude-code, así que alcanza con esta lista para el ZIP.
+      // Las plantillas son idénticas en los dos tools (se emiten una vez por
+      // tool) — alcanza con la lista de uno para armar el ZIP.
       const templates = allItems.filter((i) => i.category === "template" && i.tool === "antigravity");
       const blob = await buildZip(
         templates,

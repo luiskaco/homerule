@@ -5,7 +5,8 @@
       "name": "site-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "site"],
-      "port": 3000
+      "port": 3100,
+      "autoPort": true
     }
   ]
 }

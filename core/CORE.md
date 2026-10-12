@@ -77,19 +77,21 @@ Antes de escribir o sugerir código que use una librería, framework, SDK o CLI 
 
 | Archivo | Propósito |
 |---------|-----------|
-| `01_PROJECT_PRD.md` | Requisitos de producto |
+| `01_PROJECT_PRD.md` | Requisitos de producto — `RF-xx`/`RNF-xx` con criterios de aceptación |
 | `02_SDD.md` | Diseño del sistema |
 | `03_SYSTEM_SPEC.md` | Especificaciones técnicas |
 | `04_DATA_MODEL.md` | Esquemas y entidades |
 | `05_ARCHITECTURE.md` | Decisiones arquitectónicas |
-| `06_TASKS.md` | Backlog activo |
+| `06_TASKS.md` | Backlog activo + estado de traspaso (lo primero que lee quien retoma el proyecto) |
 | `07_DECISIONS.md` | ADRs |
 | `08_CHANGELOG.md` | Historial de versiones |
+| `09_TESTING.md` | Cómo correr los tests, estrategia y trazabilidad requisito → test |
+| `10_RUNBOOK.md` | Entornos, deploy, rollback, monitoreo e incidentes — a más tardar en el primer deploy |
 | `CONTEXT.md` | Glosario del dominio — sin numerar: es un glosario vivo, no un documento de fase (opcional, desde 3 términos) |
 
 Actualizar el archivo correspondiente al completar cada tarea.
 
-**⚠️ Excepción:** Si existe un archivo `00_PROJECT_START*.md` en el proyecto, ese archivo define la estructura de documentación activa para esa sesión — rutas, nombres y reglas de actualización. Tiene prioridad sobre esta tabla.
+**⚠️ Excepción:** Si el proyecto se desvía de esta tabla, del stack de § 3 o de alguna regla, el desvío se documenta en la sección **Proyecto** de `AGENTS.md` (raíz del proyecto), que tiene prioridad sobre ellas.
 
 ---
 

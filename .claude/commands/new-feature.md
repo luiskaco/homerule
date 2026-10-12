@@ -20,23 +20,32 @@ Al ejecutar este workflow, seguir estos pasos antes de escribir código:
 
 ### 2. Actualizar 06_TASKS.md (obligatorio)
 
-Si `/docs/06_TASKS.md` no existe — crearlo con esta estructura:
+Si `/docs/06_TASKS.md` no existe — crearlo con esta estructura (la de la
+plantilla del kit):
 
 ```markdown
-# Tasks
+# 06 — Tasks (Backlog activo)
 
-## In Progress
-- [ ] [NOMBRE DE LA TAREA] — [descripción breve]
+## Estado de traspaso
+- **Última actualización:** YYYY-MM-DD
+- **Dónde quedó:**
+- **Próximo paso concreto:**
+- **Bloqueos:**
+- **No tocar:**
 
-## Completed
+## En progreso
 
-## Backlog
+## Pendiente
+
+## Completado
 ```
 
-Si ya existe — agregar la tarea nueva en `## In Progress`:
+Agregar la tarea nueva en `## En progreso`, con ID correlativo y el requisito
+de `01_PROJECT_PRD.md` que cubre (si no hay requisito, decir por qué):
 
 ```
-- [ ] [NOMBRE DE LA TAREA] — [descripción breve]
+- [ ] **T-07 — [nombre de la tarea]** · `RF-03`
+  - **Hecho cuando:** [criterio verificable — qué test pasa o qué se observa]
 ```
 
 - [ ] `07_DECISIONS.md` — si hay decisión arquitectónica, documentarla como ADR antes de codificar

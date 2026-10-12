@@ -3,9 +3,9 @@ name: project-planning
 description: >
   Usar antes de codificar un proyecto nuevo o una iniciativa grande (afecta
   más de 3 archivos, tiene más de una arquitectura válida, o incluye una
-  decisión irreversible). Convierte una idea ya validada en los 8 documentos
-  de `/docs` que define este kit (`01_PROJECT_PRD.md` … `08_CHANGELOG.md`),
-  en orden, antes de escribir código.
+  decisión irreversible). Convierte una idea ya validada en los documentos
+  de planificación de `/docs` que define este kit (`01_PROJECT_PRD.md` …
+  `07_DECISIONS.md` + `09_TESTING.md`), en orden, antes de escribir código.
 ---
 
 # Project Planning
@@ -25,10 +25,9 @@ no crea archivos, carpetas ni convenciones propias.
 
 ## Antes de empezar
 
-1. En proyectos Antigravity, revisar si existe `00_GEMINI_START.md` en la
-   raíz del proyecto. Si existe, define rutas y nombres de documentación
-   distintos a la tabla de abajo y tiene prioridad sobre ella. (No aplica a
-   Claude Code, que no usa ese archivo.)
+1. Revisar la sección **Proyecto** de `AGENTS.md` en la raíz del proyecto:
+   si define otro stack, otras rutas de documentación o excepciones a las
+   reglas, tiene prioridad sobre la tabla de abajo.
 2. Revisar si ya hay una idea validada con el usuario — por ejemplo un spec
    escrito por el skill `brainstorming`, o otra conversación previa. Si
    existe, es el insumo del paso 1 del proceso: su contenido se vuelca en
@@ -41,21 +40,26 @@ no crea archivos, carpetas ni convenciones propias.
 ## Proceso (en orden, un documento a la vez)
 
 1. **`01_PROJECT_PRD.md`** — Problema, usuarios, criterios de éxito, fuera de
-   alcance. Presentar y esperar aprobación antes de seguir.
+   alcance. Cada requisito con ID (`RF-01`, `RNF-01`), prioridad (M/S/C) y
+   criterios de aceptación en formato EARS ("CUANDO \<evento\>, EL SISTEMA
+   DEBE \<comportamiento\>") en vez de frases vagas tipo "debería andar bien"
+   — reduce la ambigüedad que después se paga en retrabajo, y cada criterio
+   pasa a ser un test. Presentar y esperar aprobación antes de seguir.
 2. **`02_SDD.md`** — Visión general, componentes principales, flujo de
    datos, riesgos. Debe resolver explícitamente el problema descrito en 01.
 3. **`03_SYSTEM_SPEC.md` + `04_DATA_MODEL.md`** — Especificaciones técnicas
-   y esquema de datos. Redactar cada requisito en formato EARS ("Cuando
-   \<evento\>, el sistema debe \<comportamiento\>") en vez de frases vagas
-   tipo "debería andar bien" — reduce la ambigüedad que después se paga en
-   retrabajo.
+   y esquema de datos, indicando qué `RF-xx` implementa cada parte.
 4. **`05_ARCHITECTURE.md`** — Decisiones arquitectónicas. Si hay más de un
    enfoque válido, invocar al subagente `planner` para comparar trade-offs
    antes de fijar la decisión acá.
-5. **`06_TASKS.md`** — Desglosar el plan en tareas concretas bajo
-   `## Pendiente`, una por línea. Cada tarea tiene que poder ejecutarse sin
-   releer 01-05 completos.
-6. **`07_DECISIONS.md`** — Loguear como ADR cualquier decisión con
+5. **`09_TESTING.md`** — Cómo se va a verificar cada requisito: niveles de
+   test, herramienta y tabla de trazabilidad `RF-xx` → test (los tests
+   todavía no existen — la tabla arranca en "pendiente").
+6. **`06_TASKS.md`** — Desglosar el plan en tareas concretas bajo
+   `## Pendiente`, con ID (`T-01`), el requisito que cubren y su criterio de
+   "hecho cuando". Cada tarea tiene que poder ejecutarse sin releer 01-05
+   completos. Completar también "Estado de traspaso" con el primer paso.
+7. **`07_DECISIONS.md`** — Loguear como ADR cualquier decisión con
    trade-offs relevantes tomada en el camino (no solo arquitectura — también
    producto o datos, si no era obvia).
 
@@ -76,7 +80,9 @@ Corregir inline y seguir — no hace falta una segunda pasada de revisión.
 ## Qué NO hacer
 
 - No inventar archivos ni carpetas nuevas (nada de `spec.md`, `plan.md` o
-  `tasks.md` sueltos) — este kit ya tiene su propia convención de 8 archivos.
+  `tasks.md` sueltos) — este kit ya tiene su propia convención de `/docs`.
+- No escribir `10_RUNBOOK.md` durante la planificación: se completa a más
+  tardar en el primer deploy, cuando hay algo real que operar.
 - No saltar directo a `06_TASKS.md` sin pasar por 01-05 en proyectos o
   iniciativas grandes — para cambios chicos ya está `/new-feature`.
 - No resolver solo una decisión arquitectónica ambigua: delegar al subagente

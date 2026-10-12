@@ -12,4 +12,4 @@
 **Alternativas consideradas:** _Qué otras opciones se evaluaron y por qué se
 descartaron._
 
-**Consecuencias:** _Qué trade-offs quedan aceptados.
+**Consecuencias:** _Qué trade-offs quedan aceptados._

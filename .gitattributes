@@ -1,0 +1,17 @@
+# Finales de línea: LF en todo el repo, sin importar core.autocrlf de cada máquina.
+# Los generadores (sync-claude-kit, build-plugin, generate-manifest) escriben LF y
+# los guards --check comparan byte a byte — con CRLF en la copia de trabajo daban
+# falso "desactualizado" en Windows.
+* text=auto eol=lf
+
+# Binarios explícitos (hoy no hay ninguno trackeado; evita que un asset futuro se normalice).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.zip binary
+*.pdf binary

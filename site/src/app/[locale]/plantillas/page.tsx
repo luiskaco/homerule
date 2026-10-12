@@ -30,14 +30,7 @@ export default async function PlantillasPage({ params }: { params: { locale: str
             key={template.file}
             className="card-vibrant-purple rounded-2xl p-5"
           >
-            <div className="flex items-start justify-between gap-2">
-              <h3 className="font-mono text-sm font-semibold">{template.file}</h3>
-              {template.tools.length === 1 && (
-                <span className="shrink-0 rounded-full bg-violet-500/10 px-2 py-0.5 text-[10px] font-bold text-violet-500 border border-violet-500/30">
-                  {t("onlyAntigravity")}
-                </span>
-              )}
-            </div>
+            <h3 className="font-mono text-sm font-semibold">{template.file}</h3>
             <p className="mt-2 text-sm leading-relaxed text-slate-400">{t(`descriptions.${template.file.replace(/\.md$/, "")}`)}</p>
           </div>
         ))}

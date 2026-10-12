@@ -8,6 +8,11 @@ Sistema de reglas para dos formas de trabajo con IA:
   base de reglas convertida a formato nativo (`CLAUDE.md` + `.claude/skills` +
   `.claude/commands` + `.claude/agents`).
 
+Los dos kits dejan además un **`AGENTS.md`** en la raíz del proyecto — el
+estándar abierto que leen Codex, Cursor, Copilot y Antigravity — con las reglas
+en versión neutral y un mapa del proyecto: si mañana lo continúa otra IA,
+encuentra lo mismo (ADR-016).
+
 Carga selectiva por contexto — nada se lee completo en cada mensaje salvo lo
 estrictamente "Always On".
 
@@ -28,6 +33,7 @@ estrictamente "Always On".
     └── tools-reference.md                    # /tools-reference
 
 [proyecto]/
+├── AGENTS.md                                 # reglas neutrales + mapa — lo lee cualquier IA (ADR-016)
 └── .agents/                                  # WORKSPACE — override local, por proyecto
     ├── rules/
     │   ├── security.md                       # Model Decision
@@ -72,7 +78,7 @@ posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
 ```
 
 Trae las 9 rules como skills nativas, los 7 comandos y los 8 subagentes. **No**
-trae `CLAUDE.md`: un plugin aporta comandos, agentes y skills, no memoria de
+trae `CLAUDE.md` ni `AGENTS.md`: un plugin aporta comandos, agentes y skills, no memoria de
 proyecto — si querés el núcleo global, bajá el ZIP desde `/build`.
 
 Las skills de terceros (`hallmark`, `impeccable`, las de Vercel, etc.) no van en
@@ -102,6 +108,9 @@ Copy-Item "grill.md","new-feature.md","bug-fix.md","session-close.md","security-
 ### Paso 2 — Reglas de workspace (por cada proyecto)
 
 ```bash
+# AGENTS.md — reglas para cualquier IA que continúe el proyecto (completar su sección "Proyecto")
+cp AGENTS.md ./
+
 mkdir -p .agents/rules
 cp security.md architecture.md ui-ux.md seo.md pwa.md operations.md cms.md database.md stack-conventions.md .agents/rules/
 
@@ -137,9 +146,14 @@ npx skills add sickn33/antigravity-awesome-skills --skill api-security-best-prac
 
 ### Paso 4 — Ajustar stack por proyecto
 
-Si el proyecto difiere del stack base (`GEMINI.md § 3`), documentarlo en el
-`00_GEMINI_START.md` del proyecto — ese archivo tiene prioridad sobre la tabla
-de stack de `GEMINI.md` (ver `GEMINI.md § 5`, nota de excepción).
+Si el proyecto difiere del stack base (`GEMINI.md § 3`), de la convención de
+`/docs` o de alguna regla, documentarlo en la sección **Proyecto** del
+`AGENTS.md` del proyecto — tiene prioridad sobre `GEMINI.md` (ver § 5, nota de
+excepción).
+
+> **Migración:** `00_GEMINI_START.md` ya no existe (ADR-018). Si un proyecto
+> todavía lo tiene, mover su contenido a la sección **Proyecto** de `AGENTS.md`
+> y borrarlo — `GEMINI.md` ya no lo lee.
 
 ---
 
@@ -186,7 +200,7 @@ siguiente comando — no encadenan automáticamente.
 | `/grill` | Antes de `/new-feature`, cuando el plan todavía es difuso o traés una idea en vez de un requerimiento | Interrogatorio de a una pregunta por turno hasta dejar resueltos problema real, bordes, fuera de alcance, decisiones irreversibles y criterio de terminado. Cierra con un resumen que alimenta al workflow siguiente |
 | `/new-feature` | Antes de empezar cualquier tarea nueva | Define el plan, crea la rama git (`feat/...` o `fix/...`), crea o actualiza `06_TASKS.md`, documenta ADR si hay decisión arquitectónica. Espera tu aprobación del plan antes de codificar |
 | `/bug-fix` | Algo está roto | Identifica causa raíz antes de tocar código, evalúa impacto, crea rama `fix/...`, plantea plan de 2-3 pasos y espera aprobación |
-| `/session-close` | Al terminar el día o una tarea | Actualiza físicamente los docs de `/docs` relevantes, verifica build y flujo probado, marca la tarea como completed en `06_TASKS.md`, genera commit sugerido |
+| `/session-close` | Al terminar el día o una tarea | Actualiza físicamente los docs de `/docs` relevantes, verifica build y flujo probado, marca la tarea como completed y reescribe el estado de traspaso en `06_TASKS.md`, genera commit sugerido |
 | `/security-audit` | Antes de subir features con auth, APIs o datos sensibles | Checklist OWASP + auth + secrets + uploads (resumen — detalle en `security.md`). Lista hallazgos con severidad Critical/High/Medium |
 | `/deploy-checklist` | Antes de merge a `main` o deploy a producción | Checklist completo: código, seguridad, UI, SEO, documentación |
 | `/tools-reference` | Setup inicial o cuando necesites ver qué skills usar y cuándo | Tabla de skills de diseño + Context7, sin instalación duplicada (apunta a este README) |

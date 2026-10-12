@@ -14,15 +14,22 @@ const TOOL_LABELS: Record<ToolId, string> = {
  *
  * La excepción es el global de Antigravity: `GEMINI.md` y los workflows se
  * instalan en `~/.gemini/`, no en el proyecto, y se aíslan en `global/` para
- * que el `cp -r` de la raíz no se los lleve por error.
+ * que el `cp -r` de la raíz no se los lleve por error. `AGENTS.md` también es
+ * categoría global, pero va a la raíz del proyecto (ADR-016).
  */
+const ANTIGRAVITY_AGENTS_MD_ID = "antigravity:agents-md";
+
+function isAntigravityUserLevel(item: ManifestItem): boolean {
+  return item.tool === "antigravity" && item.category === "global" && item.id !== ANTIGRAVITY_AGENTS_MD_ID;
+}
+
 function destFolder(item: ManifestItem): string {
-  if (item.tool === "antigravity" && item.category === "global") return "global";
-  return "";
+  return isAntigravityUserLevel(item) ? "global" : "";
 }
 
 function buildAntigravitySection(items: ManifestItem[]): string {
-  const global = items.filter((i) => i.category === "global");
+  const global = items.filter(isAntigravityUserLevel);
+  const agentsMd = items.find((i) => i.id === ANTIGRAVITY_AGENTS_MD_ID);
   const rest = items.filter((i) => i.category !== "global");
   const lines: string[] = [`## ${TOOL_LABELS.antigravity}\n`];
 
@@ -57,11 +64,19 @@ function buildAntigravitySection(items: ManifestItem[]): string {
     lines.push("```\n");
   }
 
-  if (rest.length) {
-    lines.push("**Paso 2 — Workspace (`.agents/`, raíz del proyecto)**\n");
+  if (rest.length || agentsMd) {
+    lines.push("**Paso 2 — Workspace (raíz del proyecto)**\n");
     lines.push("```bash");
-    lines.push("cp -r .agents/. /ruta/a/tu-proyecto/.agents/");
+    if (agentsMd) lines.push("cp AGENTS.md /ruta/a/tu-proyecto/");
+    if (rest.length) lines.push("cp -r .agents/. /ruta/a/tu-proyecto/.agents/");
     lines.push("```\n");
+    if (agentsMd) {
+      lines.push(
+        "`AGENTS.md` es el estándar abierto que leen Codex, Cursor, Copilot y el propio " +
+          "Antigravity: si otra IA continúa el proyecto, ahí encuentra las reglas y el mapa. " +
+          "Completá su sección **Proyecto** al arrancar.\n"
+      );
+    }
   }
 
   return lines.join("\n");
@@ -82,6 +97,13 @@ function buildGenericToolSection(tool: ToolId, items: ManifestItem[]): string {
     }
   }
   lines.push("");
+  if (items.some((i) => i.files.some((f) => f.destPath === "AGENTS.md"))) {
+    lines.push(
+      "Las reglas viven en `AGENTS.md`, el estándar abierto que leen Codex, Cursor y " +
+        "Copilot, y `CLAUDE.md` las importa: si otra IA continúa el proyecto, encuentra " +
+        "lo mismo. Completá la sección **Proyecto** de `AGENTS.md` al arrancar.\n"
+    );
+  }
   return lines.join("\n");
 }
 
