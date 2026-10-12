@@ -82,31 +82,31 @@ interface StackShape {
 const STACKS: Record<string, StackShape> = {
   "nextjs-branded": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
+    skills: ["domain-modeling", "prelaunch-compliance-audit", "frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
   },
   "nextjs-unbranded": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
+    skills: ["domain-modeling", "prelaunch-compliance-audit", "frontend-design", "impeccable", "web-design-guidelines", "vercel-react-best-practices", "vercel-composition-patterns"],
   },
   "wordpress-cms": {
     rules: ["cms", "seo", "security", "stack-conventions", "operations"],
-    skills: ["domain-modeling", "seo-audit", "web-design-guidelines", "wordpress-block-theming"],
+    skills: ["domain-modeling", "prelaunch-compliance-audit", "seo-audit", "web-design-guidelines", "wordpress-block-theming"],
   },
   "fastapi-python": {
     rules: ["architecture", "security", "operations", "stack-conventions"],
-    skills: ["domain-modeling", "fastapi", "error-handling-patterns", "api-security-best-practices"],
+    skills: ["domain-modeling", "prelaunch-compliance-audit", "fastapi", "error-handling-patterns", "api-security-best-practices"],
   },
   "html-plano": {
     rules: ["architecture", "ui-ux", "seo", "stack-conventions", "security", "operations"],
-    skills: ["domain-modeling", "web-design-guidelines", "impeccable"],
+    skills: ["domain-modeling", "prelaunch-compliance-audit", "web-design-guidelines", "impeccable"],
   },
   "react-spa": {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines", "vercel-composition-patterns"],
+    skills: ["domain-modeling", "prelaunch-compliance-audit", "frontend-design", "impeccable", "web-design-guidelines", "vercel-composition-patterns"],
   },
   vue: {
     rules: ["architecture", "ui-ux", "seo", "pwa", "stack-conventions", "security", "operations"],
-    skills: ["domain-modeling", "frontend-design", "impeccable", "web-design-guidelines"],
+    skills: ["domain-modeling", "prelaunch-compliance-audit", "frontend-design", "impeccable", "web-design-guidelines"],
   },
   manual: { rules: [], skills: [] },
 };

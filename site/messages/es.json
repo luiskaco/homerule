@@ -776,6 +776,7 @@
         "/ pasa a ser el índice del hub (los modos de uso, el catálogo de skills y la bitácora); los presets por stack de Antigravity se mudan a su propia página /antigravity."
       ],
       "agregado": [
+        "Skill nueva prelaunch-compliance-audit: audita una web o app antes de lanzarla contra 43 reglas legales, de privacidad, seguridad, accesibilidad y SEO, investiga la normativa del país del proyecto y propone arreglos para aprobar. Viene preseleccionada en todos los stacks.",
         "Plantillas SDD nuevas: 09_TESTING (cómo correr los tests y qué test verifica cada requisito) y 10_RUNBOOK (entornos, deploy, rollback, monitoreo e incidentes). Los requisitos de 01_PROJECT_PRD pasan a tener ID y criterios de aceptación verificables, y 06_TASKS abre con un estado de traspaso para que cualquiera retome el proyecto.",
         "Los dos kits traen un AGENTS.md en la raíz del proyecto: el estándar abierto que leen Codex, Cursor, Copilot y Antigravity, con las reglas en versión neutral y un mapa del proyecto (dónde están rules, skills y /docs). Si otra IA continúa el proyecto, encuentra lo mismo. En el kit de Claude Code, CLAUDE.md lo importa con @AGENTS.md.",
         "El kit de Claude Code como plugin nativo: /plugin marketplace add luiskaco/-makeRuleIA instala las 9 rules como skills nativas, los 7 comandos y los 8 subagentes, y se actualiza desde git en vez de quedar congelado como el ZIP. Versionado por fecha (CalVer).",
