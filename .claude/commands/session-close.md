@@ -29,9 +29,11 @@ Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos
 - [ ] 03_SYSTEM_SPEC.md  — [motivo o "no aplica"]
 - [ ] 04_DATA_MODEL.md   — [motivo o "no aplica"]
 - [ ] 05_ARCHITECTURE.md — [motivo o "no aplica"]
-- [ ] 06_TASKS.md        — **verificar estado de tarea activa** (in-progress / completed)
+- [ ] 06_TASKS.md        — **verificar estado de tarea activa** (en progreso / completada) y **reescribir "Estado de traspaso"**: dónde quedó, próximo paso concreto, bloqueos
 - [ ] 07_DECISIONS.md    — [motivo o "no aplica"]
 - [ ] 08_CHANGELOG.md    — [motivo o "no aplica"]
+- [ ] 09_TESTING.md      — [tests nuevos en la tabla de trazabilidad, o "no aplica"]
+- [ ] 10_RUNBOOK.md      — [si cambió deploy, entornos o infra, o "no aplica"]
 
 ### Verificación de código
 

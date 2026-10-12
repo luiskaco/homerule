@@ -268,3 +268,98 @@ El mismo script genera `.claude-plugin/marketplace.json`, así que el repo es a 
 - El plugin publica **solo contenido propio**: las 9 rules como skills nativas, los 7 comandos, los 8 subagentes y las 2 skills escritas acá (`domain-modeling`, `project-planning`). Las skills de terceros vendorizadas quedan afuera a propósito — se instalan desde su repo original con su propio comando, y redistribuirlas en el plugin sería apropiarse de trabajo ajeno. `scripts/build-plugin.mjs` las detecta por `skills-lock.json` y por el `install:` del frontmatter, y falla si alguna se cuela en la lista de propias.
 - El array de rutas es explícito, como advertía ADR-011. El guard `--check` cubre el costo: falla si el manifest quedó atrás respecto de la fuente, o si una rule todavía no fue convertida a skill nativa.
 - El plugin **no** puede instalar `CLAUDE.md` en el proyecto del usuario: los plugins aportan comandos, agentes y skills, no memoria de proyecto. Quien quiera el núcleo global sigue necesitando el ZIP. Es una razón más para no reemplazar un canal por el otro.
+
+## ADR-015 — `AGENTS.md` en la raíz para lo propio del repo, importado desde `CLAUDE.md`
+
+**Fecha:** 2026-10-12
+**Estado:** Aceptada
+
+**Contexto:** Las particularidades del repo (fuente vs. derivados, paridad CORE/GEMINI, `/docs`) vivían solo en `CLAUDE.md`, que Antigravity no lee. `AGENTS.md` es el estándar abierto de instrucciones por repo (Agentic AI Foundation, Linux Foundation) y lo leen Antigravity, Codex, Cursor, Copilot y Gemini CLI. Claude Code también lo lee de forma nativa, pero **solo si no hay `CLAUDE.md`**; con uno presente hay que importarlo con `@AGENTS.md`.
+
+**Decisión:** `AGENTS.md` en la raíz con lo que es del repo y vale para cualquier tool (estructura, fuente/derivados, paridad, comandos, convenciones, `/docs`). `CLAUDE.md` importa `@core/CORE.md` y `@AGENTS.md`, y conserva solo lo exclusivo de Claude Code (jerarquía de skills de diseño). Las reglas globales **no** se copian a `AGENTS.md`: siguen en `core/CORE.md` y `.gemini/GEMINI.md`.
+
+**Alternativas consideradas:**
+
+- **Copiar también CORE § 0–§ 8 en `AGENTS.md`** — descartado: sería una tercera copia del núcleo en paridad manual, y Claude y Antigravity cargarían las reglas globales dos veces.
+- **Sumar una plantilla `AGENTS.md` a los kits generados** — fuera de alcance por ahora: implica tocar el generador, los presets y el sitio. Puede reabrirse en un ADR propio.
+- **Symlink `CLAUDE.md` → `AGENTS.md`** — descartado: en Windows requiere permisos de administrador o Developer Mode, y git lo saca como archivo de texto plano si `core.symlinks` está apagado.
+
+**Consecuencias:**
+
+- `AGENTS.md` es solo del repo: el generador no lo empaqueta (lee únicamente las carpetas de fuente), así que no llega a los ZIPs ni al plugin.
+- Un cambio de convención del repo se edita en `AGENTS.md`, no en `CLAUDE.md`.
+
+## ADR-016 — Los kits traen `AGENTS.md`: el proyecto puede continuarlo cualquier IA
+
+**Fecha:** 2026-10-12
+**Estado:** Aceptada — extiende ADR-015 (que lo dejaba fuera de alcance)
+
+**Contexto:** Un proyecto armado con el kit puede terminar en manos de otra IA (Codex, Cursor, Copilot…). Con el kit de Antigravity eso dejaba al proyecto sin reglas globales: `GEMINI.md` se instala en `~/.gemini/`, fuera del repo. Con el de Claude Code, las reglas estaban en `CLAUDE.md`, que otras herramientas no leen. `AGENTS.md` es el estándar abierto que leen casi todas, y Codex además escanea `.agents/skills/` — la misma carpeta que ya usa el kit de Antigravity.
+
+**Decisión:** Los dos kits emiten un `AGENTS.md` para la raíz del proyecto con tres partes:
+
+1. **Reglas globales neutrales**, derivadas de `core/CORE.md` en el build: cambia el título, § 7 explica qué hacer si la herramienta no expone los comandos y la nota de subagentes de § 8 (que es de Claude) sale. En el kit de Antigravity, `00_PROJECT_START` pasa a `00_GEMINI_START`.
+2. **Mapa del proyecto** (`core/agents-map.md`, con variables por tool): dónde están rules, skills, subagentes y workflows, y el flujo de `/docs` para retomar el trabajo (leer `06_TASKS` y `07_DECISIONS` antes de empezar).
+3. **Sección "Proyecto"** a completar por el usuario: stack real, comandos y estructura.
+
+En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de Claude (comandos nativos, rules como skills, la nota de subagentes). Los dos archivos van en el mismo item para que el import nunca quede apuntando a un archivo que no se descargó. En Antigravity es un item aparte (`antigravity:agents-md`), preseleccionado en los 8 presets, que va a la raíz del proyecto y no a `global/`.
+
+**Alternativas consideradas:**
+
+- **Solo mapa + sección de proyecto, sin reglas** — descartado: otra IA no recibiría la Regla de Oro ni las convenciones, que es justamente lo que da continuidad.
+- **`CLAUDE.md` completo + `AGENTS.md` aparte** — descartado: dos archivos con reglas casi idénticas en el mismo proyecto que el usuario tendría que mantener a mano.
+- **Una tercera fuente escrita a mano para el núcleo neutral** — descartado: sumaría otra paridad manual a la de CORE/GEMINI. Se deriva por código, con reemplazos que fallan si el ancla en `CORE.md` desaparece.
+
+**Consecuencias:**
+
+- En Antigravity las reglas globales entran dos veces al contexto (`GEMINI.md` global + `AGENTS.md`, unos 2k tokens), con el mismo contenido. Se acepta: es el costo de que el repo sea autosuficiente.
+- Los workflows de Antigravity siguen viviendo en `~/.gemini/`, fuera del repo: otra IA no los tiene, y el mapa lo dice. La tabla de § 7 resume cuándo usar cada uno.
+- Editar § 7 o la nota de § 8 de `CORE.md` puede romper el build a propósito: hay que ajustar `buildAgentsMd()` en `generate-manifest.mjs`.
+- De paso, el generador quita el bloque `codebase-memory-mcp` que el MCP inyecta en los núcleos de este repo: viajaba dentro del `GEMINI.md` y el `CLAUDE.md` de los kits.
+- El plugin no cambia: no puede instalar memoria de proyecto (ADR-014).
+
+## ADR-017 — SDD con trazabilidad, traspaso, testing y runbook
+
+**Fecha:** 2026-10-12
+**Estado:** Aceptada
+
+**Contexto:** ADR-016 hizo que cualquier IA pueda continuar un proyecto, pero las plantillas de `/docs` no le daban con qué hacerlo bien. Los requisitos eran una lista suelta sin criterio de "hecho", las tareas no apuntaban a nada, ningún documento decía cómo correr los tests ni cómo desplegar, y no había un lugar donde quedara "dónde quedé y qué sigue".
+
+**Decisión:**
+
+- **`01_PROJECT_PRD`**: requisitos con ID (`RF-xx` / `RNF-xx`) que no se reutilizan, prioridad M/S/C y criterios de aceptación en formato EARS ("CUANDO…, EL SISTEMA DEBE…"). Cada criterio es un test en potencia.
+- **`06_TASKS`**: sección **Estado de traspaso** al principio (dónde quedó, próximo paso, bloqueos, qué no tocar), que se reescribe en cada cierre. Tareas con ID (`T-xx`), requisito que cubren, ADR que las afecta y criterio "hecho cuando".
+- **Plantillas nuevas**: `09_TESTING.md` (cómo correr los tests, estrategia por nivel, tabla de trazabilidad `RF-xx` → test, datos de prueba, CI) y `10_RUNBOOK.md` (entornos, deploy, rollback, monitoreo, incidentes, backups, accesos, sin secretos).
+- La convención pasa de 01–08 a 01–10 en `CORE.md` y `GEMINI.md` § 5 (con paridad), y la siguen `/new-feature`, `/session-close`, `/deploy-checklist`, `docs-writer`, `project-planning` y el mapa del `AGENTS.md`.
+
+**Alternativas consideradas:**
+
+- **Testing y runbook como secciones de `03_SYSTEM_SPEC` y `05_ARCHITECTURE`** — descartado: son los documentos que más se consultan durante el trabajo diario y quedaban enterrados. Con número propio, el mapa del `AGENTS.md` puede apuntar directo a ellos.
+- **Adoptar los archivos de Spec Kit o Kiro** (`spec.md`, `plan.md`, `tasks.md`) — descartado: cambiaría la convención que ya usan los proyectos existentes. Se toma lo que aportan (EARS, trazabilidad) sin cambiar nombres.
+- **Historial de sesiones en el traspaso** — descartado: crecería sin fin y ya existe `08_CHANGELOG.md`. El traspaso es una foto del estado actual y se reescribe.
+
+**Consecuencias:**
+
+- `10_RUNBOOK.md` no se escribe en la planificación (`project-planning` lo excluye): se completa a más tardar en el primer deploy.
+- Los proyectos que ya usan el kit siguen funcionando sin `09`/`10`; los workflows piden actualizarlos solo cuando existen o aplican.
+- Este repo no adopta `09`/`10` en su propio `docs/`: no tiene tests automatizados ni un deploy más allá de Vercel. Si los gana, aplica la convención.
+
+## ADR-018 — Se elimina `00_GEMINI_START`: los desvíos del proyecto van en `AGENTS.md`
+
+**Fecha:** 2026-10-12
+**Estado:** Aceptada
+
+**Contexto:** `00_GEMINI_START.md` era la plantilla con la que un proyecto Antigravity declaraba lo que se desviaba de la convención global: stack real, otra estructura de `/docs` o reglas que no aplican. `CORE.md` tenía el equivalente `00_PROJECT_START`, que ningún kit traía. Desde ADR-016 los dos kits dejan un `AGENTS.md` con una sección **Proyecto** que cubre lo mismo y que lee cualquier IA, no solo Gemini.
+
+**Decisión:** Se borra la plantilla y la excepción de § 5 en los dos núcleos. Ahora § 5 dice que el desvío (de la tabla de docs, del stack de § 3 o de una regla) se documenta en la sección **Proyecto** de `AGENTS.md`, que tiene prioridad. Esa sección suma los campos "Documentación" y "Excepciones a las reglas". Las plantillas pasan a ser las mismas para los dos tools: desaparece el caso "solo Antigravity" del generador y del sitio.
+
+**Alternativas consideradas:**
+
+- **Mantener compatibilidad con un `00_GEMINI_START.md` heredado** — descartado: mantendría vivo en el núcleo Always On un concepto que ya no se distribuye. Los proyectos existentes migran a mano (nota en el README).
+- **Mantener `00_PROJECT_START` en `CORE.md`** — descartado: ningún kit lo traía, así que era una regla sin archivo.
+
+**Consecuencias:**
+
+- § 5 queda idéntico en `CORE.md` y `GEMINI.md`, y el guard de paridad ya no normaliza esa sección.
+- Un proyecto con un `00_GEMINI_START.md` viejo deja de aplicarlo: `GEMINI.md` ya no lo menciona. El README explica la migración.
+- `/plantillas` pasa de 12 a 11 archivos, todos para los dos tools.

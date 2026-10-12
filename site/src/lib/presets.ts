@@ -25,9 +25,13 @@ const SKILLS_SH: ExternalTool = {
   installCommand: "npx skills add <owner/repo> --skill <nombre>",
 };
 
-/** Antigravity-only global workflow items (GEMINI.md + comandos manuales). */
+/**
+ * Antigravity-only global items: GEMINI.md + comandos manuales (van a `~/.gemini/`)
+ * y AGENTS.md (va a la raíz del proyecto, para que otra IA pueda continuarlo).
+ */
 const ANTIGRAVITY_GLOBAL_ITEM_IDS = [
   "global:GEMINI.md",
+  "antigravity:agents-md",
   "global:grill.md",
   "global:new-feature.md",
   "global:bug-fix.md",

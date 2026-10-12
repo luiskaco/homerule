@@ -246,20 +246,20 @@
     "metaDescription": "Las plantillas de docs/ — qué va en cada archivo, del PRD al changelog.",
     "title": "Plantillas SDD",
     "intro": "Los archivos de docs/ que estructuran un proyecto de PRD a changelog. Independientes del agente que uses — se bajan aparte de los packs de Antigravity y Claude Code.",
-    "onlyAntigravity": "Solo Antigravity",
-    "downloadBody": "Un ZIP con los 10 archivos, listos para copiar a docs/ en la raíz de tu proyecto.",
+    "downloadBody": "Un ZIP con las plantillas, listas para copiar a docs/ en la raíz de tu proyecto.",
     "download": "Descargar ZIP",
     "generating": "Generando...",
     "descriptions": {
-      "00_GEMINI_START": "Punto de entrada de la sesión — si existe, define la estructura de docs activa y tiene prioridad sobre esta tabla.",
-      "01_PROJECT_PRD": "Requisitos de producto.",
+      "01_PROJECT_PRD": "Requisitos de producto — cada uno con ID (RF-01), prioridad y criterios de aceptación verificables.",
       "02_SDD": "Diseño del sistema.",
       "03_SYSTEM_SPEC": "Especificaciones técnicas.",
       "04_DATA_MODEL": "Esquemas y entidades.",
       "05_ARCHITECTURE": "Decisiones arquitectónicas.",
-      "06_TASKS": "Backlog activo.",
+      "06_TASKS": "Backlog activo + estado de traspaso: dónde quedó, próximo paso y bloqueos, para que cualquiera (o cualquier IA) retome.",
       "07_DECISIONS": "ADRs — decisiones con alternativas evaluadas y trade-offs.",
       "08_CHANGELOG": "Historial de versiones.",
+      "09_TESTING": "Cómo correr los tests, qué cubre cada nivel y qué test verifica cada requisito.",
+      "10_RUNBOOK": "Entornos, deploy, rollback, monitoreo e incidentes conocidos — a más tardar en el primer deploy.",
       "CONTEXT": "Glosario del dominio — vivo, no de fase (opcional, desde 3 términos)."
     }
   },
@@ -542,7 +542,7 @@
     "skill:project-planning": {
       "author": "—",
       "summary": "Usar antes de codificar un proyecto nuevo o una iniciativa grande (afecta más de 3 archivos, tiene más de una arquitectura válida, o incluye una decisión irreversible).",
-      "whatItDoes": "Convierte una idea ya validada en los 8 documentos de `/docs` que define este kit (`01_PROJECT_PRD.md` … `08_CHANGELOG.md`), en orden, antes de escribir código.",
+      "whatItDoes": "Convierte una idea ya validada en los documentos de planificación de `/docs` que define este kit (`01_PROJECT_PRD.md` … `07_DECISIONS.md` + `09_TESTING.md`), en orden, antes de escribir código.",
       "whenToUse": [],
       "usage": [],
       "install": []
@@ -775,17 +775,21 @@
         "/ pasa a ser el índice del hub (los modos de uso, el catálogo de skills y la bitácora); los presets por stack de Antigravity se mudan a su propia página /antigravity."
       ],
       "agregado": [
+        "Plantillas SDD nuevas: 09_TESTING (cómo correr los tests y qué test verifica cada requisito) y 10_RUNBOOK (entornos, deploy, rollback, monitoreo e incidentes). Los requisitos de 01_PROJECT_PRD pasan a tener ID y criterios de aceptación verificables, y 06_TASKS abre con un estado de traspaso para que cualquiera retome el proyecto.",
+        "Los dos kits traen un AGENTS.md en la raíz del proyecto: el estándar abierto que leen Codex, Cursor, Copilot y Antigravity, con las reglas en versión neutral y un mapa del proyecto (dónde están rules, skills y /docs). Si otra IA continúa el proyecto, encuentra lo mismo. En el kit de Claude Code, CLAUDE.md lo importa con @AGENTS.md.",
         "El kit de Claude Code como plugin nativo: /plugin marketplace add luiskaco/-makeRuleIA instala las 9 rules como skills nativas, los 7 comandos y los 8 subagentes, y se actualiza desde git en vez de quedar congelado como el ZIP. Versionado por fecha (CalVer).",
         "Cuatro subagentes para Antigravity: auditor y security (solo lectura) más backend y frontend (implementan y verifican su propio trabajo en sandbox). Antigravity soporta subagentes declarables en archivo — .agents/agents/<nombre>/agent.md — y el kit lo daba por imposible. Vienen preseleccionados en los 8 presets de Antigravity.",
         "Dos subagentes nuevos, de 6 a 8: ui-reviewer (accesibilidad, los 5 estados de UI, responsive, SEO on-page y consistencia con el sistema de diseño) y test-writer (detecta el framework de test del proyecto en vez de asumirlo, y nunca modifica el código bajo prueba)."
       ],
       "arreglado": [
+        "Un bloque de configuración del MCP codebase-memory, propio de la máquina del autor, viajaba dentro del GEMINI.md y el CLAUDE.md de los kits. El generador ahora lo quita.",
         "Los comandos de Claude Code no se descargaban: los 6 existían y se mostraban en /build, pero ningún preset los preseleccionaba, así que el ZIP salía sin la carpeta .claude/commands/.",
         "code-reviewer apuntaba a .agents/rules/*, rutas que no existen en un ZIP de Claude Code — esas reglas se instalan como .claude/skills/<id>/SKILL.md. Solo funcionaba si además habías bajado el ZIP de Antigravity.",
         "Segmentos duplicados en todos los ZIPs generados: docs/docs/… y .agents/.agents/…, que además no coincidían con los comandos de copia del INSTALL.md incluido.",
         "Contenido específico de Antigravity que se filtraba a los ZIPs de Claude Code: 00_GEMINI_START.md ya no se incluye en presets de claude-code, y las referencias sueltas a GEMINI.md en archivos compartidos ahora también apuntan a CORE.md."
       ],
       "quitado": [
+        "Se elimina la plantilla 00_GEMINI_START: el stack real, otra estructura de docs o las reglas que no aplican se anotan ahora en la sección Proyecto del AGENTS.md, que lee cualquier IA. Si un proyecto todavía lo tiene, conviene mover su contenido ahí.",
         "Modo de uso “Antigravity + Claude”: la entrada del nav y la tarjeta del home. Los subagentes siguen estando, dentro de “Claude solo”.",
         "Páginas placeholder vacías y sin link en el nav: /proximamente y /mejores-repos-utilidades."
       ]

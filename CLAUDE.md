@@ -8,41 +8,22 @@ distribuye (dogfooding) — las reglas globales se importan del archivo fuente:
 
 ---
 
-## Particularidades de este repo (no aplican a proyectos consumidores)
+Las particularidades del repo (fuente vs. derivados, paridad CORE/GEMINI,
+comandos, convenciones, `/docs`) viven en `AGENTS.md`, compartido con
+cualquier otro agente de código. Se importa acá porque, con un `CLAUDE.md`
+presente, Claude Code no lo lee solo (ADR-015):
 
-- **Fuente vs. producto.** `.agents/rules/`, `.agents/skills/`,
-  `.gemini/antigravity/global_workflows/`, `core/CORE.md`, `.claude/agents/` y
-  `docs-templates/` son **fuente**: lo que el generador
-  (`site/scripts/generate-manifest.mjs`) empaqueta en los ZIPs. Editar siempre
-  la fuente, nunca un derivado.
-- **Derivados que se regeneran, no se editan a mano:**
-  - `.claude/commands/` y `.claude/skills/<regla>/SKILL.md` (las 9 rules
-    convertidas) ← `node scripts/sync-claude-kit.mjs` después de editar
-    cualquier workflow o rule.
-  - `site/public/manifest.json` ← lo regenera `prebuild`/`predev` del sitio.
-  - La tabla de tokens del `README.md` ← `python scripts/update-token-table.py`.
-- **Paridad CORE/GEMINI.** `core/CORE.md` y `.gemini/GEMINI.md` se mantienen a
-  mano en paralelo. Si se edita una sección compartida (§ 0–§ 8) en uno,
-  replicar el cambio en el otro en el mismo commit y verificar con
-  `python scripts/check-core-parity.py`. Difieren a propósito solo en: título,
-  § 3 punto 2 (fallback de documentación por tool), § 5 (excepción
-  `00_PROJECT_START` vs `00_GEMINI_START`), § 6 (nombres de la jerarquía) y la
-  nota de subagentes de § 8.
-- **Las rules se editan en `.agents/rules/`** (fuente única). Sus copias en
+@AGENTS.md
+
+---
+
+## Solo para Claude Code
+
+- Las rules se editan en `.agents/rules/`. Sus copias en
   `.claude/skills/<regla>/SKILL.md` son derivadas — mismo formato que traen
   los ZIPs del kit, regeneradas por `sync-claude-kit.mjs`.
-- **Skills de diseño vendorizadas** (`.claude/skills/`): son de terceros, no
-  editarlas — se actualizan reinstalando (ver `skills-lock.json` y README
-  § Skills de diseño de terceros).
 
-## Dónde va cada cosa en `/docs`
-
-- `04_DATA_MODEL.md` — entidades y campos técnicos.
-- `07_DECISIONS.md` — decisiones con alternativas evaluadas y trade-offs (ADR).
-- `CONTEXT.md` — glosario del dominio, sin numerar (ADR-012). Lenguaje del
-  negocio, no esquema ni decisiones. Lo mantiene la skill `domain-modeling`.
-
-## Jerarquía de skills de diseño (para no dispararlas en cadena)
+### Jerarquía de skills de diseño (para no dispararlas en cadena)
 
 Para trabajo de UI en `site/`, usar **una** skill por tarea, elegida así:
 
