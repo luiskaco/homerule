@@ -816,6 +816,7 @@
   "ChangelogData": {
     "unreleased": {
       "cambios": [
+        "Shorter, clearer task wrap-ups: the result first, up to 3 bullets and the review on a single line, with no code block. The review adds three passes: 🧪 Verified, 📝 Docs and ⚠️ Risk.",
         "/subagentes now shows both catalogs (4 from Antigravity + 8 from Claude Code) in each tool's native format, and it also appears under the “Antigravity only” menu. It used to filter for claude-code alone.",
         "Visual theme unified across the pages still on the old style: /subagentes, /mejores-skill, /skills-por-proyecto, /prompts and /plantillas. The ZIP builder, its preview modal (which opened with a white background on a dark site) and the templates download block were carrying the same leftovers.",
         "The two skill views merged into one page: the flat catalog and the by-project-type grouping are now tabs on /mejores-skill. The old route redirects.",

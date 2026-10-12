@@ -363,3 +363,28 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - § 5 queda idéntico en `CORE.md` y `GEMINI.md`, y el guard de paridad ya no normaliza esa sección.
 - Un proyecto con un `00_GEMINI_START.md` viejo deja de aplicarlo: `GEMINI.md` ya no lo menciona. El README explica la migración.
 - `/plantillas` pasa de 12 a 11 archivos, todos para los dos tools.
+
+## ADR-019 — Cierre de tarea digerible: resultado primero y revisión en una línea
+
+**Fecha:** 2026-10-12
+**Estado:** Aceptada
+
+**Contexto:** El reporte de § 8 (🎨 Frontend / ⚙️ Backend / 🔍 Inspector) se pedía en un bloque de código con "[1 línea]" por pasada. En la práctica, tanto Gemini como Claude lo convertían en párrafos con colores hex y rutas, lo ponían antes del resultado, lo forzaban en tareas donde no aplicaba (⚙️ Backend en un video) y después repetían todo en un resumen de 40 líneas. Lo primero que leía el usuario era la revisión interna, no qué había quedado hecho.
+
+**Decisión:**
+
+- **§ 0 suma "Formato de cierre"**: primera línea con el resultado, hasta 3 viñetas sobre el impacto (sin archivos, rutas ni valores), la revisión en una línea y una sola pregunta al final si hace falta. Largo proporcional al cambio, sin narrar el proceso, tablas solo para comparar opciones.
+- **§ 8 pasa a una línea en texto normal** (nunca en bloque de código), omitiendo las pasadas que no aplican y explicando solo la que encontró o corrigió algo.
+- **Tres pasadas nuevas**: 🧪 Verificado (qué se ejecutó de verdad: el ✅ ya no puede significar "debería andar"), 📝 Docs (`06_TASKS` con el traspaso, `08_CHANGELOG`, ADR) y ⚠️ Riesgo (solo si hubo algo irreversible).
+
+**Alternativas consideradas:**
+
+- **Mantener el bloque de 3 líneas y solo pedir brevedad** — descartado: "[1 línea]" ya pedía brevedad y no se respetaba. El problema era el formato (bloque, orden, obligatoriedad), no la falta de una instrucción.
+- **Sumar también seguridad, accesibilidad y performance como pasadas propias** — descartado: ya las cubren 🔍 (que audita contra `security` y `ui-ux`) y 🎨. Cada pasada más alarga justo lo que se quiere acortar.
+- **Output style de Claude Code** — descartado como mecanismo principal: no existe en Antigravity ni en otras herramientas. La regla en el núcleo llega a los dos kits y al `AGENTS.md` neutral.
+
+**Consecuencias:**
+
+- Cada núcleo suma unos 300 tokens Always On.
+- § 0 queda idéntico en `CORE.md` y `GEMINI.md`; § 8 conserva sus diferencias por tool (línea del Inspector y nota de subagentes).
+- Las copias globales del usuario (`~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md`) no se actualizan solas: hay que reinstalarlas desde el kit.
