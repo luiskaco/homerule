@@ -54,7 +54,8 @@ mismo sistema de reglas, mantenido en un solo lugar.
 
 ## Requisitos no funcionales
 
-- Presupuesto de contexto: rule más grande < 12.000 chars (límite Antigravity);
+- Presupuesto de contexto: rule más grande < 24.000 bytes (límite por archivo de
+  Antigravity; las rules Always On comparten además 20.000 tokens);
   base Always On ~2k tokens, caso típico < 7k (ver tabla del README).
 - El sitio no requiere backend ni variables de entorno: manifest en build time,
   ZIP armado en el navegador.

@@ -1,6 +1,8 @@
 ---
-trigger: manual
-description: Setup inicial o consulta de skills/herramientas disponibles y cuándo usar cada una
+name: tools-reference
+description: "Setup inicial o consulta de skills/herramientas disponibles y cuándo usar cada una"
+metadata:
+  kind: workflow
 ---
 
 # Tools Reference

@@ -71,6 +71,22 @@ function approxTokens(files) {
   return Math.round(chars / 4);
 }
 
+// Un workflow es una skill con `metadata: kind: workflow` (ADR-020): Claude Code
+// lo recibe como comando y Antigravity como skill de workspace, pero no como
+// skill "normal" del catálogo.
+function isWorkflowSkill(content) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  return Boolean(match && /^[ \t]+kind:\s*workflow\s*$/m.test(match[1]));
+}
+
+function readSkillSource(skillName) {
+  try {
+    return readFileSync(join(SKILLS_DIR, skillName, "SKILL.md"), "utf8");
+  } catch {
+    return "";
+  }
+}
+
 function toPosix(p) {
   return p.split("\\").join("/");
 }
@@ -78,7 +94,6 @@ function toPosix(p) {
 const RULES_DIR = join(REPO_ROOT, ".agents", "rules");
 const SKILLS_DIR = join(REPO_ROOT, ".agents", "skills");
 const ANTIGRAVITY_AGENTS_DIR = join(REPO_ROOT, ".agents", "agents");
-const WORKFLOWS_DIR = join(REPO_ROOT, ".gemini", "antigravity", "global_workflows");
 const TEMPLATES_DIR = join(REPO_ROOT, "docs-templates");
 const CORE_MD_PATH = join(REPO_ROOT, "core", "CORE.md");
 const DATABASE_MD_PATH = join(RULES_DIR, "database.md");
@@ -116,8 +131,7 @@ const AGENTS_MD_TOOL = {
     RULES_PATH: ".agents/rules/<regla>.md",
     SKILLS_PATH: ".agents/skills/",
     AGENTS_PATH: ".agents/agents/<nombre>/agent.md",
-    WORKFLOWS_PATH:
-      "`~/.gemini/antigravity/global_workflows/` — **fuera del repo**: si no los tenés, la tabla de § 7 resume cuándo usar cada uno",
+    WORKFLOWS_PATH: "`.agents/skills/<comando>/SKILL.md`",
   },
   "claude-code": {
     TOOL_LABEL: "Claude Code",
@@ -236,20 +250,6 @@ const items = [];
   });
 }
 
-for (const file of readdirSync(WORKFLOWS_DIR).sort()) {
-  const content = readFileSync(join(WORKFLOWS_DIR, file), "utf8");
-  const fm = parseFrontmatter(content);
-  items.push({
-    id: `global:${file}`,
-    category: "global",
-    tool: "antigravity",
-    label: file,
-    description: fm.description || `Workflow manual /${file.replace(/\.md$/, "")}`,
-    files: [{ destPath: `antigravity/global_workflows/${file}`, content }],
-    approxTokens: approxTokens([{ content }]),
-  });
-}
-
 for (const file of readdirSync(RULES_DIR).sort()) {
   if (extname(file) !== ".md" || file === "database.md") continue;
   const content = readFileSync(join(RULES_DIR, file), "utf8");
@@ -266,9 +266,12 @@ for (const file of readdirSync(RULES_DIR).sort()) {
   });
 }
 
+// Los workflows son skills marcadas (ADR-020): en Antigravity viajan como skill
+// de workspace y se invocan con `/<nombre>`; se listan aparte como "comandos".
 for (const skillName of readdirSync(SKILLS_DIR).sort()) {
   const skillPath = join(SKILLS_DIR, skillName);
   if (!statSync(skillPath).isDirectory()) continue;
+  const workflow = isWorkflowSkill(readSkillSource(skillName));
   const fileEntries = walk(skillPath).map((full) => {
     const content = readFileSync(full, "utf8");
     const rel = toPosix(relative(skillPath, full));
@@ -281,10 +284,10 @@ for (const skillName of readdirSync(SKILLS_DIR).sort()) {
     // no SKILL.md at root
   }
   items.push({
-    id: `skill:${skillName}`,
-    category: "skill",
+    id: workflow ? `antigravity:workflow:${skillName}` : `skill:${skillName}`,
+    category: workflow ? "command" : "skill",
     tool: "antigravity",
-    label: skillName,
+    label: workflow ? `${skillName}.md` : skillName,
     description: fm.description || "",
     ...(fm.install ? { install: fm.install } : {}),
     files: fileEntries,
@@ -409,6 +412,7 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
   for (const skillName of readdirSync(SKILLS_DIR).sort()) {
     const skillPath = join(SKILLS_DIR, skillName);
     if (!statSync(skillPath).isDirectory()) continue;
+    if (isWorkflowSkill(readSkillSource(skillName))) continue;
     let fm = {};
     try {
       fm = parseFrontmatter(readFileSync(join(skillPath, "SKILL.md"), "utf8"));
@@ -434,24 +438,21 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
   }
 
   // --- Workflows → commands ---
-  // Antigravity workflows use `trigger: manual` frontmatter (Windsurf-style),
-  // which Claude Code's slash-command loader doesn't recognize. Re-emit with
-  // native frontmatter (description only) instead of copying the raw file,
-  // so the command actually loads with its intended description and the
-  // stray `trigger` key doesn't leak into the download.
-  for (const file of readdirSync(WORKFLOWS_DIR).sort()) {
-    const raw = readFileSync(join(WORKFLOWS_DIR, file), "utf8");
+  // Las skills marcadas como workflow (ADR-020) se re-emiten como comandos
+  // nativos: frontmatter solo con `description`, sin `name` ni `metadata`.
+  for (const skillName of readdirSync(SKILLS_DIR).sort()) {
+    const raw = readSkillSource(skillName);
+    if (!isWorkflowSkill(raw)) continue;
     const fm = parseFrontmatter(raw);
     const body = stripFrontmatter(raw);
-    const id = file.replace(/\.md$/, "");
-    const description = fm.description || `Workflow manual /${id}`;
+    const description = fm.description || `Workflow manual /${skillName}`;
     const nativeContent = `---\ndescription: ${yamlQuote(description)}\n---\n\n${body}`;
-    const files = [{ destPath: `${cfg.commandsDir}/${file}`, content: nativeContent }];
+    const files = [{ destPath: `${cfg.commandsDir}/${skillName}.md`, content: nativeContent }];
     items.push({
-      id: `${toolId}:workflow:${id}`,
+      id: `${toolId}:workflow:${skillName}`,
       category: "command",
       tool: toolId,
-      label: file,
+      label: `${skillName}.md`,
       description,
       files,
       approxTokens: approxTokens(files),

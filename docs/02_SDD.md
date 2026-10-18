@@ -14,7 +14,7 @@ generador emite el formato nativo de cada tool.
 |---|---|
 | `.agents/rules/` | 9 rules técnicas con trigger (`model_decision`/`glob`) — fuente única para ambos tools |
 | `.gemini/GEMINI.md` + `core/CORE.md` | Núcleo Always On por tool — se mantienen en paridad manual (ver `AGENTS.md` raíz) |
-| `.gemini/antigravity/global_workflows/` | 6 workflows manuales — fuente de los comandos de Claude Code |
+| `.agents/skills/` (workflows) | 7 workflows como skills con `metadata: kind: workflow` (ADR-020) — fuente de los comandos de Claude Code |
 | `.claude/agents/` | 8 subagentes de Claude Code (fuente y a la vez instalación local del repo) |
 | `.agents/skills/` + `.claude/skills/` | Skills externas: las primeras se empaquetan, las segundas son vendorizadas para uso local |
 | `docs-templates/` | Plantillas `/docs` 01–08 |

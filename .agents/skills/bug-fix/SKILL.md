@@ -1,6 +1,8 @@
 ---
-trigger: manual
-description: si algo está roto — IA identifica causa raíz primero
+name: bug-fix
+description: "si algo está roto — IA identifica causa raíz primero"
+metadata:
+  kind: workflow
 ---
 
 # Workflow: Bug Fix

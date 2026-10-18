@@ -24,9 +24,8 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | `core/agents-map.md` | Mapa del proyecto que se agrega al `AGENTS.md` de los kits (con variables por tool) |
 | `.gemini/GEMINI.md` | Núcleo Always On del kit de Antigravity |
 | `.agents/rules/` | Las 9 rules técnicas — fuente única para ambos tools |
-| `.agents/skills/` | Skills del kit — se copian tal cual a los dos tools |
+| `.agents/skills/` | Skills del kit — se copian tal cual a los dos tools. Incluye los 7 workflows (skills con `metadata: kind: workflow`, ADR-020): Claude los recibe como `.claude/commands/` |
 | `.agents/agents/` | 4 subagentes de Antigravity (fuente e instalación local) |
-| `.gemini/antigravity/global_workflows/` | Workflows — fuente de los comandos de Claude Code |
 | `.claude/agents/` | 8 subagentes de Claude Code (fuente e instalación local) |
 | `docs-templates/` | Plantillas `/docs` que se empaquetan en los kits |
 | `docs/` | Documentación SDD de este repo (01–08 + `CONTEXT.md`) |
@@ -38,8 +37,8 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 Editar siempre la fuente, nunca un derivado.
 
 - **Fuente** (lo que `site/scripts/generate-manifest.mjs` empaqueta en los
-  ZIPs): `.agents/rules/`, `.agents/skills/`, `.agents/agents/`,
-  `.gemini/antigravity/global_workflows/`, `core/CORE.md`, `core/agents-map.md`,
+  ZIPs): `.agents/rules/`, `.agents/skills/` (workflows incluidos),
+  `.agents/agents/`, `core/CORE.md`, `core/agents-map.md`,
   `.claude/agents/` y `docs-templates/`.
 - **El `AGENTS.md` y el `CLAUDE.md` de los kits no tienen fuente propia**: los
   arma el generador desde `core/CORE.md` + `core/agents-map.md` (ADR-016). Si se

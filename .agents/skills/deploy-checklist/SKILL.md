@@ -1,7 +1,10 @@
 ---
-trigger: manual
-description: Antes de subir a producción — checklist completo de código, seguridad, UI y docs
+name: deploy-checklist
+description: "Antes de subir a producción — checklist completo de código, seguridad, UI y docs"
+metadata:
+  kind: workflow
 ---
+
 # Workflow: Deploy Checklist
 
 # Invocar con: /deploy-checklist

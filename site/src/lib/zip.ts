@@ -12,10 +12,11 @@ const TOOL_LABELS: Record<ToolId, string> = {
  * `.claude/agents/x.md`), así que por defecto no lleva prefijo — agregarlo
  * duplicaba el segmento (`docs/docs/…`, `.agents/.agents/…`).
  *
- * La excepción es el global de Antigravity: `GEMINI.md` y los workflows se
- * instalan en `~/.gemini/`, no en el proyecto, y se aíslan en `global/` para
- * que el `cp -r` de la raíz no se los lleve por error. `AGENTS.md` también es
- * categoría global, pero va a la raíz del proyecto (ADR-016).
+ * La excepción es el global de Antigravity: `GEMINI.md` se instala en
+ * `~/.gemini/`, no en el proyecto, y se aísla en `global/` para que el
+ * `cp -r` de la raíz no se lo lleve por error. `AGENTS.md` también es
+ * categoría global, pero va a la raíz del proyecto (ADR-016). Los comandos ya
+ * no son globales: son skills de workspace en `.agents/skills/` (ADR-020).
  */
 const ANTIGRAVITY_AGENTS_MD_ID = "antigravity:agents-md";
 
@@ -37,30 +38,13 @@ function buildAntigravitySection(items: ManifestItem[]): string {
     lines.push("**Paso 1 — Global (`~/.gemini/`)**\n");
     lines.push("macOS / Linux:");
     lines.push("```bash");
-    lines.push("mkdir -p ~/.gemini/antigravity/global_workflows");
+    lines.push("mkdir -p ~/.gemini");
     lines.push("cp global/GEMINI.md ~/.gemini/GEMINI.md");
-    const workflows = global.filter((i) => i.id !== "global:GEMINI.md");
-    if (workflows.length) {
-      lines.push(
-        `cp ${workflows
-          .map((i) => `global/antigravity/global_workflows/${i.label}`)
-          .join(" ")} ~/.gemini/antigravity/global_workflows/`
-      );
-    }
     lines.push("```\n");
     lines.push("Windows (PowerShell):");
     lines.push("```powershell");
-    lines.push(
-      'New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\\.gemini\\antigravity\\global_workflows"'
-    );
+    lines.push('New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\\.gemini"');
     lines.push('Copy-Item "global/GEMINI.md" "$env:USERPROFILE\\.gemini\\GEMINI.md"');
-    if (workflows.length) {
-      lines.push(
-        `Copy-Item ${workflows
-          .map((i) => `"global/antigravity/global_workflows/${i.label}"`)
-          .join(",")} "$env:USERPROFILE\\.gemini\\antigravity\\global_workflows\\"`
-      );
-    }
     lines.push("```\n");
   }
 

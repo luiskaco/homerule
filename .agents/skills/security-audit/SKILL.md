@@ -1,6 +1,8 @@
 ---
-trigger: manual
-description: Usar antes de subir cualquier feature con auth, APIs o datos sensibles
+name: security-audit
+description: "Usar antes de subir cualquier feature con auth, APIs o datos sensibles"
+metadata:
+  kind: workflow
 ---
 
 # Workflow: Auditoría de Seguridad

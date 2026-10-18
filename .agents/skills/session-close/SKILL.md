@@ -1,6 +1,8 @@
 ---
-trigger: manual
-description: Al terminar el día o una tarea — verifica docs, código y genera commit sugerido
+name: session-close
+description: "Al terminar el día o una tarea — verifica docs, código y genera commit sugerido"
+metadata:
+  kind: workflow
 ---
 
 # Workflow: Cierre de Sesión

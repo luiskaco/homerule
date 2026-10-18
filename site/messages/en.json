@@ -837,6 +837,7 @@
   "ChangelogData": {
     "unreleased": {
       "cambios": [
+        "The 7 Antigravity workflows (/grill, /new-feature, /bug-fix, /session-close, /security-audit, /deploy-checklist and /tools-reference) become skills, since Antigravity stops running workflows on 2026-10-19. They ship with the project in .agents/skills/ and are no longer installed into ~/.gemini/; in Claude Code they remain commands. In Antigravity they can also trigger on their own from their description.",
         "Shorter, clearer task wrap-ups: the result first, up to 3 bullets and the review on a single line, with no code block. The review adds three passes: 🧪 Verified, 📝 Docs and ⚠️ Risk.",
         "/subagentes now shows both catalogs (4 from Antigravity + 8 from Claude Code) in each tool's native format, and it also appears under the “Antigravity only” menu. It used to filter for claude-code alone.",
         "Visual theme unified across the pages still on the old style: /subagentes, /mejores-skill, /skills-por-proyecto, /prompts and /plantillas. The ZIP builder, its preview modal (which opened with a white background on a dark site) and the templates download block were carrying the same leftovers.",

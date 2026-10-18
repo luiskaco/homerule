@@ -388,3 +388,30 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - Cada núcleo suma unos 300 tokens Always On.
 - § 0 queda idéntico en `CORE.md` y `GEMINI.md`; § 8 conserva sus diferencias por tool (línea del Inspector y nota de subagentes).
 - Las copias globales del usuario (`~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md`) no se actualizan solas: hay que reinstalarlas desde el kit.
+
+## ADR-020 — Los workflows de Antigravity pasan a skills
+
+**Fecha:** 2026-10-18
+**Estado:** Aceptada
+
+**Contexto:** La doc oficial de Antigravity anuncia que los workflows legacy (`.agents/workflows/` y `~/.gemini/.../workflows`) "dejan de funcionar el 19 de octubre de 2026": sus directorios ya no se indexan ni se ejecutan por slash command. El reemplazo son las skills (estándar abierto `SKILL.md`), que también se invocan con `/<nombre>`. El kit emitía los 7 workflows (`/grill`, `/new-feature`, …) a `~/.gemini/antigravity/global_workflows/`, y esa misma carpeta era la fuente de `.claude/commands/`.
+
+**Decisión:**
+
+- **La fuente pasa a `.agents/skills/<nombre>/SKILL.md`** con `name` + `description` y un marcador `metadata: kind: workflow`. El estándar de skills rechaza claves top-level desconocidas, por eso va dentro de `metadata`.
+- **Claude Code sigue recibiendo `.claude/commands/<nombre>.md`**, derivado de la misma fuente con frontmatter solo de `description` (igual que hoy). Las skills marcadas se saltean en los loops de skills normales de ambos tools para no duplicarlas.
+- **Antigravity las recibe como skills de workspace** (`.agents/skills/…`, categoría `command` en el manifest): viajan con el proyecto en vez de instalarse en `~/.gemini/`. El paso global del `INSTALL.md` queda solo con `GEMINI.md`.
+- **Se borra `.gemini/antigravity/global_workflows/`.**
+
+**Alternativas consideradas:**
+
+- **Dejar los workflows como fuente y emitir skills al empaquetar** — descartado: mantiene como origen un formato que Antigravity retira, y el repo dejaría de funcionar con Antigravity abierto en él (dogfooding).
+- **Una carpeta de fuente aparte (`.agents/commands/`)** — descartado: Antigravity no la descubre, así que la fuente dejaría de ser también la instalación local.
+- **Ruta global (`~/.gemini/config/skills/`)** — descartado como default: los comandos del kit asumen el repo (`docs/`, `06_TASKS.md`), no tienen sentido fuera de un proyecto.
+
+**Consecuencias:**
+
+- Las skills se activan solas por su `description`; los workflows eran solo manuales. Las 7 descripciones ya dicen "cuándo usar", así que se dejan, pero puede haber activaciones espontáneas. Antigravity no documenta un campo manual-only.
+- Cambian los ids del manifest (`global:<archivo>.md` → `antigravity:workflow:<id>`): hay que actualizar los presets.
+- Quien ya instaló los workflows en `~/.gemini/antigravity/global_workflows/` los pierde el 19/10: reinstalar desde el ZIP nuevo.
+- El límite de 12.000 caracteres ahora aplica solo a workflows legacy; las rules tienen 24.000 bytes por archivo y 20.000 tokens agregados Always On.

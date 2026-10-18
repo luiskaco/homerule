@@ -22,15 +22,7 @@ estrictamente "Always On".
 
 ```
 ~/.gemini/                                    # GLOBAL — una sola vez, aplica a todos los proyectos
-├── GEMINI.md                                 # Always On — núcleo: principios, stack base, naming, jerarquía
-└── antigravity/global_workflows/
-    ├── grill.md                              # /grill
-    ├── new-feature.md                        # /new-feature
-    ├── bug-fix.md                            # /bug-fix
-    ├── session-close.md                      # /session-close
-    ├── security-audit.md                     # /security-audit
-    ├── deploy-checklist.md                   # /deploy-checklist
-    └── tools-reference.md                    # /tools-reference
+└── GEMINI.md                                 # Always On — núcleo: principios, stack base, naming, jerarquía
 
 [proyecto]/
 ├── AGENTS.md                                 # reglas neutrales + mapa — lo lee cualquier IA (ADR-016)
@@ -50,17 +42,17 @@ estrictamente "Always On".
     │   ├── backend/agent.md                  # implementa servidor, datos, migraciones
     │   ├── frontend/agent.md                 # implementa interfaz
     │   └── security/agent.md                 # auditoría de seguridad — solo lectura
-    └── skills/                               # opcional — ver § Skills
+    └── skills/                               # los 7 comandos (/grill, /new-feature…, ADR-020) + skills opcionales — ver § Skills
 ```
 
 > **¿Por qué global + workspace?** Trabajas varios proyectos a la vez (Media Hub,
-> Abencia, Agency CRM, sitios de cliente). `GEMINI.md` y los 7 workflows no cambian
-> de un proyecto a otro — van en `~/.gemini/` una sola vez. Las reglas técnicas
+> Abencia, Agency CRM, sitios de cliente). `GEMINI.md` no cambia
+> de un proyecto a otro — va en `~/.gemini/` una sola vez. Las reglas técnicas
 > (`security.md`, `architecture.md`, etc.) sí pueden variar por proyecto — un sitio
 > WordPress no necesita las mismas convenciones que Abencia en Next.js — así que
 > viven en `.agents/rules/` dentro de cada repo, donde se pueden ajustar sin tocar
 > lo global. Si todos tus proyectos comparten exactamente las mismas reglas técnicas,
-> también puedes moverlas a `~/.gemini/antigravity/rules/` y saltarte la copia por
+> también puedes moverlas a `~/.gemini/config/rules/` y saltarte la copia por
 > proyecto — pero perderías la posibilidad de variarlas caso por caso.
 
 ---
@@ -87,23 +79,24 @@ figura en el catálogo.
 
 Antigravity no tiene un sistema equivalente — ahí la instalación es la de abajo.
 
-### Paso 1 — Archivos globales (una sola vez)
+### Paso 1 — Archivo global (una sola vez)
 
 **macOS / Linux**
 ```bash
-mkdir -p ~/.gemini/antigravity/global_workflows
+mkdir -p ~/.gemini
 cp GEMINI.md ~/.gemini/GEMINI.md
-cp grill.md new-feature.md bug-fix.md session-close.md security-audit.md deploy-checklist.md tools-reference.md \
-   ~/.gemini/antigravity/global_workflows/
 ```
 
 **Windows (PowerShell)**
 ```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\antigravity\global_workflows"
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini"
 Copy-Item "GEMINI.md" "$env:USERPROFILE\.gemini\GEMINI.md"
-Copy-Item "grill.md","new-feature.md","bug-fix.md","session-close.md","security-audit.md","deploy-checklist.md","tools-reference.md" `
-  "$env:USERPROFILE\.gemini\antigravity\global_workflows\"
 ```
+
+> **Migración (ADR-020):** los 7 comandos eran workflows en
+> `~/.gemini/antigravity/global_workflows/`. Antigravity deja de ejecutarlos el
+> 19/10/2026: ahora son skills de workspace (Paso 2). Podés borrar esa carpeta o
+> correr `/migrate-workflows` en la app de Antigravity.
 
 ### Paso 2 — Reglas de workspace (por cada proyecto)
 
@@ -113,6 +106,9 @@ cp AGENTS.md ./
 
 mkdir -p .agents/rules
 cp security.md architecture.md ui-ux.md seo.md pwa.md operations.md cms.md database.md stack-conventions.md .agents/rules/
+
+# comandos (/grill, /new-feature…) — son skills de workspace, una carpeta por comando
+cp -r grill new-feature bug-fix session-close security-audit deploy-checklist tools-reference .agents/skills/
 
 # subagentes (opcional) — Antigravity los descubre solo al abrir el workspace
 cp -r agents/ .agents/agents/
@@ -177,8 +173,8 @@ uno define su modo en el frontmatter (`trigger`) y, salvo `manual`, una
 | `database.md` | Model Decision | Diseño de schema, migraciones, elección de ORM, pooling, índices, credenciales de DB |
 | `stack-conventions.md` | Glob `*.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css` | Al editar cualquier archivo de esos tipos |
 
-> `tools-reference.md` **no** está en esta tabla a propósito — es workflow
-> (`trigger: manual`, vive en `antigravity/global_workflows/`), no regla. Ver
+> `tools-reference` **no** está en esta tabla a propósito — es un comando
+> (skill de workspace en `.agents/skills/tools-reference/`), no regla. Ver
 > tabla de Workflows abajo.
 
 Si una regla y un workflow describen lo mismo (ej. checklist de seguridad en
@@ -190,8 +186,10 @@ operativos, no la documentación completa.
 
 ## Workflows
 
-7 workflows, todos `trigger: manual` — **se invocan escribiendo el comando en el
-chat, la IA no los dispara por su cuenta.** Las líneas tipo "Recordatorio: invocar
+7 workflows, implementados como skills (ADR-020) — **se invocan escribiendo el
+comando en el chat.** En Claude Code son comandos y solo corren si los escribís;
+en Antigravity son skills, así que además pueden activarse solos cuando la tarea
+coincide con su descripción. Las líneas tipo "Recordatorio: invocar
 `/session-close`" dentro de cada workflow son avisos para que tú escribas el
 siguiente comando — no encadenan automáticamente.
 
@@ -204,6 +202,19 @@ siguiente comando — no encadenan automáticamente.
 | `/security-audit` | Antes de subir features con auth, APIs o datos sensibles | Checklist OWASP + auth + secrets + uploads (resumen — detalle en `security.md`). Lista hallazgos con severidad Critical/High/Medium |
 | `/deploy-checklist` | Antes de merge a `main` o deploy a producción | Checklist completo: código, seguridad, UI, SEO, documentación |
 | `/tools-reference` | Setup inicial o cuando necesites ver qué skills usar y cuándo | Tabla de skills de diseño + Context7, sin instalación duplicada (apunta a este README) |
+
+### Cómo pedir algo: no hace falta decir "skill"
+
+- **Explícito:** escribí el comando (`/grill`, `/new-feature`…). Funciona en
+  Claude Code y en Antigravity.
+- **Automático:** describí la tarea con tus palabras ("quiero planificar esta
+  feature", "revisá la seguridad antes de subir") y el agente activa la skill
+  cuya descripción calza. Las rules (`security`, `seo`, `ui-ux`…) se activan así.
+- **Forzar una concreta:** nombrala en el pedido ("usá la skill `hallmark` para
+  esta landing"). Evita que el agente elija otra.
+
+Diferencia entre tools: en Claude Code los 7 comandos solo corren si los escribís
+con `/`; en Antigravity, al ser skills, también pueden activarse solos.
 
 ### Flujo típico de una tarea
 
@@ -393,7 +404,7 @@ no editarla a mano.
 <!-- token-table:start -->
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
-| `GEMINI.md` | ~2,014 | Siempre |
+| `GEMINI.md` | ~2,405 | Siempre |
 | `security.md` | ~1,559 | Model Decision |
 | `architecture.md` | ~600 | Model Decision |
 | `ui-ux.md` | ~2,281 | Model Decision |
@@ -403,16 +414,16 @@ no editarla a mano.
 | `cms.md` | ~690 | Model Decision |
 | `database.md` | ~708 | Model Decision |
 | `stack-conventions.md` | ~602 | Glob |
-| `tools-reference.md` | ~872 | Manual |
-| `grill.md` | ~616 | Manual |
-| `new-feature.md` | ~372 | Manual |
-| `bug-fix.md` | ~345 | Manual |
-| `session-close.md` | ~527 | Manual |
-| `security-audit.md` | ~653 | Manual |
-| `deploy-checklist.md` | ~408 | Manual |
-| **Base siempre activa** | **~2,014** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~2,959–6,726** | sesión normal de código |
-| **Máximo con todo activo** | **~12,133** | improbable — varias reglas casi nunca se activan juntas |
+| `/tools-reference` | ~880 | Skill — slash o por descripción |
+| `/grill` | ~622 | Skill — slash o por descripción |
+| `/new-feature` | ~458 | Skill — slash o por descripción |
+| `/bug-fix` | ~352 | Skill — slash o por descripción |
+| `/session-close` | ~598 | Skill — slash o por descripción |
+| `/security-audit` | ~662 | Skill — slash o por descripción |
+| `/deploy-checklist` | ~533 | Skill — slash o por descripción |
+| **Base siempre activa** | **~2,405** | `GEMINI.md` |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,357–7,125** | sesión normal de código |
+| **Máximo con todo activo** | **~12,532** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

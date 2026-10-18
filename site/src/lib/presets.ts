@@ -26,19 +26,21 @@ const SKILLS_SH: ExternalTool = {
 };
 
 /**
- * Antigravity-only global items: GEMINI.md + comandos manuales (van a `~/.gemini/`)
- * y AGENTS.md (va a la raíz del proyecto, para que otra IA pueda continuarlo).
+ * Antigravity-only global items: GEMINI.md (va a `~/.gemini/`) y AGENTS.md (va a
+ * la raíz del proyecto, para que otra IA pueda continuarlo). Los comandos ya no
+ * son globales: desde ADR-020 son skills de workspace (`.agents/skills/`).
  */
-const ANTIGRAVITY_GLOBAL_ITEM_IDS = [
-  "global:GEMINI.md",
-  "antigravity:agents-md",
-  "global:grill.md",
-  "global:new-feature.md",
-  "global:bug-fix.md",
-  "global:session-close.md",
-  "global:security-audit.md",
-  "global:deploy-checklist.md",
-  "global:tools-reference.md",
+const ANTIGRAVITY_GLOBAL_ITEM_IDS = ["global:GEMINI.md", "antigravity:agents-md"];
+
+/** Comandos de Antigravity: los 7 workflows, ahora skills de workspace (ADR-020). */
+const ANTIGRAVITY_COMMAND_ITEM_IDS = [
+  "antigravity:workflow:grill",
+  "antigravity:workflow:new-feature",
+  "antigravity:workflow:bug-fix",
+  "antigravity:workflow:session-close",
+  "antigravity:workflow:security-audit",
+  "antigravity:workflow:deploy-checklist",
+  "antigravity:workflow:tools-reference",
 ];
 
 /**
@@ -115,6 +117,7 @@ function toolItemIds(tool: ToolId, shape: StackShape): string[] {
   if (tool === "antigravity") {
     return [
       ...ANTIGRAVITY_GLOBAL_ITEM_IDS,
+      ...ANTIGRAVITY_COMMAND_ITEM_IDS,
       ...shape.rules.map((r) => `rule:${r}`),
       ...shape.skills.map((s) => `skill:${s}`),
       ...ANTIGRAVITY_AGENT_ITEM_IDS,

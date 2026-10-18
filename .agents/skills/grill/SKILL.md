@@ -1,6 +1,8 @@
 ---
-trigger: manual
-description: Interrogatorio estructurado para afilar un plan antes de codificar — la IA pregunta, vos respondés, y recién ahí se planifica
+name: grill
+description: "Interrogatorio estructurado para afilar un plan antes de codificar — la IA pregunta, vos respondés, y recién ahí se planifica"
+metadata:
+  kind: workflow
 ---
 
 # Workflow: Grill

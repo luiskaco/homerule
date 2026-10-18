@@ -1,6 +1,8 @@
 ---
-trigger: manual
-description: Antes de iniciar cualquier tarea nueva — define el plan, crea la rama git y actualiza 06_TASKS.md
+name: new-feature
+description: "Antes de iniciar cualquier tarea nueva — define el plan, crea la rama git y actualiza 06_TASKS.md"
+metadata:
+  kind: workflow
 ---
 
 # Workflow: Nueva Feature

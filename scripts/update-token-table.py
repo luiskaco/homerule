@@ -14,7 +14,7 @@ REPO = Path(__file__).resolve().parent.parent
 README = REPO / "README.md"
 
 RULES_DIR = REPO / ".agents" / "rules"
-WORKFLOWS_DIR = REPO / ".gemini" / "antigravity" / "global_workflows"
+SKILLS_DIR = REPO / ".agents" / "skills"  # los workflows son skills con `metadata: kind: workflow` (ADR-020)
 GEMINI = REPO / ".gemini" / "GEMINI.md"
 
 # Orden y etiqueta de carga por archivo — refleja la tabla histórica del README.
@@ -30,13 +30,13 @@ RULE_LOAD = {
     "stack-conventions.md": "Glob",
 }
 WORKFLOW_ORDER = [
-    "tools-reference.md",
-    "grill.md",
-    "new-feature.md",
-    "bug-fix.md",
-    "session-close.md",
-    "security-audit.md",
-    "deploy-checklist.md",
+    "tools-reference",
+    "grill",
+    "new-feature",
+    "bug-fix",
+    "session-close",
+    "security-audit",
+    "deploy-checklist",
 ]
 
 
@@ -44,9 +44,19 @@ def tokens(path: Path) -> int:
     return round(len(path.read_text(encoding="utf-8")) / 4)
 
 
-def check_coverage(directory: Path, known: set[str], label: str) -> None:
+def workflow_ids() -> set[str]:
+    """Skills marcadas con `metadata: kind: workflow` en su frontmatter."""
+    ids = set()
+    for skill in SKILLS_DIR.glob("*/SKILL.md"):
+        text = skill.read_text(encoding="utf-8")
+        match = re.match(r"^---\r?\n(.*?)\r?\n---", text, re.S)
+        if match and re.search(r"^[ \t]+kind:\s*workflow\s*$", match.group(1), re.M):
+            ids.add(skill.parent.name)
+    return ids
+
+
+def check_coverage(on_disk: set[str], known: set[str], label: str) -> None:
     """Un archivo nuevo sin entrada acá quedaría fuera de la tabla en silencio."""
-    on_disk = {f.name for f in directory.glob("*.md")}
     missing = sorted(on_disk - known)
     if missing:
         raise SystemExit(
@@ -55,8 +65,8 @@ def check_coverage(directory: Path, known: set[str], label: str) -> None:
         )
 
 
-check_coverage(RULES_DIR, set(RULE_LOAD), "Rules")
-check_coverage(WORKFLOWS_DIR, set(WORKFLOW_ORDER), "Workflows")
+check_coverage({f.name for f in RULES_DIR.glob("*.md")}, set(RULE_LOAD), "Rules")
+check_coverage(workflow_ids(), set(WORKFLOW_ORDER), "Workflows")
 
 
 def fmt(n: int) -> str:
@@ -77,11 +87,11 @@ for name, load in RULE_LOAD.items():
 
 workflow_tokens = {}
 for name in WORKFLOW_ORDER:
-    path = WORKFLOWS_DIR / name
+    path = SKILLS_DIR / name / "SKILL.md"
     if not path.exists():
         continue
     workflow_tokens[name] = tokens(path)
-    rows.append((f"`{name}`", workflow_tokens[name], "Manual"))
+    rows.append((f"`/{name}`", workflow_tokens[name], "Skill — slash o por descripción"))
 
 # Caso típico: GEMINI + 2 reglas frecuentes (security + ui-ux como techo,
 # architecture como piso) + 1 workflow. Máximo: todo activo a la vez.
