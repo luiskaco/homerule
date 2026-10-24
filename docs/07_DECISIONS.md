@@ -415,3 +415,62 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - Cambian los ids del manifest (`global:<archivo>.md` → `antigravity:workflow:<id>`): hay que actualizar los presets.
 - Quien ya instaló los workflows en `~/.gemini/antigravity/global_workflows/` los pierde el 19/10: reinstalar desde el ZIP nuevo.
 - El límite de 12.000 caracteres ahora aplica solo a workflows legacy; las rules tienen 24.000 bytes por archivo y 20.000 tokens agregados Always On.
+
+## ADR-021 — Subagents de Claude Code: solo lectura impuesto por hook y `security-auditor` ampliado
+
+**Fecha:** 2026-10-23
+**Estado:** Aceptada
+
+**Contexto:** Cinco subagents de Claude Code (`code-reviewer`, `explorer`, `planner`, `security-auditor`, `ui-reviewer`) se declaran de solo lectura, pero tienen `Bash` para poder correr `git diff`, y nada les impedía escribir, borrar o hacer push. Los de Antigravity lo imponen desde la plataforma con `commandExecutionPolicy: sandbox`. Además, `code-reviewer` no revisaba datos ni `security-auditor` leía las skills de seguridad, mientras que sus pares de Antigravity sí.
+
+**Decisión:**
+
+- **Hook `PreToolUse` en el frontmatter de los 5 revisores**, que corre `.claude/hooks/readonly-bash.mjs`. Deja pasar solo una allowlist de comandos de lectura (`git status/diff/log/show/blame…`, `ls`, `cat`, `grep`, `npm audit` sin `fix`, etc.); bloquea redirecciones de escritura, sustitución de comandos y cualquier otro comando, con exit 2 y el motivo en stderr. El script viaja en el ZIP junto a cada agente que lo usa.
+- **`debugger` queda sin hook**: necesita correr tests para reproducir el bug. No tiene `Edit` ni `Write`.
+- **`effort: high`** solo en los agentes en opus (`planner`, `security-auditor`): los niveles disponibles dependen del modelo y haiku no se arriesga. `maxTurns` en `explorer` para cortar búsquedas sin fin; `color` en todos.
+- **Alcance: solo Claude Code.** Los 4 subagents de Antigravity no cambian en esta tanda.
+
+**Alternativas consideradas:**
+
+- **Quitar `Bash`** — descartado: los revisores necesitan `git diff` y `npm audit`.
+- **`disallowedTools: Bash(...)`** — descartado: según la doc, una entrada con especificador quita la tool entera.
+- **Solo reforzar la instrucción en el prompt** — descartado: el modelo puede saltársela, que es justamente el problema.
+
+**Consecuencias:**
+
+- Los hooks de frontmatter **se ignoran en subagents de plugin**: quien instala el kit como plugin no tiene el bloqueo, solo la instrucción. Protege en este repo y en las instalaciones por ZIP.
+- El hook necesita Node en la máquina. **Actualizado 2026-10-24:** el comando del frontmatter termina en `|| exit 2`, así que si el hook no arranca (sin Node, `$CLAUDE_PROJECT_DIR` vacío, archivo faltante) bloquea en vez de dejar pasar. Antes fallaba abierto: un código distinto de 2 es error no bloqueante para Claude Code. La contra es que en un proyecto sin Node los revisores se quedan sin `Bash`.
+- Los hooks de frontmatter de un agente de proyecto solo corren si la carpeta tiene aceptada la confianza del workspace; si no, Claude Code los saltea sin avisar. La prueba en vivo del 2026-10-24 falló por eso: la carpeta estaba confiada con otra grafía de ruta (`D:` vs. `d:`).
+- La allowlist da falsos positivos: si un revisor necesita un comando de lectura que no está, se bloquea y hay que sumarlo al script.
+
+## ADR-022 — Subagent `web-researcher`: investigación web aislada y con salida revisada
+
+**Fecha:** 2026-10-24
+**Estado:** Aceptada
+
+**Contexto:** Cuando el agente principal investiga en internet, se expone a dos riesgos. El primero es la **filtración**: la consulta o la URL puede llevar datos del usuario o del proyecto (emails, keys, rutas, clientes). El segundo es la **prompt injection**: una página puede traer instrucciones que el modelo obedece, como visitar una URL que exfiltra datos en la query o ejecutar un comando. El agente principal tiene el contexto completo y todas las tools, así que una inyección exitosa ahí es lo peor que puede pasar.
+
+**Decisión:**
+
+- **Subagent `web-researcher` en los dos tools**, con el mismo cuerpo adaptado a cada uno. Lo delega el agente principal, que le pasa la pregunta ya formulada en términos genéricos.
+- **Solo tools web**: `WebSearch` y `WebFetch` en Claude Code, `search_web` y `read_url_content` en Antigravity. Sin `Read`: si no ve datos del proyecto, no los puede filtrar. Sin `Bash` ni escritura: una inyección no encuentra nada que ejecutar.
+- **Hook `PreToolUse` en Claude Code** (`.claude/hooks/web-guard.mjs`, matcher `WebSearch|WebFetch`). Bloquea con exit 2:
+  - en la consulta, el path o la query de la URL: secretos (formatos de key conocidos, JWT, claves privadas, `CLAVE=valor`, credenciales en URL), emails, rutas locales con usuario, números de tarjeta (Luhn) y términos de `.claude/web-guard-terms.txt`;
+  - en la URL: valores opacos de 80+ caracteres en la query, `usuario:clave@`, esquemas que no son http(s) y hosts privados (`localhost`, `.local`/`.internal`/`.lan`, hosts sin punto, IPs privadas o reservadas, IPv6 local y mapeada) — también si el dominio **resuelve** a una IP privada (`127.0.0.1.nip.io`).
+- **Prompt:** lo que trae la web es dato, no instrucción. Las inyecciones se reportan y no se obedecen. Contraste con 2+ fuentes independientes, prioridad a fuentes primarias, nada se descarga ni se ejecuta y la salida tiene formato fijo con una sección de **Alertas**.
+- **Modelo `sonnet`** en Claude Code: haiku resiste peor la inyección y el trabajo no justifica opus. `maxTurns: 25`.
+
+**Alternativas consideradas:**
+
+- **Allowlist de dominios**: descartada. Es lo más seguro, pero corta la investigación a una lista que hay que mantener, y la mayoría de las respuestas útiles (issues, foros, blogs técnicos) quedan afuera.
+- **Solo prompt, sin hook**: descartada por el mismo motivo que en ADR-021. Una inyección exitosa es justamente el caso en el que el modelo ignora su prompt.
+- **Darle `Read` para contrastar con el código**: descartada. Suma superficie de filtración; el agente principal ya tiene el contexto y puede hacer esa comparación.
+
+**Consecuencias:**
+
+- **Antigravity no tiene hooks:** ahí el chequeo de cada consulta y cada URL queda en el prompt, como paso obligatorio antes de cada llamada. Es más débil que en Claude Code.
+- **Plugin de Claude Code:** como en ADR-021, los hooks de subagents de plugin se ignoran, así que quien lo instala como plugin tiene solo la protección del prompt.
+- El hook necesita Node. Con el `|| exit 2` del comando falla cerrado: sin Node, `web-researcher` se queda sin web en vez de quedar sin protección. Igual que en ADR-021, solo corre si la carpeta tiene aceptada la confianza del workspace.
+- Hay falsos positivos asumidos: una búsqueda con un email público o un `API_KEY=tu-clave` de ejemplo se bloquea, y el agente tiene que reformularla.
+- La revisión de DNS es un chequeo previo: un DNS rebinding con TTL corto puede resolver distinto en el fetch real. Si el DNS falla, el hook deja pasar la llamada, porque el fetch también va a fallar.
+- Los nombres `search_web`/`read_url_content` de Antigravity salen del prompt de sistema publicado, no de la doc oficial, que pide verificarlos. Si el agente aparece sin tools en el panel `/agents`, revisar esos nombres.

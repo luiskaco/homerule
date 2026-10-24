@@ -1,8 +1,8 @@
 {
   "name": "ai-rules-hub",
   "displayName": "AI Rules Hub",
-  "version": "2026.10.12",
-  "description": "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 8 subagentes especializados.",
+  "version": "2026.10.24",
+  "description": "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 9 subagentes especializados.",
   "author": {
     "name": "luiskaco",
     "url": "https://github.com/luiskaco"
@@ -35,7 +35,8 @@
     "./.claude/agents/planner.md",
     "./.claude/agents/security-auditor.md",
     "./.claude/agents/test-writer.md",
-    "./.claude/agents/ui-reviewer.md"
+    "./.claude/agents/ui-reviewer.md",
+    "./.claude/agents/web-researcher.md"
   ],
   "skills": [
     "./.claude/skills/architecture/",

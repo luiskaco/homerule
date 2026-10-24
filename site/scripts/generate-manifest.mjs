@@ -481,12 +481,25 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
 // arriba): los dos catálogos son estancos y no se convierten entre sí (ADR-006).
 // ============================================================
 
+// Varios agentes llaman a un hook desde su frontmatter (readonly-bash en los
+// revisores, ADR-021; web-guard en web-researcher, ADR-022): cada script que el
+// agente nombra viaja en el mismo item para que nunca apunte a un archivo que no
+// se descargó. Van después del .md: /subagentes lee el frontmatter de files[0].
+const CLAUDE_HOOKS = readdirSync(join(REPO_ROOT, ".claude", "hooks"))
+  .filter((f) => extname(f) === ".mjs")
+  .sort()
+  .map((f) => {
+    const destPath = `.claude/hooks/${f}`;
+    return { destPath, content: readFileSync(join(REPO_ROOT, destPath), "utf8") };
+  });
+
 for (const file of readdirSync(CLAUDE_AGENTS_DIR).sort()) {
   if (extname(file) !== ".md") continue;
   const content = readFileSync(join(CLAUDE_AGENTS_DIR, file), "utf8");
   const fm = parseFrontmatter(content);
   const id = file.replace(/\.md$/, "");
   const files = [{ destPath: `.claude/agents/${file}`, content }];
+  for (const hook of CLAUDE_HOOKS) if (content.includes(hook.destPath)) files.push(hook);
   items.push({
     id: `claude-code:agent:${id}`,
     category: "agent",

@@ -81,7 +81,7 @@ function buildManifest(version) {
     displayName: "AI Rules Hub",
     version,
     description:
-      "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 8 subagentes especializados.",
+      "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 9 subagentes especializados.",
     author: { name: "luiskaco", url: "https://github.com/luiskaco" },
     homepage: REPO_URL,
     repository: REPO_URL,

@@ -69,7 +69,7 @@ posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
 /plugin install ai-rules-hub@ai-rules-hub
 ```
 
-Trae las 9 rules como skills nativas, los 7 comandos y los 8 subagentes. **No**
+Trae las 9 rules como skills nativas, los 7 comandos y los 9 subagentes. **No**
 trae `CLAUDE.md` ni `AGENTS.md`: un plugin aporta comandos, agentes y skills, no memoria de
 proyecto — si querés el núcleo global, bajá el ZIP desde `/build`.
 
@@ -240,7 +240,7 @@ Los dos tools tienen subagentes declarables en archivo, con formatos distintos q
 `.agents/agents/<nombre>/agent.md` del workspace, Claude Code lee
 `.claude/agents/<nombre>.md`.
 
-### Antigravity — 4 subagentes
+### Antigravity — 5 subagentes
 
 Los invoca el agente principal con `invoke_subagent` cuando la tarea lo amerita
 (o los elegís a mano desde el panel `/agents`). Corren en contexto aislado: el
@@ -252,17 +252,25 @@ detalle de su trabajo no contamina la ventana del agente principal.
 | `backend` | Endpoints, servicios, acceso a datos, migraciones. Verifica con tests/typecheck antes de devolver | Sí |
 | `frontend` | Componentes, páginas, estilos, los 5 estados de UI, accesibilidad | Sí |
 | `security` | Auditoría OWASP: auth, inputs, inyección, secrets, uploads, CORS, privacidad | No — solo lectura |
+| `web-researcher` | Investiga en internet sin filtrar datos del usuario ni obedecer instrucciones que vengan de una página | No — solo tools web |
 
-Los cuatro corren con `commandExecutionPolicy: sandbox` y heredan los permisos de
+Todos corren con `commandExecutionPolicy: sandbox` y heredan los permisos de
 terminal que ya tengas configurados. `auditor` y `security` tienen `run_command`
 únicamente para inspección (`git diff`, `npm audit`) — no tienen ninguna tool de
-escritura de archivos. `security` corre en tier `pro`; el resto hereda el modelo
+escritura de archivos. `web-researcher` solo tiene `search_web` y
+`read_url_content`. `security` corre en tier `pro`; el resto hereda el modelo
 de la sesión.
 
-### Claude Code — 8 subagentes
+`web-researcher` existe en los dos tools (ADR-022). En Claude Code, además, un
+hook revisa cada búsqueda y cada URL antes de que salga: bloquea secretos, emails,
+rutas locales y hosts de la red local. Para sumar términos propios del proyecto
+(clientes, nombres internos), listalos uno por línea en
+`.claude/web-guard-terms.txt`.
+
+### Claude Code — 9 subagentes
 
 `explorer`, `planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`,
-`debugger`, `test-writer`, `docs-writer`. Detalle en la página `/subagentes` del
+`debugger`, `test-writer`, `docs-writer`, `web-researcher`. Detalle en la página `/subagentes` del
 sitio.
 
 ---

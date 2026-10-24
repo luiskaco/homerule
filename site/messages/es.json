@@ -778,6 +778,8 @@
   "ChangelogData": {
     "unreleased": {
       "cambios": [
+        "Subagent nuevo web-researcher (Claude Code y Antigravity): investiga en internet sin filtrar tus datos ni obedecer instrucciones que vengan de una página, contrasta fuentes y avisa si detecta un intento de inyección. En Claude Code, un hook bloquea cualquier búsqueda o URL con secretos, emails, rutas locales o hosts de tu red.",
+        "Los subagents de Claude Code de solo lectura ahora lo son de verdad: un hook bloquea cualquier comando que escriba (en el ZIP; el plugin no ejecuta hooks de subagents). security-auditor revisa mucho más (IDOR, RLS de Supabase, SSRF, secretos en el historial de git, webhooks, supply chain) y code-reviewer suma datos, como el auditor de Antigravity.",
         "Los 7 workflows de Antigravity (/grill, /new-feature, /bug-fix, /session-close, /security-audit, /deploy-checklist y /tools-reference) pasan a ser skills, porque Antigravity deja de ejecutar los workflows el 19/10/2026. Viajan con el proyecto en .agents/skills/ y ya no se instalan en ~/.gemini/; en Claude Code siguen siendo comandos. En Antigravity además pueden activarse solos por su descripción.",
         "Cierres de tarea más cortos y claros: primero el resultado, hasta 3 viñetas y la revisión en una sola línea, sin bloque de código. La revisión suma tres pasadas: 🧪 Verificado, 📝 Docs y ⚠️ Riesgo.",
         "/subagentes pasa a mostrar los dos catálogos (4 de Antigravity + 8 de Claude Code) con el formato nativo de cada tool, y aparece también en el menú “Antigravity solo”. Antes filtraba únicamente claude-code.",

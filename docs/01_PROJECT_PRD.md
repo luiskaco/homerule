@@ -25,7 +25,7 @@ mismo sistema de reglas, mantenido en un solo lugar.
 - Núcleo global por tool: `GEMINI.md` (Antigravity) y `CORE.md` → `CLAUDE.md`
   (Claude Code).
 - 6 workflows/comandos manuales compartidos en contenido.
-- 8 subagentes de Claude Code (`.claude/agents/`).
+- 9 subagentes de Claude Code (`.claude/agents/`).
 - Skills externas vendorizadas y catálogo de skills en el sitio.
 - Plantillas de documentación `/docs` 01–08 (`docs-templates/`).
 - Sitio generador de ZIPs por stack, ES/EN.

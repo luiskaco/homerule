@@ -67,6 +67,7 @@ const CLAUDE_AGENT_ITEM_IDS = [
   "claude-code:agent:debugger",
   "claude-code:agent:test-writer",
   "claude-code:agent:docs-writer",
+  "claude-code:agent:web-researcher",
 ];
 
 const ANTIGRAVITY_AGENT_ITEM_IDS = [
@@ -74,6 +75,7 @@ const ANTIGRAVITY_AGENT_ITEM_IDS = [
   "antigravity:agent:backend",
   "antigravity:agent:frontend",
   "antigravity:agent:security",
+  "antigravity:agent:web-researcher",
 ];
 
 interface StackShape {

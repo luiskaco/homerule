@@ -11,7 +11,7 @@ el ZIP se arma en el navegador. Rutas principales del sitio:
 | `/{locale}/antigravity` | Presets por stack de Antigravity |
 | `/{locale}/build` | Armado a medida del ZIP (filtra el manifest por tool) |
 | `/{locale}/stacks` | Rules y skills por preset |
-| `/{locale}/subagentes` | Los 8 subagentes de Claude Code |
+| `/{locale}/subagentes` | Los subagentes de los dos kits (5 de Antigravity + 9 de Claude Code) |
 | `/{locale}/changelog` | Bitácora pública |
 
 ## Contratos de request/response
