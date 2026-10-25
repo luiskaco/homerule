@@ -14,6 +14,13 @@ export const KIT_SECTIONS: KitSection[] = ["presets", "stacks", "subagents", "bu
 /** Clave de localStorage con el último tool elegido (lo lee el link "Kits" del nav). */
 export const LAST_TOOL_KEY = "kit:last-tool";
 
+/**
+ * Evento de window que KitHeader dispara al guardar el tool. En /build el tool
+ * va en el query, así que cambiarlo no cambia el pathname y el nav no se
+ * enteraría solo.
+ */
+export const LAST_TOOL_EVENT = "kit:last-tool-change";
+
 export function isToolId(value: string | undefined): value is ToolId {
   return KIT_TOOLS.includes(value as ToolId);
 }
@@ -54,25 +61,39 @@ export function toolFromPathname(pathname: string): ToolId | null {
  */
 export const TOOL_THEME: Record<
   ToolId,
-  { dot: string; text: string; tabActive: string; soft: string; cardHover: string; button: string; focus: string }
+  {
+    dot: string;
+    text: string;
+    hoverText: string;
+    tabActive: string;
+    soft: string;
+    cardHover: string;
+    button: string;
+    focus: string;
+    accent: string;
+  }
 > = {
   antigravity: {
     dot: "bg-emerald-400",
     text: "text-emerald-300",
+    hoverText: "hover:text-emerald-300",
     tabActive: "border-emerald-400 text-white",
     soft: "border-emerald-500/30 bg-emerald-500/10 text-emerald-200",
     cardHover: "hover:border-emerald-500/50",
     button: "bg-emerald-500 text-slate-950 hover:bg-emerald-400",
     focus: "focus-visible:outline-emerald-400",
+    accent: "accent-emerald-500",
   },
   "claude-code": {
     dot: "bg-violet-400",
     text: "text-violet-300",
+    hoverText: "hover:text-violet-300",
     tabActive: "border-violet-400 text-white",
     soft: "border-violet-500/30 bg-violet-500/10 text-violet-200",
     cardHover: "hover:border-violet-500/50",
     button: "bg-violet-600 text-white hover:bg-violet-500",
     focus: "focus-visible:outline-violet-400",
+    accent: "accent-violet-500",
   },
 };
 

@@ -76,9 +76,9 @@ export default async function KitSubagentesPage(props: { params: Params }) {
         <p className="mt-3 text-base leading-relaxed text-slate-300">{t("intro")}</p>
 
         <dl className="mt-5 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[auto_minmax(0,1fr)]">
-          <dt className="text-slate-500">{t("formatPath")}</dt>
+          <dt className="text-slate-400">{t("formatPath")}</dt>
           <dd className="min-w-0 break-all font-mono text-slate-200">{FORMAT[tool].path}</dd>
-          <dt className="text-slate-500">{t("formatInvoke")}</dt>
+          <dt className="text-slate-400">{t("formatInvoke")}</dt>
           <dd className="font-mono text-slate-200">{FORMAT[tool].invoke}</dd>
         </dl>
         {tool === "antigravity" && <p className="mt-3 text-sm leading-relaxed text-slate-400">{t("formatNote")}</p>}

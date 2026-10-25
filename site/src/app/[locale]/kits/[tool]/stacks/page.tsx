@@ -70,18 +70,18 @@ export default async function KitStacksPage(props: { params: Params }) {
               <h2 className="text-base font-semibold text-white">{stacks(`${preset.id}.label`)}</h2>
               <p className="mt-1.5 text-sm leading-relaxed text-slate-400">{stacks(`${preset.id}.description`)}</p>
 
-              <h3 className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <h3 className="mt-5 text-xs font-semibold uppercase tracking-wide text-slate-400">
                 {t("rulesHeading", { count: rules.length })}
               </h3>
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {rules.map((rule) => (
-                  <li key={rule.id} className={`rounded-md border px-2 py-0.5 font-mono text-xs ${theme.soft}`}>
+                  <li key={rule.id} className={`max-w-full break-all rounded-md border px-2 py-0.5 font-mono text-xs ${theme.soft}`}>
                     {rule.label.replace(/\.md$/, "")}
                   </li>
                 ))}
               </ul>
 
-              <h3 className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <h3 className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">
                 {t("skillsHeading", { count: skills.length })}
               </h3>
               {skills.length > 0 ? (
@@ -89,19 +89,19 @@ export default async function KitStacksPage(props: { params: Params }) {
                   {skills.map((skill) => (
                     <li
                       key={skill.id}
-                      className="rounded-md border border-slate-700 bg-slate-800/60 px-2 py-0.5 font-mono text-xs text-slate-200"
+                      className="max-w-full break-all rounded-md border border-slate-700 bg-slate-800/60 px-2 py-0.5 font-mono text-xs text-slate-200"
                     >
                       {skill.label}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-2 text-xs text-slate-500">{t("noSkills")}</p>
+                <p className="mt-2 text-xs text-slate-400">{t("noSkills")}</p>
               )}
 
               {preset.externalTools.length > 0 && (
                 <div className="mt-5 border-t border-slate-800 pt-4">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                     {t("externalToolsHeading")}
                   </h3>
                   <ul className="mt-2 flex flex-col gap-3">
@@ -111,7 +111,7 @@ export default async function KitStacksPage(props: { params: Params }) {
                         <code className="mt-1 block w-fit max-w-full break-all rounded-md border border-slate-800 bg-slate-950 px-2 py-1 font-mono text-xs text-slate-300">
                           {ext.installCommand}
                         </code>
-                        <p className="mt-1 text-xs text-slate-500">{extTools(`${ext.id}.note`)}</p>
+                        <p className="mt-1 text-xs text-slate-400">{extTools(`${ext.id}.note`)}</p>
                       </li>
                     ))}
                   </ul>

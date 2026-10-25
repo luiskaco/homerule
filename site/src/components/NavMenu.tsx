@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import type { ToolId } from "@/lib/manifest";
-import { LAST_TOOL_KEY, isToolId, toolFromPathname } from "@/lib/kit";
+import { LAST_TOOL_EVENT, LAST_TOOL_KEY, isToolId, toolFromPathname } from "@/lib/kit";
 
 interface NavLink {
   /** Clave del namespace `Nav` en messages/*.json. */
@@ -46,8 +46,9 @@ const ENTRIES: NavEntry[] = [
 
 /**
  * Href del link "Kits": el tool de la página actual si estás en el kit, si no
- * el último elegido (lo guarda KitHeader). Se lee en un efecto para no generar
- * un mismatch de hidratación: el HTML estático siempre sale con Antigravity.
+ * el último elegido (lo guarda KitHeader y lo avisa con LAST_TOOL_EVENT). Se lee
+ * en un efecto para no generar un mismatch de hidratación: el HTML estático
+ * siempre sale con Antigravity.
  */
 function useKitsHref(pathname: string): string {
   const [lastTool, setLastTool] = useState<ToolId>("antigravity");
@@ -57,16 +58,25 @@ function useKitsHref(pathname: string): string {
       const stored = localStorage.getItem(LAST_TOOL_KEY) ?? undefined;
       if (isToolId(stored)) setLastTool(stored);
     } catch {
-      // Storage bloqueado: queda Antigravity.
+      // Storage bloqueado: queda Antigravity hasta que llegue el evento.
     }
   }, [pathname]);
+
+  useEffect(() => {
+    function onChange(e: Event) {
+      const tool = (e as CustomEvent<string>).detail;
+      if (isToolId(tool)) setLastTool(tool);
+    }
+    window.addEventListener(LAST_TOOL_EVENT, onChange);
+    return () => window.removeEventListener(LAST_TOOL_EVENT, onChange);
+  }, []);
 
   return `/kits/${toolFromPathname(pathname) ?? lastTool}`;
 }
 
 /** El link "Kits" queda activo en todo el kit, armador incluido. */
 function isEntryActive(entry: { id: string; href: string }, pathname: string): boolean {
-  if (entry.id === KITS_ENTRY_ID) return pathname.startsWith("/kits") || pathname.startsWith("/build");
+  if (entry.id === KITS_ENTRY_ID) return /^\/(kits|build)(\/|$)/.test(pathname);
   return pathname === entry.href;
 }
 
@@ -113,7 +123,7 @@ function NavDropdown({
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={onToggle}
-        className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-all ${
+        className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 ${
           isGroupActive || open
             ? "bg-slate-800/80 text-violet-300 ring-1 ring-violet-500/30"
             : "text-slate-300 hover:bg-slate-900 hover:text-white"
@@ -141,7 +151,7 @@ function NavDropdown({
                 href={link.href}
                 role="menuitem"
                 onClick={onClose}
-                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-violet-400 ${
                   isActive
                     ? "bg-violet-600/20 text-violet-300 border border-violet-500/30"
                     : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
@@ -190,7 +200,7 @@ export default function NavMenu() {
               key={entry.id}
               href={hrefOf(entry)}
               aria-current={isEntryActive(entry, pathname) ? "page" : undefined}
-              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all ${
+              className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 ${
                 isEntryActive(entry, pathname)
                   ? "bg-slate-800/80 text-violet-300 ring-1 ring-violet-500/30"
                   : "text-slate-300 hover:bg-slate-900 hover:text-white"
@@ -218,7 +228,7 @@ export default function NavMenu() {
         aria-label={mobileOpen ? t("closeMenu") : t("openMenu")}
         aria-expanded={mobileOpen}
         onClick={() => setMobileOpen((v) => !v)}
-        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:text-white sm:hidden"
+        className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-800 bg-slate-900 text-slate-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 sm:hidden"
       >
         <span aria-hidden="true" className="text-base leading-none">
           {mobileOpen ? "✕" : "☰"}
@@ -237,7 +247,7 @@ export default function NavMenu() {
                     href={hrefOf(entry)}
                     onClick={() => setMobileOpen(false)}
                     aria-current={isEntryActive(entry, pathname) ? "page" : undefined}
-                    className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                    className={`-my-2 block py-2 text-[11px] font-bold uppercase tracking-wider transition-colors focus-visible:outline-2 focus-visible:outline-violet-400 ${
                       isEntryActive(entry, pathname) ? "text-violet-300" : "text-violet-400 hover:text-violet-300"
                     }`}
                   >
@@ -258,7 +268,7 @@ export default function NavMenu() {
                           key={link.href}
                           href={link.href}
                           onClick={() => setMobileOpen(false)}
-                          className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                          className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-violet-400 ${
                             isActive
                               ? "bg-violet-600/20 text-violet-300 font-semibold"
                               : "text-slate-300 hover:bg-slate-900 hover:text-white"

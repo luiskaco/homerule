@@ -4,7 +4,15 @@ import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import type { ToolId } from "@/lib/manifest";
-import { KIT_SECTIONS, KIT_TOOLS, LAST_TOOL_KEY, TOOL_THEME, kitHref, sectionFromPathname } from "@/lib/kit";
+import {
+  KIT_SECTIONS,
+  KIT_TOOLS,
+  LAST_TOOL_EVENT,
+  LAST_TOOL_KEY,
+  TOOL_THEME,
+  kitHref,
+  sectionFromPathname,
+} from "@/lib/kit";
 
 /**
  * Cabecera común de las páginas del kit: selector de tool + pestañas de
@@ -23,8 +31,9 @@ export default function KitHeader({ tool, preset }: { tool: ToolId; preset?: str
     try {
       localStorage.setItem(LAST_TOOL_KEY, tool);
     } catch {
-      // Storage bloqueado (modo privado, etc.): el nav cae en Antigravity.
+      // Storage bloqueado (modo privado, etc.): igual avisa al nav por el evento.
     }
+    window.dispatchEvent(new CustomEvent<ToolId>(LAST_TOOL_EVENT, { detail: tool }));
   }, [tool]);
 
   return (
@@ -36,7 +45,7 @@ export default function KitHeader({ tool, preset }: { tool: ToolId; preset?: str
         <div
           role="group"
           aria-labelledby="kit-tool-label"
-          className="inline-flex rounded-xl border border-slate-800 bg-slate-900/80 p-1"
+          className="inline-flex max-w-full rounded-xl border border-slate-800 bg-slate-900/80 p-1"
         >
           {KIT_TOOLS.map((id) => {
             const active = id === tool;
@@ -45,7 +54,7 @@ export default function KitHeader({ tool, preset }: { tool: ToolId; preset?: str
                 key={id}
                 href={kitHref(id, section, preset)}
                 aria-current={active ? "page" : undefined}
-                className={`flex items-center gap-2 whitespace-nowrap rounded-lg px-3.5 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${TOOL_THEME[id].focus} ${
+                className={`flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold sm:px-3.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${TOOL_THEME[id].focus} ${
                   active ? "bg-slate-800 text-white" : "text-slate-400 hover:text-slate-100"
                 }`}
               >

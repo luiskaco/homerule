@@ -8,6 +8,7 @@ import { getPreset } from "@/lib/presets";
 import { buildZip, downloadBlob } from "@/lib/zip";
 import { resolveItemDescription } from "@/lib/item-description";
 import ItemPreviewModal from "@/components/ItemPreviewModal";
+import { TOOL_THEME } from "@/lib/kit";
 
 const SECTIONS: { category: ItemCategory; titleKey: string }[] = [
   { category: "global", titleKey: "sectionGlobal" },
@@ -24,6 +25,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
   const descriptions = useTranslations("ItemDescriptions");
   const extTools = useTranslations("ExternalTools");
   const preset = getPreset(tool, presetId) ?? getPreset(tool, "manual")!;
+  const theme = TOOL_THEME[tool];
 
   const [allItems, setAllItems] = useState<ManifestItem[] | null>(null);
   const [selected, setSelected] = useState<Set<string>>(() => new Set(preset.itemIds));
@@ -105,7 +107,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
             >
               <input
                 type="checkbox"
-                className="mt-1 accent-violet-500"
+                className={`mt-1 ${theme.accent} focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.focus}`}
                 checked={selected.has(item.id)}
                 onChange={() => toggle(item.id)}
               />
@@ -116,7 +118,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
                     e.preventDefault();
                     setPreviewItem(item);
                   }}
-                  className="font-mono font-semibold text-slate-100 underline decoration-dotted underline-offset-2 hover:text-violet-300 hover:decoration-solid"
+                  className={`rounded-sm font-mono font-semibold text-slate-100 underline decoration-dotted underline-offset-2 hover:decoration-solid focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.hoverText} ${theme.focus}`}
                 >
                   {item.label.replace(/\.md$/, "")}
                 </button>
@@ -125,7 +127,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
                     {resolveItemDescription(item, descriptions)}
                   </span>
                 )}
-                <span className="block text-xs text-slate-500">
+                <span className="block text-xs text-slate-400">
                   {t("approxTokens", { count: item.approxTokens })}
                 </span>
               </span>
@@ -145,7 +147,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
                 <h3 className="text-xs font-bold uppercase tracking-wide text-slate-400">
                   {t("projectRulesTitle")}
                 </h3>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-slate-400">
                   {t.rich("projectRulesBody", {
                     rulesDir: () => <code>.agents/rules/</code>,
                     skillMd: () => <code>SKILL.md</code>,
@@ -170,7 +172,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
                 <code className="ml-2 inline-block break-all rounded-sm border border-slate-800 bg-slate-950/80 px-2 py-0.5 font-mono text-xs text-slate-300">
                   {tool.installCommand}
                 </code>
-                <p className="mt-1 text-xs text-slate-500">{extTools(`${tool.id}.note`)}</p>
+                <p className="mt-1 text-xs text-slate-400">{extTools(`${tool.id}.note`)}</p>
               </li>
             ))}
           </ul>
@@ -184,7 +186,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
         <button
           onClick={handleDownload}
           disabled={downloading || selected.size === 0}
-          className="rounded-xl bg-violet-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-violet-400 disabled:opacity-50"
+          className={`rounded-xl px-4 py-2 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 ${theme.button} ${theme.focus}`}
         >
           {downloading ? t("generating") : t("download")}
         </button>

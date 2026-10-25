@@ -74,7 +74,7 @@ export default async function KitPresetsPage(props: { params: Params }) {
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-400">
                   {stacks(`${preset.id}.description`)}
                 </p>
-                <p className="mt-4 text-xs text-slate-500">{t("counts", { rules, skills })}</p>
+                <p className="mt-4 text-xs text-slate-400">{t("counts", { rules, skills })}</p>
                 <span className={`mt-3 text-sm font-semibold ${theme.text}`}>
                   {t("cta")}
                   <span aria-hidden="true" className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
