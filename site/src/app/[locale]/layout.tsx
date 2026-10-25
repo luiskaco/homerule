@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { SITE_URL } from "@/lib/seo";
 import NavMenu from "@/components/NavMenu";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import "../globals.css";
@@ -21,6 +22,7 @@ export async function generateMetadata(
   const t = await getTranslations({ locale: params.locale, namespace: "Layout" });
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: t("metaTitle"),
     description: t("metaDescription"),
     // El hreflang lo declara cada página con `localeAlternates` (lib/seo.ts): el
