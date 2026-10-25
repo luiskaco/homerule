@@ -270,7 +270,7 @@ rutas locales y hosts de la red local. Para sumar términos propios del proyecto
 ### Claude Code — 9 subagentes
 
 `explorer`, `planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`,
-`debugger`, `test-writer`, `docs-writer`, `web-researcher`. Detalle en la página `/subagentes` del
+`debugger`, `test-writer`, `docs-writer`, `web-researcher`. Detalle en la página `/kits/claude-code/subagentes` del
 sitio.
 
 ---

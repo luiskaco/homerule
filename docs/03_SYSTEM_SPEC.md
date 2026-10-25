@@ -8,10 +8,11 @@ el ZIP se arma en el navegador. Rutas principales del sitio:
 | Ruta | Descripción |
 |---|---|
 | `/{locale}` | Índice del hub — modos de uso, catálogo, bitácora (`es` default, `en`) |
-| `/{locale}/antigravity` | Presets por stack de Antigravity |
-| `/{locale}/build` | Armado a medida del ZIP (filtra el manifest por tool) |
-| `/{locale}/stacks` | Rules y skills por preset |
-| `/{locale}/subagentes` | Los subagentes de los dos kits (5 de Antigravity + 9 de Claude Code) |
+| `/{locale}/kits/{tool}` | Presets por stack del tool (`antigravity` o `claude-code`) — ADR-024 |
+| `/{locale}/kits/{tool}/stacks` | Rules y skills por stack, con la ruta de instalación del tool |
+| `/{locale}/kits/{tool}/subagentes` | Los subagentes del tool (5 de Antigravity, 9 de Claude Code) |
+| `/{locale}/build?tool=&preset=` | Armado a medida del ZIP (filtra el manifest por tool); única ruta dinámica |
+| `/{locale}/antigravity`, `/agents`, `/stacks`, `/subagentes`, `/kits` | Redirigen (308) a las rutas de kit (`next.config.mjs`) |
 | `/{locale}/changelog` | Bitácora pública |
 
 ## Contratos de request/response

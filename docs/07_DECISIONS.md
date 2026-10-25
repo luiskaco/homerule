@@ -508,3 +508,36 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - `/build` pasa a renderizarse por pedido (`ƒ`), porque lee `searchParams`; antes figuraba como estática. El resto sigue SSG: 20 páginas.
 - En Tailwind 4, `leading-*` le gana a la altura de línea de `text-*` aunque esta venga en un breakpoint. Los párrafos con `leading-relaxed sm:text-lg` quedan alrededor de 1 px más altos por línea en escritorio. Es el comportamiento documentado de v4 y se aceptó.
 - Al pasar por la validación de next-intl apareció un error previo: 7 claves `global:<workflow>.md` muertas (restos de ADR-020) y la de `global:GEMINI.md`, con un punto que next-intl no admite. Se borraron las muertas y la descripción de `GEMINI.md` pasó a `global:GEMINI_md` (`itemDescriptionKey` cambia `.` por `_`).
+
+## ADR-024 — Navegación por kit: un menú "Kits" con selector de tool
+
+**Fecha:** 2026-10-24
+**Estado:** Aceptada
+
+**Contexto:** El nav tenía dos desplegables casi iguales, "Antigravity solo" y "Claude solo", con las mismas opciones apuntando a páginas distintas o a la misma. "Presets por stack" eran dos páginas con diseños diferentes; la de Claude ni siquiera mostraba los stacks. "Rules y skills por stack" existía solo para Antigravity, y `/subagentes` mezclaba los dos tools. ADR-002 ya había dejado "Presets por stack" repetido en dos grupos.
+
+**Decisión:**
+
+- **Un link "Kits" en el nav**, sin desplegable. Lleva al tool de la página actual o, si no hay, al último elegido (`localStorage`, leído en un efecto para no romper la hidratación). La primera vez lleva a Antigravity.
+- **Cabecera común (`KitHeader`)** en las cuatro secciones del kit:
+  - selector `[Antigravity | Claude Code]`, que conserva la sección (y el preset en `/build`);
+  - pestañas Presets por stack · Rules y skills · Subagentes · Armar a medida.
+  - Todo son links: se rastrean y funcionan sin JS.
+- **Rutas estáticas por segmento:** `/kits/[tool]`, `/kits/[tool]/stacks`, `/kits/[tool]/subagentes`, con `generateStaticParams` y `dynamicParams = false`. `/build?tool=` queda igual, porque ya era interactivo.
+- **Contenido estanco por tool (ADR-006 no cambia):** Claude Code gana presets y rules/skills por stack. Sus rules viajan como skills (`claude-code:rule:<id>`, `category: "skill"`), así que se clasifican por id y no por categoría. La pestaña Subagentes muestra solo los del tool elegido.
+- **Un color fijo por tool:** esmeralda Antigravity, violeta Claude (`TOOL_THEME` en `site/src/lib/kit.ts`). Las clases van literales para que Tailwind las detecte.
+- **Rutas viejas:** `/antigravity`, `/agents`, `/stacks`, `/subagentes` y `/kits` redirigen con 308 desde `next.config.mjs`, y sus páginas se borraron.
+- **De paso, hreflang por página:** el layout raíz declaraba `alternates` hacia `/{locale}` en todas las páginas, así que cada una decía que su alternativa era la home. Ahora cada página lo declara con `localeAlternates()` (`site/src/lib/seo.ts`), con canonical y `x-default`.
+- Diseño con la skill `hallmark` (genre modern-minimal, conservando el tema oscuro y el acento del sitio). Plan de `planner` y revisión de `ui-reviewer` y `code-reviewer`.
+
+**Alternativas consideradas:**
+
+- **`?tool=` en la URL**: descartada. Vuelve dinámicas las páginas, no indexa cada tool por separado y el tool se perdía al cambiar de idioma.
+- **Mantener las dos páginas de presets y que el selector salte entre ellas**: descartada. El cambio de diseño se notaba al cambiar de tool.
+- **"Kits" como desplegable con las 4 secciones**: descartada. Duplica las pestañas de la cabecera.
+
+**Consecuencias:**
+
+- Las URLs del kit cambian; los links viejos siguen funcionando por la redirección.
+- La versión sin idioma (`/antigravity`) hace dos saltos: proxy de next-intl → `/es/antigravity` → destino.
+- Deja sin efecto la consecuencia de ADR-002 ("Presets por stack" repetido en dos grupos del nav).
