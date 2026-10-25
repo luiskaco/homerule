@@ -6,6 +6,6 @@ import { redirect } from "@/i18n/navigation";
  * linkeada desde el nav y desde el propio catálogo.
  */
 export default async function SkillsPorProyectoPage(props: { params: Promise<{ locale: string }> }) {
- const params = await props.params;
- redirect({ href: "/mejores-skill", locale: params.locale });
+  const params = await props.params;
+  redirect({ href: "/mejores-skill", locale: params.locale });
 }
