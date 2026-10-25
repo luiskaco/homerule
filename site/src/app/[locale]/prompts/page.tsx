@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/lib/seo";
 import { PROMPT_TEMPLATES } from "@/lib/prompt-templates";
 import PromptTemplateCard from "@/components/PromptTemplateCard";
+
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await props.params;
+  return { alternates: localeAlternates(locale, "/prompts") };
+}
 
 export default async function PromptsPage(props: { params: Promise<{ locale: string }> }) {
   const params = await props.params;

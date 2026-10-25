@@ -23,10 +23,8 @@ export async function generateMetadata(
   return {
     title: t("metaTitle"),
     description: t("metaDescription"),
-    alternates: {
-      // hreflang por idioma — `seo.md § SEO Multi-idioma`.
-      languages: Object.fromEntries(routing.locales.map((l) => [l, `/${l}`])),
-    },
+    // El hreflang lo declara cada página con `localeAlternates` (lib/seo.ts): el
+    // layout no conoce la ruta y antes ponía la home como alternativa de todas.
   };
 }
 

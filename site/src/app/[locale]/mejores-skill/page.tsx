@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import SkillCard from "@/components/SkillCard";
 import SkillViewsToggle from "@/components/SkillViewsToggle";
 import { getCatalogSkills, type CatalogSkill } from "@/lib/skill-catalog";
 import { JOB_TYPES, getSkillNamesForJobType } from "@/lib/skill-job-types";
+
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await props.params;
+  return { alternates: localeAlternates(locale, "/mejores-skill") };
+}
 
 export default async function MejoresSkillPage(props: { params: Promise<{ locale: string }> }) {
   const params = await props.params;

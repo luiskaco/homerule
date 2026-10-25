@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { localeAlternates } from "@/lib/seo";
 import { getDocTemplates } from "@/lib/doc-templates";
 import DocTemplatesDownload from "@/components/DocTemplatesDownload";
 
@@ -10,7 +11,11 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getTranslations({ locale: params.locale, namespace: "DocTemplates" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    alternates: localeAlternates(params.locale, "/plantillas"),
+  };
 }
 
 export default async function PlantillasPage(props: { params: Promise<{ locale: string }> }) {

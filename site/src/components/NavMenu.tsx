@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
+import type { ToolId } from "@/lib/manifest";
+import { LAST_TOOL_KEY, isToolId, toolFromPathname } from "@/lib/kit";
 
 interface NavLink {
   /** Clave del namespace `Nav` en messages/*.json. */
@@ -14,26 +16,14 @@ type NavEntry =
   | { id: string; labelKey: string; href: string }
   | { id: string; labelKey: string; links: NavLink[] };
 
+/**
+ * "Kits" es un link directo: el selector de tool y las secciones viven en la
+ * cabecera del kit (ADR-024). Su href lo resuelve `useKitsHref`.
+ */
+const KITS_ENTRY_ID = "kits";
+
 const ENTRIES: NavEntry[] = [
-  {
-    id: "antigravity-solo",
-    labelKey: "antigravitySolo",
-    links: [
-      { labelKey: "presetsByStack", href: "/antigravity" },
-      { labelKey: "rulesAndSkillsByStack", href: "/stacks" },
-      { labelKey: "subagents", href: "/subagentes" },
-      { labelKey: "buildCustom", href: "/build?tool=antigravity&preset=manual" },
-    ],
-  },
-  {
-    id: "claude-solo",
-    labelKey: "claudeSolo",
-    links: [
-      { labelKey: "presetsByStack", href: "/agents" },
-      { labelKey: "subagents", href: "/subagentes" },
-      { labelKey: "buildCustom", href: "/build?tool=claude-code&preset=manual" },
-    ],
-  },
+  { id: KITS_ENTRY_ID, labelKey: "kits", href: "/kits/antigravity" },
   {
     id: "skills",
     labelKey: "skillsPrompts",
@@ -53,6 +43,32 @@ const ENTRIES: NavEntry[] = [
     href: "/changelog",
   },
 ];
+
+/**
+ * Href del link "Kits": el tool de la página actual si estás en el kit, si no
+ * el último elegido (lo guarda KitHeader). Se lee en un efecto para no generar
+ * un mismatch de hidratación: el HTML estático siempre sale con Antigravity.
+ */
+function useKitsHref(pathname: string): string {
+  const [lastTool, setLastTool] = useState<ToolId>("antigravity");
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(LAST_TOOL_KEY) ?? undefined;
+      if (isToolId(stored)) setLastTool(stored);
+    } catch {
+      // Storage bloqueado: queda Antigravity.
+    }
+  }, [pathname]);
+
+  return `/kits/${toolFromPathname(pathname) ?? lastTool}`;
+}
+
+/** El link "Kits" queda activo en todo el kit, armador incluido. */
+function isEntryActive(entry: { id: string; href: string }, pathname: string): boolean {
+  if (entry.id === KITS_ENTRY_ID) return pathname.startsWith("/kits") || pathname.startsWith("/build");
+  return pathname === entry.href;
+}
 
 function NavDropdown({
   labelKey,
@@ -147,6 +163,8 @@ export default function NavMenu() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const kitsHref = useKitsHref(pathname);
+  const hrefOf = (entry: { id: string; href: string }) => (entry.id === KITS_ENTRY_ID ? kitsHref : entry.href);
 
   useEffect(() => {
     setOpenMenu(null);
@@ -170,9 +188,10 @@ export default function NavMenu() {
           "href" in entry ? (
             <Link
               key={entry.id}
-              href={entry.href}
+              href={hrefOf(entry)}
+              aria-current={isEntryActive(entry, pathname) ? "page" : undefined}
               className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all ${
-                pathname === entry.href
+                isEntryActive(entry, pathname)
                   ? "bg-slate-800/80 text-violet-300 ring-1 ring-violet-500/30"
                   : "text-slate-300 hover:bg-slate-900 hover:text-white"
               }`}
@@ -215,10 +234,11 @@ export default function NavMenu() {
                 return (
                   <Link
                     key={entry.id}
-                    href={entry.href}
+                    href={hrefOf(entry)}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={isEntryActive(entry, pathname) ? "page" : undefined}
                     className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
-                      pathname === entry.href ? "text-violet-300" : "text-violet-400 hover:text-violet-300"
+                      isEntryActive(entry, pathname) ? "text-violet-300" : "text-violet-400 hover:text-violet-300"
                     }`}
                   >
                     {t(entry.labelKey)}

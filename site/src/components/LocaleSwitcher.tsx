@@ -19,7 +19,8 @@ export default function LocaleSwitcher() {
           type="button"
           aria-label={`${t("languageLabel")}: ${LOCALE_LABELS[l]}`}
           aria-current={l === locale ? "true" : undefined}
-          onClick={() => router.replace(pathname, { locale: l })}
+          // Conserva el query: en /build lleva el tool y el preset elegidos.
+          onClick={() => router.replace(`${pathname}${window.location.search}`, { locale: l })}
           className={`rounded-md px-2 py-1 text-xs font-bold uppercase transition-colors ${
             l === locale
               ? "bg-violet-600/20 text-violet-300"

@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import type { ItemCategory, ManifestItem, ToolId } from "@/lib/manifest";
 import { fetchManifestItems } from "@/lib/manifest-client";
-import { getPreset, TOOLS } from "@/lib/presets";
+import { getPreset } from "@/lib/presets";
 import { buildZip, downloadBlob } from "@/lib/zip";
 import { resolveItemDescription } from "@/lib/item-description";
 import ItemPreviewModal from "@/components/ItemPreviewModal";
@@ -22,10 +22,8 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
   const t = useTranslations("Build");
   const stacks = useTranslations("StackLabels");
   const descriptions = useTranslations("ItemDescriptions");
-  const tools = useTranslations("Tools");
   const extTools = useTranslations("ExternalTools");
   const preset = getPreset(tool, presetId) ?? getPreset(tool, "manual")!;
-  const toolMeta = TOOLS.find((t) => t.id === tool)!;
 
   const [allItems, setAllItems] = useState<ManifestItem[] | null>(null);
   const [selected, setSelected] = useState<Set<string>>(() => new Set(preset.itemIds));
@@ -81,12 +79,9 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <p className="text-xs font-bold uppercase tracking-wide text-violet-300">{tools(`${toolMeta.id}.label`)}</p>
-        <h1 className="mt-1 text-2xl font-black tracking-tight text-white sm:text-3xl">{stacks(`${preset.id}.label`)}</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-400">
-          {stacks(`${preset.id}.description`)}
-        </p>
+      <div className="max-w-3xl">
+        <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{stacks(`${preset.id}.label`)}</h1>
+        <p className="mt-3 text-base leading-relaxed text-slate-300">{stacks(`${preset.id}.description`)}</p>
       </div>
 
       {SECTIONS.map(({ category, titleKey }) => {

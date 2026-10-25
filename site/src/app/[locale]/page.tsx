@@ -1,14 +1,21 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getPresetsByTool } from "@/lib/presets";
 import { getItemsByCategory } from "@/lib/manifest";
 import { getCatalogSkills } from "@/lib/skill-catalog";
+import { localeAlternates } from "@/lib/seo";
+
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await props.params;
+  return { alternates: localeAlternates(locale, "") };
+}
 
 export default async function HomePage(props: { params: Promise<{ locale: string }> }) {
   const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("Home");
-  const tNav = await getTranslations("Nav");
+  const tools = await getTranslations("Tools");
 
   const stackCount = getPresetsByTool("antigravity").filter((p) => p.id !== "manual").length;
   const agentCount = getItemsByCategory("agent").filter((i) => i.tool === "claude-code").length;
@@ -17,27 +24,27 @@ export default async function HomePage(props: { params: Promise<{ locale: string
   const modes = [
     {
       id: "antigravity-solo",
-      // El eyebrow reusa la etiqueta del nav para que la sección sea reconocible.
-      eyebrow: tNav("antigravitySolo"),
+      eyebrow: tools("antigravity.label"),
       title: t("modeAntigravityTitle"),
       description: t("modeAntigravityDescription"),
-      href: "/antigravity",
+      href: "/kits/antigravity",
       cta: t("modeAntigravityCta"),
-      cardClass: "card-vibrant-purple border-t-2 border-t-violet-500",
-      accentClass: "text-violet-400 group-hover:text-violet-300",
-      badgeClass: "bg-violet-500/10 text-violet-300 border border-violet-500/30",
+      // Un color fijo por tool en todo el sitio: esmeralda Antigravity, violeta Claude (ADR-024).
+      cardClass: "card-vibrant-emerald border-t-2 border-t-emerald-500",
+      accentClass: "text-emerald-400 group-hover:text-emerald-300",
+      badgeClass: "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30",
       bullets: [t("modeAntigravityBullet1", { count: stackCount }), t("modeAntigravityBullet2")],
     },
     {
       id: "claude-solo",
-      eyebrow: tNav("claudeSolo"),
+      eyebrow: tools("claude-code.label"),
       title: t("modeClaudeTitle"),
       description: t("modeClaudeDescription"),
-      href: "/agents",
+      href: "/kits/claude-code",
       cta: t("modeClaudeCta"),
-      cardClass: "card-vibrant-amber border-t-2 border-t-amber-500",
-      accentClass: "text-amber-400 group-hover:text-amber-300",
-      badgeClass: "bg-amber-500/10 text-amber-300 border border-amber-500/30",
+      cardClass: "card-vibrant-purple border-t-2 border-t-violet-500",
+      accentClass: "text-violet-400 group-hover:text-violet-300",
+      badgeClass: "bg-violet-500/10 text-violet-300 border border-violet-500/30",
       bullets: [
         t("modeClaudeBullet1", { count: agentCount }),
         t("modeClaudeBullet2"),

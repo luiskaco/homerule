@@ -20,6 +20,19 @@ const nextConfig = {
       },
     ];
   },
+  // Rutas previas al menú único "Kits" (ADR-024). Corren antes del proxy de
+  // next-intl, así que la versión sin idioma (/antigravity) hace un salto más:
+  // proxy → /es/antigravity → destino.
+  async redirects() {
+    const locale = "/:locale(es|en)";
+    return [
+      { source: `${locale}/antigravity`, destination: "/:locale/kits/antigravity", permanent: true },
+      { source: `${locale}/agents`, destination: "/:locale/kits/claude-code", permanent: true },
+      { source: `${locale}/stacks`, destination: "/:locale/kits/antigravity/stacks", permanent: true },
+      { source: `${locale}/subagentes`, destination: "/:locale/kits/antigravity/subagentes", permanent: true },
+      { source: `${locale}/kits`, destination: "/:locale/kits/antigravity", permanent: true },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

@@ -13,17 +13,12 @@
   "Nav": {
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "antigravitySolo": "Antigravity only",
-    "claudeSolo": "Claude only",
-    "subagents": "Subagents",
     "skillsPrompts": "Skills & Prompts",
-    "presetsByStack": "Presets by stack",
-    "rulesAndSkillsByStack": "Rules and skills by stack",
-    "buildCustom": "Build your own",
     "skillCatalog": "Skill catalog",
     "promptTemplates": "Prompt templates",
     "docTemplates": "SDD templates",
-    "changelog": "Changelog"
+    "changelog": "Changelog",
+    "kits": "Kits"
   },
   "Home": {
     "badge": "🚀 Antigravity + Claude Code",
@@ -53,68 +48,33 @@
     "changelogBody": "The history of changes to rules, skills and the site lives in the changelog.",
     "changelogCta": "See changelog →"
   },
-  "Antigravity": {
-    "metaTitle": "Presets by stack — Antigravity | AI Rules Hub",
-    "metaDescription": "Pick your project's stack and download the ready-to-use pack of GEMINI.md, rules, skills and SDD templates.",
-    "badge": "🚀 Antigravity / Gemini",
-    "titleStart": "Start your next project",
-    "titleAccent": "in one click",
-    "intro": "Pick your project's stack and download a complete ZIP with the global <geminiMd></geminiMd> and the rules and skills for <agentsDir></agentsDir>, ready to use.",
-    "chip1": "Global GEMINI.md",
-    "chip2": ".agents/ rules + skills",
-    "presetsTitle": "Recommended presets by stack",
-    "presetsSubtitle": "Pick a preconfigured architecture to download your bundle.",
-    "presetBadge": "Preset",
-    "presetCta": "Use this preset",
-    "customTitle": "Want a custom configuration?",
-    "customBody": "See <stacksLink></stacksLink>, or pick each piece by hand in the builder.",
-    "customBodyLink": "which rules and skills each stack ships",
-    "customCta": "Build your own →"
-  },
   "Stacks": {
-    "badge": "⚙️ Stacks — Antigravity",
-    "titleStart": "Rules and skills",
-    "titleAccent": "by application type",
-    "intro": "Read-only reference — which rules, skills and external tools are wired to each stack. To change an association you edit <presetsFile></presetsFile> in the repo. To use Claude Code on its own, see <claudeLink></claudeLink>.",
-    "introClaudeLink": "Claude Code",
-    "rulesHeading": "{count, plural, one {Architecture rule (#)} other {Architecture rules (#)}}",
-    "skillsHeading": "{count, plural, one {Active skill (#)} other {Active skills (#)}}",
-    "noSkills": "No skill required by default",
+    "metaTitle": "Rules & skills by stack — {tool} | AI Rules Hub",
+    "metaDescription": "Which rules, skills and external tools each stack in the kit ships.",
+    "title": "Rules & skills by stack",
+    "intro": "A reference of what each stack ships: rules, skills and external tools. To change an association you edit <presetsFile></presetsFile> in the repo.",
+    "installNote": {
+      "antigravity": "In Antigravity, rules install to <rulesDir></rulesDir> and skills to <skillsDir></skillsDir>.",
+      "claude-code": "In Claude Code, each rule installs as a native skill in <ruleSkill></ruleSkill> and skills go to <skillsDir></skillsDir>."
+    },
+    "rulesHeading": "{count, plural, one {Rule (#)} other {Rules (#)}}",
+    "skillsHeading": "{count, plural, one {Skill (#)} other {Skills (#)}}",
+    "noSkills": "No skills by default",
     "externalToolsHeading": "External tools (not in the ZIP)",
-    "cta": "Use this stack →"
-  },
-  "Agents": {
-    "badge": "🤖 Claude Code",
-    "title": "Claude Code Packs",
-    "intro": "The complete kit for working with Claude Code — memory, skills and commands in native format: <claudeMd></claudeMd> + <skillsDir></skillsDir> + <commandsDir></commandsDir>, following the <skillMd></skillMd> standard used by <skillsShLink></skillsShLink>. It also includes a kit of <subagentsLink></subagentsLink> (<agentsDir></agentsDir>). Self-contained: it doesn't depend on any other agent.",
-    "introSubagentsLink": "standalone subagents",
-    "toolBadge": "Tool Pack",
-    "stacksAvailable": "{count, plural, one {# stack available} other {# stacks available}}",
-    "configure": "Configure →"
+    "cta": "Build this kit"
   },
   "Subagentes": {
-    "metaTitle": "Subagents — AI Rules Hub",
-    "metaDescription": "The kit's subagents for Antigravity and Claude Code: what each one does, which ones write code and which are read-only.",
-    "badge": "{count} subagents in the kit",
-    "titleStart": "Delegate without",
-    "titleAccent": "polluting the context",
-    "intro": "A subagent runs in its own context window, with its own allowed tools and its own model. The details of its work — the 40 files it read to find one — never come back to the main conversation: the result does. Each tool has its own format; the kit ships subagents for both.",
-    "whatIsTitle": "The two formats",
-    "whatIsBody": "Either way it's a Markdown file with frontmatter: name, description (how the main agent decides when to delegate), allowed tools and model. What differs is the path, how it's invoked and the tool names — which is why the kit doesn't convert one into the other, it ships a native set per tool.",
-    "formatTool": "Tool",
+    "metaTitle": "Subagents — {tool} | AI Rules Hub",
+    "metaDescription": "The kit's subagents: what each one does, which ones write code and which are read-only.",
+    "title": "{count} subagents",
+    "intro": "A subagent runs in its own context window, with its own allowed tools and model. The details of its work (the 40 files it read to find one) never come back to the main conversation: the result does.",
     "formatPath": "Where it lives",
     "formatInvoke": "How it's invoked",
     "formatNote": "Antigravity also accepts global subagents in ~/.gemini/config/agents/, isolation via Git worktree and up to 10 levels of nesting. The ones in the kit are workspace-scoped: they travel with the project.",
-    "antigravityTitle": "Antigravity — {count} subagents",
-    "antigravitySubtitle": "sandbox inherited from the workspace",
-    "claudeTitle": "Claude Code — {count} subagents",
-    "claudeSubtitle": "included in every preset",
     "badgeWrites": "writes",
     "badgeReadOnly": "read-only",
-    "downloadTitle": "Download",
-    "downloadBody": "Subagents are the same for any stack, so they come preselected in every preset. You can also build the ZIP by hand and pick only the ones you want.",
-    "downloadAntigravity": "Build ZIP for Antigravity →",
-    "downloadClaude": "Build ZIP for Claude Code →"
+    "downloadBody": "Subagents work for any stack, so they come preselected in every preset. You can also build the ZIP by hand and pick only the ones you want.",
+    "downloadCta": "Build the ZIP"
   },
   "SkillCatalog": {
     "title": "Skill Catalog",
@@ -831,6 +791,7 @@
   "ChangelogData": {
     "unreleased": {
       "cambios": [
+        "A single \"Kits\" menu replaces \"Antigravity only\" and \"Claude only\": at the top of every kit page you pick the tool and move between presets, rules & skills, subagents and the builder. Claude Code now gets its own presets and rules & skills by stack too. Each tool has a fixed color (green Antigravity, violet Claude) and the \"Kits\" link remembers the last one you picked. Old URLs redirect.",
         "New web-researcher subagent (Claude Code and Antigravity): researches the web without leaking your data or following instructions that come from a page, cross-checks sources and flags injection attempts. In Claude Code, a hook blocks any search or URL carrying secrets, emails, local paths or hosts on your network.",
         "Claude Code's read-only subagents are now actually read-only: a hook blocks any command that writes (in the ZIP; the plugin doesn't run subagent hooks). security-auditor covers much more (IDOR, Supabase RLS, SSRF, secrets in git history, webhooks, supply chain) and code-reviewer now reviews data too, like Antigravity's auditor.",
         "The 7 Antigravity workflows (/grill, /new-feature, /bug-fix, /session-close, /security-audit, /deploy-checklist and /tools-reference) become skills, since Antigravity stops running workflows on 2026-10-19. They ship with the project in .agents/skills/ and are no longer installed into ~/.gemini/; in Claude Code they remain commands. In Antigravity they can also trigger on their own from their description.",
@@ -992,5 +953,30 @@
       "label": "Claude Code",
       "description": "CLAUDE.md + .claude/skills + .claude/commands + .claude/agents (subagents)."
     }
+  },
+  "Kit": {
+    "toolLabel": "Kit for",
+    "sectionsLabel": "Kit sections",
+    "tabs": {
+      "presets": "Presets by stack",
+      "stacks": "Rules & skills",
+      "subagents": "Subagents",
+      "build": "Build your own"
+    },
+    "buildMetaTitle": "Build the kit — AI Rules Hub"
+  },
+  "KitPresets": {
+    "metaTitle": "Presets by stack — {tool} | AI Rules Hub",
+    "metaDescription": "Pick your project's stack and download a ready-to-use kit: project memory, rules, skills, subagents and SDD templates.",
+    "title": "Pick your project's stack",
+    "intro": {
+      "antigravity": "Each preset builds a ZIP with the global <geminiMd></geminiMd> plus the rules, skills and subagents for <agentsDir></agentsDir>, already chosen for that stack. Unzip it at the project root and you're set.",
+      "claude-code": "Each preset builds a ZIP in Claude Code's native format: <claudeMd></claudeMd>, the rules as skills in <skillsDir></skillsDir>, the commands in <commandsDir></commandsDir> and the subagents in <agentsDir></agentsDir>. Self-contained: it doesn't depend on any other agent."
+    },
+    "counts": "{rules, plural, one {# rule} other {# rules}} · {skills, plural, one {# skill} other {# skills}}",
+    "cta": "Build this kit",
+    "customTitle": "No stack fits?",
+    "customBody": "See <stacksLink>which rules and skills each stack ships</stacksLink>, or start from scratch and pick each piece by hand.",
+    "customCta": "Build your own"
   }
 }
