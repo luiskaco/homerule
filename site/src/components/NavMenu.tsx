@@ -37,11 +37,6 @@ const ENTRIES: NavEntry[] = [
     labelKey: "docTemplates",
     href: "/plantillas",
   },
-  {
-    id: "changelog",
-    labelKey: "changelog",
-    href: "/changelog",
-  },
 ];
 
 /**

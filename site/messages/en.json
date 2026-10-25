@@ -5,7 +5,7 @@
     "metaTitle": "AI Rules Hub | Dual-AI Workflow Packs",
     "metaDescription": "Downloadable catalog of rules, skills and SDD templates to start projects with the dual-AI workflow.",
     "footerTagline": "AI Rules Hub — rules, skills and templates ready to download",
-    "footerChangelog": "Changelog",
+    "footerChangelog": "Changes on GitHub",
     "footerDirectory": "skills.sh directory ↗",
     "footerTools": "Antigravity + Claude Code",
     "languageLabel": "Language"
@@ -17,7 +17,6 @@
     "skillCatalog": "Skill catalog",
     "promptTemplates": "Prompt templates",
     "docTemplates": "SDD templates",
-    "changelog": "Changelog",
     "kits": "Kits"
   },
   "Home": {
@@ -43,10 +42,7 @@
     "modeClaudeBullet3": "Native commands",
     "skillsTitle": "Skill and prompt catalog",
     "skillsBody": "Works across all three modes: what each skill does, when to use it and how to install it — plus prompt templates for the most common requests. It's separate from the pack builder.",
-    "skillsCta": "See catalog →",
-    "changelogTitle": "What changed recently?",
-    "changelogBody": "The history of changes to rules, skills and the site lives in the changelog.",
-    "changelogCta": "See changelog →"
+    "skillsCta": "See catalog →"
   },
   "Stacks": {
     "metaTitle": "Rules & skills by stack — {tool} | AI Rules Hub",
@@ -168,21 +164,6 @@
         "template": "# Role\nYou are an experienced video scriptwriter and audiovisual content creator.\n\n# Context\n- Platform: [YouTube / Reels / TikTok / YouTube Shorts]\n- Estimated length: [30 seconds / 60 seconds / 5-10 minutes]\n- Video topic: [explain the topic or concept]\n- Style/tone: [dynamic, humorous, educational, narrative, interview]\n- Call to action: [subscribe / click the link / comment]\n\n# Task\nWrite the full script structured in two columns or clear sections:\n1. **The hook (first 3-5 seconds):** Visual action + high-impact line so nobody skips.\n2. **Quick intro (seconds 5-15):** The promise of the video / the problem it solves.\n3. **Body:** Split into key points with direction notes (audio, B-roll, on-screen text, sound effects).\n4. **Climax or conclusion:** Resolving and high-value.\n5. **Final CTA (last 5 seconds):** A clear, organic close.\n\n# Script structure\n- **[AUDIO / VOICEOVER]:** Exact word-for-word transcript of what's said.\n- **[VISUAL / B-ROLL]:** What's on screen (shots, gestures, on-screen text or graphics).\n- **[ASSETS]:** Recommended sound effects (SFX) or background music.\n\n# Rules\n- Keep a brisk pace with no filler words.\n- Add visual pattern interrupts every 5-8 seconds to hold retention."
       }
     }
-  },
-  "Changelog": {
-    "metaTitle": "Changelog | AI Rules Hub",
-    "metaDescription": "Project change history: rules, skills and the site.",
-    "badge": "📝 Project history",
-    "titleStart": "Change",
-    "titleAccent": "log",
-    "intro": "What changed in the rules, the skills and the site, in chronological order.",
-    "unreleased": "Unreleased",
-    "kindAdded": "Added",
-    "kindChanged": "Changed",
-    "kindFixed": "Fixed",
-    "kindRemoved": "Removed",
-    "kindDocs": "Documentation",
-    "firstVersions": "First versions"
   },
   "Build": {
     "loading": "Loading catalog…",
@@ -787,152 +768,6 @@
     "workflow:security-audit": "Use before shipping any feature with auth, APIs or sensitive data.",
     "workflow:session-close": "At the end of the day or a task — checks docs and code, and drafts the suggested commit.",
     "workflow:tools-reference": "Initial setup, or a reference for the available skills and tools and when to use each."
-  },
-  "ChangelogData": {
-    "unreleased": {
-      "cambios": [
-        "A single \"Kits\" menu replaces \"Antigravity only\" and \"Claude only\": at the top of every kit page you pick the tool and move between presets, rules & skills, subagents and the builder. Claude Code now gets its own presets and rules & skills by stack too. Each tool has a fixed color (green Antigravity, violet Claude) and the \"Kits\" link remembers the last one you picked. Old URLs redirect.",
-        "New web-researcher subagent (Claude Code and Antigravity): researches the web without leaking your data or following instructions that come from a page, cross-checks sources and flags injection attempts. In Claude Code, a hook blocks any search or URL carrying secrets, emails, local paths or hosts on your network.",
-        "Claude Code's read-only subagents are now actually read-only: a hook blocks any command that writes (in the ZIP; the plugin doesn't run subagent hooks). security-auditor covers much more (IDOR, Supabase RLS, SSRF, secrets in git history, webhooks, supply chain) and code-reviewer now reviews data too, like Antigravity's auditor.",
-        "The 7 Antigravity workflows (/grill, /new-feature, /bug-fix, /session-close, /security-audit, /deploy-checklist and /tools-reference) become skills, since Antigravity stops running workflows on 2026-10-19. They ship with the project in .agents/skills/ and are no longer installed into ~/.gemini/; in Claude Code they remain commands. In Antigravity they can also trigger on their own from their description.",
-        "Shorter, clearer task wrap-ups: the result first, up to 3 bullets and the review on a single line, with no code block. The review adds three passes: 🧪 Verified, 📝 Docs and ⚠️ Risk.",
-        "/subagentes now shows both catalogs (4 from Antigravity + 8 from Claude Code) in each tool's native format, and it also appears under the “Antigravity only” menu. It used to filter for claude-code alone.",
-        "Visual theme unified across the pages still on the old style: /subagentes, /mejores-skill, /skills-por-proyecto, /prompts and /plantillas. The ZIP builder, its preview modal (which opened with a white background on a dark site) and the templates download block were carrying the same leftovers.",
-        "The two skill views merged into one page: the flat catalog and the by-project-type grouping are now tabs on /mejores-skill. The old route redirects.",
-        "The data content of the site moved to messages/*.json: skills, prompt templates, stack labels, job types and this changelog are now translated instead of Spanish-only.",
-        "Language rule corrected to match reality: the core said “code always in English”, but the repo had 67 comments in Spanish against 15 in English. It now reads “identifiers and file names in English; comments and documentation in Spanish”. Translating everything was evaluated and dropped: 4 of the 14 packaged skills are third-party and in English, and Spanish runs only 3.8% longer than English in technical text.",
-        "Antigravity and Claude Code become fully independent kits: the hybrid mode is gone. No item belongs to both tools — the /docs templates, the external skills and the database add-on are emitted once per tool. Each ZIP is self-contained and doesn't assume you have the other agent installed.",
-        "The home page goes from 3 usage modes to 2, and /subagentes moves under the “Claude only” menu.",
-        "code-reviewer no longer promises to review UI/UX (its checklist never did): it now hands off to ui-reviewer.",
-        "explorer and planner spell out what sets them apart from the Explore and Plan agents Claude Code ships with: they know the /docs 01-08 convention and the rules installed in .claude/skills/.",
-        "Site interface reorganized: layout, nav, home and skill cards adjusted.",
-        "This changelog added (CHANGELOG.md + the /changelog page).",
-        "Nav labels normalized: the three generic “Home” entries replaced with descriptive labels, and a single-item group became a direct link.",
-        "/stacks and /stacks-app merged into a single /stacks page on the current visual theme.",
-        "The project starts using its own /docs convention to track work (06_TASKS.md and 07_DECISIONS.md).",
-        "/ becomes the hub index (usage modes, skill catalog and changelog); the Antigravity per-stack presets move to their own /antigravity page."
-      ],
-      "agregado": [
-        "New prelaunch-compliance-audit skill: audits a website or app before launch against 43 legal, privacy, security, accessibility and SEO rules, researches the regulations of the project's country and proposes fixes for approval. It comes preselected in every stack.",
-        "New SDD templates: 09_TESTING (how to run the tests and which test verifies each requirement) and 10_RUNBOOK (environments, deploy, rollback, monitoring and incidents). Requirements in 01_PROJECT_PRD now get an ID and verifiable acceptance criteria, and 06_TASKS opens with a handoff status so anyone can pick the project up.",
-        "Both kits ship an AGENTS.md at the project root: the open standard read by Codex, Cursor, Copilot and Antigravity, with the rules in a tool-neutral version and a project map (where the rules, skills and /docs live). If another AI picks the project up, it finds the same thing. In the Claude Code kit, CLAUDE.md imports it with @AGENTS.md.",
-        "The Claude Code kit as a native plugin: /plugin marketplace add luiskaco/-makeRuleIA installs the 9 rules as native skills, the 7 commands and the 8 subagents, and updates from git instead of staying frozen like the ZIP. Versioned by date (CalVer).",
-        "Four subagents for Antigravity: auditor and security (read-only) plus backend and frontend (which implement and verify their own work in a sandbox). Antigravity supports file-declared subagents — .agents/agents/<name>/agent.md — and the kit assumed that was impossible. They come preselected in all 8 Antigravity presets.",
-        "Two new subagents, from 6 to 8: ui-reviewer (accessibility, the 5 UI states, responsive, on-page SEO and consistency with the design system) and test-writer (detects the project's test framework instead of assuming it, and never modifies the code under test)."
-      ],
-      "arreglado": [
-        "A codebase-memory MCP config block, specific to the author's machine, was shipping inside the kits' GEMINI.md and CLAUDE.md. The generator now strips it.",
-        "The Claude Code commands weren't downloadable: all 6 existed and showed up in /build, but no preset preselected them, so the ZIP shipped without the .claude/commands/ folder.",
-        "code-reviewer pointed at .agents/rules/*, paths that don't exist in a Claude Code ZIP — those rules install as .claude/skills/<id>/SKILL.md. It only worked if you had also downloaded the Antigravity ZIP.",
-        "Duplicated segments in every generated ZIP: docs/docs/… and .agents/.agents/…, which also didn't match the copy commands in the bundled INSTALL.md.",
-        "Antigravity-specific content leaking into Claude Code ZIPs: 00_GEMINI_START.md is no longer included in claude-code presets, and the stray references to GEMINI.md in shared files now point to CORE.md too."
-      ],
-      "quitado": [
-        "The 00_GEMINI_START template is gone: the real stack, a different docs layout or rules that don't apply now go in the Project section of AGENTS.md, which any AI reads. If a project still has one, move its content there.",
-        "The “Antigravity + Claude” usage mode: its nav entry and its home card. The subagents are still there, under “Claude only”.",
-        "Empty placeholder pages with no nav link: /proximamente and /mejores-repos-utilidades."
-      ]
-    },
-    "2026-07-29": {
-      "agregado": [
-        "The project-planning skill, to close the gap between brainstorming and execution."
-      ]
-    },
-    "2026-07-28": {
-      "agregado": [
-        "Site redesigned to \"Vibrant Flat UI 3.0\".",
-        "New /stacks-app tab.",
-        "New prompt templates.",
-        "The api-security-best-practices skill added to the catalog."
-      ]
-    },
-    "2026-07-25": {
-      "agregado": [
-        "Third-party design skills vendored into .claude/skills/.",
-        "Catalog unified with the glossary's card structure.",
-        "External skills added to the catalog + a detailed glossary.",
-        "Hamburger menu for responsive navigation.",
-        "Nav reorganized into grouped menus + skill catalog and prompt templates."
-      ],
-      "quitado": [
-        "Graphic design skills removed from the uipro bundle."
-      ]
-    },
-    "2026-07-22": {
-      "cambios": [
-        "The ui-ux-pro-max skill removed, its role consolidated into frontend-design."
-      ]
-    },
-    "2026-07-20": {
-      "agregado": [
-        "Placeholder tabs: \"Best SKILLs\", \"Coming soon\" and \"Best utility repos\"."
-      ],
-      "cambios": [
-        "Current versions are now required, and the rule list corrected."
-      ]
-    },
-    "2026-07-15": {
-      "cambios": [
-        "The project focuses on the Gemini + Claude workflow; subagents added and the rule limit corrected."
-      ]
-    },
-    "2026-07-05": {
-      "agregado": [
-        "Downloadable \"Rules Hub\" site with multi-agent and database support."
-      ],
-      "arreglado": [
-        "Mobile responsiveness of the nav, footer and build pages."
-      ]
-    },
-    "2026-07-02": {
-      "agregado": [
-        "PWA, dark mode, i18n and privacy sections in the rules.",
-        "Documentation for the frontend-design and seo-audit skills."
-      ]
-    },
-    "2026-06-21": {
-      "cambios": [
-        "Repo structure reorganized to the project root; README updated."
-      ]
-    },
-    "2026-06-13": {
-      "cambios": [
-        "antigravity-v2 rules reorganized, obsolete rules removed.",
-        "Workflow options and subagent logic updated in GEMINI.md."
-      ],
-      "agregado": [
-        "Antigravity rules and updated agent instructions."
-      ]
-    },
-    "2026-06-11": {
-      "agregado": [
-        "Documentation of the internal subagent processes for code tasks."
-      ]
-    },
-    "2026-06-07": {
-      "docs": [
-        "Typo fixed in the bug-fix workflow.",
-        "Antigravity workflows and README updated."
-      ]
-    },
-    "2026-06-01": {
-      "docs": [
-        "README revised for installing Antigravity Rules v2.",
-        "session-close.md, new-feature.md and GEMINI.md updated."
-      ]
-    },
-    "2026-05-31": {
-      "agregado": [
-        "Project root README.",
-        "Agent workflows, skills and documentation updated."
-      ]
-    },
-    "2026-05-24 — 2026-05-30": {
-      "agregado": [
-        "First AI governance rules (ia_antigravity-rules, global README, v3/v4 rules).",
-        "Initial project commit."
-      ]
-    }
   },
   "ExternalTools": {
     "context7": {

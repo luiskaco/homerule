@@ -148,24 +148,6 @@ export default async function HomePage(props: { params: Promise<{ locale: string
           </Link>
         </div>
       </section>
-
-      {/* Bitácora */}
-      <section className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur-xl">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-1">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span>📝</span> {t("changelogTitle")}
-            </h3>
-            <p className="text-sm text-slate-300">{t("changelogBody")}</p>
-          </div>
-          <Link
-            href="/changelog"
-            className="shrink-0 self-start rounded-xl border border-slate-700 px-4 py-2 text-sm font-bold text-slate-200 transition-colors hover:border-violet-500/50 hover:text-violet-300 sm:self-auto"
-          >
-            {t("changelogCta")}
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

@@ -98,7 +98,7 @@ cd site && npm run build                  # build de producción
   `npm run build`, no solo `tsc`.
 - Antes de codificar un cambio, registrarlo en `docs/06_TASKS.md`; al cerrarlo,
   sumarlo al `CHANGELOG.md` de la raíz (no a `docs/08_CHANGELOG.md`, que solo
-  redirige — ADR-004).
+  redirige — ADR-025).
 
 ## Dónde va cada cosa en `/docs`
 

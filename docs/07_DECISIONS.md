@@ -51,7 +51,7 @@
 ## ADR-004 — Bitácora de cambios duplicada a propósito
 
 **Fecha:** 2026-07-29
-**Estado:** Aceptada
+**Estado:** Sustituida por ADR-025
 
 **Contexto:** Hacía falta registrar los cambios del proyecto, con dos audiencias distintas: quien trabaja en el repo y quien visita el sitio.
 
@@ -541,3 +541,29 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - Las URLs del kit cambian; los links viejos siguen funcionando por la redirección.
 - La versión sin idioma (`/antigravity`) hace dos saltos: proxy de next-intl → `/es/antigravity` → destino.
 - Deja sin efecto la consecuencia de ADR-002 ("Presets por stack" repetido en dos grupos del nav).
+
+## ADR-025 — El historial de cambios vive solo en el repo
+
+**Fecha:** 2026-10-24
+**Estado:** Aceptada — sustituye a ADR-004
+
+**Contexto:** ADR-004 llevaba el historial en dos lugares: `CHANGELOG.md` en la raíz y la página `/changelog` del sitio, con su texto copiado a mano en `messages/es.json` y `en.json` (`ChangelogData`). Cada cambio se escribía tres veces (CHANGELOG, ES, EN), y ADR-004 ya anotaba el riesgo de que divergieran. El sitio pasó a ser un panel para bajar el kit: el historial no es algo que su visitante busque.
+
+**Decisión:**
+
+- `CHANGELOG.md` de la raíz es la única fuente del historial.
+- Se borran la página `/changelog`, su ítem del menú, la tarjeta de la home y los namespaces `Changelog` y `ChangelogData` de `messages/*.json`.
+- El footer enlaza a `CHANGELOG.md` en GitHub ("Cambios en GitHub").
+- `/{locale}/changelog` redirige a ese archivo con un 307. No es 308 porque el destino es externo y el browser cachearía un 308 para siempre.
+
+**Alternativas consideradas:**
+
+- **Que la página parsee `CHANGELOG.md` en build** (la que dejaba abierta ADR-004): descartada. Mantiene una página que nadie pidió y suma un parser de markdown; además el CHANGELOG está en español y la página en inglés quedaría sin traducir.
+- **Quitar también el link del footer**: descartada. El historial deja de encontrarse desde el sitio.
+- **`/changelog` en 404**: descartada. Rompe los links guardados o indexados.
+
+**Consecuencias:**
+
+- Un cambio se registra una sola vez, en `CHANGELOG.md`.
+- El historial queda solo en español. En `/en` el link lleva al mismo archivo.
+- El link y la redirección apuntan a la rama `main` del repo; si el repo cambia de nombre o de dueño hay que actualizarlos (`site/src/app/[locale]/layout.tsx` y `site/next.config.mjs`).

@@ -13,7 +13,7 @@ el ZIP se arma en el navegador. Rutas principales del sitio:
 | `/{locale}/kits/{tool}/subagentes` | Los subagentes del tool (5 de Antigravity, 9 de Claude Code) |
 | `/{locale}/build?tool=&preset=` | Armado a medida del ZIP (filtra el manifest por tool); única ruta dinámica |
 | `/{locale}/antigravity`, `/agents`, `/stacks`, `/subagentes`, `/kits` | Redirigen (308) a las rutas de kit (`next.config.mjs`) |
-| `/{locale}/changelog` | Bitácora pública |
+| `/{locale}/changelog` | Redirige (307) a `CHANGELOG.md` en GitHub (ADR-025) |
 
 ## Contratos de request/response
 

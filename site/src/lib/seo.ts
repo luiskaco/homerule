@@ -7,7 +7,7 @@ import { routing } from "@/i18n/routing";
  * de cada página porque el layout no conoce la ruta: si lo declarara él, todas
  * las páginas dirían que su alternativa es la home.
  *
- * `path` es la ruta sin prefijo de idioma: `""` para la home, `/changelog`, etc.
+ * `path` es la ruta sin prefijo de idioma: `""` para la home, `/plantillas`, etc.
  */
 export function localeAlternates(locale: string, path: string): Metadata["alternates"] {
   return {
