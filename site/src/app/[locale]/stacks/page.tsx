@@ -18,7 +18,8 @@ const BORDER_ACCENT_COLORS = [
   "border-t-purple-500",
 ];
 
-export default async function StacksPage({ params }: { params: { locale: string } }) {
+export default async function StacksPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("Stacks");
   const stacks = await getTranslations("StackLabels");
@@ -28,7 +29,7 @@ export default async function StacksPage({ params }: { params: { locale: string 
   return (
     <div className="flex flex-col gap-8">
       {/* Hero Header */}
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 sm:p-10 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl">
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-linear-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 sm:p-10 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl">
         <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 px-3.5 py-1 text-xs font-bold text-violet-300 ring-1 ring-inset ring-violet-500/30 w-fit">
@@ -130,7 +131,7 @@ export default async function StacksPage({ params }: { params: { locale: string 
                           <span className="font-medium text-slate-200">
                             {extTools(`${tool.id}.name`)}
                           </span>
-                          <code className="ml-2 mt-1 block break-all rounded bg-slate-950 px-2 py-1 text-xs text-cyan-300 border border-slate-800 w-fit">
+                          <code className="ml-2 mt-1 block break-all rounded-sm bg-slate-950 px-2 py-1 text-xs text-cyan-300 border border-slate-800 w-fit">
                             {tool.installCommand}
                           </code>
                           <p className="mt-1 text-xs text-slate-500">{extTools(`${tool.id}.note`)}</p>

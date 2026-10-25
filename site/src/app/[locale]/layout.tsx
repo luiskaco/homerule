@@ -12,11 +12,12 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ locale: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getTranslations({ locale: params.locale, namespace: "Layout" });
 
   return {
@@ -29,13 +30,18 @@ export async function generateMetadata({
   };
 }
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: { locale: string };
-}) {
+export default async function LocaleLayout(
+  props: {
+    children: React.ReactNode;
+    params: Promise<{ locale: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const { locale } = params;
   if (!hasLocale(routing.locales, locale)) notFound();
 
@@ -56,10 +62,10 @@ export default async function LocaleLayout({
 
           {/* Sticky Glass Header */}
           <header className="sticky top-0 z-50 glass-header">
-            <div className="h-0.5 w-full bg-gradient-to-r from-violet-500 via-indigo-500 via-pink-500 to-cyan-400" />
+            <div className="h-0.5 w-full bg-linear-to-r from-violet-500 via-indigo-500 via-pink-500 to-cyan-400" />
             <nav className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
               <Link href="/" className="group flex items-center gap-2.5 text-lg font-bold tracking-tight">
-                <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 via-indigo-600 to-pink-500 font-extrabold text-white shadow-lg shadow-indigo-500/25 transition-transform duration-300 group-hover:scale-105">
+                <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-violet-600 via-indigo-600 to-pink-500 font-extrabold text-white shadow-lg shadow-indigo-500/25 transition-transform duration-300 group-hover:scale-105">
                   <span className="text-sm font-black tracking-widest">AI</span>
                   <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>

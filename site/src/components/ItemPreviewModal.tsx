@@ -28,7 +28,7 @@ export default function ItemPreviewModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-xs"
       onClick={onClose}
     >
       <div
@@ -73,7 +73,7 @@ export default function ItemPreviewModal({
 
         <div className="overflow-auto p-4">
           <p className="mb-2 font-mono text-xs text-slate-500">{file.destPath}</p>
-          <pre className="whitespace-pre-wrap break-words font-mono text-xs leading-relaxed text-slate-300">
+          <pre className="whitespace-pre-wrap wrap-break-word font-mono text-xs leading-relaxed text-slate-300">
             {file.content}
           </pre>
         </div>

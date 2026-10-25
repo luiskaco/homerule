@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ locale: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getTranslations({ locale: params.locale, namespace: "Changelog" });
   return { title: t("metaTitle"), description: t("metaDescription") };
 }
@@ -69,7 +70,8 @@ const RELEASES: Release[] = [
   },
 ];
 
-export default async function ChangelogPage({ params }: { params: { locale: string } }) {
+export default async function ChangelogPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("Changelog");
   const data = await getTranslations("ChangelogData");
@@ -79,7 +81,7 @@ export default async function ChangelogPage({ params }: { params: { locale: stri
 
   return (
     <div className="flex flex-col gap-10">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 sm:p-12 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl">
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-linear-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 sm:p-12 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl">
         <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
         <div className="relative z-10 flex flex-col items-start gap-4">
           <div className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 px-4 py-1.5 text-xs font-bold tracking-wide text-violet-300 ring-1 ring-inset ring-violet-500/30 backdrop-blur-md">
@@ -95,11 +97,11 @@ export default async function ChangelogPage({ params }: { params: { locale: stri
       </section>
 
       <section className="relative flex flex-col gap-8 pl-6 sm:pl-8">
-        <div className="absolute bottom-2 left-[7px] top-2 w-px bg-gradient-to-b from-violet-500/60 via-slate-700 to-transparent sm:left-[11px]" />
+        <div className="absolute bottom-2 left-[7px] top-2 w-px bg-linear-to-b from-violet-500/60 via-slate-700 to-transparent sm:left-[11px]" />
 
         {RELEASES.map((release) => (
           <div key={release.key} className="relative">
-            <span className="absolute -left-6 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-slate-950 bg-violet-500 shadow shadow-violet-500/50 sm:-left-8" />
+            <span className="absolute -left-6 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-slate-950 bg-violet-500 shadow-sm shadow-violet-500/50 sm:-left-8" />
             <div className="glass-panel rounded-2xl p-5 sm:p-6">
               <div className="flex flex-wrap items-baseline gap-2">
                 <h2 className="text-lg font-bold text-white">{label(release.date)}</h2>

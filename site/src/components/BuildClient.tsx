@@ -172,7 +172,7 @@ export default function BuildClient({ tool, presetId }: { tool: ToolId; presetId
             {preset.externalTools.map((tool) => (
               <li key={tool.id} className="text-sm">
                 <span className="font-semibold text-slate-200">{extTools(`${tool.id}.name`)}</span>
-                <code className="ml-2 inline-block break-all rounded border border-slate-800 bg-slate-950/80 px-2 py-0.5 font-mono text-xs text-slate-300">
+                <code className="ml-2 inline-block break-all rounded-sm border border-slate-800 bg-slate-950/80 px-2 py-0.5 font-mono text-xs text-slate-300">
                   {tool.installCommand}
                 </code>
                 <p className="mt-1 text-xs text-slate-500">{extTools(`${tool.id}.note`)}</p>

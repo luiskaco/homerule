@@ -4,7 +4,8 @@ import { getPresetsByTool } from "@/lib/presets";
 import { getItemsByCategory } from "@/lib/manifest";
 import { getCatalogSkills } from "@/lib/skill-catalog";
 
-export default async function HomePage({ params }: { params: { locale: string } }) {
+export default async function HomePage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("Home");
   const tNav = await getTranslations("Nav");
@@ -48,7 +49,7 @@ export default async function HomePage({ params }: { params: { locale: string } 
   return (
     <div className="flex flex-col gap-12">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 sm:p-12 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl">
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-linear-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 sm:p-12 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl">
         <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
         <div className="absolute bottom-0 left-0 -ml-16 -mb-16 h-64 w-64 rounded-full bg-cyan-600/20 blur-3xl" />
 

@@ -5,6 +5,7 @@ import { redirect } from "@/i18n/navigation";
  * de `/mejores-skill`. La ruta vieja se mantiene redirigiendo porque estaba
  * linkeada desde el nav y desde el propio catálogo.
  */
-export default function SkillsPorProyectoPage({ params }: { params: { locale: string } }) {
-  redirect({ href: "/mejores-skill", locale: params.locale });
+export default async function SkillsPorProyectoPage(props: { params: Promise<{ locale: string }> }) {
+ const params = await props.params;
+ redirect({ href: "/mejores-skill", locale: params.locale });
 }

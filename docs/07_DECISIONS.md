@@ -474,3 +474,37 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - Hay falsos positivos asumidos: una búsqueda con un email público o un `API_KEY=tu-clave` de ejemplo se bloquea, y el agente tiene que reformularla.
 - La revisión de DNS es un chequeo previo: un DNS rebinding con TTL corto puede resolver distinto en el fetch real. Si el DNS falla, el hook deja pasar la llamada, porque el fetch también va a fallar.
 - Los nombres `search_web`/`read_url_content` de Antigravity salen del prompt de sistema publicado, no de la doc oficial, que pide verificarlos. Si el agente aparece sin tools en el panel `/agents`, revisar esos nombres.
+
+## ADR-023 — Stack del sitio: Next.js 16, React 19 y Tailwind 4
+
+**Fecha:** 2026-10-24
+**Estado:** Aceptada
+
+**Contexto:** El sitio estaba en Next.js 14.2, React 18 y Tailwind 3.4, dos versiones mayores atrás. El rediseño de la navegación por kit se iba a escribir sobre esa base, así que convenía migrar primero para no escribirlo dos veces (Tailwind 4 cambia la configuración y algunas clases).
+
+**Decisión:**
+
+- **Next.js 16.4, React 19.3, next-intl 4.14, Tailwind 4.3, TypeScript 7.0**, más los menores (jszip, postcss, `@types/node` 24, en línea con el Node 24 del entorno).
+- Migración con los codemods oficiales (`@next/codemod upgrade`, `@tailwindcss/upgrade`), revisando su diff:
+  - `params`/`searchParams` asíncronos en todas las páginas.
+  - `middleware.ts` → `proxy.ts`, con el mismo contenido (next-intl lo documenta así para Next 16).
+  - `tailwind.config.ts` pasa a `@theme` en `globals.css`; `autoprefixer` sale porque Tailwind 4 ya prefija.
+- **Se quitaron los `export const instant = false`** que agregó el codemod en 12 archivos: solo tienen efecto con `cacheComponents`, que no se activa en esta migración.
+- **Se quitó el script `lint`:** `next lint` no existe en Next 16 y el proyecto nunca tuvo ESLint configurado.
+- Verificación:
+  - build limpio, sin warnings;
+  - capturas de las 11 páginas a 1280 px y 375 px, comparadas píxel a píxel con el stack anterior;
+  - descarga del ZIP en los dos tools;
+  - `next dev` con Turbopack.
+
+**Alternativas consideradas:**
+
+- **Quedarse en Next 14 / Tailwind 3**: descartado. El rediseño iba a nacer sobre una base que igual había que migrar.
+- **TypeScript 6 en vez de 7**: la doc de Next 16 soporta TS 7 vía el CLI `tsc`, y el build pasó. Si diera problemas, bajar a 6 es un cambio de una línea.
+- **Activar `cacheComponents`**: fuera de alcance. Cambia el modelo de renderizado y no aporta a un sitio casi estático.
+
+**Consecuencias:**
+
+- `/build` pasa a renderizarse por pedido (`ƒ`), porque lee `searchParams`; antes figuraba como estática. El resto sigue SSG: 20 páginas.
+- En Tailwind 4, `leading-*` le gana a la altura de línea de `text-*` aunque esta venga en un breakpoint. Los párrafos con `leading-relaxed sm:text-lg` quedan alrededor de 1 px más altos por línea en escritorio. Es el comportamiento documentado de v4 y se aceptó.
+- Al pasar por la validación de next-intl apareció un error previo: 7 claves `global:<workflow>.md` muertas (restos de ADR-020) y la de `global:GEMINI.md`, con un punto que next-intl no admite. Se borraron las muertas y la descripción de `GEMINI.md` pasó a `global:GEMINI_md` (`itemDescriptionKey` cambia `.` por `_`).

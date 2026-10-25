@@ -11,7 +11,8 @@ function codeChip(colorClass: string, text: string) {
   );
 }
 
-export default async function AgentsPage({ params }: { params: { locale: string } }) {
+export default async function AgentsPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("Agents");
   const tools = await getTranslations("Tools");

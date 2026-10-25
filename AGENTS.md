@@ -31,7 +31,7 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | `docs-templates/` | Plantillas `/docs` que se empaquetan en los kits |
 | `docs/` | Documentación SDD de este repo (01–08 + `CONTEXT.md`) |
 | `scripts/` | Generadores y guards (ver Comandos) |
-| `site/` | Sitio Next.js 14 (App Router, next-intl, Tailwind) — deploy en Vercel |
+| `site/` | Sitio Next.js 16 (App Router, React 19, next-intl, Tailwind 4) — deploy en Vercel |
 
 ## Fuente vs. derivados
 

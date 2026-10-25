@@ -6,11 +6,12 @@ import type { ManifestItem } from "@/lib/manifest";
 import { getPreset } from "@/lib/presets";
 import { resolveItemDescription } from "@/lib/item-description";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ locale: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getTranslations({ locale: params.locale, namespace: "Subagentes" });
   return { title: t("metaTitle"), description: t("metaDescription") };
 }
@@ -86,7 +87,8 @@ function AgentCard({
   );
 }
 
-export default async function SubagentesPage({ params }: { params: { locale: string } }) {
+export default async function SubagentesPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("Subagentes");
   const descriptions = await getTranslations("ItemDescriptions");
@@ -100,7 +102,7 @@ export default async function SubagentesPage({ params }: { params: { locale: str
 
   return (
     <div className="flex flex-col gap-10">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl sm:p-12">
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-linear-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl sm:p-12">
         <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
         <div className="relative z-10 flex flex-col items-start gap-4">
           <div className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 px-4 py-1.5 text-xs font-bold tracking-wide text-violet-300 ring-1 ring-inset ring-violet-500/30 backdrop-blur-md">
@@ -118,7 +120,7 @@ export default async function SubagentesPage({ params }: { params: { locale: str
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-400">{t("whatIsBody")}</p>
 
         <div className="mt-5 overflow-x-auto">
-          <table className="w-full min-w-[36rem] border-collapse text-left text-sm">
+          <table className="w-full min-w-xl border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-slate-800 text-xs uppercase tracking-wide text-slate-500">
                 <th className="py-2 pr-4 font-bold">{t("formatTool")}</th>

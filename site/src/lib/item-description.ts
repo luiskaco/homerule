@@ -3,10 +3,12 @@ import type { ManifestItem } from "@/lib/manifest";
 /**
  * Los dos tools emiten el mismo texto con ids distintos
  * (`rule:security` y `claude-code:rule:security`), así que la traducción se
- * guarda una sola vez bajo la clave sin prefijo de tool.
+ * guarda una sola vez bajo la clave sin prefijo de tool. next-intl no admite
+ * `.` en las claves (lo usa para anidar), así que `global:GEMINI.md` se guarda
+ * como `global:GEMINI_md`.
  */
 export function itemDescriptionKey(id: string): string {
-  return id.replace(/^(antigravity|claude-code):/, "");
+  return id.replace(/^(antigravity|claude-code):/, "").replace(/\./g, "_");
 }
 
 /**

@@ -3,19 +3,21 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getDocTemplates } from "@/lib/doc-templates";
 import DocTemplatesDownload from "@/components/DocTemplatesDownload";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { locale: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ locale: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getTranslations({ locale: params.locale, namespace: "DocTemplates" });
   return { title: t("metaTitle"), description: t("metaDescription") };
 }
 
-export default async function PlantillasPage({ params }: { params: { locale: string } }) {
+export default async function PlantillasPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("DocTemplates");
-    const templates = getDocTemplates();
+  const templates = getDocTemplates();
 
   return (
     <div className="flex flex-col gap-10">

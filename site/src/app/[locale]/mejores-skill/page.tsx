@@ -5,7 +5,8 @@ import SkillViewsToggle from "@/components/SkillViewsToggle";
 import { getCatalogSkills, type CatalogSkill } from "@/lib/skill-catalog";
 import { JOB_TYPES, getSkillNamesForJobType } from "@/lib/skill-job-types";
 
-export default async function MejoresSkillPage({ params }: { params: { locale: string } }) {
+export default async function MejoresSkillPage(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("SkillCatalog");
   const data = await getTranslations("SkillData");
@@ -53,7 +54,7 @@ export default async function MejoresSkillPage({ params }: { params: { locale: s
                 <div key={item.id} className="card-vibrant-purple rounded-2xl p-5">
                   <h3 className="font-mono text-sm font-bold text-white">{item.label}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-400">{data(`${item.id}.summary`)}</p>
-                  <code className="mt-3 block break-words rounded-xl border border-slate-800 bg-slate-950/80 px-3 py-2 font-mono text-xs text-slate-300">
+                  <code className="mt-3 block wrap-break-word rounded-xl border border-slate-800 bg-slate-950/80 px-3 py-2 font-mono text-xs text-slate-300">
                     {item.installCommands[0] ?? t("noInstallFallback")}
                   </code>
                 </div>
@@ -67,7 +68,7 @@ export default async function MejoresSkillPage({ params }: { params: { locale: s
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl sm:p-12">
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-linear-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl sm:p-12">
         <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
         <div className="relative z-10 flex flex-col items-start gap-4">
           <h1 className="max-w-3xl text-3xl font-black tracking-tight sm:text-4xl">{t("title")}</h1>

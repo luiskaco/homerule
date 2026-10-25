@@ -60,7 +60,7 @@ export default function PromptTemplateCard({ template }: { template: PromptTempl
         ))}
       </div>
 
-      <pre className="mt-4 overflow-x-auto whitespace-pre-wrap break-words rounded-xl border border-slate-800 bg-slate-950/80 p-4 font-mono text-xs leading-relaxed text-slate-300">
+      <pre className="mt-4 overflow-x-auto whitespace-pre-wrap wrap-break-word rounded-xl border border-slate-800 bg-slate-950/80 p-4 font-mono text-xs leading-relaxed text-slate-300">
         {promptText}
       </pre>
     </div>
