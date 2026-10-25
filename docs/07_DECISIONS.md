@@ -553,17 +553,16 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 
 - `CHANGELOG.md` de la raíz es la única fuente del historial.
 - Se borran la página `/changelog`, su ítem del menú, la tarjeta de la home y los namespaces `Changelog` y `ChangelogData` de `messages/*.json`.
-- El footer enlaza a `CHANGELOG.md` en GitHub ("Cambios en GitHub").
-- `/{locale}/changelog` redirige a ese archivo con un 307. No es 308 porque el destino es externo y el browser cachearía un 308 para siempre.
+- El sitio no enlaza al historial: el repo es privado y el historial es para el autor. `/{locale}/changelog` da 404.
 
 **Alternativas consideradas:**
 
 - **Que la página parsee `CHANGELOG.md` en build** (la que dejaba abierta ADR-004): descartada. Mantiene una página que nadie pidió y suma un parser de markdown; además el CHANGELOG está en español y la página en inglés quedaría sin traducir.
-- **Quitar también el link del footer**: descartada. El historial deja de encontrarse desde el sitio.
-- **`/changelog` en 404**: descartada. Rompe los links guardados o indexados.
+- **Link en el footer y redirección de `/changelog` a `CHANGELOG.md` en GitHub**: se implementó primero y se descartó. El repo es privado, así que cualquier visitante sin sesión veía un 404 de GitHub.
+- **Hacer público el repo**: descartada por el autor.
 
 **Consecuencias:**
 
 - Un cambio se registra una sola vez, en `CHANGELOG.md`.
-- El historial queda solo en español. En `/en` el link lleva al mismo archivo.
-- El link y la redirección apuntan a la rama `main` del repo; si el repo cambia de nombre o de dueño hay que actualizarlos (`site/src/app/[locale]/layout.tsx` y `site/next.config.mjs`).
+- El historial queda solo en español y solo visible para quien tenga acceso al repo.
+- Los links viejos a `/changelog` dan 404. El sitio no tiene tráfico externo que dependa de esa página.

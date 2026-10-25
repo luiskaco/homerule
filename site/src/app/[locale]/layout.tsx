@@ -97,16 +97,6 @@ export default async function LocaleLayout(
                 <span className="font-medium text-slate-300">{t("footerTagline")}</span>
               </div>
               <div className="flex items-center gap-6 text-xs">
-                {/* El historial vive solo en el repo (ADR-025). */}
-                <a
-                  href="https://github.com/luiskaco/-makeRuleIA/blob/main/CHANGELOG.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 font-semibold text-violet-400 hover:text-violet-300 transition-colors"
-                >
-                  {t("footerChangelog")}
-                </a>
-                <span className="text-slate-700">•</span>
                 <a
                   href="https://www.skills.sh/"
                   target="_blank"

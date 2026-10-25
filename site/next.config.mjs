@@ -31,14 +31,6 @@ const nextConfig = {
       { source: `${locale}/stacks`, destination: "/:locale/kits/antigravity/stacks", permanent: true },
       { source: `${locale}/subagentes`, destination: "/:locale/kits/antigravity/subagentes", permanent: true },
       { source: `${locale}/kits`, destination: "/:locale/kits/antigravity", permanent: true },
-      // La bitácora salió del sitio (ADR-025): el historial vive en el repo.
-      // Temporal (307) y no 308: el destino es externo y el browser cachearía
-      // un 308 para siempre.
-      {
-        source: `${locale}/changelog`,
-        destination: "https://github.com/luiskaco/-makeRuleIA/blob/main/CHANGELOG.md",
-        permanent: false,
-      },
     ];
   },
 };
