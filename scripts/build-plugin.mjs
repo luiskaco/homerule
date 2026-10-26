@@ -33,6 +33,13 @@ const REPO_URL = `https://github.com/${REPO_SLUG}`;
  */
 const HUB_OWNED_SKILLS = ["domain-modeling", "prelaunch-compliance-audit", "project-planning"];
 
+/**
+ * Subagents que viajan solo por ZIP (ADR-026). Los subagents de plugin ignoran
+ * `hooks`, y sin ssh-guard la aprobación por cambio y el bloqueo duro de los
+ * agentes de servidores no estarían garantizados.
+ */
+const ZIP_ONLY_AGENTS = ["server-inspector.md", "server-operator.md"];
+
 /** CalVer sin ceros a la izquierda — también válido como semver (ADR-014). */
 function calver(date = new Date()) {
   return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
@@ -88,7 +95,9 @@ function buildManifest(version) {
     license: "MIT",
     keywords: ["rules", "skills", "subagents", "workflows", "code-review", "security"],
     commands: mdFiles(COMMANDS_DIR).map((f) => `./.claude/commands/${f}`),
-    agents: mdFiles(AGENTS_DIR).map((f) => `./.claude/agents/${f}`),
+    agents: mdFiles(AGENTS_DIR)
+      .filter((f) => !ZIP_ONLY_AGENTS.includes(f))
+      .map((f) => `./.claude/agents/${f}`),
     skills: [
       ...rules.map((id) => `./.claude/skills/${id}/`),
       ...propias.map((name) => `./.agents/skills/${name}/`),

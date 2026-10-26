@@ -571,7 +571,7 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 ## ADR-026 — Subagents de servidores: `server-inspector` y `server-operator` por alias SSH
 
 **Fecha:** 2026-10-26
-**Estado:** Propuesta — falta el OK del autor y las pruebas en vivo del final
+**Estado:** Propuesta — diseño aprobado por el autor e implementado (2026-10-26); pasa a Aceptada con las pruebas en vivo del final
 
 **Contexto:** Ningún agente del kit trabaja contra servidores. Se pidieron dos: uno que diagnostique (logs, estado de servicios, disco) sin poder romper nada y otro que aplique cambios con la aprobación de cada uno. `ssh` rompe el modelo de ADR-021 por tres motivos:
 
@@ -642,6 +642,22 @@ Lo que dice la doc oficial (revisada el 2026-10-26):
 - Los hooks protegen al subagent, no al agente principal: un `ssh` que corra el principal pasa por los permisos normales.
 - Antigravity queda más débil (prompt + aprobación por comando) mientras no tenga hooks.
 - El catálogo pasa a 13 subagents en Claude Code y 7 en Antigravity; las descripciones en inglés van a `en.json`, como en la tanda 2.
+
+**Implementación (2026-10-26):** sigue el diseño, con estos agregados que salieron al escribir los casos de prueba:
+
+- **Envoltorios:** el bloqueo duro revisa el comando real detrás de `sudo`, `env`, `nohup`, `nice`, `timeout` y `xargs`, y lo que corre dentro de `sh -c` y de `eval`.
+- **Más bloqueos duros:** `service ssh …`, `su`, editores e interactivos (`vim`, `nano`, `top`, `sudo -i`, `sudo -e`), un `&` final, y `ssh`/`scp`/`rsync` desde el servidor hacia otro host. Este último también vale en el inspector.
+- **`server-operator` sin variables:** `$VAR` se bloquea también en este agente, para que el prompt muestre el valor que corre de verdad.
+- **Secretos:** la regla mira los argumentos de los comandos que imprimen contenido (`cat`, `head`, `tail`, `grep`, `git`…) y cualquier `<archivo`. También bloquea los globs que podrían abarcar un secreto (`.e*`, un `*` suelto). Limitación conocida: un `grep -r` sobre un directorio igual puede imprimir secretos, porque se revisan rutas, no contenido.
+- **La shell local:** en el segmento de `ssh`, `scp` o `rsync` se bloquean `$`, `*`, `?` y `[` sin comillas, porque se expandirían en la máquina local antes de llegar al servidor.
+- **Generador:** `generate-manifest.mjs` empaqueta los hooks que nombra el agente y lo que esos hooks importan. Los 7 revisores llevan ahora `readonly-bash.mjs` + `shell-parse.mjs`.
+- **Sitio:**
+  - el operator lleva el badge "cambia servidores", porque sin `Edit`/`Write` el sitio lo mostraba como de solo lectura;
+  - el `INSTALL.md` del ZIP suma una nota cuando hay agentes de servidores.
+- **Verificación:**
+  - 169 casos en `scripts/test-ssh-guard.mjs`: 29 pasan, 17 piden aprobación y 123 se bloquean;
+  - siguen en verde `test-readonly-bash` y `test-web-guard`;
+  - `build-plugin --check` da 11 subagentes, sin los de servidores, y `npm run build` pasa.
 
 **Pruebas en vivo antes de aceptar** (contra un alias descartable —contenedor o VM local con `sshd`—, nunca un servidor real):
 

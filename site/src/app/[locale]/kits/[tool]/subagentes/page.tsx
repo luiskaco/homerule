@@ -34,6 +34,12 @@ const WRITE_TOOLS = [
   "NotebookEdit",
 ];
 
+/**
+ * Agentes que cambian servidores sin escribir archivos (ADR-026). Eso no se ve en
+ * las tools del frontmatter — solo tienen el shell —, así que se marcan por nombre.
+ */
+const CHANGES_SERVERS = new Set(["server-operator"]);
+
 /** Ruta e invocación de cada formato — los dos tools no se convierten entre sí (ADR-006). */
 const FORMAT: Record<ToolId, { path: string; invoke: string }> = {
   antigravity: { path: ".agents/agents/<nombre>/agent.md", invoke: "invoke_subagent" },
@@ -86,6 +92,7 @@ export default async function KitSubagentesPage(props: { params: Params }) {
 
       <ul className="grid gap-4 sm:grid-cols-2">
         {agents.map((item) => {
+          const servers = CHANGES_SERVERS.has(agentName(item));
           const writes = writesFiles(item);
           const model = modelOf(item);
           return (
@@ -94,10 +101,10 @@ export default async function KitSubagentesPage(props: { params: Params }) {
                 <h2 className="font-mono text-sm font-semibold text-white">{agentName(item)}</h2>
                 <span
                   className={`rounded-full border px-2 py-0.5 text-xs font-medium ${
-                    writes ? "border-amber-500/30 bg-amber-500/10 text-amber-200" : theme.soft
+                    writes || servers ? "border-amber-500/30 bg-amber-500/10 text-amber-200" : theme.soft
                   }`}
                 >
-                  {writes ? t("badgeWrites") : t("badgeReadOnly")}
+                  {servers ? t("badgeServers") : writes ? t("badgeWrites") : t("badgeReadOnly")}
                 </span>
                 {model && (
                   <span className="rounded-full border border-slate-700 px-2 py-0.5 font-mono text-xs text-slate-400">

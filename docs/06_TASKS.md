@@ -15,7 +15,22 @@
 
 - [x] **Subagents tanda 2** (2026-10-26, Claude Code): `db-migration-reviewer` (opus, effort high) revisa migraciones antes de aplicarlas — reversibilidad, pérdida de datos, locks, compatibilidad con el código desplegado, RLS; `deploy-checker` (sonnet) recorre `/deploy-checklist` contra el estado real del repo y devuelve GO/NO-GO. Los dos de solo lectura con el hook `readonly-bash` (ADR-021); `deploy-checker` no corre build ni tests: los lista para el agente principal. Rama `feat/subagents-tanda-2`. Hecho cuando: plugin y manifest los incluyen con su hook, `test-readonly-bash` y `npm run build` pasan, y en una sesión nueva los dos aparecen y el hook les bloquea un comando que escribe. **Hecho (2026-10-26):** `build-plugin --check` (11 subagentes), `test-readonly-bash`, `test-web-guard` y `npm run build` en verde; el manifest empaqueta cada agente con `readonly-bash.mjs` y `/kits/claude-code/subagentes` los muestra en ES y EN. **Prueba en vivo OK:** con los dos cargados en sesión, `touch hook-test-*.txt` quedó bloqueado por el hook en ambos ("Bloqueado: \"touch\" no está en la lista…"), `git status`/`git log` pasaron y no se creó ningún archivo. `deploy-checker` primero se negó a mandar el comando por su propio prompt; el hook se probó al reenviarle el pedido. PR #7.
 
-- [ ] **Agentes de servidores** (2026-10-26, Claude Code + Antigravity, ADR-026): `server-inspector` (solo lectura) y `server-operator` (cada cambio con aprobación), conexión solo por alias de `~/.ssh/config`. Los prerequisitos revisados en la doc oficial (permisos de subagents en segundo plano, `"ask"` y `permission_mode` en hooks, `commandExecutionPolicy` y allow list heredada en Antigravity) quedaron en el contexto de ADR-026. **Estado (2026-10-26):** ADR-026 escrito como **Propuesta**; no se codifica hasta que el autor apruebe el diseño. Rama `claude/vigilant-sinoussi-1efc6c`, apilada sobre `feat/subagents-tanda-2` (PR #7) porque edita esta misma entrada. Hecho cuando: (1) el autor aprueba ADR-026; (2) `ssh-guard.mjs` con sus dos modos y `scripts/test-ssh-guard.mjs` en verde, y `test-readonly-bash` sigue en verde después de extraer el parser a `shell-parse.mjs`; (3) los 4 agentes existen (2 por tool), el manifest empaqueta cada agente de Claude con `ssh-guard.mjs` y el módulo compartido, el plugin no los incluye (`build-plugin --check` lo verifica), ningún preset los preselecciona y `npm run build` pasa; (4) las 8 pruebas en vivo de ADR-026 están hechas contra un alias descartable, con el resultado anotado en el ADR, que pasa a Aceptada o se ajusta.
+- [ ] **Agentes de servidores** (2026-10-26, Claude Code + Antigravity, ADR-026): `server-inspector` (solo lectura) y `server-operator` (cada cambio con aprobación), conexión solo por alias de `~/.ssh/config`. Los prerequisitos revisados en la doc oficial (permisos de subagents en segundo plano, `"ask"` y `permission_mode` en hooks, `commandExecutionPolicy` y allow list heredada en Antigravity) quedaron en el contexto de ADR-026. **Estado (2026-10-26):** puntos 1–3 hechos. El autor aprobó ADR-026 tal como estaba y quedó implementado:
+
+  - `ssh-guard.mjs` (`--inspect` / `--operate`) y `shell-parse.mjs`, con `readonly-bash` refactorizado para importarlo;
+  - los 4 agentes;
+  - el generador empaqueta las dependencias de cada hook;
+  - el plugin excluye los dos agentes de servidores;
+  - en el sitio, el badge "cambia servidores" y la nota en el `INSTALL.md` del ZIP.
+
+  Verificado:
+
+  - `test-ssh-guard` (169 casos), `test-readonly-bash` (51) y `test-web-guard` (43) en verde;
+  - `build-plugin --check` (11 subagentes) y `npm run build` en verde;
+  - el ZIP armado con `zip.ts` lleva `ssh-guard.mjs` + `shell-parse.mjs` y la nota;
+  - `/kits/*/subagentes` muestra 13 / 7 en ES y EN.
+
+  **Falta el punto 4: las 8 pruebas en vivo** de ADR-026, a correr en una sesión nueva contra un alias descartable (contenedor o VM local con `sshd`). Rama `claude/vigilant-sinoussi-1efc6c`, apilada sobre `feat/subagents-tanda-2` (PR #7) porque edita esta misma entrada. Hecho cuando: (1) el autor aprueba ADR-026; (2) `ssh-guard.mjs` con sus dos modos y `scripts/test-ssh-guard.mjs` en verde, y `test-readonly-bash` sigue en verde después de extraer el parser a `shell-parse.mjs`; (3) los 4 agentes existen (2 por tool), el manifest empaqueta cada agente de Claude con `ssh-guard.mjs` y el módulo compartido, el plugin no los incluye (`build-plugin --check` lo verifica), ningún preset los preselecciona y `npm run build` pasa; (4) las 8 pruebas en vivo de ADR-026 están hechas contra un alias descartable, con el resultado anotado en el ADR, que pasa a Aceptada o se ajusta.
 
 ## Próximas (acordadas el 2026-10-23)
 

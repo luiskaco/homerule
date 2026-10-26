@@ -482,9 +482,11 @@ for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
 // ============================================================
 
 // Varios agentes llaman a un hook desde su frontmatter (readonly-bash en los
-// revisores, ADR-021; web-guard en web-researcher, ADR-022): cada script que el
-// agente nombra viaja en el mismo item para que nunca apunte a un archivo que no
-// se descargó. Van después del .md: /subagentes lee el frontmatter de files[0].
+// revisores, ADR-021; web-guard en web-researcher, ADR-022; ssh-guard en los de
+// servidores, ADR-026): cada script que el agente nombra viaja en el mismo item
+// para que nunca apunte a un archivo que no se descargó, junto con los módulos
+// que importa (shell-parse.mjs). Van después del .md: /subagentes lee el
+// frontmatter de files[0].
 const CLAUDE_HOOKS = readdirSync(join(REPO_ROOT, ".claude", "hooks"))
   .filter((f) => extname(f) === ".mjs")
   .sort()
@@ -493,13 +495,25 @@ const CLAUDE_HOOKS = readdirSync(join(REPO_ROOT, ".claude", "hooks"))
     return { destPath, content: readFileSync(join(REPO_ROOT, destPath), "utf8") };
   });
 
+/** Los hooks que el agente nombra, más los que esos importan con `from "./x.mjs"`. */
+function hooksFor(agentContent) {
+  const included = CLAUDE_HOOKS.filter((h) => agentContent.includes(h.destPath));
+  for (let i = 0; i < included.length; i++) {
+    for (const [, name] of included[i].content.matchAll(/from\s+["']\.\/([\w.-]+\.mjs)["']/g)) {
+      const dep = CLAUDE_HOOKS.find((h) => h.destPath === `.claude/hooks/${name}`);
+      if (!dep) throw new Error(`${included[i].destPath} importa ${name}, que no está en .claude/hooks/`);
+      if (!included.includes(dep)) included.push(dep);
+    }
+  }
+  return included.sort((a, b) => a.destPath.localeCompare(b.destPath));
+}
+
 for (const file of readdirSync(CLAUDE_AGENTS_DIR).sort()) {
   if (extname(file) !== ".md") continue;
   const content = readFileSync(join(CLAUDE_AGENTS_DIR, file), "utf8");
   const fm = parseFrontmatter(content);
   const id = file.replace(/\.md$/, "");
-  const files = [{ destPath: `.claude/agents/${file}`, content }];
-  for (const hook of CLAUDE_HOOKS) if (content.includes(hook.destPath)) files.push(hook);
+  const files = [{ destPath: `.claude/agents/${file}`, content }, ...hooksFor(content)];
   items.push({
     id: `claude-code:agent:${id}`,
     category: "agent",

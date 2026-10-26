@@ -6,6 +6,18 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Agentes de servidores: `server-inspector` y `server-operator`** (ADR-026), en Claude Code (de 11 a 13) y Antigravity (de 5 a 7). Se conectan solo por alias de `~/.ssh/config`, nunca por `user@host` ni por IP, con una lista de alias por proyecto en `.claude/ssh-hosts.txt` o `.agents/ssh-hosts.txt`.
+  - **`server-inspector` diagnostica sin cambiar nada:** logs, servicios, disco, procesos, puertos y contenedores.
+  - **`server-operator` aplica cambios de a uno,** cada uno con la aprobación del usuario.
+  - **En Claude Code, un hook nuevo (`.claude/hooks/ssh-guard.mjs`) revisa cada comando.** Al inspector solo le deja pasar lecturas. Al operator le hace pedir aprobación en cada `ssh`, `scp` o `rsync`, y no lo deja correr en `bypassPermissions` ni en `dontAsk`. A los dos les bloquea:
+    - los túneles y saltos a otros hosts;
+    - leer secretos (`.env`, claves, variables de entorno);
+    - lo que no termina, como `tail -f`;
+    - lo que deja sin acceso al servidor, aunque se apruebe: reboot, firewall, `sshd_config`, usuarios, formateo, `rm -rf` sobre `/`.
+  - **En Antigravity no hay hooks:** corren con `commandExecutionPolicy: off` y las reglas van en el prompt.
+  - **Solo por ZIP y fuera de los presets:** sin el hook, el plugin no garantizaría la aprobación por cambio.
+  - **El parser de `readonly-bash` pasa a `shell-parse.mjs`,** compartido por los dos hooks. El generador empaqueta cada hook con lo que importa.
+  - **Pendiente:** las pruebas en vivo listadas en ADR-026.
 - **Dos subagents nuevos en Claude Code** (tanda 2, de 9 a 11). `db-migration-reviewer` revisa migraciones antes de aplicarlas: pérdida de datos, vuelta atrás, locks en tablas grandes, compatibilidad con el código que sigue desplegado durante el deploy, backfills, índices y RLS; devuelve `Aplicar` / `Aplicar con cambios` / `No aplicar` y marca "a verificar" lo que depende de la base real. Corre en opus con `effort: high`. `deploy-checker` recorre `/deploy-checklist` contra el estado real del repo (git, secrets, `npm audit`, variables de entorno usadas vs. documentadas, migraciones, headers, docs y rollback) y devuelve `GO` / `GO con reservas` / `NO-GO`; no corre build ni tests, los deja listados para el agente principal. Los dos son de solo lectura con el hook `readonly-bash` (ADR-021) y vienen en el preset de Claude Code.
 - Fix SEO: el canonical y el hreflang salen como URL absoluta del dominio público (`metadataBase` en el layout). Antes eran relativos y Next los resolvía contra la URL de cada deploy.
 - **La bitácora sale del sitio** (ADR-025). El historial queda solo en este `CHANGELOG.md`: se borran la página `/changelog`, su ítem del menú, la tarjeta de la home y su copia en `messages/*.json`. El sitio ya no enlaza al historial y `/changelog` da 404.

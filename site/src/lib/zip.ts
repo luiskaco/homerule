@@ -28,6 +28,38 @@ function destFolder(item: ManifestItem): string {
   return isAntigravityUserLevel(item) ? "global" : "";
 }
 
+/**
+ * Los agentes de servidores (ADR-026) necesitan una lista de alias en el
+ * proyecto y que `ssh` no esté en la allow list del usuario: sin eso, el
+ * "cada cambio con aprobación" no se cumple.
+ */
+function buildServerAgentsNote(tool: ToolId, items: ManifestItem[]): string | null {
+  if (!items.some((i) => i.category === "agent" && /:agent:server-(inspector|operator)$/.test(i.id))) return null;
+
+  const hostsFile = tool === "antigravity" ? ".agents/ssh-hosts.txt" : ".claude/ssh-hosts.txt";
+  const lines = ["**Agentes de servidores**\n"];
+  lines.push(
+    `- Creá \`${hostsFile}\` con los alias de \`~/.ssh/config\` que pueden usar, uno por línea. ` +
+      "`server-operator` no se conecta sin ese archivo; `server-inspector`, sin él, acepta cualquier alias del config."
+  );
+  lines.push(
+    "- No pongas `ssh`, `scp` ni `rsync` en la allow list de comandos: los cambios correrían sin pedir aprobación."
+  );
+  if (tool === "antigravity") {
+    lines.push(
+      "- Corren con `commandExecutionPolicy: off`: cada comando espera tu aprobación. Antigravity no tiene hooks, " +
+        "así que las reglas de alias, opciones y bloqueo duro dependen del prompt del agente."
+    );
+  } else {
+    lines.push(
+      "- Un hook (`.claude/hooks/ssh-guard.mjs`, necesita Node) revisa cada comando. `server-operator` no corre si la " +
+        "sesión está en `bypassPermissions` o `dontAsk`."
+    );
+  }
+  lines.push("- Para el inspector conviene un alias con un usuario sin sudo en el servidor.\n");
+  return lines.join("\n");
+}
+
 function buildAntigravitySection(items: ManifestItem[]): string {
   const global = items.filter(isAntigravityUserLevel);
   const agentsMd = items.find((i) => i.id === ANTIGRAVITY_AGENTS_MD_ID);
@@ -63,6 +95,9 @@ function buildAntigravitySection(items: ManifestItem[]): string {
     }
   }
 
+  const serverNote = buildServerAgentsNote("antigravity", items);
+  if (serverNote) lines.push(serverNote);
+
   return lines.join("\n");
 }
 
@@ -88,6 +123,8 @@ function buildGenericToolSection(tool: ToolId, items: ManifestItem[]): string {
         "lo mismo. Completá la sección **Proyecto** de `AGENTS.md` al arrancar.\n"
     );
   }
+  const serverNote = buildServerAgentsNote(tool, items);
+  if (serverNote) lines.push(serverNote);
   return lines.join("\n");
 }
 
