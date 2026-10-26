@@ -571,7 +571,7 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 ## ADR-026 — Subagents de servidores: `server-inspector` y `server-operator` por alias SSH
 
 **Fecha:** 2026-10-26
-**Estado:** Propuesta — diseño aprobado por el autor e implementado (2026-10-26); pasa a Aceptada con las pruebas en vivo del final
+**Estado:** Aceptada para Claude Code (2026-10-26), con las 5 pruebas en vivo en verde. La parte de Antigravity sigue en Propuesta: sus pruebas no se pudieron medir (ver el final)
 
 **Contexto:** Ningún agente del kit trabaja contra servidores. Se pidieron dos: uno que diagnostique (logs, estado de servicios, disco) sin poder romper nada y otro que aplique cambios con la aprobación de cada uno. `ssh` rompe el modelo de ADR-021 por tres motivos:
 
@@ -676,3 +676,28 @@ Antigravity:
 8. Si un prefijo `ssh` en la allow list del padre se saltea el `off`.
 
 Si alguna falla, el diseño se ajusta en este ADR antes de pasarlo a Aceptada.
+
+**Resultados de las pruebas en vivo (2026-10-26):**
+
+*Entorno:*
+
+- sshd descartable en `127.0.0.1:2222` (servidor Node con `ssh2`): registra cada pedido y no ejecuta nada.
+- Alias `adr026-test` en `~/.ssh/config`, con clave y `known_hosts` de prueba.
+- Claude Code 2.1.310 por CLI, en Windows.
+- Una sonda temporal (`adr026-probe`), cuyo hook registra el input y responde `"ask"` o exit 2.
+- Cada resultado se confirmó en el `permissionDecision` del transcript del subagent y en el log del sshd, no en lo que reportó el agente. Los subagents no ven el prompt y dos veces dijeron que no lo hubo, cuando sí estaba.
+
+*Claude Code — las 5 en verde:*
+
+1. **El `"ask"` gana a la regla allow.** Con `--allowedTools "Bash(ssh:*)"`, el `ssh` del operator igual mostró el prompt: queda registrado como `source: user_temporary` y `reasonCode: hook:PreToolUse`, no como `config`. El aviso de no poner `ssh` en la allow list deja de hacer falta en Claude Code: el INSTALL lo mantiene solo para Antigravity.
+2. **El exit 2 bloquea en `bypassPermissions` y en `dontAsk`.** Se probó con `ssh-guard --operate`, con `readonly-bash` (un `touch` de `code-reviewer`) y con la sonda. Los tres quedaron registrados como `reject` por el hook y nada llegó al sshd ni al disco. En `dontAsk` se probó con `Bash(ssh:*)` y `Bash(touch:*)` en la allow list, así que el bloqueo es del hook y no del modo. Vale también para `web-guard`.
+3. **El `"ask"` también muestra el prompt en `bypassPermissions` y en `dontAsk`** (lo confirmó el usuario y lo registra el transcript como `user_temporary`). Además, el hook del subagent recibe el modo real en `permission_mode`. Con esta versión, el bloqueo del operator en esos modos no hace falta para que haya prompt. **Se mantiene igual** como defensa en profundidad: no está documentado y una versión futura podría resolver el `"ask"` sola en esos modos. Revisable si molesta.
+4. **El prompt de un subagent en segundo plano sube a la sesión principal** como "Bash command · from the server-operator agent", con el `permissionDecisionReason` completo. Solo ofrece Yes y No, sin "don't ask again", así que no se puede convertir en una regla permanente por accidente. Esta versión de la CLI lanza todos los subagents en segundo plano, así que no hubo un caso real en primer plano.
+5. **En modo auto, el `"ask"` fuerza el prompt** (`user_temporary`). Al `ssh … uptime` del inspector, que no devuelve `"ask"`, lo aprobó el clasificador sin preguntar (`reasonType: classifier`), como se esperaba.
+
+*Antigravity — no se pudieron medir:*
+
+- El agente principal dijo que no tiene ninguna tool para delegar en los agentes de `.agents/agents/`, y propuso mencionarlos con `@`.
+- Con `@server-operator` y `@adr026-probe-{auto,eager,sandbox}`, el que contestó y corrió los comandos fue el agente principal, no el subagente. La política de cada agente nunca entró en juego: 6, 7 y 8 quedan sin respuesta.
+- **El hallazgo que importa:** con la política de terminal del agente principal en "Request review" y sin `ssh` en la allow list, los 4 `ssh` llegaron al sshd sin pedir aprobación. El `Test-NetConnection` a internet también corrió. En Antigravity, la aprobación por comando que este ADR da por hecha no está garantizada: depende de cómo invoque el usuario al agente y de cómo resuelva Antigravity la política.
+- **Decisión:** los dos agentes de Antigravity siguen en el kit, pero el INSTALL del ZIP los marca como sin verificar y recomienda Claude Code para los cambios en servidores. Las pruebas 6–8 quedan pendientes en `06_TASKS.md`, hasta saber cómo se invoca de verdad un subagent de workspace en Antigravity.

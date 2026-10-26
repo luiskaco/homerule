@@ -42,13 +42,18 @@ function buildServerAgentsNote(tool: ToolId, items: ManifestItem[]): string | nu
     `- Creá \`${hostsFile}\` con los alias de \`~/.ssh/config\` que pueden usar, uno por línea. ` +
       "`server-operator` no se conecta sin ese archivo; `server-inspector`, sin él, acepta cualquier alias del config."
   );
-  lines.push(
-    "- No pongas `ssh`, `scp` ni `rsync` en la allow list de comandos: los cambios correrían sin pedir aprobación."
-  );
   if (tool === "antigravity") {
     lines.push(
-      "- Corren con `commandExecutionPolicy: off`: cada comando espera tu aprobación. Antigravity no tiene hooks, " +
+      "- No pongas `ssh`, `scp` ni `rsync` en la allow list de comandos: los cambios correrían sin pedir aprobación."
+    );
+    lines.push(
+      "- Corren con `commandExecutionPolicy: off`: cada comando debería esperar tu aprobación. Antigravity no tiene hooks, " +
         "así que las reglas de alias, opciones y bloqueo duro dependen del prompt del agente."
+    );
+    lines.push(
+      "- **Sin verificar en vivo** (ADR-026): en la prueba, el agente principal no delegó en estos agentes, corrió los " +
+        "`ssh` él mismo y no pidió aprobación. Revisá cada comando antes de que corra; para cambios en servidores, " +
+        "preferí Claude Code."
     );
   } else {
     lines.push(
