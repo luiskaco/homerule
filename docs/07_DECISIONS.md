@@ -567,3 +567,137 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - Un cambio se registra una sola vez, en `CHANGELOG.md`.
 - El historial queda solo en español y solo visible para quien tenga acceso al repo.
 - Los links viejos a `/changelog` dan 404. El sitio no tiene tráfico externo que dependa de esa página.
+
+## ADR-026 — Subagents de servidores: `server-inspector` y `server-operator` por alias SSH
+
+**Fecha:** 2026-10-26
+**Estado:** Aceptada para Claude Code (2026-10-26), con las 5 pruebas en vivo en verde. La parte de Antigravity sigue en Propuesta: sus pruebas no se pudieron medir (ver el final)
+
+**Contexto:** Ningún agente del kit trabaja contra servidores. Se pidieron dos: uno que diagnostique (logs, estado de servicios, disco) sin poder romper nada y otro que aplique cambios con la aprobación de cada uno. `ssh` rompe el modelo de ADR-021 por tres motivos:
+
+- `readonly-bash` ve un solo comando local, `ssh`; lo que corre en el servidor viaja en un string que nadie revisa.
+- `ssh` tiene opciones que ejecutan comandos locales (`-o ProxyCommand`, `LocalCommand`), abren túneles (`-L/-R/-D`), saltan a otros hosts (`-J`) o reenvían las claves (`-A`). Y un `ssh` a un host arbitrario es un canal de exfiltración.
+- Lo que devuelve el servidor también lo escribe un tercero: un log de nginx trae los user agents y paths que manda cualquiera. Es superficie de prompt injection, como la web en ADR-022.
+
+Lo que dice la doc oficial (revisada el 2026-10-26):
+
+- **Claude Code, subagents:** en segundo plano, cada pedido de permiso del subagent aparece en la sesión principal con el nombre del agente; en primer plano pasan directo. Si la sesión principal está en `bypassPermissions`, `acceptEdits` o auto, el subagent hereda ese modo e ignora su `permissionMode`. Los subagents de plugin ignoran `hooks` y `permissionMode`.
+- **Claude Code, hooks:** `PreToolUse` puede devolver `permissionDecision` `allow`, `deny`, `ask` o `defer`; entre varios hooks gana `deny` > `defer` > `ask` > `allow`. `"ask"` fuerza el prompt en modo auto: el clasificador puede negar, pero no aprobar en silencio. Un exit 2 equivale a `"deny"`. El input trae `permission_mode` (`default`, `plan`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`). No está documentado qué hace `"ask"` en `bypassPermissions`/`dontAsk` ni frente a una regla allow, ni si el exit 2 bloquea en `bypassPermissions`.
+- **Antigravity, subagents:** `commandExecutionPolicy` acepta `off`, `auto`, `eager` y `sandbox` (default), sin definir cada uno. Los pedidos de aprobación suben a la UI principal. El subagent hereda los prefijos de comandos permitidos del padre: con `ssh` en la allow list, correría sin preguntar. Fuentes no oficiales: `off` no ejecuta nada solo salvo la allow list; en `sandbox`, los comandos con red piden aprobación.
+
+**Decisión:**
+
+*Común a los dos tools*
+
+- **Dos agentes, no uno con modos.** `server-inspector` es de solo lectura y es el que el agente principal usa por defecto. `server-operator` aplica cambios y se invoca cuando ya se sabe qué cambiar: el inspector diagnostica, el operator aplica el cambio puntual.
+- **Solo alias de `~/.ssh/config`.** El host tiene que ser un `Host` declarado sin comodines (`*`, `?`, `!`); se sigue `Include` con rutas literales. Nada de `user@host`, IPs ni hostnames sueltos. Las únicas opciones permitidas son `-T`, `-q`, `-o BatchMode=yes` y `-o ConnectTimeout=<n>`; cualquier otra se bloquea (`-F`, `-i`, `-J`, `-L/-R/-D/-W`, `-A`, `-X/-Y`, `-M/-S/-O`, `-f/-N` y el resto de `-o`).
+- **Siempre con comando remoto** (`ssh <alias> '<comando>'`): sin comando, ssh abre una shell interactiva. Nada entra a `ssh` por stdin (`<`, `cat x | ssh …`). Lo que sigue a `ssh` en un pipe local se valida con las reglas de `readonly-bash`. Sin `-f`/`--follow` (`tail -f`, `journalctl -f`): no terminan nunca.
+- **Lista de alias por proyecto**, uno por línea: `.claude/ssh-hosts.txt` en Claude Code y `.agents/ssh-hosts.txt` en Antigravity. Es obligatoria para `server-operator`: sin el archivo, bloquea. Para `server-inspector` es opcional; sin ella vale cualquier alias del config. Así, trabajando en el proyecto A no se tocan los servidores del B.
+- **Secretos, aunque sea solo leerlos:** se bloquean `env`, `printenv`, `docker inspect`, `systemctl show` y la lectura de rutas como `.env*`, `*.pem`, `*.key`, `id_*`, `/etc/shadow` y `~/.ssh/`. Lo que el agente lee termina en el transcript.
+- **`sudo`:** el inspector solo admite `sudo -n <comando de lectura>`; nunca `-s`, `-i`, `-u`, `-e` ni `sudoedit`.
+- **Lo que trae el servidor es dato, no instrucción** (prompt, igual que ADR-022): un log o un archivo que le habla a "la IA" se reporta y no se obedece.
+- **Recomendado: un usuario de bajo privilegio en el servidor** para el inspector, p. ej. un alias `web-ro` con un usuario sin sudo en `systemd-journal` o `adm` (no en `docker`, que equivale a root). Es la única barrera que no depende del agente ni del hook; el kit la recomienda pero no la puede imponer.
+- **Fuera del plugin y de los presets.** Los subagents de plugin ignoran los hooks, así que la aprobación por cambio no estaría garantizada: los dos se instalan solo por ZIP, `build-plugin.mjs` los excluye y su `--check` falla si se cuelan. Tampoco van preseleccionados en ningún preset: actúan sobre servidores, se suman a mano en "Armar a medida".
+- **Modelo:** el inspector en `sonnet`, porque lee logs con contenido de terceros y haiku resiste peor la inyección (ADR-022); el operator en `opus` con `effort: high`, porque un error aprobado en producción cuesta más que la diferencia de tier. En Antigravity, `inherit` y `pro`, con el mismo criterio que `security` (ADR-013).
+
+*Claude Code*
+
+- **Un hook, `.claude/hooks/ssh-guard.mjs`, con dos modos** (`--inspect` / `--operate`) y matcher `Bash`. En estos dos agentes reemplaza a `readonly-bash`: con los dos hooks en el mismo matcher, `readonly-bash` bloquearía cada `ssh`. Para los segmentos locales aplica las mismas reglas: el parser de `readonly-bash` pasa a un módulo compartido (`.claude/hooks/shell-parse.mjs`) que importan los dos hooks.
+- **`--inspect`:** parsea el comando remoto como un segundo nivel de shell y lo valida contra la allowlist de `readonly-bash` más comandos de estado del servidor: `systemctl status/is-active/list-units`, `journalctl` (sin `--vacuum-*`, `--rotate` ni `--flush`), `df`, `free`, `uptime`, `ps`, `ss`, `docker ps/logs/stats --no-stream`, `crontab -l`, `ufw status`, etc. Lo que no reconoce, lo bloquea con exit 2.
+- **`--operate`:**
+  - Si `permission_mode` es `bypassPermissions` o `dontAsk`, bloquea con exit 2, porque en esos modos el prompt no está garantizado, y pide correr la sesión en otro modo.
+  - Cada `ssh` válido devuelve `"ask"` —también los de lectura— con el alias y el comando remoto en `permissionDecisionReason`, para que el prompt muestre qué se va a correr y dónde.
+  - Un solo comando remoto por llamada: sin `;`, `&&`, `||`, `&` ni saltos de línea (los pipes sí). Cada cambio, una aprobación.
+  - **Bloqueo duro**, aunque se apruebe, de lo que deja sin acceso al servidor o no se deshace desde remoto: `reboot`, `shutdown`, `poweroff`, `mkfs*`, `dd of=/dev/…`, `rm -rf` sobre `/` o un directorio de primer nivel, cambios de `iptables`/`nft`/`ufw`, tocar `sshd_config` o `authorized_keys`, `passwd`, `userdel`/`usermod` y `chmod`/`chown -R` sobre `/`. La lista no es exhaustiva —la barrera real es el `"ask"`—: cubre los casos en que una aprobación distraída te deja afuera del servidor. Eso se hace a mano.
+  - `scp`/`rsync` solo de subida (de una ruta del proyecto a `<alias>:`), sin `-e`, `--rsh`, `--rsync-path` ni `-o`, y también con `"ask"`. El inspector no los tiene.
+- **Frontmatter:** `tools: Read, Grep, Glob, Bash` en los dos, sin `Edit` ni `Write` (el operator cambia servidores, no el repo). Sin `permissionMode`, que se ignora justo cuando importaría. El comando termina en `|| exit 2` para fallar cerrado.
+- **Pruebas:** `scripts/test-ssh-guard.mjs`, con casos de los dos modos, como los otros hooks.
+
+*Antigravity*
+
+- `.agents/agents/server-inspector/agent.md` y `server-operator/agent.md`, con `view_file`, `grep_search`, `find_by_name`, `list_dir` y `run_command`. Sin tools de escritura.
+- **Sin hooks:** las reglas de alias, opciones, lectura y bloqueo duro van en el prompt, como chequeo obligatorio antes de cada `run_command`. Es más débil que en Claude Code, igual que en ADR-022.
+- **`commandExecutionPolicy: off` en los dos** (candidato, hasta la prueba en vivo). Sin hook, la aprobación humana de cada comando es la única barrera dura, también para el inspector. Si la prueba muestra que `sandbox` pide aprobación para todo comando con red, el inspector puede pasar a `sandbox` y correr sin preguntar los comandos locales de lectura.
+- `ssh`, `scp` y `rsync` no pueden estar en la allow list del usuario: el subagent la hereda y correría sin preguntar. Lo dicen el cuerpo del agente y el INSTALL del ZIP.
+
+**Alternativas consideradas:**
+
+- **Hosts sueltos (`user@host`, IP):** descartada. Un `ssh` a cualquier host es un canal para sacar datos o saltar a otra máquina; el config es la lista que el usuario ya curó.
+- **Un agente con modo lectura/escritura:** descartada. Tools y hooks se configuran por agente; con dos queda un default sin riesgo y el operator pasa a ser una elección explícita.
+- **`"ask"` solo en lo que no es lectura:** descartada para la v1. Depende de clasificar bien cada comando, y un cambio que se cuele como lectura pasa sin preguntar en modo auto. Revisable si la cantidad de prompts molesta.
+- **`permissionMode: default` en el frontmatter como garantía:** descartada. Se ignora si la sesión principal está en `bypassPermissions`, `acceptEdits` o auto, y en los plugins.
+- **Que el hook detecte un `Bash(ssh…)` en la allow list:** descartada. Los permisos viven en varios lugares (usuario, proyecto, local, managed, flags de la CLI) y el hook no los ve todos. Se prueba en vivo y se documenta.
+- **Un servidor MCP de SSH:** descartada. Es un proceso de terceros con acceso a las claves (supply chain) y se sale del formato de archivos del kit.
+- **Solo restricción del lado del servidor** (usuario de solo lectura, `command=` en `authorized_keys`): no se descarta —es la mejor barrera—, pero el kit no la puede imponer. Queda como recomendación.
+- **Solo prompt:** descartada, por lo mismo que en ADR-021.
+- **Duplicar el parser en `ssh-guard` en vez de compartirlo:** descartada. Dos parsers de shell que divergen son una brecha esperando a pasar.
+
+**Consecuencias:**
+
+- **Solo por ZIP:** quien use el kit como plugin no recibe estos dos agentes.
+- **`server-operator` no funciona en `bypassPermissions` ni en `dontAsk`**, a propósito.
+- **Extraer el parser toca a los 7 agentes con `readonly-bash`:** los 51 casos de `test-readonly-bash` tienen que seguir en verde, y el generador del manifest tiene que empaquetar el módulo que importan los hooks (hoy solo incluye los hooks que el agente nombra).
+- Como los otros hooks: necesita Node, falla cerrado con `|| exit 2` y solo corre si la carpeta tiene aceptada la confianza del workspace (ADR-021).
+- **Falsos positivos asumidos:** alias definidos en un `Include` con comodines, comandos de lectura que no estén en la allowlist remota y shells remotas que no son POSIX (fish): el hook parsea como `sh`.
+- Los hooks protegen al subagent, no al agente principal: un `ssh` que corra el principal pasa por los permisos normales.
+- Antigravity queda más débil (prompt + aprobación por comando) mientras no tenga hooks.
+- El catálogo pasa a 13 subagents en Claude Code y 7 en Antigravity; las descripciones en inglés van a `en.json`, como en la tanda 2.
+
+**Implementación (2026-10-26):** sigue el diseño, con estos agregados que salieron al escribir los casos de prueba:
+
+- **Envoltorios:** el bloqueo duro revisa el comando real detrás de `sudo`, `env`, `nohup`, `nice`, `timeout` y `xargs`, y lo que corre dentro de `sh -c` y de `eval`.
+- **Más bloqueos duros:** `service ssh …`, `su`, editores e interactivos (`vim`, `nano`, `top`, `sudo -i`, `sudo -e`), un `&` final, y `ssh`/`scp`/`rsync` desde el servidor hacia otro host. Este último también vale en el inspector.
+- **`server-operator` sin variables:** `$VAR` se bloquea también en este agente, para que el prompt muestre el valor que corre de verdad.
+- **Secretos:** la regla mira los argumentos de los comandos que imprimen contenido (`cat`, `head`, `tail`, `grep`, `git`…) y cualquier `<archivo`. También bloquea los globs que podrían abarcar un secreto (`.e*`, un `*` suelto). Limitación conocida: un `grep -r` sobre un directorio igual puede imprimir secretos, porque se revisan rutas, no contenido.
+- **La shell local:** en el segmento de `ssh`, `scp` o `rsync` se bloquean `$`, `*`, `?` y `[` sin comillas, porque se expandirían en la máquina local antes de llegar al servidor.
+- **Generador:** `generate-manifest.mjs` empaqueta los hooks que nombra el agente y lo que esos hooks importan. Los 7 revisores llevan ahora `readonly-bash.mjs` + `shell-parse.mjs`.
+- **Sitio:**
+  - el operator lleva el badge "cambia servidores", porque sin `Edit`/`Write` el sitio lo mostraba como de solo lectura;
+  - el `INSTALL.md` del ZIP suma una nota cuando hay agentes de servidores.
+- **Verificación:**
+  - 169 casos en `scripts/test-ssh-guard.mjs`: 29 pasan, 17 piden aprobación y 123 se bloquean;
+  - siguen en verde `test-readonly-bash` y `test-web-guard`;
+  - `build-plugin --check` da 11 subagentes, sin los de servidores, y `npm run build` pasa.
+
+**Pruebas en vivo antes de aceptar** (contra un alias descartable —contenedor o VM local con `sshd`—, nunca un servidor real):
+
+Claude Code:
+
+1. `"ask"` del hook con `Bash(ssh:*)` en la allow list: ¿aparece el prompt o gana la regla? Si gana la regla, el kit avisa que `ssh` no puede estar en la allow list, como en Antigravity.
+2. Exit 2 en `bypassPermissions` y `dontAsk`: ¿bloquea? La doc lo da a entender (exit 2 = `deny`) pero no lo dice para esos modos. El resultado vale también para `readonly-bash` y `web-guard`.
+3. `"ask"` en `bypassPermissions`: informativo —el hook bloquea igual en ese modo—, pero dice si ese bloqueo hace falta.
+4. Subagent en segundo plano: el prompt sube a la sesión principal con el nombre del agente y el `permissionDecisionReason`.
+5. Modo auto: el `"ask"` fuerza el prompt (documentado; confirmar).
+
+Antigravity:
+
+6. Qué valor de `commandExecutionPolicy` pide aprobación para cada `ssh`.
+7. Si `sandbox` deja salir a la red.
+8. Si un prefijo `ssh` en la allow list del padre se saltea el `off`.
+
+Si alguna falla, el diseño se ajusta en este ADR antes de pasarlo a Aceptada.
+
+**Resultados de las pruebas en vivo (2026-10-26):**
+
+*Entorno:*
+
+- sshd descartable en `127.0.0.1:2222` (servidor Node con `ssh2`): registra cada pedido y no ejecuta nada.
+- Alias `adr026-test` en `~/.ssh/config`, con clave y `known_hosts` de prueba.
+- Claude Code 2.1.310 por CLI, en Windows.
+- Una sonda temporal (`adr026-probe`), cuyo hook registra el input y responde `"ask"` o exit 2.
+- Cada resultado se confirmó en el `permissionDecision` del transcript del subagent y en el log del sshd, no en lo que reportó el agente. Los subagents no ven el prompt y dos veces dijeron que no lo hubo, cuando sí estaba.
+
+*Claude Code — las 5 en verde:*
+
+1. **El `"ask"` gana a la regla allow.** Con `--allowedTools "Bash(ssh:*)"`, el `ssh` del operator igual mostró el prompt: queda registrado como `source: user_temporary` y `reasonCode: hook:PreToolUse`, no como `config`. El aviso de no poner `ssh` en la allow list deja de hacer falta en Claude Code: el INSTALL lo mantiene solo para Antigravity.
+2. **El exit 2 bloquea en `bypassPermissions` y en `dontAsk`.** Se probó con `ssh-guard --operate`, con `readonly-bash` (un `touch` de `code-reviewer`) y con la sonda. Los tres quedaron registrados como `reject` por el hook y nada llegó al sshd ni al disco. En `dontAsk` se probó con `Bash(ssh:*)` y `Bash(touch:*)` en la allow list, así que el bloqueo es del hook y no del modo. Vale también para `web-guard`.
+3. **El `"ask"` también muestra el prompt en `bypassPermissions` y en `dontAsk`** (lo confirmó el usuario y lo registra el transcript como `user_temporary`). Además, el hook del subagent recibe el modo real en `permission_mode`. Con esta versión, el bloqueo del operator en esos modos no hace falta para que haya prompt. **Se mantiene igual** como defensa en profundidad: no está documentado y una versión futura podría resolver el `"ask"` sola en esos modos. Revisable si molesta.
+4. **El prompt de un subagent en segundo plano sube a la sesión principal** como "Bash command · from the server-operator agent", con el `permissionDecisionReason` completo. Solo ofrece Yes y No, sin "don't ask again", así que no se puede convertir en una regla permanente por accidente. Esta versión de la CLI lanza todos los subagents en segundo plano, así que no hubo un caso real en primer plano.
+5. **En modo auto, el `"ask"` fuerza el prompt** (`user_temporary`). Al `ssh … uptime` del inspector, que no devuelve `"ask"`, lo aprobó el clasificador sin preguntar (`reasonType: classifier`), como se esperaba.
+
+*Antigravity — no se pudieron medir:*
+
+- El agente principal dijo que no tiene ninguna tool para delegar en los agentes de `.agents/agents/`, y propuso mencionarlos con `@`.
+- Con `@server-operator` y `@adr026-probe-{auto,eager,sandbox}`, el que contestó y corrió los comandos fue el agente principal, no el subagente. La política de cada agente nunca entró en juego: 6, 7 y 8 quedan sin respuesta.
+- **El hallazgo que importa:** con la política de terminal del agente principal en "Request review" y sin `ssh` en la allow list, los 4 `ssh` llegaron al sshd sin pedir aprobación. El `Test-NetConnection` a internet también corrió. En Antigravity, la aprobación por comando que este ADR da por hecha no está garantizada: depende de cómo invoque el usuario al agente y de cómo resuelva Antigravity la política.
+- **Decisión:** los dos agentes de Antigravity siguen en el kit, pero el INSTALL del ZIP los marca como sin verificar y recomienda Claude Code para los cambios en servidores. Las pruebas 6–8 quedan pendientes en `06_TASKS.md`, hasta saber cómo se invoca de verdad un subagent de workspace en Antigravity.

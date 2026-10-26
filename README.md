@@ -69,7 +69,8 @@ posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
 /plugin install ai-rules-hub@ai-rules-hub
 ```
 
-Trae las 9 rules como skills nativas, los 7 comandos y los 9 subagentes. **No**
+Trae las 9 rules como skills nativas, los 7 comandos y 11 de los 13 subagentes: `server-inspector`
+y `server-operator` van solo en el ZIP, porque el plugin ignora el hook que los controla (ADR-026). **No**
 trae `CLAUDE.md` ni `AGENTS.md`: un plugin aporta comandos, agentes y skills, no memoria de
 proyecto — si querés el núcleo global, bajá el ZIP desde `/build`.
 
@@ -240,7 +241,7 @@ Los dos tools tienen subagentes declarables en archivo, con formatos distintos q
 `.agents/agents/<nombre>/agent.md` del workspace, Claude Code lee
 `.claude/agents/<nombre>.md`.
 
-### Antigravity — 5 subagentes
+### Antigravity — 7 subagentes
 
 Los invoca el agente principal con `invoke_subagent` cuando la tarea lo amerita
 (o los elegís a mano desde el panel `/agents`). Corren en contexto aislado: el
@@ -253,13 +254,16 @@ detalle de su trabajo no contamina la ventana del agente principal.
 | `frontend` | Componentes, páginas, estilos, los 5 estados de UI, accesibilidad | Sí |
 | `security` | Auditoría OWASP: auth, inputs, inyección, secrets, uploads, CORS, privacidad | No — solo lectura |
 | `web-researcher` | Investiga en internet sin filtrar datos del usuario ni obedecer instrucciones que vengan de una página | No — solo tools web |
+| `server-inspector` | Diagnostica servidores por SSH (logs, servicios, disco, contenedores) sin cambiar nada | No — solo lectura |
+| `server-operator` | Aplica cambios puntuales en servidores por SSH, cada comando con aprobación | No — cambia servidores |
 
-Todos corren con `commandExecutionPolicy: sandbox` y heredan los permisos de
+Todos corren con `commandExecutionPolicy: sandbox`, salvo los dos de servidores,
+que corren con `off` (cada comando espera tu aprobación), y heredan los permisos de
 terminal que ya tengas configurados. `auditor` y `security` tienen `run_command`
 únicamente para inspección (`git diff`, `npm audit`) — no tienen ninguna tool de
 escritura de archivos. `web-researcher` solo tiene `search_web` y
-`read_url_content`. `security` corre en tier `pro`; el resto hereda el modelo
-de la sesión.
+`read_url_content`. `security` y `server-operator` corren en tier `pro`; el resto
+hereda el modelo de la sesión.
 
 `web-researcher` existe en los dos tools (ADR-022). En Claude Code, además, un
 hook revisa cada búsqueda y cada URL antes de que salga: bloquea secretos, emails,
@@ -267,12 +271,22 @@ rutas locales y hosts de la red local. Para sumar términos propios del proyecto
 (clientes, nombres internos), listalos uno por línea en
 `.claude/web-guard-terms.txt`.
 
-### Claude Code — 11 subagentes
+`server-inspector` y `server-operator` también existen en los dos tools (ADR-026).
+Se conectan solo por alias de `~/.ssh/config`, listados por proyecto en
+`.claude/ssh-hosts.txt` o `.agents/ssh-hosts.txt`; el operator no se conecta sin
+esa lista. **No pongas `ssh`, `scp` ni `rsync` en la allow list de comandos**: los
+cambios correrían sin pedir aprobación. En Claude Code un hook
+(`.claude/hooks/ssh-guard.mjs`) le deja al inspector solo comandos de lectura, le
+hace pedir aprobación al operator en cada comando y les bloquea a los dos lo que deja
+sin acceso al servidor; en Antigravity esas reglas viven en el prompt. No vienen
+preseleccionados en ningún preset.
+
+### Claude Code — 13 subagentes
 
 `explorer`, `planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`,
 `db-migration-reviewer`, `deploy-checker`, `debugger`, `test-writer`,
-`docs-writer`, `web-researcher`. Detalle en la página
-`/kits/claude-code/subagentes` del sitio.
+`docs-writer`, `web-researcher`, `server-inspector`, `server-operator`. Detalle
+en la página `/kits/claude-code/subagentes` del sitio.
 
 ---
 

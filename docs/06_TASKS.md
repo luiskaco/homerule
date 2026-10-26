@@ -15,12 +15,32 @@
 
 - [x] **Subagents tanda 2** (2026-10-26, Claude Code): `db-migration-reviewer` (opus, effort high) revisa migraciones antes de aplicarlas — reversibilidad, pérdida de datos, locks, compatibilidad con el código desplegado, RLS; `deploy-checker` (sonnet) recorre `/deploy-checklist` contra el estado real del repo y devuelve GO/NO-GO. Los dos de solo lectura con el hook `readonly-bash` (ADR-021); `deploy-checker` no corre build ni tests: los lista para el agente principal. Rama `feat/subagents-tanda-2`. Hecho cuando: plugin y manifest los incluyen con su hook, `test-readonly-bash` y `npm run build` pasan, y en una sesión nueva los dos aparecen y el hook les bloquea un comando que escribe. **Hecho (2026-10-26):** `build-plugin --check` (11 subagentes), `test-readonly-bash`, `test-web-guard` y `npm run build` en verde; el manifest empaqueta cada agente con `readonly-bash.mjs` y `/kits/claude-code/subagentes` los muestra en ES y EN. **Prueba en vivo OK:** con los dos cargados en sesión, `touch hook-test-*.txt` quedó bloqueado por el hook en ambos ("Bloqueado: \"touch\" no está en la lista…"), `git status`/`git log` pasaron y no se creó ningún archivo. `deploy-checker` primero se negó a mandar el comando por su propio prompt; el hook se probó al reenviarle el pedido. PR #7.
 
+- [ ] **Agentes de servidores** (2026-10-26, Claude Code + Antigravity, ADR-026): `server-inspector` (solo lectura) y `server-operator` (cada cambio con aprobación), conexión solo por alias de `~/.ssh/config`. Los prerequisitos revisados en la doc oficial (permisos de subagents en segundo plano, `"ask"` y `permission_mode` en hooks, `commandExecutionPolicy` y allow list heredada en Antigravity) quedaron en el contexto de ADR-026. **Estado (2026-10-26):** puntos 1–3 hechos. El autor aprobó ADR-026 tal como estaba y quedó implementado:
+
+  - `ssh-guard.mjs` (`--inspect` / `--operate`) y `shell-parse.mjs`, con `readonly-bash` refactorizado para importarlo;
+  - los 4 agentes;
+  - el generador empaqueta las dependencias de cada hook;
+  - el plugin excluye los dos agentes de servidores;
+  - en el sitio, el badge "cambia servidores" y la nota en el `INSTALL.md` del ZIP.
+
+  Verificado:
+
+  - `test-ssh-guard` (169 casos), `test-readonly-bash` (51) y `test-web-guard` (43) en verde;
+  - `build-plugin --check` (11 subagentes) y `npm run build` en verde;
+  - el ZIP armado con `zip.ts` lleva `ssh-guard.mjs` + `shell-parse.mjs` y la nota;
+  - `/kits/*/subagentes` muestra 13 / 7 en ES y EN.
+
+  **Punto 4 (2026-10-26): Claude Code hecho, Antigravity pendiente.** Se corrió contra un sshd descartable (servidor Node en `127.0.0.1:2222` que no ejecuta nada, alias `adr026-test`) con la CLI 2.1.310. Cada resultado se confirmó en el transcript y en el log del sshd. El detalle está en ADR-026, "Resultados de las pruebas en vivo".
+
+  - Pruebas 1–5 (Claude Code) en verde. El `"ask"` del hook muestra el prompt aun con `Bash(ssh:*)` en la allow list, en modo auto y también en `bypassPermissions`/`dontAsk`. El exit 2 bloquea en `bypassPermissions` y `dontAsk` (`ssh-guard`, `readonly-bash` y una sonda). El prompt de un subagent en segundo plano sube a la sesión principal con el nombre del agente y el motivo.
+  - Pruebas 6–8 (Antigravity) no medibles: el agente principal no delega en los agentes de `.agents/agents/`. Con `@agente` corrió él mismo los `ssh`, sin pedir aprobación, aunque su política es "Request review". El autor decidió aceptar ADR-026 solo para Claude Code y dejar los agentes de Antigravity en el kit, con un aviso de "sin verificar" en el INSTALL del ZIP.
+  - Cambios: ADR-026 pasa a Aceptada para Claude Code. El INSTALL deja el aviso de no poner `ssh` en la allow list solo para Antigravity, porque en Claude Code el hook gana a la regla. `ssh-guard` no cambia: el bloqueo en `bypassPermissions`/`dontAsk` queda como defensa en profundidad.
+  - **Pendiente:** repetir 6–8 cuando se sepa cómo invocar de verdad un subagent de workspace en Antigravity (¿una tool de delegación que hay que habilitar? ¿otra versión?). Investigar también por qué el principal corrió `ssh` sin pedir revisión.
+
+  Planteo original del punto 4: las 8 pruebas en vivo de ADR-026, en una sesión nueva contra un alias descartable (contenedor o VM local con `sshd`). Rama `claude/vigilant-sinoussi-1efc6c`, apilada sobre `feat/subagents-tanda-2` (PR #7) porque edita esta misma entrada. Hecho cuando: (1) el autor aprueba ADR-026; (2) `ssh-guard.mjs` con sus dos modos y `scripts/test-ssh-guard.mjs` en verde, y `test-readonly-bash` sigue en verde después de extraer el parser a `shell-parse.mjs`; (3) los 4 agentes existen (2 por tool), el manifest empaqueta cada agente de Claude con `ssh-guard.mjs` y el módulo compartido, el plugin no los incluye (`build-plugin --check` lo verifica), ningún preset los preselecciona y `npm run build` pasa; (4) las 8 pruebas en vivo de ADR-026 están hechas contra un alias descartable, con el resultado anotado en el ADR, que pasa a Aceptada o se ajusta.
+
 ## Próximas (acordadas el 2026-10-23)
 
-- [ ] **Agentes de servidores** (Claude Code + Antigravity): `server-inspector` (solo lectura) y `server-operator` (cada cambio con aprobación). Conexión solo por alias de `~/.ssh/config`. Antes de codificar: verificar si Claude muestra el pedido de permiso con el subagent en segundo plano y qué `commandExecutionPolicy` exige aprobación en Antigravity. **Prerequisitos revisados en la doc (2026-10-26):**
-  - **Claude Code** (doc de sub-agents): un subagent en segundo plano muestra *cada* pedido de permiso en la sesión principal con el nombre del agente; en primer plano pasan directo. La aprobación por cambio es viable. Riesgo: si la sesión principal está en `bypassPermissions`, `acceptEdits` o auto, el subagent hereda ese modo e ignora su `permissionMode`. Un hook `PreToolUse` que devuelve `"ask"` fuerza el prompt en modo auto (doc de hooks); no está documentado qué hace en `bypassPermissions`/`dontAsk` ni frente a una regla allow. El hook recibe `permission_mode`, así que puede bloquear en esos modos en vez de confiar en el prompt. Los subagents de plugin siguen ignorando `hooks` y `permissionMode`.
-  - **Antigravity** (doc de subagents): `commandExecutionPolicy` acepta `off`, `auto`, `eager`, `sandbox` (default `sandbox`), pero la doc no dice qué hace cada uno. Los pedidos de aprobación de un subagent suben a la UI principal o al panel del subagent. El subagent hereda los prefijos de comandos permitidos del agente padre: si el usuario tiene `ssh` en la allow list, `server-operator` correría sin preguntar. Fuentes no oficiales: `Off` = no ejecuta solo salvo la allow list; Turbo = ejecuta todo salvo la deny list; en sandbox los comandos con red piden aprobación (afectaría a `ssh` de `server-inspector`).
-  - **Falta probar en vivo:** el `"ask"` del hook en `bypassPermissions` y con `ssh` en la allow list (Claude), y en Antigravity qué valor de `commandExecutionPolicy` pide aprobación para cada `ssh` y si `sandbox` deja salir a la red.
 - [ ] **Optimizar `GEMINI.md`, `AGENTS.md` y `CLAUDE.md`** — alcance a definir.
 - [ ] **Rebranding del sitio**: nombre nuevo + identidad visual minimalista; el sitio es panel personal (bajar el kit y recordar el flujo arriba). Bloqueado por el nombre.
 

@@ -68,7 +68,8 @@
     "formatNote": "Antigravity además acepta subagentes globales en ~/.gemini/config/agents/, aislamiento por worktree de Git y hasta 10 niveles de anidamiento. Los del kit son de workspace: viajan con el proyecto.",
     "badgeWrites": "escribe",
     "badgeReadOnly": "solo lectura",
-    "downloadBody": "Los subagentes sirven para cualquier stack, así que vienen preseleccionados en todos los presets. También podés armar el ZIP a mano y elegir solo los que quieras.",
+    "badgeServers": "cambia servidores",
+    "downloadBody": "Los subagentes sirven para cualquier stack, así que vienen preseleccionados en todos los presets, salvo los de servidores: esos se suman a mano y viajan solo en el ZIP. También podés armar el ZIP a mano y elegir solo los que quieras.",
     "downloadCta": "Armar el ZIP"
   },
   "SkillCatalog": {
