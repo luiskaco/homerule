@@ -64,6 +64,8 @@ const CLAUDE_AGENT_ITEM_IDS = [
   "claude-code:agent:code-reviewer",
   "claude-code:agent:ui-reviewer",
   "claude-code:agent:security-auditor",
+  "claude-code:agent:db-migration-reviewer",
+  "claude-code:agent:deploy-checker",
   "claude-code:agent:debugger",
   "claude-code:agent:test-writer",
   "claude-code:agent:docs-writer",

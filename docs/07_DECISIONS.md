@@ -442,6 +442,7 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 - El hook necesita Node en la máquina. **Actualizado 2026-10-24:** el comando del frontmatter termina en `|| exit 2`, así que si el hook no arranca (sin Node, `$CLAUDE_PROJECT_DIR` vacío, archivo faltante) bloquea en vez de dejar pasar. Antes fallaba abierto: un código distinto de 2 es error no bloqueante para Claude Code. La contra es que en un proyecto sin Node los revisores se quedan sin `Bash`.
 - Los hooks de frontmatter de un agente de proyecto solo corren si la carpeta tiene aceptada la confianza del workspace; si no, Claude Code los saltea sin avisar. La prueba en vivo del 2026-10-24 falló por eso: la carpeta estaba confiada con otra grafía de ruta (`D:` vs. `d:`).
 - La allowlist da falsos positivos: si un revisor necesita un comando de lectura que no está, se bloquea y hay que sumarlo al script.
+- **Actualizado 2026-10-26:** `db-migration-reviewer` y `deploy-checker` (tanda 2) llevan el mismo hook; son 7 los agentes con `readonly-bash`. `deploy-checker` queda de solo lectura a propósito: build y tests escriben artefactos y ejecutan código del proyecto, así que los lista para el agente principal en vez de correrlos.
 
 ## ADR-022 — Subagent `web-researcher`: investigación web aislada y con salida revisada
 
