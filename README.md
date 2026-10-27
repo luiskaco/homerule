@@ -69,7 +69,7 @@ posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
 /plugin install ai-rules-hub@ai-rules-hub
 ```
 
-Trae las 9 rules como skills nativas, los 7 comandos y 11 de los 13 subagentes: `server-inspector`
+Trae las 9 rules como skills nativas, los 7 comandos y 8 de los 10 subagentes: `server-inspector`
 y `server-operator` van solo en el ZIP, porque el plugin ignora el hook que los controla (ADR-026). **No**
 trae `CLAUDE.md` ni `AGENTS.md`: un plugin aporta comandos, agentes y skills, no memoria de
 proyecto — si querés el núcleo global, bajá el ZIP desde `/build`.
@@ -281,12 +281,18 @@ hace pedir aprobación al operator en cada comando y les bloquea a los dos lo qu
 sin acceso al servidor; en Antigravity esas reglas viven en el prompt. No vienen
 preseleccionados en ningún preset.
 
-### Claude Code — 13 subagentes
+### Claude Code — 10 subagentes
 
-`explorer`, `planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`,
-`db-migration-reviewer`, `deploy-checker`, `debugger`, `test-writer`,
-`docs-writer`, `web-researcher`, `server-inspector`, `server-operator`. Detalle
-en la página `/kits/claude-code/subagentes` del sitio.
+`planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`,
+`db-migration-reviewer`, `debugger`, `test-writer`, `web-researcher`,
+`server-inspector` y `server-operator` (estos dos, opcionales). Detalle en la
+página `/kits/claude-code/subagentes` del sitio.
+
+Son 8 por defecto (ADR-027): lo que ya cubre Claude Code o un comando del kit no
+tiene subagent propio. Para buscar en el código está el agente `Explore` de
+Claude Code; los docs y el commit los cierra `/session-close`, y el chequeo de
+deploy, `/deploy-checklist`. Los comandos delegan en su agente: `/bug-fix` en
+`debugger` y `/security-audit` en `security-auditor`.
 
 ---
 

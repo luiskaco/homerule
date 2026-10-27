@@ -1,8 +1,9 @@
 ---
 name: server-inspector
-description: Diagnostica servidores por SSH sin cambiar nada — logs, estado de servicios, disco, memoria, procesos, puertos y contenedores — conectándose solo por alias de `~/.ssh/config`. Usar cuando algo falla en un servidor (staging o producción) y hay que entender qué pasa antes de tocarlo. Solo lectura — un hook bloquea cualquier comando remoto que escriba o lea secretos; para aplicar un cambio, server-operator.
+description: Diagnostica un servidor por SSH (logs, servicios, disco, procesos) sin cambiar nada, solo por alias de ~/.ssh/config. Para aplicar un cambio, server-operator.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+maxTurns: 30
 color: cyan
 hooks:
   PreToolUse:

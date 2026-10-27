@@ -21,6 +21,10 @@ Al ejecutar este workflow, seguir estos pasos ANTES de escribir código:
 
 **No escribir código hasta tener la causa raíz clara.**
 
+En Claude Code, delegar este paso en el subagente `debugger`: lee logs y
+trazas en su propio contexto y devuelve la causa raíz, la evidencia y el test
+que reproduce el bug. Pasarle el síntoma y cómo reproducirlo.
+
 ### 2. Evaluar impacto
 
 - [ ] ¿Cuántos archivos afecta el fix?

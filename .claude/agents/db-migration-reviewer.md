@@ -1,9 +1,10 @@
 ---
 name: db-migration-reviewer
-description: Revisa migraciones de base de datos antes de aplicarlas — pérdida de datos, vuelta atrás, locks en tablas grandes, compatibilidad con el código que ya está desplegado, backfills, índices y RLS. Usar cuando el diff agrega o cambia una migración (Prisma, Drizzle, Supabase, Alembic, SQL a mano) o antes de correrla en producción. Solo lectura — no aplica ni edita migraciones, reporta.
+description: Revisa migraciones antes de aplicarlas — pérdida de datos, vuelta atrás, locks y compatibilidad con el código desplegado. Solo lectura. Usar solo si el diff agrega o cambia una migración.
 tools: Read, Grep, Glob, Bash
 model: opus
 effort: high
+maxTurns: 30
 color: purple
 hooks:
   PreToolUse:

@@ -7,6 +7,8 @@ description: "Antes de subir a producción — checklist completo de código, se
 # Invocar con: /deploy-checklist
 
 Ejecutar y verificar cada ítem antes de hacer merge a main o deploy a producción.
+Cada ítem que falla lleva su evidencia (archivo, línea o salida del comando);
+lo que no se pudo comprobar va como "a verificar", no como aprobado.
 
 > **Primer lanzamiento** (o cambio que agrega login, pagos, formularios con
 > datos personales o correo promocional): además de este checklist, correr la
@@ -16,6 +18,12 @@ Ejecutar y verificar cada ítem antes de hacer merge a main o deploy a producci�
 ---
 
 ## 🚀 Checklist Pre-Deploy
+
+### Git
+
+- [ ] Árbol limpio y sin commits sin subir (`git status -sb`)
+- [ ] Sin marcadores de conflicto (`git grep -n "<<<<<<<"`)
+- [ ] Rama al día con la base; alcance claro (`git log --oneline main..HEAD`)
 
 ### Código
 
@@ -28,11 +36,17 @@ Ejecutar y verificar cada ítem antes de hacer merge a main o deploy a producci�
 
 ### Seguridad
 
-- [ ] `npm audit --audit-level=high` sin vulnerabilidades críticas
-- [ ] Variables de entorno documentadas en `.env.example`
+- [ ] `npm audit --audit-level=high` sin vulnerabilidades críticas (o `pip-audit` / `composer audit`)
+- [ ] Variables de entorno: las que lee el código (`process.env.X`, `import.meta.env.X`, `os.environ`) están todas en `.env.example`. Una nueva sin documentar bloquea: el deploy arranca sin ella
+- [ ] `.env*` fuera del repo y en `.gitignore`
 - [ ] Headers de seguridad configurados
 - [ ] RBAC verificado en endpoints nuevos o modificados
 - [ ] Sin stack traces expuestos en respuestas de error
+
+### Base de datos (si hay migraciones nuevas)
+
+- [ ] Revisadas antes de aplicarlas: pérdida de datos, vuelta atrás, locks y compatibilidad con el código desplegado. En Claude Code, delegarlo en el subagente `db-migration-reviewer`; un "No aplicar" bloquea
+- [ ] Backup reciente si alguna es irreversible
 
 ### UI (si aplica)
 
@@ -56,6 +70,12 @@ Ejecutar y verificar cada ítem antes de hacer merge a main o deploy a producci�
 - [ ] `10_RUNBOOK.md` al día: pasos de deploy y rollback probados, verificación post-deploy definida
 - [ ] `09_TESTING.md`: los requisitos de esta versión tienen test en la tabla de trazabilidad
 - [ ] `.env.example` actualizado si se agregaron variables nuevas
+
+### Veredicto
+
+- **NO-GO** si hay al menos un bloqueante: listar cada uno con su evidencia y qué hace falta.
+- **GO con reservas** si no hay bloqueantes pero queda algo "a verificar" (variables cargadas en el hosting, backup, estado de la base).
+- **GO** solo con todo verificado.
 
 ### Commit final
 

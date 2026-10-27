@@ -1,9 +1,10 @@
 ---
 name: security-auditor
-description: Auditoría de seguridad profunda — autorización por recurso (IDOR), auth y sesiones, inputs e inyección, secrets (incluido el historial de git), SSRF, uploads, CORS y headers, rate limiting, RLS de Supabase, webhooks, supply chain e integraciones con LLM. Usar antes de subir a producción features con auth, APIs o datos sensibles, o cuando se pida una revisión de seguridad. Solo lectura — reporta con escenario de explotación, no corrige.
+description: Auditoría de seguridad a fondo (auth, IDOR, inyección, secrets, SSRF, uploads, RLS) con escenario de explotación por hallazgo. Solo lectura. Usar antes de subir auth, APIs o datos sensibles; para un diff común alcanza code-reviewer.
 tools: Read, Grep, Glob, Bash
 model: opus
 effort: high
+maxTurns: 40
 color: red
 hooks:
   PreToolUse:

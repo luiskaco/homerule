@@ -701,3 +701,35 @@ Si alguna falla, el diseño se ajusta en este ADR antes de pasarlo a Aceptada.
 - Con `@server-operator` y `@adr026-probe-{auto,eager,sandbox}`, el que contestó y corrió los comandos fue el agente principal, no el subagente. La política de cada agente nunca entró en juego: 6, 7 y 8 quedan sin respuesta.
 - **El hallazgo que importa:** con la política de terminal del agente principal en "Request review" y sin `ssh` en la allow list, los 4 `ssh` llegaron al sshd sin pedir aprobación. El `Test-NetConnection` a internet también corrió. En Antigravity, la aprobación por comando que este ADR da por hecha no está garantizada: depende de cómo invoque el usuario al agente y de cómo resuelva Antigravity la política.
 - **Decisión:** los dos agentes de Antigravity siguen en el kit, pero el INSTALL del ZIP los marca como sin verificar y recomienda Claude Code para los cambios en servidores. Las pruebas 6–8 quedan pendientes en `06_TASKS.md`, hasta saber cómo se invoca de verdad un subagent de workspace en Antigravity.
+
+## ADR-027 — Menos subagents en Claude Code y menos tokens por turno
+
+**Fecha:** 2026-10-27
+**Estado:** Aceptada
+
+**Contexto:** El kit llegó a 11 subagents por defecto en Claude Code (13 con los de servidores). Tres hacían lo mismo que algo que ya existe: `explorer` duplica el agente `Explore` que trae Claude Code, `docs-writer` duplica `/session-close` y `deploy-checker` duplica `/deploy-checklist`. Cuesta elegir entre tantos y además cuestan tokens: Claude Code carga la descripción de cada subagent en todos los turnos, se use o no (~1.200 tokens con los 11), y cada invocación arranca en frío y vuelve a leer archivos.
+
+**Decisión:**
+
+- **Criterio:** un subagent se queda si lee mucho y devuelve un veredicto corto (así no ensucia la conversación principal) o si necesita aislamiento por seguridad. Si el trabajo necesita el contexto de la conversación, o si Claude Code ya lo trae, va como comando o no va.
+- **Salen tres:**
+  - `explorer`: lo cubre `Explore`, que también es haiku y de solo lectura. El mapa del `AGENTS.md` ya dice dónde mirar.
+  - `docs-writer`: arranca sin saber qué se hizo y tiene que redescubrirlo del diff; `/session-close` corre en la conversación que ya lo sabe.
+  - `deploy-checker`: no puede correr build ni tests, así que el agente principal terminaba haciéndolo igual. Sus chequeos (git, variables de entorno usadas vs. documentadas, migraciones, rollback, veredicto GO / NO-GO) pasan a `/deploy-checklist`.
+- **Los comandos delegan en su agente:** `/bug-fix` le pasa la causa raíz a `debugger` y `/security-audit` a `security-auditor` (`security` en Antigravity); `/deploy-checklist` manda las migraciones nuevas a `db-migration-reviewer`. El usuario recuerda los comandos; los agentes son el detalle.
+- **Descripciones de 1–2 líneas** con cuándo usar y cuándo no. El detalle queda en el cuerpo, que solo se carga al invocar.
+- **Opus solo donde un error cuesta caro:** `security-auditor`, `db-migration-reviewer` y `server-operator`. `planner` pasa a sonnet; para un plan grande está el modo plan del agente principal.
+- **`maxTurns` en todos**, para que ninguno se quede leyendo el repo entero.
+- **Antigravity no cambia de cantidad:** sus 5 agentes por defecto no duplican nada.
+
+**Alternativas consideradas:**
+
+- **Un solo revisor que cubra código, UI y migraciones:** descartada. Mezcla modelos (las migraciones van en opus) y especialidades; un prompt largo con secciones condicionales revisa peor y se carga entero en cada invocación.
+- **Dejar los 11 y solo acortar descripciones:** descartada. Baja tokens pero deja los duplicados, que son el motivo de la confusión.
+- **Sacar también los comandos que duplican a un agente:** descartada. Los comandos son lo que el usuario escribe y documentan el flujo; en Antigravity, además, no todos tienen agente.
+
+**Consecuencias:**
+
+- Quien invocaba `explorer`, `docs-writer` o `deploy-checker` por nombre ahora usa `Explore`, `/session-close` o `/deploy-checklist`.
+- Los proyectos con el kit instalado tienen que borrar los tres archivos: el ZIP nuevo no los trae, pero tampoco borra lo que ya está.
+- `deploy-checker` vivió un día (ADR-021, nota del 2026-10-26); su contenido no se pierde, pasa al comando.

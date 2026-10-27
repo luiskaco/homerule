@@ -26,7 +26,7 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | `.agents/rules/` | Las 9 rules técnicas — fuente única para ambos tools |
 | `.agents/skills/` | Skills del kit — se copian tal cual a los dos tools. Incluye los 7 workflows (skills con `metadata: kind: workflow`, ADR-020): Claude los recibe como `.claude/commands/` |
 | `.agents/agents/` | 7 subagentes de Antigravity (fuente e instalación local) |
-| `.claude/agents/` | 13 subagentes de Claude Code (fuente e instalación local); `server-inspector` y `server-operator` van solo en el ZIP, no en el plugin (ADR-026) |
+| `.claude/agents/` | 10 subagentes de Claude Code (fuente e instalación local), 8 por defecto (ADR-027); `server-inspector` y `server-operator` van solo en el ZIP, no en el plugin (ADR-026) |
 | `.claude/hooks/` | Hooks de los subagentes: `readonly-bash.mjs` impone el solo lectura en los revisores (ADR-021), `web-guard.mjs` revisa lo que `web-researcher` manda a internet (ADR-022) y `ssh-guard.mjs` controla los agentes de servidores (ADR-026). `shell-parse.mjs` es el parser que comparten `readonly-bash` y `ssh-guard`. Viajan en el ZIP con cada agente que los usa, junto con lo que importan |
 | `docs-templates/` | Plantillas `/docs` que se empaquetan en los kits |
 | `docs/` | Documentación SDD de este repo (01–08 + `CONTEXT.md`) |

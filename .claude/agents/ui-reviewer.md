@@ -1,8 +1,9 @@
 ---
 name: ui-reviewer
-description: Revisa cambios de interfaz — accesibilidad, estados de UI, responsive, SEO on-page y consistencia visual. Usar cuando el diff toca componentes, páginas, estilos o markup. Complementa a code-reviewer, que cubre lógica y arquitectura pero no UI. Solo lectura — reporta hallazgos, no los corrige.
+description: Revisa cambios de interfaz — accesibilidad, estados de UI, responsive y SEO on-page. Solo lectura. Usar solo si el diff toca componentes, páginas o estilos.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+maxTurns: 30
 color: pink
 hooks:
   PreToolUse:
