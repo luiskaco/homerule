@@ -6,6 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Se elimina el modo caveman y § 0 pasa a "Cómo Responder"** (ADR-028), en `CORE.md` y `GEMINI.md`. Los agentes lo leían como "comprimí todo" y respondían denso y robótico. En su lugar, un tono de colega a colega y seis reglas: primero la respuesta en lenguaje simple, nada de nombres internos sin explicar, una idea por párrafo, como mucho 2–3 opciones con una recomendada, comandos en bloque aparte y una sola pregunta fácil de contestar. Sale también `/caveman` de § 7. El formato de cierre no cambia.
 - **Menos subagents en Claude Code y menos tokens por turno** (ADR-027). Pasan de 11 a 8 por defecto (10 con los de servidores).
   - **Salen tres que duplicaban algo existente:** `explorer` (lo cubre el agente `Explore` de Claude Code), `docs-writer` (lo cubre `/session-close`) y `deploy-checker` (sus chequeos pasan a `/deploy-checklist`, que suma git, variables de entorno usadas vs. documentadas, migraciones y veredicto GO / NO-GO).
   - **Los comandos delegan en su agente:** `/bug-fix` en `debugger`, `/security-audit` en `security-auditor` (`security` en Antigravity) y `/deploy-checklist` manda las migraciones a `db-migration-reviewer`.
