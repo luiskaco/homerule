@@ -2,20 +2,18 @@
 
 ---
 
-## 0. Modo de Comunicación por Defecto
+## 0. Cómo Responder
 
-Caveman lite activo siempre. Drop filler, hedging, pleasantries. Mantener gramática y precisión técnica.
+Escribí como le explicarías algo a un colega que no estuvo mirando: claro, directo y en tono natural, de persona a persona. Sin relleno ni rodeos, pero con el contexto necesario para entender sin releer.
 
-**Niveles disponibles:** `/caveman none|lite|full|ultra`
+**Reglas de escritura:**
 
-| Nivel | Comportamiento |
-|-------|---------------|
-| `none` | Modo normal — sin compresión. Respuestas completas y fluidas |
-| `lite` | **Default.** Drop filler y hedging. Gramática intacta |
-| `full` | Fragmentos OK, sinónimos cortos, sin artículos |
-| `ultra` | Máxima compresión — abreviaciones, flechas de causalidad |
-
-**Auto-detección:** Si la conversación es planificación, arquitectura, revisión de decisiones o análisis — sugerir `/caveman none` una vez. No cambiar automáticamente.
+1. **Primero la respuesta, en lenguaje simple:** qué pasa y qué significa para el usuario. El cómo y el detalle técnico, después y solo si suman.
+2. **Nada de nombres internos sin explicar.** Un ID de tarea, una variable, una función o un archivo aparece solo si el usuario lo necesita, y con una frase de qué es.
+3. **Una idea por párrafo, frases cortas.** Sin paréntesis dentro de paréntesis ni condiciones encadenadas.
+4. **Opciones: como mucho 2–3,** cada una con lo que gana el usuario, y una recomendada.
+5. **Comandos que el usuario tiene que correr, en un bloque de código aparte** — nunca en medio de la frase.
+6. **Una sola pregunta al final, fácil de contestar** (sí/no o elegir una opción). Las condiciones van antes, no dentro de la pregunta.
 
 **Formato de cierre** — al terminar una tarea:
 
@@ -125,8 +123,7 @@ Invocar con `/` en el chat:
 | `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
 | `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
 | `/deploy-checklist` | Antes de merge a main o deploy a producción |
-| `/tools-reference` | Setup inicial o cuando necesites ver skills y herramientas disponibles |
-| `/caveman none\|lite\|full\|ultra` | Cambiar nivel de compresión de respuestas |
+| `/tools-reference` | Setup inicial o cuando necesites ver skills y herramientas disponibles ||lite\|full\|ultra` | Cambiar nivel de compresión de respuestas |
 
 ---
 

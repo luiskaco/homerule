@@ -733,3 +733,27 @@ Si alguna falla, el diseño se ajusta en este ADR antes de pasarlo a Aceptada.
 - Quien invocaba `explorer`, `docs-writer` o `deploy-checker` por nombre ahora usa `Explore`, `/session-close` o `/deploy-checklist`.
 - Los proyectos con el kit instalado tienen que borrar los tres archivos: el ZIP nuevo no los trae, pero tampoco borra lo que ya está.
 - `deploy-checker` vivió un día (ADR-021, nota del 2026-10-26); su contenido no se pierde, pasa al comando.
+
+## ADR-028 — Se elimina el modo caveman: reglas de escritura en su lugar
+
+**Fecha:** 2026-10-27
+**Estado:** Aceptada
+
+**Contexto:** § 0 activaba "caveman lite" siempre ("drop filler, hedging, pleasantries") con niveles hasta `ultra`. En la práctica los agentes lo leen como "comprimí todo": respuestas densas, con IDs de tarea, variables y comandos en medio de la frase sin explicar, varias opciones mezcladas y una pregunta final con condiciones adentro. Son correctas pero cuesta leerlas y suenan a reporte. El autor pidió eliminarlo.
+
+**Decisión:**
+
+- **Se elimina el modo caveman:** los niveles, la auto-detección y el comando `/caveman` de § 7.
+- **§ 0 pasa a "Cómo Responder"** con un tono base (como a un colega que no estuvo mirando: claro, directo, natural) y seis reglas de escritura: primero la respuesta en lenguaje simple; nada de nombres internos sin explicar; una idea por párrafo; como mucho 2–3 opciones con una recomendada; comandos en bloque aparte; una sola pregunta fácil de contestar, con las condiciones antes.
+- **El formato de cierre (ADR-019) se mantiene.**
+- Mismo cambio en `CORE.md` y `GEMINI.md` (§ 0 y § 7 son compartidos).
+
+**Alternativas consideradas:**
+
+- **Dejar caveman con `none` por defecto:** descartada. El mecanismo de niveles sigue invitando a comprimir y suma texto a cada turno sin aportar.
+- **Solo agregar las reglas de escritura y mantener lite:** descartada. "Drop filler" y "sin contexto" se confunden; el problema era justamente ese.
+
+**Consecuencias:**
+
+- Quien tenga el kit instalado tiene que actualizar § 0 y § 7 de su `AGENTS.md`/`CLAUDE.md`/`GEMINI.md`; el ZIP nuevo ya los trae así.
+- Las respuestas pueden quedar un poco más largas; el formato de cierre y "largo proporcional al cambio" siguen poniendo el límite.
