@@ -718,7 +718,7 @@ Si alguna falla, el diseño se ajusta en este ADR antes de pasarlo a Aceptada.
   - `deploy-checker`: no puede correr build ni tests, así que el agente principal terminaba haciéndolo igual. Sus chequeos (git, variables de entorno usadas vs. documentadas, migraciones, rollback, veredicto GO / NO-GO) pasan a `/deploy-checklist`.
 - **Los comandos delegan en su agente:** `/bug-fix` le pasa la causa raíz a `debugger` y `/security-audit` a `security-auditor` (`security` en Antigravity); `/deploy-checklist` manda las migraciones nuevas a `db-migration-reviewer`. El usuario recuerda los comandos; los agentes son el detalle.
 - **Descripciones de 1–2 líneas** con cuándo usar y cuándo no. El detalle queda en el cuerpo, que solo se carga al invocar.
-- **Opus solo donde un error cuesta caro:** `security-auditor`, `db-migration-reviewer` y `server-operator`. `planner` pasa a sonnet; para un plan grande está el modo plan del agente principal.
+- **Opus solo donde un error cuesta caro:** `planner`, `security-auditor`, `db-migration-reviewer` y `server-operator`. **Actualizado 2026-10-27:** `planner` se había pasado a sonnet y vuelve a opus con `effort: high` por decisión del autor: un mal plan en una tarea grande se paga en todo lo que viene después, y se invoca poco (solo en tareas de más de 3 archivos o con decisiones irreversibles), así que el costo extra es acotado.
 - **`maxTurns` en todos**, para que ninguno se quede leyendo el repo entero.
 - **Antigravity no cambia de cantidad:** sus 5 agentes por defecto no duplican nada.
 
