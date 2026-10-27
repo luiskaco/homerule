@@ -13,6 +13,12 @@ metadata:
 
 > Checklist de verificación rápida. El detalle, ejemplos de código y criterio completo de cada punto viven en `security.md` — es la fuente de verdad. Si algo acá parece desactualizado respecto a `security.md`, gana `security.md`.
 
+Delegar la auditoría en el subagente de seguridad (`security-auditor` en
+Claude Code, `security` en Antigravity), pasándole el diff o la feature a
+revisar: recorre esta lista y el resto de `security.md` en su propio contexto
+y devuelve los hallazgos con severidad. Si el tool no tiene ese subagente,
+recorrer la lista acá.
+
 ---
 
 ## 🔒 Security Audit

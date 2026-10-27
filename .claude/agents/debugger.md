@@ -1,8 +1,9 @@
 ---
 name: debugger
-description: Analiza la causa raíz de un bug antes de tocar código. Usar cuando algo está roto y no está claro por qué — reproduce el problema, aísla la causa, propone un plan de fix mínimo y el test que lo reproduce. No implementa el fix.
+description: Encuentra la causa raíz de un bug que no se entiende y devuelve evidencia, fix mínimo y el test que lo reproduce. No edita código. Para un error obvio no hace falta.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+maxTurns: 30
 color: orange
 ---
 

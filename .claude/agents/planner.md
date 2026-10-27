@@ -1,9 +1,9 @@
 ---
 name: planner
-description: Planificación de arquitectura e implementación para proyectos que siguen las convenciones de este kit — planifica contra las reglas instaladas en `.claude/skills/`, los desvíos declarados en `AGENTS.md` y los ADRs ya registrados en `/docs/07_DECISIONS.md`, para no re-decidir lo ya decidido. Usar antes de tocar código en tareas que afectan más de 3 archivos, tienen más de una arquitectura válida, o incluyen decisiones irreversibles (migraciones, cambios de schema, borrado de datos). Preferir sobre el agente Plan genérico cuando el proyecto tiene `/docs` o skills de reglas instaladas. No escribe ni edita código.
+description: Planifica tareas grandes (más de 3 archivos, varias arquitecturas posibles o pasos irreversibles) contra las reglas y los ADRs del proyecto. No escribe código; para tareas chicas no hace falta.
 tools: Read, Grep, Glob, Bash
-model: opus
-effort: high
+model: sonnet
+maxTurns: 25
 color: purple
 hooks:
   PreToolUse:

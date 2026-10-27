@@ -1,8 +1,9 @@
 ---
 name: code-reviewer
-description: Revisa un diff o PR contra las reglas del proyecto (correctness, seguridad, datos, arquitectura, convenciones de stack) antes de mergear. Usar después de terminar una feature o antes de un deploy checklist. Para cambios de interfaz usar ui-reviewer; para una auditoría de seguridad a fondo, security-auditor. Solo lectura — reporta hallazgos, no los corrige.
+description: Revisa el diff antes de mergear — bugs, seguridad básica, datos, arquitectura y convenciones. Solo lectura. La UI va a ui-reviewer y una auditoría de seguridad a fondo a security-auditor.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+maxTurns: 30
 color: blue
 hooks:
   PreToolUse:

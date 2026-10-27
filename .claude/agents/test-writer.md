@@ -1,8 +1,9 @@
 ---
 name: test-writer
-description: Escribe tests para código ya implementado y los corre hasta que pasan. Usar después de cerrar una feature, al cubrir un bug ya diagnosticado, o cuando se pida explícitamente agregar tests. Escribe solo archivos de test — no modifica el código bajo prueba.
+description: Escribe tests para código ya hecho y los corre hasta que pasan. Solo toca archivos de test. Usar al cerrar una feature o para cubrir un bug ya diagnosticado.
 tools: Read, Write, Edit, Grep, Glob, Bash
 model: sonnet
+maxTurns: 40
 color: green
 ---
 

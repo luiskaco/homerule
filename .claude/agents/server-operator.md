@@ -1,9 +1,10 @@
 ---
 name: server-operator
-description: Aplica cambios puntuales en servidores por SSH — reiniciar un servicio, editar una config, subir un archivo — con la aprobación del usuario para cada comando, conectándose solo por alias listados en `.claude/ssh-hosts.txt`. Usar cuando ya se sabe qué cambiar, idealmente después de un diagnóstico de server-inspector. Un hook bloquea lo que deja sin acceso al servidor y no corre si la sesión está en bypassPermissions o dontAsk.
+description: Aplica cambios puntuales en un servidor por SSH, de a uno y con tu aprobación, solo por alias de .claude/ssh-hosts.txt. Usar después de diagnosticar con server-inspector.
 tools: Read, Grep, Glob, Bash
 model: opus
 effort: high
+maxTurns: 30
 color: orange
 hooks:
   PreToolUse:

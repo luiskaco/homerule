@@ -6,6 +6,12 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Menos subagents en Claude Code y menos tokens por turno** (ADR-027). Pasan de 11 a 8 por defecto (10 con los de servidores).
+  - **Salen tres que duplicaban algo existente:** `explorer` (lo cubre el agente `Explore` de Claude Code), `docs-writer` (lo cubre `/session-close`) y `deploy-checker` (sus chequeos pasan a `/deploy-checklist`, que suma git, variables de entorno usadas vs. documentadas, migraciones y veredicto GO / NO-GO).
+  - **Los comandos delegan en su agente:** `/bug-fix` en `debugger`, `/security-audit` en `security-auditor` (`security` en Antigravity) y `/deploy-checklist` manda las migraciones a `db-migration-reviewer`.
+  - **Descripciones de 1–2 líneas** con cuándo usar cada agente y cuándo no. Claude Code las carga en todos los turnos: el listado baja de ~1.200 a ~500 tokens.
+  - **`planner` pasa a sonnet;** opus queda solo en `security-auditor`, `db-migration-reviewer` y `server-operator`. Todos tienen `maxTurns`.
+  - Quien tenga el kit instalado tiene que borrar `explorer.md`, `docs-writer.md` y `deploy-checker.md` de `.claude/agents/`: el ZIP nuevo no los trae, pero no borra lo que ya está.
 - **Agentes de servidores: `server-inspector` y `server-operator`** (ADR-026), en Claude Code (de 11 a 13) y Antigravity (de 5 a 7). Se conectan solo por alias de `~/.ssh/config`, nunca por `user@host` ni por IP, con una lista de alias por proyecto en `.claude/ssh-hosts.txt` o `.agents/ssh-hosts.txt`.
   - **`server-inspector` diagnostica sin cambiar nada:** logs, servicios, disco, procesos, puertos y contenedores.
   - **`server-operator` aplica cambios de a uno,** cada uno con la aprobación del usuario.
