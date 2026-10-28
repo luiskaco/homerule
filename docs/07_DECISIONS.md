@@ -701,6 +701,7 @@ Si alguna falla, el diseño se ajusta en este ADR antes de pasarlo a Aceptada.
 - Con `@server-operator` y `@adr026-probe-{auto,eager,sandbox}`, el que contestó y corrió los comandos fue el agente principal, no el subagente. La política de cada agente nunca entró en juego: 6, 7 y 8 quedan sin respuesta.
 - **El hallazgo que importa:** con la política de terminal del agente principal en "Request review" y sin `ssh` en la allow list, los 4 `ssh` llegaron al sshd sin pedir aprobación. El `Test-NetConnection` a internet también corrió. En Antigravity, la aprobación por comando que este ADR da por hecha no está garantizada: depende de cómo invoque el usuario al agente y de cómo resuelva Antigravity la política.
 - **Decisión:** los dos agentes de Antigravity siguen en el kit, pero el INSTALL del ZIP los marca como sin verificar y recomienda Claude Code para los cambios en servidores. Las pruebas 6–8 quedan pendientes en `06_TASKS.md`, hasta saber cómo se invoca de verdad un subagent de workspace en Antigravity.
+- **Actualizado 2026-10-28:** Antigravity sí delega si se lo pide con palabras ("usa el subagente `security` para…"); con `@agente` responde el agente principal, que explica lo que pasó en 6–8. Las pruebas se repiten con esa forma de pedirlo antes de pasar la parte de Antigravity a Aceptada.
 
 ## ADR-027 — Menos subagents en Claude Code y menos tokens por turno
 
