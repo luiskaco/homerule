@@ -372,28 +372,34 @@ Instalación: `npx skills add sickn33/antigravity-awesome-skills --skill api-sec
 frontmatter inválido — se instala solo esta, no el paquete completo).
 Detalle en [`.agents/skills/api-security-best-practices/SKILL.md`](.agents/skills/api-security-best-practices/SKILL.md).
 
-### Skills de diseño de terceros (`.claude/skills/`)
+### Skills de diseño de terceros
 
-Vendorizadas en el repo — Claude Code las levanta solo al abrir el proyecto.
 A diferencia de las de `.agents/skills/`, **no** entran en el ZIP de `/build`:
 son código de otros repos, con su propia licencia y su propio ciclo de
 actualización.
 
-| Origen | Skills |
-|---|---|
-| [nutlope/hallmark](https://github.com/nutlope/hallmark) | `hallmark` |
-| [emilkowalski/skills](https://github.com/emilkowalski/skill) | `emil-design-eng`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`, `apple-design`, `pick-ui-library` |
-| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design-system`, `ui-styling` |
+| Origen | Skills | Dónde viven |
+|---|---|---|
+| [nutlope/hallmark](https://github.com/nutlope/hallmark) | `hallmark` | Cuenta de Claude del autor |
+| [emilkowalski/skills](https://github.com/emilkowalski/skill) | `emil-design-eng`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`, `apple-design`, `pick-ui-library` | Cuenta de Claude del autor |
+| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design-system`, `ui-styling` | Vendorizadas en `.claude/skills/` |
 
-Reinstalar o actualizar. `skills-lock.json` registra el hash de las instaladas
-vía `npx skills` (las 9 de nutlope/emilkowalski + `api-security-best-practices`);
-las tres de `uipro init` (`ui-ux-pro-max`, `design-system`, `ui-styling`) y la
-propia `project-docs-scaffold` **no** están en el lock — el CLI de uipro no lo
-escribe, así que su única referencia de versión es este repo (git):
+Las 8 de hallmark y emilkowalski estaban también vendorizadas acá y se sacaron
+del repo el 2026-10-28: eran idénticas a las de la cuenta y en cada sesión de
+este proyecto aparecían dos veces. Para usarlas en otra máquina o cuenta,
+instalarlas como skills personales:
 
 ```bash
-npx skills add nutlope/hallmark --copy
-npx skills add emilkowalski/skills --copy
+npx skills add nutlope/hallmark
+npx skills add emilkowalski/skills
+```
+
+`skills-lock.json` registra ahora solo `api-security-best-practices`. Las tres
+de `uipro init` y la propia `project-docs-scaffold` **no** están en el lock —
+el CLI de uipro no lo escribe, así que su única referencia de versión es este
+repo (git). Para reinstalarlas:
+
+```bash
 npx ui-ux-pro-max-cli init --ai claude
 ```
 
@@ -413,9 +419,8 @@ python scripts/make-desktop-zips.py
 
 Deja un `.zip` por skill en `skills-desktop/` (gitignored), cada uno con su
 `SKILL.md` en la raíz de la carpeta. **No alcanza con copiar solo el
-`SKILL.md`** salvo en las de un único archivo: `hallmark` son 106 archivos y
-`ui-ux-pro-max` 39 — sin su `references/` o su `data/` la skill queda
-apuntando a archivos que no existen.
+`SKILL.md`** salvo en las de un único archivo: `ui-ux-pro-max` son 39
+archivos — sin su `data/` la skill queda apuntando a archivos que no existen.
 
 > `ui-ux-pro-max` funciona parcialmente en Desktop: su `SKILL.md` invoca
 > `python3 skills/ui-ux-pro-max/scripts/search.py`, una ruta relativa al

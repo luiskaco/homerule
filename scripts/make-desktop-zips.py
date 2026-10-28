@@ -3,11 +3,11 @@ r"""Empaqueta cada skill de .claude/skills/ en un ZIP subible a Claude Desktop.
     python scripts/make-desktop-zips.py
 
 Deja los ZIPs en skills-desktop/ (gitignored). Cada uno contiene la carpeta
-de la skill con su SKILL.md en la raiz: `hallmark/SKILL.md`.
+de la skill con su SKILL.md en la raiz: `ui-ux-pro-max/SKILL.md`.
 
 No se usa Compress-Archive de PowerShell 5.1: escribe los separadores de ruta
 como `\` y el estandar ZIP exige `/`, con lo cual algunos lectores tratan
-`hallmark\SKILL.md` como un unico archivo suelto y la skill queda sin su
+`ui-ux-pro-max\SKILL.md` como un unico archivo suelto y la skill queda sin su
 SKILL.md en la raiz.
 """
 

@@ -35,5 +35,7 @@ Para trabajo de UI en `site/`, usar **una** skill por tarea, elegida así:
 | Consulta de paletas/tipografías/charts | `ui-ux-pro-max` |
 | Animaciones (revisar / mejorar / proponer) | `review-animations` / `improve-animations` / `find-animation-opportunities` |
 
-El resto de skills de diseño disponibles en la sesión (globales del usuario) no
-se invocan solas para este repo salvo pedido explícito.
+`hallmark`, `emil-design-eng` y las de animación vienen de la cuenta de Claude
+del usuario (no están en el repo); `ui-styling` y `ui-ux-pro-max` están
+vendorizadas en `.claude/skills/`. El resto de skills de diseño disponibles en
+la sesión no se invocan solas para este repo salvo pedido explícito.
