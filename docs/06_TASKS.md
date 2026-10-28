@@ -5,6 +5,8 @@
 
 ## En progreso
 
+- [x] **Quitar del repo las skills de diseño duplicadas** (2026-10-28): las 8 de hallmark/emilkowalski en `.claude/skills/` eran idénticas a las de la cuenta del autor. Se borran del repo y del lock; README y `CLAUDE.md` dicen de dónde vienen. En la misma limpieza el autor desactivó en claude.ai los plugins `example-skills`, `claude-api`, `ui-ux-pro-max` y `superpowers`, y las skills de cuenta `design-taste-frontend` e `impeccable` (sigue el plugin).
+
 - [x] **Criterio propio en § 0** (2026-10-28, ADR-029): bloque "no des la razón por cortesía" en `CORE.md`/`GEMINI.md`, más el fix de la fila de `/tools-reference` en § 7. Después a los archivos globales y a los proyectos con el kit. Rama `feat/critical-thinking`. Hecho cuando: el bloque está en el kit, en los globales y en los 13 proyectos, y paridad/plugin/build pasan. **Hecho (2026-10-28):** kit, `~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md` y los 13 proyectos (ZKTeco-k40 ahora se llama `makeControlHubk40`).
 
 - [x] **Eliminar caveman y reglas de escritura en § 0** (2026-10-27, ADR-028): § 0 de `CORE.md`/`GEMINI.md` pasa a "Cómo Responder" y sale `/caveman` de § 7. Después se lleva a `~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md` y a los proyectos con el kit. Rama `feat/writing-rules`. Hecho cuando: no queda "caveman" en el kit ni en los proyectos, paridad/plugin/build pasan. **Hecho (2026-10-27):** kit, `~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md` y 13 proyectos (más la skill `caveman` borrada en 5); solo quedan menciones en `.kilo/worktrees/` y un `HANDOFF.md` histórico.
