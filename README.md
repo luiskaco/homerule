@@ -433,7 +433,7 @@ no editarla a mano.
 <!-- token-table:start -->
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
-| `GEMINI.md` | ~2,478 | Siempre |
+| `GEMINI.md` | ~2,624 | Siempre |
 | `security.md` | ~1,559 | Model Decision |
 | `architecture.md` | ~600 | Model Decision |
 | `ui-ux.md` | ~2,281 | Model Decision |
@@ -450,9 +450,9 @@ no editarla a mano.
 | `/session-close` | ~598 | Skill — slash o por descripción |
 | `/security-audit` | ~742 | Skill — slash o por descripción |
 | `/deploy-checklist` | ~824 | Skill — slash o por descripción |
-| **Base siempre activa** | **~2,478** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,483–7,198** | sesión normal de código |
-| **Máximo con todo activo** | **~12,605** | improbable — varias reglas casi nunca se activan juntas |
+| **Base siempre activa** | **~2,624** | `GEMINI.md` |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,629–7,344** | sesión normal de código |
+| **Máximo con todo activo** | **~12,751** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

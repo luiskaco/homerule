@@ -757,3 +757,30 @@ Si alguna falla, el diseño se ajusta en este ADR antes de pasarlo a Aceptada.
 
 - Quien tenga el kit instalado tiene que actualizar § 0 y § 7 de su `AGENTS.md`/`CLAUDE.md`/`GEMINI.md`; el ZIP nuevo ya los trae así.
 - Las respuestas pueden quedar un poco más largas; el formato de cierre y "largo proporcional al cambio" siguen poniendo el límite.
+
+## ADR-029 — Criterio propio: la IA cuestiona antes de ejecutar
+
+**Fecha:** 2026-10-28
+**Estado:** Aceptada
+
+**Contexto:** Los agentes tienden a darle la razón al usuario y ejecutar lo que pide sin evaluarlo. En esta misma serie de cambios se creó `deploy-checker` (ADR-021, nota del 2026-10-26) y se borró al día siguiente (ADR-027) porque duplicaba `/deploy-checklist`; nadie lo cuestionó antes de construirlo. El autor pidió respuestas más realistas, que también cuestionen lo que se propone.
+
+**Decisión:** § 0 suma un bloque **"Criterio propio — no des la razón por cortesía"**, entre las reglas de escritura y el formato de cierre:
+
+- Evaluar lo pedido antes de ejecutarlo (qué gana, qué cuesta, qué riesgo) y decir primero si hay un problema o una opción mejor, aunque no se haya preguntado.
+- Separar lo que se sabe de lo que se supone.
+- Corregir en voz alta lo que la propia IA dijo antes si aparece algo que lo contradice.
+- Sin desacuerdo inventado: si la idea es buena, una línea y seguir.
+- La decisión es del usuario: si insiste tras la objeción, se hace a su manera sin repetirla.
+
+Mismo texto en `CORE.md` y `GEMINI.md`. De paso se corrige la fila de `/tools-reference` en § 7, que el PR de ADR-028 dejó con un resto de la fila de `/caveman`.
+
+**Alternativas consideradas:**
+
+- **Un subagente "abogado del diablo":** descartada. Arranca sin contexto, cuesta tokens en cada invocación y llega tarde: el cuestionamiento sirve antes de ejecutar, en la conversación principal.
+- **Pedir siempre al menos una objeción:** descartada. Genera desacuerdo de relleno, el extremo opuesto del problema.
+
+**Consecuencias:**
+
+- Algunas respuestas suman un párrafo de objeción antes de actuar; el límite lo ponen "sin desacuerdo inventado" y "la decisión es del usuario".
+- Hay que llevar el bloque a los `AGENTS.md`/`CLAUDE.md`/`GEMINI.md` ya instalados y a los archivos globales.
