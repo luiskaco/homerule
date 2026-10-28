@@ -785,3 +785,23 @@ Mismo texto en `CORE.md` y `GEMINI.md`. De paso se corrige la fila de `/tools-re
 
 - Algunas respuestas suman un párrafo de objeción antes de actuar; el límite lo ponen "sin desacuerdo inventado" y "la decisión es del usuario".
 - Hay que llevar el bloque a los `AGENTS.md`/`CLAUDE.md`/`GEMINI.md` ya instalados y a los archivos globales.
+
+## ADR-030 — Reglas de uso de subagentes en § 8
+
+**Fecha:** 2026-10-28
+**Estado:** Aceptada
+
+**Contexto:** Con ADR-027 el catálogo quedó en 8 subagents con descripciones cortas, pero el gasto grande no está en cuántos hay sino en cuándo se lanzan: cada invocación arranca sin contexto y vuelve a leer el proyecto. Una sesión de Claude Code de un proyecto del autor propuso reglas de uso tras una ronda cara; se revisaron y se ajustaron dos puntos antes de llevarlas al kit.
+
+**Decisión:** § 8 de `CORE.md` y `GEMINI.md` suma el bloque **"Uso de subagentes"**: cambios chicos sin subagente; uno por tarea grande y reanudarlo; instrucciones exactas a quien implementa pero el alcance (no una lista cerrada de archivos) a quien revisa; revisiones una vez al final, con auditoría de seguridad siempre que toque login, pagos o datos sensibles; build/tests/lint con comandos; informes breves.
+
+**Alternativas consideradas:**
+
+- **Guardarlas en la memoria de cada proyecto:** descartada. Quedarían solo donde se propusieron y divergirían entre proyectos y tools.
+- **Adoptar la propuesta tal cual:** descartada en dos puntos. Darles a los revisores solo una lista de archivos les impide seguir el dato (`security-auditor` necesita ver el endpoint y la tabla que el cambio toca). Y "una sola revisión si el cambio es chico" no vale para auth, pagos o datos sensibles.
+- **Recortar el cuerpo de los agentes o los `maxTurns`:** pospuesto. Ahorro chico y sin datos de uso real; se revisa después de medir una o dos semanas.
+
+**Consecuencias:**
+
+- El bloque cuesta unos 150 tokens por turno; se compensa con una sola invocación evitada.
+- Hay que llevarlo a los `AGENTS.md`/`CLAUDE.md` instalados y a los archivos globales.

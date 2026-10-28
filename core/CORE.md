@@ -156,6 +156,15 @@ Antes de entregar cualquier código, revisar internamente con estas pasadas — 
 
 > Revisión: 🎨 ✅ · 🧪 sin verificar: no hay tests · 📝 falta CHANGELOG · 🔍 corregido: XSS en el formulario · ⚠️ push a main
 
+**Uso de subagentes** — cada uno arranca sin contexto y vuelve a leer el proyecto, así que cuestan:
+
+- Cambios chicos (pocos archivos, sin riesgo), directo, sin subagente.
+- Uno por tarea grande, y reanudarlo si la herramienta lo permite, en vez de lanzar otro: conserva lo que ya leyó.
+- A quien implementa, instrucciones exactas: los archivos y los puntos a resolver. A quien revisa, el alcance (el diff o la feature), no una lista cerrada de archivos: tiene que poder seguir el dato hasta donde llega.
+- Revisiones una sola vez, al final. Un cambio chico lleva una sola revisión, salvo que toque login, pagos o datos sensibles: eso siempre pasa por la auditoría de seguridad.
+- Build, tests y lint, con comandos, no con subagentes.
+- Pedir informes breves: hallazgos y resultados, no explicaciones.
+
 > Esto es una **auto-revisión inline** en el mismo turno, no delegación. Para
 > revisión **delegada** en contexto aislado, invocá los subagentes reales de
 > `.claude/agents/` (`code-reviewer`, `security-auditor`) — corren en su propia
