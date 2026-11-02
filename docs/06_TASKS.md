@@ -5,6 +5,8 @@
 
 ## En progreso
 
+- [x] **SEO solo en sitios públicos** (2026-11-02): alcance en la regla `seo` y `ui-reviewer` que revisa SEO/PWA solo si la regla está instalada. Además se quitó la regla `seo` de los 4 proyectos internos (GrowthHubOS, makeControlHubk40, makeNewMonitorLatam, makeOLatamAds). **Pendiente:** los presets de Next.js/React/Vue instalan `seo` siempre; revisar si conviene un preset "app interna" sin esa regla.
+
 - [x] **Archivos del sitio en la regla `seo` y `security.txt` en `security`** (2026-11-02): las IAs no tenían presentes `robots.txt`, `sitemap.xml`, `llms.txt` ni el caso WordPress. Rama `feat/seo-site-files`. Después a los proyectos que tienen esas rules, sin pisar las personalizadas.
 
 - [x] **Reglas de uso de subagentes** (2026-10-28, ADR-030): bloque en § 8 de `CORE.md`/`GEMINI.md`, después a globales y proyectos. Rama `feat/subagent-usage-rules`. Hecho cuando: está en el kit, en los globales y en los 13 proyectos, y paridad/plugin/build pasan. **Hecho (2026-10-28):** kit, globales y 13 proyectos. **Después:** medir una o dos semanas cuánto gasta cada subagente antes de recortar cuerpos o `maxTurns`.

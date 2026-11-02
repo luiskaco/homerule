@@ -442,7 +442,7 @@ no editarla a mano.
 | `security.md` | ~1,618 | Model Decision |
 | `architecture.md` | ~600 | Model Decision |
 | `ui-ux.md` | ~2,281 | Model Decision |
-| `seo.md` | ~1,352 | Model Decision |
+| `seo.md` | ~1,423 | Model Decision |
 | `pwa.md` | ~539 | Model Decision — solo PWA |
 | `operations.md` | ~1,244 | Model Decision |
 | `cms.md` | ~690 | Model Decision |
@@ -457,7 +457,7 @@ no editarla a mano.
 | `/deploy-checklist` | ~824 | Skill — slash o por descripción |
 | **Base siempre activa** | **~2,562** | `GEMINI.md` |
 | **Caso típico** (1-2 reglas + 1 workflow) | **~3,567–7,341** | sesión normal de código |
-| **Máximo con todo activo** | **~13,076** | improbable — varias reglas casi nunca se activan juntas |
+| **Máximo con todo activo** | **~13,147** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

@@ -11,6 +11,11 @@ description: Activar al trabajar meta tags, Open Graph, structured data, canonic
 > concretos de acá (Lighthouse ≥90/≥80, OG 1200×630px, largo de title/description,
 > etc.) mandan sobre cualquier sugerencia genérica que la skill proponga.
 
+**Alcance:** solo sitios públicos que deben aparecer en buscadores. En paneles,
+herramientas internas o apps detrás de login no se propone nada de SEO: lo único
+que corresponde es que no se indexen (`<meta name="robots" content="noindex, nofollow">`
+y `robots.txt` con `Disallow: /`).
+
 Complementa a `ui-ux.md` — accesibilidad, performance frontend y skeletons viven
 ahí y varias de sus reglas tienen impacto SEO directo (ver referencias abajo).
 
