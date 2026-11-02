@@ -64,6 +64,8 @@ Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=()
 ```
 
+**Contacto de seguridad:** publicar `/.well-known/security.txt` (RFC 9116) en sitios en producción, con al menos `Contact:` (email o URL donde reportar fallas) y `Expires:` (fecha, máximo un año). Renovar `Expires` antes de que venza.
+
 ---
 
 ## Validación de Requests
