@@ -1,7 +1,7 @@
 {
   "name": "ai-rules-hub",
   "displayName": "AI Rules Hub",
-  "version": "2026.10.28",
+  "version": "2026.11.2",
   "description": "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 9 subagentes especializados.",
   "author": {
     "name": "luiskaco",

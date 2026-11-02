@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Activar al trabajar meta tags, Open Graph, structured data, canonical, sitemap, o al diagnosticar indexación, ranking y Core Web Vitals como factor SEO
+description: Activar al trabajar meta tags, Open Graph, structured data, canonical, sitemap, robots.txt o llms.txt, o al diagnosticar indexación, ranking y Core Web Vitals como factor SEO
 ---
 
 # SEO Técnico
@@ -79,6 +79,27 @@ ahí y varias de sus reglas tienen impacto SEO directo (ver referencias abajo).
 }
 </script>
 ```
+
+## Archivos en la Raíz del Sitio
+
+- **`/robots.txt`** — permitir todo lo público y bloquear solo lo que no debe
+  indexarse (paneles, búsquedas internas, carritos). Terminar con la línea
+  `Sitemap: https://dominio/sitemap.xml`. Nunca bloquear CSS ni JS: Google los
+  necesita para renderizar la página. En staging, bloquear todo
+  (`Disallow: /`) y además `noindex`, porque `robots.txt` solo no impide que
+  una URL aparezca en resultados.
+- **`/sitemap.xml`** — solo páginas indexables, cada una con su URL canónica
+  (sin redirecciones, sin `noindex`, sin parámetros). Se genera solo con cada
+  build o publicación, nunca a mano. Más de 50.000 URLs → índice de sitemaps.
+- **`/llms.txt`** (opcional) — resumen del sitio en Markdown para buscadores
+  con IA (ChatGPT, Perplexity). Todavía no es un estándar oficial: suma poco,
+  no reemplaza nada de lo anterior. Para armarlo y para la visibilidad en
+  respuestas de IA, usar la skill `ai-seo`.
+- **WordPress** — ya genera un `robots.txt` virtual y el sitemap en
+  `/wp-sitemap.xml`. Si hay plugin de SEO (Yoast, Rank Math), él se encarga de
+  los dos y de títulos, Open Graph y JSON-LD. No crear archivos a mano en la
+  raíz que dupliquen lo que genera WordPress o el plugin: el archivo físico
+  tapa al virtual y queda desactualizado.
 
 ## Core Web Vitals como Ranking Factor
 
