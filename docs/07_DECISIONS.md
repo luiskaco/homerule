@@ -64,7 +64,7 @@
 ## ADR-006 — Antigravity y Claude Code como catálogos estancos (fin del modo híbrido)
 
 **Fecha:** 2026-07-31
-**Estado:** Aceptada — sustituye a ADR-001
+**Estado:** Aceptada — sustituye a ADR-001; ajustada por ADR-031 (kit híbrido)
 
 **Contexto:** El hub ofrecía tres modos de uso, uno de los cuales ("Antigravity + Claude") presentaba a Claude como complemento de un proyecto Antigravity. Ese modo nunca tuvo un ZIP propio (ADR-001 ya lo anotaba como consecuencia) y el acoplamiento generaba errores concretos: el subagente `code-reviewer` referenciaba `.agents/rules/security.md` y `.agents/rules/architecture.md`, rutas que **no existen** en un ZIP de Claude Code, porque el generador convierte esas rules a `.claude/skills/<id>/SKILL.md`. El agente solo funcionaba si además se había bajado el ZIP de Antigravity.
 
@@ -805,3 +805,33 @@ Mismo texto en `CORE.md` y `GEMINI.md`. De paso se corrige la fila de `/tools-re
 
 - El bloque cuesta unos 150 tokens por turno; se compensa con una sola invocación evitada.
 - Hay que llevarlo a los `AGENTS.md`/`CLAUDE.md` instalados y a los archivos globales.
+
+## ADR-031 — Kit híbrido: un solo juego de reglas para Claude Code y Antigravity
+
+**Fecha:** 2026-11-05
+**Estado:** Aceptada — ajusta ADR-006 y, solo para el híbrido, ADR-016
+
+**Contexto:** ADR-006 separó los dos kits porque el modo híbrido de entonces no tenía ZIP y dejaba rutas rotas. Hoy el autor trabaja proyectos con las dos IA (makeNewMonitorLatam, pluginWordpress), armados a mano. Eso deja cada regla copiada en `.agents/rules/` y `.claude/skills/`, con riesgo de que diverjan, y las reglas generales cargadas dos veces en cada herramienta: una por su archivo global y otra por el `AGENTS.md` del proyecto. Además, cada cambio del núcleo obligó a un commit por proyecto.
+
+**Decisión:** Un tercer kit, `hybrid`, que **se suma** a los dos existentes:
+
+1. **Reglas y skills, una sola vez en `.agents/`.** Claude Code no descubre esa carpeta, así que `.claude/skills/` y `.claude/commands/` llevan punteros con la descripción y una línea que manda a leer el archivo de `.agents/`.
+2. **Reglas generales en los archivos globales** (`~/.claude/CLAUDE.md`, `~/.gemini/GEMINI.md`). `AGENTS.md` lleva solo el mapa y la sección Proyecto, y `CLAUDE.md` lo importa.
+3. **`.agents/CORE.md`**: copia del núcleo que ninguna herramienta carga sola, para otra máquina u otra IA.
+4. **Subagentes separados**: los formatos, modelos y hooks son distintos por tool.
+
+ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus items no se mezclan con los otros; el kit se compone con sus items y los que ya existen de cada tool.
+
+**Alternativas consideradas:**
+
+- **Núcleo en el `AGENTS.md` de cada proyecto y globales vacíos:** descartada. Cada repo sería autosuficiente, pero cada cambio del núcleo volvería a tocar todos los proyectos, y los que no tienen kit quedarían sin reglas. El autor trabaja en una sola máquina.
+- **Copias en `.claude/` regeneradas por un script en cada proyecto:** descartada. Requiere Node y acordarse de correrlo, y entre corridas las copias pueden diferir.
+- **Enlaces simbólicos de `.claude/skills/` a `.agents/`:** descartada. En Windows piden permisos especiales y git los clona como archivos de texto si no están habilitados.
+
+**Consecuencias:**
+
+- El sitio suma una tercera opción, "Claude + Gemini", con presets, subagentes y ZIP propios. Cada item híbrido trae su fuente y su puntero, así que el manifest crece.
+- Claude Code hace una lectura más por cada regla, skill o comando que usa. Un subagente que abre una regla pasa por el puntero y después por el archivo real.
+- Si cambia la `description` de una regla, hay que actualizar también su puntero en los proyectos. Cambiar el cuerpo no toca `.claude/`.
+- Quien clone el repo sin los archivos globales depende de leer `.agents/CORE.md`, que puede quedar atrás.
+- Los kits de un solo tool no cambian. `core/agents-map.md` pasa la variable de subagentes con sus propias comillas invertidas, sin cambiar lo que generan.

@@ -45,6 +45,11 @@ export default async function KitPresetsPage(props: { params: Params }) {
           geminiMd: () => code("GEMINI.md"),
           agentsDir: () => code(".agents/"),
         })
+      : tool === "hybrid"
+      ? t.rich("intro.hybrid", {
+          agentsDir: () => code(".agents/"),
+          claudeDir: () => code(".claude/"),
+        })
       : t.rich("intro.claude-code", {
           claudeMd: () => code("CLAUDE.md"),
           skillsDir: () => code(".claude/skills"),

@@ -45,7 +45,7 @@ export default function KitHeader({ tool, preset }: { tool: ToolId; preset?: str
         <div
           role="group"
           aria-labelledby="kit-tool-label"
-          className="inline-flex max-w-full rounded-xl border border-slate-800 bg-slate-900/80 p-1"
+          className="inline-flex max-w-full flex-wrap rounded-xl border border-slate-800 bg-slate-900/80 p-1"
         >
           {KIT_TOOLS.map((id) => {
             const active = id === tool;

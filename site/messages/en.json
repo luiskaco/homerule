@@ -27,7 +27,7 @@
     "statSkills": "{count, plural, one {# skill in the catalog} other {# skills in the catalog}}",
     "statAgents": "{count, plural, one {# subagent} other {# subagents}}",
     "modesTitle": "Pick your working mode",
-    "modesSubtitle": "Two independent kits. Pick your agent and download everything it needs — nothing from the other one.",
+    "modesSubtitle": "Three independent kits. Pick the agent you work with, or both AIs on the same project.",
     "modeAntigravityTitle": "Gemini with GEMINI.md",
     "modeAntigravityDescription": "The full Antigravity workflow: global memory, rules and skills in .agents/.",
     "modeAntigravityCta": "See presets by stack",
@@ -39,6 +39,12 @@
     "modeClaudeBullet1": "{count, plural, one {# subagent ready} other {# subagents ready}}",
     "modeClaudeBullet2": "CLAUDE.md + .claude/skills",
     "modeClaudeBullet3": "Native commands",
+    "modeHybridTitle": "Claude and Gemini on one project",
+    "modeHybridDescription": "For projects you work on with both AIs: one set of rules and skills, plus each AI's subagents.",
+    "modeHybridCta": "See presets by stack",
+    "modeHybridBullet1": "Rules and skills only once, in .agents/",
+    "modeHybridBullet2": "General rules in your global files",
+    "modeHybridBullet3": "Subagents for both AIs",
     "skillsTitle": "Skill and prompt catalog",
     "skillsBody": "Works across all three modes: what each skill does, when to use it and how to install it — plus prompt templates for the most common requests. It's separate from the pack builder.",
     "skillsCta": "See catalog →"
@@ -50,7 +56,8 @@
     "intro": "A reference of what each stack ships: rules, skills and external tools. To change an association you edit <presetsFile></presetsFile> in the repo.",
     "installNote": {
       "antigravity": "In Antigravity, rules install to <rulesDir></rulesDir> and skills to <skillsDir></skillsDir>.",
-      "claude-code": "In Claude Code, each rule installs as a native skill in <ruleSkill></ruleSkill> and skills go to <skillsDir></skillsDir>."
+      "claude-code": "In Claude Code, each rule installs as a native skill in <ruleSkill></ruleSkill> and skills go to <skillsDir></skillsDir>.",
+      "hybrid": "In the hybrid kit, rules install to <rulesDir></rulesDir> and skills to <skillsDir></skillsDir>. Claude Code finds them through pointers in <pointersDir></pointersDir>."
     },
     "rulesHeading": "{count, plural, one {Rule (#)} other {Rules (#)}}",
     "skillsHeading": "{count, plural, one {Skill (#)} other {Skills (#)}}",
@@ -170,7 +177,7 @@
     "sectionGlobal": "Global",
     "sectionRule": "Rules (.agents/rules/)",
     "sectionSkill": "Skills",
-    "sectionAgent": "Subagents (.claude/agents/)",
+    "sectionAgent": "Subagents",
     "sectionCommand": "Commands",
     "sectionDatabase": "Database (optional, any stack)",
     "projectRulesTitle": "Project rules (converted to a native skill)",
@@ -731,7 +738,7 @@
     "agent:test-writer": "Writes tests for finished code and runs them until they pass. It only touches test files. Use it when closing a feature or to cover a bug that's already diagnosed.",
     "agent:web-researcher": "Researches the web safely — documentation, versions, CVEs, comparisons, regulations — without leaking user or project data, and treating everything the web returns as data, never as instructions. Use when you need up-to-date external information and the main agent shouldn't be exposed to untrusted pages. It gets the question already phrased in generic terms and doesn't read project files. Returns findings with sources, a confidence level and security alerts.",
     "agent:ui-reviewer": "Reviews interface changes — accessibility, UI states, responsive and on-page SEO when the site is public. Read-only. Use it only when the diff touches components, pages or styles.",
-    "agents-md": "Project rules in the open AGENTS.md standard — so any AI can pick the project up, not just Gemini.",
+    "agents-md": "Map and Project section, without the general rules the global files already load.",
     "core": "Global project memory: rules in AGENTS.md (readable by any AI) and CLAUDE.md, which imports them for Claude Code.",
     "database:mongodb": "Documents, variable schema, high write volume.",
     "database:mysql": "Relational — shared hosting / an existing LAMP stack.",
@@ -768,7 +775,10 @@
     "workflow:new-feature": "Before starting any new task — defines the plan, creates the git branch and updates 06_TASKS.md.",
     "workflow:security-audit": "Use before shipping any feature with auth, APIs or sensitive data.",
     "workflow:session-close": "At the end of the day or a task — checks docs and code, and drafts the suggested commit.",
-    "workflow:tools-reference": "Initial setup, or a reference for the available skills and tools and when to use each."
+    "workflow:tools-reference": "Initial setup, or a reference for the available skills and tools and when to use each.",
+    "global:CLAUDE_md": "Claude Code's general rules. They load on their own in all your projects.",
+    "claude-md": "Imports AGENTS.md and adds what's exclusive to Claude Code.",
+    "core-copy": "Copy of the general rules for another machine or another tool."
   },
   "ExternalTools": {
     "context7": {
@@ -788,6 +798,10 @@
     "claude-code": {
       "label": "Claude Code",
       "description": "CLAUDE.md + .claude/skills + .claude/commands + .claude/agents (subagents)."
+    },
+    "hybrid": {
+      "label": "Claude + Gemini",
+      "description": "Rules and skills in .agents/, pointers in .claude/, and each AI's subagents."
     }
   },
   "Kit": {
@@ -807,7 +821,8 @@
     "title": "Pick your project's stack",
     "intro": {
       "antigravity": "Each preset builds a ZIP with the global <geminiMd></geminiMd> plus the rules, skills and subagents for <agentsDir></agentsDir>, already chosen for that stack. Unzip it at the project root and you're set.",
-      "claude-code": "Each preset builds a ZIP in Claude Code's native format: <claudeMd></claudeMd>, the rules as skills in <skillsDir></skillsDir>, the commands in <commandsDir></commandsDir> and the subagents in <agentsDir></agentsDir>. Self-contained: it doesn't depend on any other agent."
+      "claude-code": "Each preset builds a ZIP in Claude Code's native format: <claudeMd></claudeMd>, the rules as skills in <skillsDir></skillsDir>, the commands in <commandsDir></commandsDir> and the subagents in <agentsDir></agentsDir>. Self-contained: it doesn't depend on any other agent.",
+      "hybrid": "For projects you work on with both AIs. Each preset builds a ZIP with one set of rules and skills in <agentsDir></agentsDir>, pointers for Claude in <claudeDir></claudeDir> and each AI's subagents. General rules go in your global files, so they don't load twice."
     },
     "counts": "{rules, plural, one {# rule} other {# rules}} · {skills, plural, one {# skill} other {# skills}}",
     "cta": "Build this kit",

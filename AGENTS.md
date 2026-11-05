@@ -46,6 +46,7 @@ Editar siempre la fuente, nunca un derivado.
   reescribe § 7 o la nota de subagentes de § 8 en `CORE.md`, el generador falla
   a propósito — ajustar `buildAgentsMd()`.
 - Este `AGENTS.md` (el de la raíz) es solo del repo y no se empaqueta.
+- **Kit híbrido** (`tool: "hybrid"`, ADR-031): sale de la misma fuente. El generador agrega a cada rule, skill y workflow un puntero de `.claude/` hacia `.agents/`; no tiene fuente propia.
 - **Derivados — se regeneran, no se editan a mano:**
   - `.claude/commands/` y `.claude/skills/<regla>/SKILL.md` (las 9 rules
     convertidas) ← `node scripts/sync-claude-kit.mjs` después de editar
