@@ -44,6 +44,12 @@ export default async function KitStacksPage(props: { params: Params }) {
           rulesDir: () => code(".agents/rules/"),
           skillsDir: () => code(".agents/skills/"),
         })
+      : tool === "hybrid"
+      ? t.rich("installNote.hybrid", {
+          rulesDir: () => code(".agents/rules/"),
+          skillsDir: () => code(".agents/skills/"),
+          pointersDir: () => code(".claude/"),
+        })
       : t.rich("installNote.claude-code", {
           ruleSkill: () => code(".claude/skills/<id>/SKILL.md"),
           skillsDir: () => code(".claude/skills/"),

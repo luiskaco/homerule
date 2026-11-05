@@ -77,6 +77,15 @@ const ANTIGRAVITY_AGENT_ITEM_IDS = [
   "antigravity:agent:web-researcher",
 ];
 
+/** Híbrido (ADR-031): los globales van a la carpeta del usuario y el resto al proyecto. */
+const HYBRID_GLOBAL_ITEM_IDS = [
+  "hybrid:global:GEMINI.md",
+  "hybrid:global:CLAUDE.md",
+  "hybrid:agents-md",
+  "hybrid:claude-md",
+  "hybrid:core-copy",
+];
+
 interface StackShape {
   rules: string[];
   skills: string[];
@@ -115,6 +124,15 @@ const STACKS: Record<string, StackShape> = {
 };
 
 function toolItemIds(tool: ToolId, shape: StackShape): string[] {
+  if (tool === "hybrid") {
+    return [
+      ...HYBRID_GLOBAL_ITEM_IDS,
+      ...ANTIGRAVITY_COMMAND_ITEM_IDS.map((id) => id.replace("antigravity:", "hybrid:")),
+      ...shape.rules.map((r) => `hybrid:rule:${r}`),
+      ...shape.skills.map((s) => `hybrid:skill:${s}`),
+      ...[...CLAUDE_AGENT_ITEM_IDS, ...ANTIGRAVITY_AGENT_ITEM_IDS].map((id) => `hybrid:${id}`),
+    ];
+  }
   if (tool === "antigravity") {
     return [
       ...ANTIGRAVITY_GLOBAL_ITEM_IDS,
@@ -161,7 +179,12 @@ const claudeCodePresets: Preset[] = Object.keys(STACKS).map((stackId) =>
   buildPreset("claude-code", stackId, [SKILLS_SH])
 );
 
-export const presets: Preset[] = [...antigravityPresets, ...claudeCodePresets];
+// Híbrido: los mismos 8 stacks, con las piezas de los dos tools (ADR-031).
+const hybridPresets: Preset[] = Object.keys(STACKS).map((stackId) =>
+  buildPreset("hybrid", stackId, [CONTEXT7, SKILLS_SH])
+);
+
+export const presets: Preset[] = [...antigravityPresets, ...claudeCodePresets, ...hybridPresets];
 
 export function getPreset(tool: ToolId, id: string): Preset | undefined {
   return presets.find((p) => p.tool === tool && p.id === id);
@@ -172,4 +195,4 @@ export function getPresetsByTool(tool: ToolId): Preset[] {
 }
 
 /** Label y descripción salen de `Tools.<id>` en messages. */
-export const TOOLS: { id: ToolId }[] = [{ id: "antigravity" }, { id: "claude-code" }];
+export const TOOLS: { id: ToolId }[] = [{ id: "antigravity" }, { id: "claude-code" }, { id: "hybrid" }];

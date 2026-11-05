@@ -27,7 +27,7 @@
     "statSkills": "{count, plural, one {# skill en el catálogo} other {# skills en el catálogo}}",
     "statAgents": "{count, plural, one {# subagente} other {# subagentes}}",
     "modesTitle": "Elegí tu modo de trabajo",
-    "modesSubtitle": "Dos kits independientes. Elegí tu agente y bajás todo lo suyo, sin piezas del otro.",
+    "modesSubtitle": "Tres kits independientes. Elegí con qué agente trabajás, o las dos IA en el mismo proyecto.",
     "modeAntigravityTitle": "Gemini con GEMINI.md",
     "modeAntigravityDescription": "El workflow completo para Antigravity: memoria global, rules y skills en .agents/.",
     "modeAntigravityCta": "Ver presets por stack",
@@ -39,6 +39,12 @@
     "modeClaudeBullet1": "{count, plural, one {# subagente listo} other {# subagentes listos}}",
     "modeClaudeBullet2": "CLAUDE.md + .claude/skills",
     "modeClaudeBullet3": "Comandos nativos",
+    "modeHybridTitle": "Claude y Gemini en un mismo proyecto",
+    "modeHybridDescription": "Para proyectos que trabajás con las dos IA: un solo juego de reglas y skills, y los subagentes de cada una.",
+    "modeHybridCta": "Ver presets por stack",
+    "modeHybridBullet1": "Reglas y skills una sola vez, en .agents/",
+    "modeHybridBullet2": "Reglas generales en tus archivos globales",
+    "modeHybridBullet3": "Subagentes de las dos IA",
     "skillsTitle": "Catálogo de skills y prompts",
     "skillsBody": "Vale para los tres modos: qué hace cada skill, cuándo usarla y cómo instalarla — más templates de prompt para los pedidos más frecuentes. Va aparte del armador de packs.",
     "skillsCta": "Ver catálogo →"
@@ -50,7 +56,8 @@
     "intro": "Referencia de lo que trae cada stack: rules, skills y herramientas externas. Para cambiar una asociación hay que editar <presetsFile></presetsFile> en el repo.",
     "installNote": {
       "antigravity": "En Antigravity, las rules se instalan en <rulesDir></rulesDir> y las skills en <skillsDir></skillsDir>.",
-      "claude-code": "En Claude Code, cada rule se instala como skill nativa en <ruleSkill></ruleSkill> y las skills en <skillsDir></skillsDir>."
+      "claude-code": "En Claude Code, cada rule se instala como skill nativa en <ruleSkill></ruleSkill> y las skills en <skillsDir></skillsDir>.",
+      "hybrid": "En el kit híbrido, las rules se instalan en <rulesDir></rulesDir> y las skills en <skillsDir></skillsDir>. Claude Code las encuentra con punteros en <pointersDir></pointersDir>."
     },
     "rulesHeading": "{count, plural, one {Rule (#)} other {Rules (#)}}",
     "skillsHeading": "{count, plural, one {Skill (#)} other {Skills (#)}}",
@@ -170,7 +177,7 @@
     "sectionGlobal": "Global",
     "sectionRule": "Rules (.agents/rules/)",
     "sectionSkill": "Skills",
-    "sectionAgent": "Subagentes (.claude/agents/)",
+    "sectionAgent": "Subagentes",
     "sectionCommand": "Comandos",
     "sectionDatabase": "Base de datos (opcional, cualquier stack)",
     "projectRulesTitle": "Reglas del proyecto (convertidas a skill nativa)",
@@ -734,6 +741,10 @@
     "claude-code": {
       "label": "Claude Code",
       "description": "CLAUDE.md + .claude/skills + .claude/commands + .claude/agents (subagentes)."
+    },
+    "hybrid": {
+      "label": "Claude + Gemini",
+      "description": "Reglas y skills en .agents/, punteros en .claude/ y los subagentes de cada IA."
     }
   },
   "Kit": {
@@ -753,7 +764,8 @@
     "title": "Elegí el stack de tu proyecto",
     "intro": {
       "antigravity": "Cada preset arma un ZIP con el <geminiMd></geminiMd> global y las rules, skills y subagentes de <agentsDir></agentsDir>, ya elegidos para ese stack. Lo descomprimís en la raíz del proyecto y listo.",
-      "claude-code": "Cada preset arma un ZIP en formato nativo de Claude Code: <claudeMd></claudeMd>, las rules como skills en <skillsDir></skillsDir>, los comandos de <commandsDir></commandsDir> y los subagentes de <agentsDir></agentsDir>. Es autocontenido: no depende de ningún otro agente."
+      "claude-code": "Cada preset arma un ZIP en formato nativo de Claude Code: <claudeMd></claudeMd>, las rules como skills en <skillsDir></skillsDir>, los comandos de <commandsDir></commandsDir> y los subagentes de <agentsDir></agentsDir>. Es autocontenido: no depende de ningún otro agente.",
+      "hybrid": "Para proyectos que trabajás con las dos IA. Cada preset arma un ZIP con un solo juego de reglas y skills en <agentsDir></agentsDir>, punteros para Claude en <claudeDir></claudeDir> y los subagentes de cada una. Las reglas generales van en tus archivos globales, así no se cargan dos veces."
     },
     "counts": "{rules, plural, one {# rule} other {# rules}} · {skills, plural, one {# skill} other {# skills}}",
     "cta": "Armar este kit",

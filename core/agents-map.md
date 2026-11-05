@@ -10,7 +10,7 @@ archivos markdown planos.
 |---|---|
 | Rules técnicas (§ 6, punto 2) | `{{RULES_PATH}}` — leer la que aplique antes de tocar esa área |
 | Skills | `{{SKILLS_PATH}}` — una carpeta por skill, con su `SKILL.md` |
-| Subagentes | `{{AGENTS_PATH}}` |
+| Subagentes | {{AGENTS_PATH}} |
 | Comandos / workflows (§ 7) | {{WORKFLOWS_PATH}} |
 | Estado del proyecto | `docs/` — ver "Continuar el trabajo" |
 

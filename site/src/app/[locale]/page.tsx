@@ -51,6 +51,18 @@ export default async function HomePage(props: { params: Promise<{ locale: string
         t("modeClaudeBullet3"),
       ],
     },
+    {
+      id: "hybrid",
+      eyebrow: tools("hybrid.label"),
+      title: t("modeHybridTitle"),
+      description: t("modeHybridDescription"),
+      href: "/kits/hybrid",
+      cta: t("modeHybridCta"),
+      cardClass: "card-vibrant-sky border-t-2 border-t-sky-500",
+      accentClass: "text-sky-400 group-hover:text-sky-300",
+      badgeClass: "bg-sky-500/10 text-sky-300 border border-sky-500/30",
+      bullets: [t("modeHybridBullet1"), t("modeHybridBullet2"), t("modeHybridBullet3")],
+    },
   ];
 
   return (
@@ -86,7 +98,7 @@ export default async function HomePage(props: { params: Promise<{ locale: string
         </div>
       </section>
 
-      {/* Los 2 modos de uso — Antigravity y Claude Code son independientes */}
+      {/* Los 3 modos de uso: cada kit es independiente */}
       <section className="flex flex-col gap-6">
         <div className="flex flex-col gap-1">
           <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
@@ -95,7 +107,7 @@ export default async function HomePage(props: { params: Promise<{ locale: string
           <p className="text-sm text-slate-400">{t("modesSubtitle")}</p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-3">
           {modes.map((mode) => (
             <Link
               key={mode.id}

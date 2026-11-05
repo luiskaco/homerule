@@ -40,10 +40,14 @@ const WRITE_TOOLS = [
  */
 const CHANGES_SERVERS = new Set(["server-operator"]);
 
-/** Ruta e invocación de cada formato — los dos tools no se convierten entre sí (ADR-006). */
+/** Ruta e invocación de cada formato — los tools no se convierten entre sí (ADR-006). */
 const FORMAT: Record<ToolId, { path: string; invoke: string }> = {
   antigravity: { path: ".agents/agents/<nombre>/agent.md", invoke: "invoke_subagent" },
   "claude-code": { path: ".claude/agents/<nombre>.md", invoke: "Agent tool" },
+  hybrid: {
+    path: ".agents/agents/<nombre>/agent.md · .claude/agents/<nombre>.md",
+    invoke: "invoke_subagent · Agent tool",
+  },
 };
 
 function frontmatterOf(item: ManifestItem): string {
@@ -70,6 +74,7 @@ export default async function KitSubagentesPage(props: { params: Params }) {
   setRequestLocale(locale);
   const t = await getTranslations("Subagentes");
   const descriptions = await getTranslations("ItemDescriptions");
+  const tools = await getTranslations("Tools");
   const theme = TOOL_THEME[tool];
   const agents = getItemsByCategory("agent").filter((i) => i.tool === tool);
 
@@ -99,6 +104,11 @@ export default async function KitSubagentesPage(props: { params: Params }) {
             <li key={item.id} className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="font-mono text-sm font-semibold text-white">{agentName(item)}</h2>
+                {tool === "hybrid" && (
+                  <span className="rounded-full border border-slate-700 px-2 py-0.5 text-xs text-slate-300">
+                    {tools(item.id.startsWith("hybrid:antigravity:") ? "antigravity.label" : "claude-code.label")}
+                  </span>
+                )}
                 <span
                   className={`rounded-full border px-2 py-0.5 text-xs font-medium ${
                     writes || servers ? "border-amber-500/30 bg-amber-500/10 text-amber-200" : theme.soft

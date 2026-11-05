@@ -5,7 +5,7 @@ import type { ManifestItem, ToolId } from "@/lib/manifest";
  * primeras son rutas estáticas por segmento (`/kits/<tool>/…`); el armador
  * sigue en `/build?tool=` porque es interactivo y ya lee el query.
  */
-export const KIT_TOOLS: ToolId[] = ["antigravity", "claude-code"];
+export const KIT_TOOLS: ToolId[] = ["antigravity", "claude-code", "hybrid"];
 
 export type KitSection = "presets" | "stacks" | "subagents" | "build";
 
@@ -55,8 +55,8 @@ export function toolFromPathname(pathname: string): ToolId | null {
 }
 
 /**
- * Un color fijo por tool en todo el sitio: esmeralda para Antigravity y violeta
- * para Claude Code. Las clases van escritas enteras porque Tailwind las detecta
+ * Un color fijo por tool en todo el sitio: esmeralda para Antigravity, violeta
+ * para Claude Code y celeste para el híbrido. Las clases van escritas enteras porque Tailwind las detecta
  * escaneando el código: un `bg-${color}-500` armado en runtime no se genera.
  */
 export const TOOL_THEME: Record<
@@ -94,6 +94,17 @@ export const TOOL_THEME: Record<
     button: "bg-violet-600 text-white hover:bg-violet-500",
     focus: "focus-visible:outline-violet-400",
     accent: "accent-violet-500",
+  },
+  hybrid: {
+    dot: "bg-sky-400",
+    text: "text-sky-300",
+    hoverText: "hover:text-sky-300",
+    tabActive: "border-sky-400 text-white",
+    soft: "border-sky-500/30 bg-sky-500/10 text-sky-200",
+    cardHover: "hover:border-sky-500/50",
+    button: "bg-sky-500 text-slate-950 hover:bg-sky-400",
+    focus: "focus-visible:outline-sky-400",
+    accent: "accent-sky-500",
   },
 };
 

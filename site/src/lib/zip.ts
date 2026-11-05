@@ -4,6 +4,7 @@ import type { ManifestItem, ToolId } from "@/lib/manifest";
 const TOOL_LABELS: Record<ToolId, string> = {
   antigravity: "Antigravity (Gemini)",
   "claude-code": "Claude Code",
+  hybrid: "Claude Code + Antigravity",
 };
 
 /**
@@ -16,7 +17,9 @@ const TOOL_LABELS: Record<ToolId, string> = {
  * `~/.gemini/`, no en el proyecto, y se aísla en `global/` para que el
  * `cp -r` de la raíz no se lo lleve por error. `AGENTS.md` también es
  * categoría global, pero va a la raíz del proyecto (ADR-016). Los comandos ya
- * no son globales: son skills de workspace en `.agents/skills/` (ADR-020).
+ * no son globales: son skills de workspace en `.agents/skills/` (ADR-020). En
+ * el híbrido también se aísla `CLAUDE.md` global, que si no pisaría al del
+ * proyecto (ADR-031).
  */
 const ANTIGRAVITY_AGENTS_MD_ID = "antigravity:agents-md";
 
@@ -24,8 +27,12 @@ function isAntigravityUserLevel(item: ManifestItem): boolean {
   return item.tool === "antigravity" && item.category === "global" && item.id !== ANTIGRAVITY_AGENTS_MD_ID;
 }
 
+function isHybridUserLevel(item: ManifestItem): boolean {
+  return item.id.startsWith("hybrid:global:");
+}
+
 function destFolder(item: ManifestItem): string {
-  return isAntigravityUserLevel(item) ? "global" : "";
+  return isAntigravityUserLevel(item) || isHybridUserLevel(item) ? "global" : "";
 }
 
 /**
@@ -106,6 +113,46 @@ function buildAntigravitySection(items: ManifestItem[]): string {
   return lines.join("\n");
 }
 
+function buildHybridSection(items: ManifestItem[]): string {
+  const lines: string[] = [`## ${TOOL_LABELS.hybrid}\n`];
+
+  if (items.some(isHybridUserLevel)) {
+    lines.push("**Paso 1 — Reglas generales (una sola vez por máquina)**\n");
+    lines.push("Se cargan solas en todos tus proyectos. Si ya los tenés al día, salteá este paso.\n");
+    lines.push("macOS / Linux:");
+    lines.push("```bash");
+    lines.push("mkdir -p ~/.gemini ~/.claude");
+    lines.push("cp global/GEMINI.md ~/.gemini/GEMINI.md");
+    lines.push("cp global/CLAUDE.md ~/.claude/CLAUDE.md");
+    lines.push("```\n");
+    lines.push("Windows (PowerShell):");
+    lines.push("```powershell");
+    lines.push('New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\\.gemini","$env:USERPROFILE\\.claude"');
+    lines.push('Copy-Item "global/GEMINI.md" "$env:USERPROFILE\\.gemini\\GEMINI.md"');
+    lines.push('Copy-Item "global/CLAUDE.md" "$env:USERPROFILE\\.claude\\CLAUDE.md"');
+    lines.push("```\n");
+  }
+
+  lines.push("**Paso 2 — Proyecto (raíz del proyecto)**\n");
+  lines.push("```bash");
+  lines.push("cp AGENTS.md CLAUDE.md /ruta/a/tu-proyecto/");
+  lines.push("cp -r .agents/. /ruta/a/tu-proyecto/.agents/");
+  lines.push("cp -r .claude/. /ruta/a/tu-proyecto/.claude/");
+  lines.push("```\n");
+  lines.push(
+    "Las reglas y skills viven una sola vez en `.agents/`. Lo que hay en `.claude/commands/` y " +
+      "`.claude/skills/` son punteros: cualquier cambio se hace en `.agents/`. " +
+      "Completá la sección **Proyecto** de `AGENTS.md` al arrancar.\n"
+  );
+
+  for (const tool of ["antigravity", "claude-code"] as const) {
+    const serverNote = buildServerAgentsNote(tool, items.filter((i) => i.id.startsWith(`hybrid:${tool}:`)));
+    if (serverNote) lines.push(serverNote);
+  }
+
+  return lines.join("\n");
+}
+
 function buildGenericToolSection(tool: ToolId, items: ManifestItem[]): string {
   const lines: string[] = [`## ${TOOL_LABELS[tool]}\n`];
   lines.push(
@@ -140,9 +187,12 @@ function buildInstallMd(selected: ManifestItem[]): string {
   const lines: string[] = ["# Instalación\n"];
   if (rest.length > 0) {
     lines.push(
-      "Este ZIP fue generado por AI Rules Hub y es autocontenido: todo lo que hay " +
-        "acá adentro es para un solo agente. Cada sección de abajo corresponde a una " +
-        "carpeta del ZIP.\n"
+      rest.some((i) => i.tool === "hybrid")
+        ? "Este ZIP fue generado por AI Rules Hub y es autocontenido: trae todo para " +
+            "trabajar el proyecto con Claude Code y Antigravity a la vez.\n"
+        : "Este ZIP fue generado por AI Rules Hub y es autocontenido: todo lo que hay " +
+            "acá adentro es para un solo agente. Cada sección de abajo corresponde a una " +
+            "carpeta del ZIP.\n"
     );
   } else {
     lines.push(
@@ -161,8 +211,11 @@ function buildInstallMd(selected: ManifestItem[]): string {
   if (byTool.has("antigravity")) {
     lines.push(buildAntigravitySection(byTool.get("antigravity")!));
   }
+  if (byTool.has("hybrid")) {
+    lines.push(buildHybridSection(byTool.get("hybrid")!));
+  }
   for (const [tool, items] of byTool) {
-    if (tool === "antigravity") continue;
+    if (tool === "antigravity" || tool === "hybrid") continue;
     lines.push(buildGenericToolSection(tool, items));
   }
 

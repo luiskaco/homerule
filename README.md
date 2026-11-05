@@ -8,6 +8,8 @@ Sistema de reglas para dos formas de trabajo con IA:
   base de reglas convertida a formato nativo (`CLAUDE.md` + `.claude/skills` +
   `.claude/commands` + `.claude/agents`).
 
+Para proyectos que se trabajan con las dos IA está el kit híbrido **Claude + Gemini** (ADR-031): un solo juego de reglas y skills en `.agents/`, punteros en `.claude/` y las reglas generales en los archivos globales.
+
 Los dos kits dejan además un **`AGENTS.md`** en la raíz del proyecto — el
 estándar abierto que leen Codex, Cursor, Copilot y Antigravity — con las reglas
 en versión neutral y un mapa del proyecto: si mañana lo continúa otra IA,
