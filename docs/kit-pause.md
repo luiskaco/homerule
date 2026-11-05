@@ -1,0 +1,81 @@
+# Pausa del kit — recordatorio
+
+Para retomar este tema desde cualquier máquina o conversación, sin el historial
+donde se decidió. Empezá pidiendo: "leé `docs/kit-pause.md` y seguimos desde ahí".
+
+## La decisión
+
+**Desde el 2026-11-05 hasta el 2026-11-19, el kit queda congelado.** Durante esas
+dos semanas se trabaja solo en los proyectos reales. Si algo del kit molesta, se
+anota abajo y no se arregla en el momento. Al terminar, se corrige solo lo que se
+repitió.
+
+**Por qué:** en una revisión honesta de la forma de trabajar salió que hay mucho
+orden y buen control de calidad, pero también mucho tiempo puesto en ajustar el
+propio sistema:
+
+- 16 PRs del kit en unos 11 días.
+- Decisiones que se hicieron y se deshicieron: `deploy-checker` se creó y se
+  eliminó al día siguiente, `planner` pasó a Sonnet y volvió a Opus, y el modo
+  híbrido salió y volvió.
+- Decisiones tomadas por sensación, sin datos: por ejemplo, el gasto de tokens.
+
+La revisión se basó en una sola conversación y sin métricas, así que el trabajo
+de producto no entró en ella.
+
+**Qué se puede hacer igual:** arreglar algo roto que frene el trabajo, y actualizar
+documentación. Mejoras y funciones nuevas del kit esperan al 2026-11-19.
+
+## Fricciones
+
+Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué pasó.
+
+| Fecha | Proyecto | IA | Qué pasó |
+|---|---|---|---|
+| | | | |
+
+## Cómo quedó todo
+
+- **Kit híbrido "Claude + Gemini":** publicado en
+  [la web](https://make-rule-ia.vercel.app/es/kits/hybrid) (PR #21, ADR-031).
+- **pluginWordpress:** migrado al híbrido y subido.
+- **makeNewMonitorLatam:** usa las dos IA, pero sigue con el kit armado a mano y
+  tiene cambios del kit sin commitear. Se migra cuando se termine de trabajar ahí.
+- **PorUnPeruSinCancerIA y observatorioIIA2026:** solo los trabaja Gemini. Claude
+  deja los archivos y Gemini se encarga de commitear y subir.
+
+## Decidido no hacer por ahora
+
+- **Avisar entre IA:** ninguna se entera de que otra trabaja en el mismo proyecto,
+  así que el usuario les avisa. Se habló de reglas comunes en `AGENTS.md` y de un
+  archivo de trabajo compartido, y se decidió seguir como está.
+- **Abrir el híbrido a cualquier agente:** `AGENTS.md` y `.agents/` no dependen de
+  ninguna herramienta, pero el nombre, algunos textos y los punteros de `.claude/`
+  sí nombran a Claude o a Gemini. Con otra herramienta no se probó.
+
+## Para revisar el 2026-11-19
+
+- Leer la tabla de fricciones y corregir lo que se repitió.
+- Elegir qué manda: el estilo "Proactive" de Claude, que pide ejecutar sin frenar,
+  o la Regla de Oro, que pide analizar y validar antes de tocar nada. Hoy se
+  contradicen.
+- Medir cuánto gasta cada subagente, como quedó anotado en ADR-030.
+
+Lo demás pendiente está en `06_TASKS.md`.
+
+## En otra máquina
+
+Esta conversación y la memoria de Claude no viajan: quedan en la máquina donde se
+crearon. Lo que viaja es este repo.
+
+1. Traer lo último del repo:
+
+   ```bash
+   git pull
+   ```
+
+2. Revisar que los archivos globales estén al día, porque el kit híbrido depende de
+   ellos: `~/.claude/CLAUDE.md` y `~/.gemini/GEMINI.md`. Su contenido se compara con
+   `core/CORE.md` y `.gemini/GEMINI.md`. Conviene pedirle a la IA que muestre las
+   diferencias antes de pisarlos, por si tienen algo propio de esa máquina.
+3. Para seguir con un proyecto, también hay que tenerlo clonado en esa máquina.
