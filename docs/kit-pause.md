@@ -83,3 +83,17 @@ crearon. Lo que viaja es este repo.
    `core/CORE.md` y `.gemini/GEMINI.md`. Conviene pedirle a la IA que muestre las
    diferencias antes de pisarlos, por si tienen algo propio de esa máquina.
 3. Para seguir con un proyecto, también hay que tenerlo clonado en esa máquina.
+4. Poner la identidad de git con tu correo privado de GitHub, igual que en esta máquina:
+
+   ```bash
+   git config --global user.name "Luis Gomez"
+   ```
+
+   ```bash
+   git config --global user.email "19978113+luiskaco@users.noreply.github.com"
+   ```
+
+5. Instalar el bloqueo de datos personales (ADR-034): copiar
+   `.claude/hooks/personal-data-guard.mjs` a `~/.claude/hooks/`, crear
+   `~/.claude/personal-data.txt` con tus datos, uno por línea, y agregar el hook a
+   `~/.claude/settings.json`, como explica la cabecera del archivo.

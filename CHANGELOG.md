@@ -6,6 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Datos personales y autoría** (ADR-034): el núcleo prohíbe enviar datos personales del usuario fuera del equipo y exige que los commits salgan a su nombre. Un hook global opcional bloquea esos envíos.
 - **Skill `security-mitigations`** (ADR-033): mitigaciones de seguridad por tema en español, con un índice para abrir solo lo que toca: login, permisos, inyección, navegador, uploads, secretos, dependencias, logs, errores, APIs, diseño y abuso, IA, infraestructura y WordPress. Viene en los 7 presets con stack y la usan `/security-audit` y los auditores.
 - **Kit alineado a 2026** (ADR-032).
   - **Runtime:** Node.js 24+ y Python 3.12+.

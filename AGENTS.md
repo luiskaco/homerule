@@ -27,7 +27,7 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | `.agents/skills/` | Skills del kit — se copian tal cual a los dos tools. Incluye los 7 workflows (skills con `metadata: kind: workflow`, ADR-020): Claude los recibe como `.claude/commands/` |
 | `.agents/agents/` | 7 subagentes de Antigravity (fuente e instalación local) |
 | `.claude/agents/` | 10 subagentes de Claude Code (fuente e instalación local), 8 por defecto (ADR-027); `server-inspector` y `server-operator` van solo en el ZIP, no en el plugin (ADR-026) |
-| `.claude/hooks/` | Hooks de los subagentes: `readonly-bash.mjs` impone el solo lectura en los revisores (ADR-021), `web-guard.mjs` revisa lo que `web-researcher` manda a internet (ADR-022) y `ssh-guard.mjs` controla los agentes de servidores (ADR-026). `shell-parse.mjs` es el parser que comparten `readonly-bash` y `ssh-guard`. Viajan en el ZIP con cada agente que los usa, junto con lo que importan |
+| `.claude/hooks/` | `personal-data-guard.mjs` es un hook global que se instala a mano por equipo y no viaja en ningún kit (ADR-034). El resto son hooks de los subagentes: `readonly-bash.mjs` impone el solo lectura en los revisores (ADR-021), `web-guard.mjs` revisa lo que `web-researcher` manda a internet (ADR-022) y `ssh-guard.mjs` controla los agentes de servidores (ADR-026). `shell-parse.mjs` es el parser que comparten `readonly-bash` y `ssh-guard`. Viajan en el ZIP con cada agente que los usa, junto con lo que importan |
 | `docs-templates/` | Plantillas `/docs` que se empaquetan en los kits |
 | `docs/` | Documentación SDD de este repo (01–08 + `CONTEXT.md`) |
 | `scripts/` | Generadores y guards (ver Comandos) |
@@ -77,6 +77,7 @@ python scripts/check-core-parity.py       # paridad CORE.md ↔ GEMINI.md
 node scripts/test-readonly-bash.mjs       # casos del hook de solo lectura de los revisores
 node scripts/test-web-guard.mjs           # casos del hook de web-researcher
 node scripts/test-ssh-guard.mjs           # casos del hook de los agentes de servidores
+node scripts/test-personal-data-guard.mjs # casos del hook global de datos personales
 python scripts/update-token-table.py      # tabla de tokens del README
 python scripts/make-desktop-zips.py       # ZIPs de skills para Claude Desktop (skills-desktop/, gitignored)
 
