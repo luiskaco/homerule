@@ -14,7 +14,8 @@ Delegar la auditoría en el subagente de seguridad (`security-auditor` en
 Claude Code, `security` en Antigravity), pasándole el diff o la feature a
 revisar: recorre esta lista y el resto de `security.md` en su propio contexto
 y devuelve los hallazgos con severidad. Si el tool no tiene ese subagente,
-recorrer la lista acá.
+recorrer la lista acá. Para el detalle de cada punto, abrir el tema que corresponda
+de la skill `security-mitigations`.
 
 ---
 

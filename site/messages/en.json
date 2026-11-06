@@ -323,6 +323,14 @@
       ],
       "install": []
     },
+    "skill:security-mitigations": {
+      "author": "—",
+      "summary": "Use it when building or auditing login, permissions, user data, APIs, uploads, dependencies, AI or WordPress. An index points to the right topic, so you don't read everything.",
+      "whatItDoes": "Groups by topic the mitigations from OWASP, NIST and WordPress, with warning signs for reviews.",
+      "whenToUse": [],
+      "usage": [],
+      "install": []
+    },
     "emilkowalski-skills": {
       "author": "Emil Kowalski (ex Vercel / Linear)",
       "summary": "A pack of 7 design-engineering skills: animation, motion and UI judgement distilled from years of craft.",
@@ -778,7 +786,8 @@
     "workflow:tools-reference": "Initial setup, or a reference for the available skills and tools and when to use each.",
     "global:CLAUDE_md": "Claude Code's general rules. They load on their own in all your projects.",
     "claude-md": "Imports AGENTS.md and adds what's exclusive to Claude Code.",
-    "core-copy": "Copy of the general rules for another machine or another tool."
+    "core-copy": "Copy of the general rules for another machine or another tool.",
+    "skill:security-mitigations": "Security mitigations by topic (login, permissions, injection, XSS, CSRF, CORS, uploads, secrets, dependencies, logs, errors, APIs, webhooks, AI, infrastructure, WordPress). Use it when building or auditing any of those, to open only the relevant topic. Principles and prohibitions are in the security rule."
   },
   "ExternalTools": {
     "context7": {

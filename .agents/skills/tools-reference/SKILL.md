@@ -56,6 +56,7 @@ Cada proyecto trae solo las de su preset; el resto se agrega a medida.
 
 | Skill | Cuándo activarla |
 |-------|------------------|
+| `security-mitigations` | Al implementar o auditar login, permisos, datos de usuarios, APIs, uploads, dependencias o IA: abre solo el tema que toca |
 | `prelaunch-compliance-audit` | Primer lanzamiento, o al agregar login, pagos, formularios con datos personales o correo promocional |
 | `api-security-best-practices` | Al diseñar o revisar una API |
 | `seo-audit` | Para diagnosticar problemas de SEO en un sitio público |

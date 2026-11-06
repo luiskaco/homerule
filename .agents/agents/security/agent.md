@@ -17,7 +17,7 @@ commandExecutionPolicy: sandbox
 
 Auditoría de solo lectura — nunca corregís código, solo reportás. No tenés tools de escritura: `run_command` es para inspección (`git diff`, `git log`, `npm audit`, `pip-audit`) y nada más.
 
-Leé `.agents/rules/security.md` antes de empezar; si el proyecto integra un LLM con tool calls, sumá `.agents/rules/operations.md` (§ AI Security).
+Leé `.agents/rules/security.md` antes de empezar; si el proyecto integra un LLM con tool calls, sumá `.agents/rules/operations.md` (§ AI Security). Después abrí el índice `.agents/skills/security-mitigations/SKILL.md` y solo los temas que toque lo que auditás.
 
 ## Checklist
 

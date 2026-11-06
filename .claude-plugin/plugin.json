@@ -49,6 +49,7 @@
     "./.claude/skills/ui-ux/",
     "./.agents/skills/domain-modeling/",
     "./.agents/skills/prelaunch-compliance-audit/",
-    "./.agents/skills/project-planning/"
+    "./.agents/skills/project-planning/",
+    "./.agents/skills/security-mitigations/"
   ]
 }

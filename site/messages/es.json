@@ -323,6 +323,14 @@
       ],
       "install": []
     },
+    "skill:security-mitigations": {
+      "author": "—",
+      "summary": "Usar al implementar o auditar login, permisos, datos de usuarios, APIs, uploads, dependencias, IA o WordPress. Un índice lleva al tema que toca, sin leer todo.",
+      "whatItDoes": "Reúne por tema las mitigaciones de OWASP, NIST y WordPress, con señales de alerta para revisar.",
+      "whenToUse": [],
+      "usage": [],
+      "install": []
+    },
     "emilkowalski-skills": {
       "author": "Emil Kowalski (ex Vercel / Linear)",
       "summary": "Paquete de 7 skills de design engineering: animación, motion y criterio de UI destilados de años de oficio.",
