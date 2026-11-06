@@ -64,6 +64,7 @@ Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué 
   o la Regla de Oro, que pide analizar y validar antes de tocar nada. Hoy se
   contradicen.
 - Medir cuánto gasta cada subagente, como quedó anotado en ADR-030.
+- Quitar de los `AGENTS.md` de los proyectos la copia de las reglas generales, de a 3 proyectos: 17 de 19 la tienen, ya sin las reglas de ADR-034. Antes, tener los globales al día en cada máquina.
 
 Lo demás pendiente está en `06_TASKS.md`.
 
