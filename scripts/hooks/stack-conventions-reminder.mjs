@@ -6,7 +6,7 @@ import { existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
-const EXTENSIONS = /\.(tsx|ts|jsx|js|py|php|css)$/i;
+const EXTENSIONS = /\.(tsx|ts|jsx|js|vue|py|php|css)$/i;
 
 let raw = "";
 for await (const chunk of process.stdin) raw += chunk;

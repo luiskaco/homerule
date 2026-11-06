@@ -441,25 +441,25 @@ no editarla a mano.
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
 | `GEMINI.md` | ~2,618 | Siempre |
-| `security.md` | ~1,618 | Model Decision |
+| `security.md` | ~2,212 | Model Decision |
 | `architecture.md` | ~600 | Model Decision |
-| `ui-ux.md` | ~2,281 | Model Decision |
+| `ui-ux.md` | ~2,386 | Model Decision |
 | `seo.md` | ~1,423 | Model Decision |
-| `pwa.md` | ~539 | Model Decision — solo PWA |
-| `operations.md` | ~1,244 | Model Decision |
+| `pwa.md` | ~578 | Model Decision — solo PWA |
+| `operations.md` | ~1,467 | Model Decision |
 | `cms.md` | ~690 | Model Decision |
 | `database.md` | ~708 | Model Decision |
-| `stack-conventions.md` | ~602 | Glob |
-| `/tools-reference` | ~880 | Skill — slash o por descripción |
+| `stack-conventions.md` | ~604 | Glob |
+| `/tools-reference` | ~1,337 | Skill — slash o por descripción |
 | `/grill` | ~622 | Skill — slash o por descripción |
-| `/new-feature` | ~458 | Skill — slash o por descripción |
+| `/new-feature` | ~461 | Skill — slash o por descripción |
 | `/bug-fix` | ~405 | Skill — slash o por descripción |
 | `/session-close` | ~598 | Skill — slash o por descripción |
-| `/security-audit` | ~742 | Skill — slash o por descripción |
-| `/deploy-checklist` | ~824 | Skill — slash o por descripción |
+| `/security-audit` | ~856 | Skill — slash o por descripción |
+| `/deploy-checklist` | ~852 | Skill — slash o por descripción |
 | **Base siempre activa** | **~2,618** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,623–7,397** | sesión normal de código |
-| **Máximo con todo activo** | **~13,203** | improbable — varias reglas casi nunca se activan juntas |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,623–8,553** | sesión normal de código |
+| **Máximo con todo activo** | **~14,623** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

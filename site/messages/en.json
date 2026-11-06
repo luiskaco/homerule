@@ -749,7 +749,7 @@
     "rule:cms": "Trigger when working with WordPress, Drupal or a headless CMS (Sanity, Contentful, Strapi) — hardening, API keys, webhooks.",
     "rule:operations": "Trigger when setting up CI/CD, logging, external error/timeout handling, infrastructure, or when integrating an agent/LLM that runs tool calls.",
     "rule:pwa": "Trigger only if the project is a PWA — manifest, service worker, cache strategies, offline state, update flow or installability.",
-    "rule:security": "Trigger when writing or reviewing authentication, API endpoints, input validation, uploads, secret handling, CORS, tracking/analytics cookies, consent or privacy compliance, or any code that receives data from the client.",
+    "rule:security": "Trigger when writing or reviewing authentication, API endpoints, input validation, uploads, secret handling, CORS, tracking/analytics cookies, consent or privacy compliance, installing or updating dependencies, or any code that receives data from the client.",
     "rule:seo": "Trigger when working on meta tags, Open Graph, structured data, canonical, sitemap, or when diagnosing indexing, ranking and Core Web Vitals as an SEO factor.",
     "rule:stack-conventions": "Language- and framework-specific conventions — applied automatically based on the extension of the file being edited.",
     "rule:ui-ux": "Trigger when building or reviewing interfaces, visual components, forms, loading/error states, accessibility, dark mode or i18n/translations.",

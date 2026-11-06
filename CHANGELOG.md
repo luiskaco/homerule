@@ -6,6 +6,13 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Kit alineado a 2026** (ADR-032).
+  - **Runtime:** Node.js 24+ y Python 3.12+.
+  - **Seguridad:** OWASP Top 10:2025, contraseñas según NIST SP 800-63B rev. 4 y sección nueva de uploads.
+  - **Dependencias:** esperar 7 días por versión nueva, scripts de instalación bloqueados y sin dependencias desde git, además de la auditoría.
+  - **IA:** riesgos según OWASP LLM 2026 y reglas para herramientas, agentes y MCP.
+  - **Interfaz:** WCAG 2.2 AA y PWA sin la categoría de Lighthouse, que ya no existe.
+  - **Correcciones:** `/security-audit` citaba secciones inexistentes, `pip audit` no es un comando (es `pip-audit`), `/bug-fix` usaba otro nombre de sección, `/new-feature` buscaba el stack en el archivo equivocado y `stack-conventions` no se activaba con `.vue`. `/tools-reference` ahora lista subagentes y todas las skills.
 - **Kit híbrido "Claude + Gemini"** (ADR-031): tercera opción del sitio para proyectos que trabajan las dos IA a la vez. Las reglas y skills viven una sola vez en `.agents/`, `.claude/` lleva punteros y las reglas generales quedan en los archivos globales, sin cargarse dos veces. Trae los subagentes de cada IA y sus propias instrucciones de instalación. El ZIP aísla los dos archivos globales en `global/`.
 - **Regla de largo en § 0** (regla de escritura 7): lo más corto que se entienda — una pregunta simple en 1–3 frases, sin repetir lo que dijo el usuario, sin resumir paso a paso lo hecho ni cerrar con ofrecimientos genéricos. Al sacar caveman las respuestas se alargaron y el texto que escribe la IA es lo más caro por token.
 - **SEO solo donde corresponde.** La regla `seo` aclara que aplica solo a sitios públicos: en paneles y herramientas internas lo único que corresponde es que no se indexen. `ui-reviewer` revisa SEO on-page solo si la regla `seo` está instalada (antes la revisaba siempre, "con criterio general" si faltaba), y lo mismo con `pwa`. Una IA se confundió proponiendo SEO en un proyecto interno que tenía la regla instalada por el preset.
