@@ -44,6 +44,8 @@ aplica igual; esto es una capa adicional, no un reemplazo.
 
 ## Auditoría
 
-- Lighthouse PWA score ≥ 90 antes de merge a `main` (mismo criterio que
-  SEO/Performance en `seo.md § Auditoría en CI`).
-- Verificar installability: HTTPS, manifest válido, SW registrado y activo.
+- Lighthouse ya no tiene categoría PWA (se eliminó en la v12): usar los puntajes
+  de `seo.md § Auditoría en CI` y comprobar lo propio de PWA a mano.
+- Installability: HTTPS y manifest válido, revisados en DevTools (Application → Manifest).
+- Offline y actualización: con el SW registrado y activo, probar la app sin conexión
+  y el aviso de versión nueva.

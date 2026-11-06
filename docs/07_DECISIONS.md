@@ -835,3 +835,28 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Si cambia la `description` de una regla, hay que actualizar también su puntero en los proyectos. Cambiar el cuerpo no toca `.claude/`.
 - Quien clone el repo sin los archivos globales depende de leer `.agents/CORE.md`, que puede quedar atrás.
 - Los kits de un solo tool no cambian. `core/agents-map.md` pasa la variable de subagentes con sus propias comillas invertidas, sin cambiar lo que generan.
+
+## ADR-032 — Mínimos de seguridad y runtime para 2026
+
+**Fecha:** 2026-11-06
+**Estado:** Aceptada
+
+**Contexto:** Al repasar el kit contra fuentes vigentes aparecieron valores desfasados: Node 20 quedó sin soporte en abril de 2026, la lista OWASP era anterior a la de 2025 y NIST cambió sus requisitos de contraseña. Además, `npm audit` era la única defensa contra paquetes comprometidos, y ataques como Shai-Hulud publican versiones infectadas que la auditoría todavía no conoce.
+
+**Decisión:**
+
+- **Runtime:** Node.js 24+ y Python 3.12+ para proyectos nuevos. Un proyecto con otra versión fijada la conserva hasta decidir la subida (§ 3).
+- **Contraseñas:** NIST SP 800-63B rev. 4: mínimo 15 caracteres como único factor, 8 solo con MFA, sin reglas de composición ni rotación obligatoria.
+- **Dependencias:** esperar 7 días antes de instalar una versión recién publicada, bloquear scripts de instalación y rechazar dependencias desde git.
+- **Accesibilidad:** WCAG 2.2 AA en el desarrollo. La skill `prelaunch-compliance-audit` sigue citando WCAG 2.1 donde la norma legal la cita.
+
+**Alternativas consideradas:**
+
+- **Node 26 como mínimo:** descartada por ahora. Es la LTS nueva, pero el sitio corre en Node 24, que tiene parches hasta 2028.
+- **Esperar 30 días por versión:** descartada. Da más margen, pero retrasa de más las actualizaciones normales; el gusano citado se detectó en horas.
+
+**Consecuencias:**
+
+- `ignore-scripts=true` puede romper paquetes que compilan al instalarse: se autorizan de a uno.
+- `min-release-age` y `allow-git` solo existen en npm reciente (la documentación de npm 11 los incluye).
+- Los valores llegan a los proyectos ya instalados solo cuando se actualiza su kit.

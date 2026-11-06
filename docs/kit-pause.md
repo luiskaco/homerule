@@ -26,6 +26,9 @@ de producto no entró en ella.
 **Qué se puede hacer igual:** arreglar algo roto que frene el trabajo, y actualizar
 documentación. Mejoras y funciones nuevas del kit esperan al 2026-11-19.
 
+**Excepción (2026-11-06):** el autor pidió alinear el kit a 2026: errores, datos
+desactualizados y seguridad de dependencias. El resto sigue esperando.
+
 ## Fricciones
 
 Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué pasó.
