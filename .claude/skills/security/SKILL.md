@@ -10,6 +10,8 @@ description: "Activar al escribir o revisar autenticación, endpoints de API, va
 > **Nunca confiar en el frontend.** Todo dato del cliente es potencialmente malicioso.
 > Validar, sanitizar y autorizar en el servidor, siempre.
 
+Este archivo tiene los principios y lo prohibido. El detalle por tema (sesiones, CSP, CSRF, CORS, SSRF, webhooks, IA, WordPress…) está en la skill `security-mitigations`: abrí solo el tema que toque.
+
 ---
 
 ## OWASP Top 10:2025 — Mitigación Obligatoria

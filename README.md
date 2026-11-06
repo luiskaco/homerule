@@ -351,6 +351,7 @@ justifiquen (ADR-012).
 
 | Skill | Cuándo activarla |
 |---|---|
+| `security-mitigations` | Al implementar o auditar login, permisos, APIs, uploads, dependencias, IA o WordPress: un índice lleva al tema que toca, sin leer todo. |
 | `prelaunch-compliance-audit` | Antes de lanzar una web o app (o con una ya publicada): auditoría contra 43 reglas legales, de privacidad, seguridad, accesibilidad, técnicas y SEO. Investiga la normativa vigente del país del proyecto, entrega un reporte por severidad y propone arreglos que no aplica sin aprobación. También redacta privacidad, términos, reembolsos, cookies y aviso legal a partir de los hechos del proyecto |
 
 Viene preseleccionada en los 7 stacks reales y `/deploy-checklist` la recomienda
@@ -441,7 +442,7 @@ no editarla a mano.
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
 | `GEMINI.md` | ~2,618 | Siempre |
-| `security.md` | ~2,212 | Model Decision |
+| `security.md` | ~2,262 | Model Decision |
 | `architecture.md` | ~600 | Model Decision |
 | `ui-ux.md` | ~2,386 | Model Decision |
 | `seo.md` | ~1,423 | Model Decision |
@@ -450,16 +451,16 @@ no editarla a mano.
 | `cms.md` | ~690 | Model Decision |
 | `database.md` | ~708 | Model Decision |
 | `stack-conventions.md` | ~604 | Glob |
-| `/tools-reference` | ~1,337 | Skill — slash o por descripción |
+| `/tools-reference` | ~1,374 | Skill — slash o por descripción |
 | `/grill` | ~622 | Skill — slash o por descripción |
 | `/new-feature` | ~461 | Skill — slash o por descripción |
 | `/bug-fix` | ~405 | Skill — slash o por descripción |
 | `/session-close` | ~598 | Skill — slash o por descripción |
-| `/security-audit` | ~856 | Skill — slash o por descripción |
+| `/security-audit` | ~880 | Skill — slash o por descripción |
 | `/deploy-checklist` | ~852 | Skill — slash o por descripción |
 | **Base siempre activa** | **~2,618** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,623–8,553** | sesión normal de código |
-| **Máximo con todo activo** | **~14,623** | improbable — varias reglas casi nunca se activan juntas |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,623–8,640** | sesión normal de código |
+| **Máximo con todo activo** | **~14,710** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

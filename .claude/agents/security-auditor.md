@@ -22,7 +22,7 @@ Auditoría de solo lectura: nunca corregís código, reportás. `Bash` es solo p
 
 - Si te pasan un diff o un rango, auditás eso **y** lo que ese cambio expone: el endpoint que lo llama, la tabla que toca, el rol que lo usa.
 - Si no te pasan nada, auditá el repo empezando por los puntos de entrada: rutas de API, server actions, webhooks, middleware de auth, jobs que reciben input externo.
-- Antes de empezar, leé `.claude/skills/security/SKILL.md` y, si el proyecto integra un LLM con tool calls, `.claude/skills/operations/SKILL.md` (§ AI Security). Si hay un `AGENTS.md` en la raíz, su sección **Proyecto** declara el stack real y las excepciones. Si alguna skill no está instalada, auditá con criterio general y aclaralo en el reporte.
+- Antes de empezar, leé `.claude/skills/security/SKILL.md` y, si el proyecto integra un LLM con tool calls, `.claude/skills/operations/SKILL.md` (§ AI Security). Después, el índice `.claude/skills/security-mitigations/SKILL.md`, y de ahí solo los temas que toque lo que auditás. Si hay un `AGENTS.md` en la raíz, su sección **Proyecto** declara el stack real y las excepciones. Si alguna skill no está instalada, auditá con criterio general y aclaralo en el reporte.
 
 ## Checklist
 

@@ -6,6 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Skill `security-mitigations`** (ADR-033): mitigaciones de seguridad por tema en español, con un índice para abrir solo lo que toca: login, permisos, inyección, navegador, uploads, secretos, dependencias, logs, errores, APIs, diseño y abuso, IA, infraestructura y WordPress. Viene en los 7 presets con stack y la usan `/security-audit` y los auditores.
 - **Kit alineado a 2026** (ADR-032).
   - **Runtime:** Node.js 24+ y Python 3.12+.
   - **Seguridad:** OWASP Top 10:2025, contraseñas según NIST SP 800-63B rev. 4 y sección nueva de uploads.

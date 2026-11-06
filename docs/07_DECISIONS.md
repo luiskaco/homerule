@@ -860,3 +860,23 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - `ignore-scripts=true` puede romper paquetes que compilan al instalarse: se autorizan de a uno.
 - `min-release-age` y `allow-git` solo existen en npm reciente (la documentación de npm 11 los incluye).
 - Los valores llegan a los proyectos ya instalados solo cuando se actualiza su kit.
+
+## ADR-033 — Seguridad por temas: regla corta y skill con índice
+
+**Fecha:** 2026-11-06
+**Estado:** Aceptada
+
+**Contexto:** El autor pidió fortalecer la seguridad con "todas las mitigaciones posibles". La regla `security` no alcanza para eso (no trata CSRF, CORS ni webhooks), y la skill de APIs es de terceros, en inglés y de 916 líneas. Pero una lista completa no existe, y un archivo gigante gastaría tokens en cada activación.
+
+**Decisión:** La regla `security` sigue corta, con principios y prohibiciones. Se agrega la skill propia `security-mitigations`: un índice y 14 temas en `references/`, en español, cada uno con mitigaciones, señales de alerta y fuentes. Quien implementa o audita abre solo el tema que toca. Viene en los 7 presets con stack.
+
+**Alternativas consideradas:**
+
+- **Una sola regla grande:** descartada. Se cargaría entera cada vez que se activa, aunque el cambio toque un solo tema.
+- **Apoyarse en `api-security-best-practices`:** descartada. No podemos editarla, cubre solo APIs y trae ejemplos largos que no siempre aplican al stack. Queda disponible para quien quiera ejemplos de código.
+
+**Consecuencias:**
+
+- Hay que mantener 14 archivos al día. Cada uno cita sus fuentes, y el índice dice cuándo se revisó.
+- La regla manda si difieren: un cambio de criterio se hace primero ahí.
+- La skill mejora lo que la IA sabe y revisa, pero no demuestra que un sistema sea seguro.
