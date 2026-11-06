@@ -880,3 +880,30 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Hay que mantener 14 archivos al día. Cada uno cita sus fuentes, y el índice dice cuándo se revisó.
 - La regla manda si difieren: un cambio de criterio se hace primero ahí.
 - La skill mejora lo que la IA sabe y revisa, pero no demuestra que un sistema sea seguro.
+
+---
+
+## ADR-034 — Datos personales: regla más bloqueo, y commits a nombre del usuario
+
+**Estado:** Aceptada (2026-11-06)
+
+**Contexto:** El 2026-10-27 un subagente puso el correo personal del autor en el User-Agent de unas sondas a medios de noticias. No fue una búsqueda web: fueron scripts propios, y `web-guard` solo vigila a `web-researcher`. Además, los commits salían como "Orange Bot" por una identidad global de git, sin cuenta de GitHub asociada.
+
+**Decisión:**
+
+- **Regla:** va en § 2 y § 4 del núcleo y en los archivos globales, que se cargan en todo proyecto. No se reparte commit por commit a los repos existentes.
+- **Bloqueo:** el hook `personal-data-guard` se instala por equipo en `~/.claude`. Lee los datos de `~/.claude/personal-data.txt`, fuera de los repos.
+- **Autoría:** la identidad global es la del autor con su correo privado de GitHub. La IA sigue como coautora, a pedido del autor. El historial viejo no se reescribe.
+
+**Alternativas consideradas:**
+
+- **Solo en el `AGENTS.md` de cada proyecto:** descartada. Exige un commit por repo, deja afuera los proyectos sin kit y Claude Code no lo lee si el `CLAUDE.md` no lo importa.
+- **Solo la regla:** descartada. Es lo que la IA debería hacer, pero no impide que el dato salga.
+- **Reescribir el historial:** descartada. Cambia todos los hashes y obliga a forzar la subida en cada repo.
+
+**Consecuencias:**
+
+- La identidad y el hook son por máquina: hay que repetirlos en cada equipo (`docs/kit-pause.md`).
+- Antigravity queda solo con la regla: no se comprobó si admite un bloqueo equivalente.
+- El hook no reconoce datos codificados ni los que un script lee de otro archivo.
+- En GitHub ya no se distingue quién escribió un commit por su autor; queda la línea de coautor.

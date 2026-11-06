@@ -54,6 +54,7 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 - Priorizar: claridad, modularidad, simplicidad, reutilización.
 - Evitar: deuda técnica, hacks rápidos, sobreingeniería.
 - Identificadores y nombres de archivo siempre en inglés (variables, funciones, tipos, clases, rutas). Comentarios y documentación en español. Respuestas en el idioma del usuario.
+- **Datos personales del usuario:** nunca enviarlos fuera del equipo ni dejarlos en algo que salga de él: correo, teléfono, documentos o dirección. Eso incluye User-Agent, cabeceras, URLs, búsquedas, formularios, scripts y archivos del repo. Si un sitio pide un contacto a los clientes automatizados, usar un nombre genérico o preguntar. Solo se usan si el usuario lo pide para ese envío.
 
 ---
 
@@ -84,6 +85,8 @@ Antes de escribir o sugerir código que use una librería, framework, SDK o CLI 
 **Naming:** `kebab-case` archivos · `camelCase` variables · `PascalCase` clases · `UPPER_SNAKE_CASE` constantes · `/api/v1/recursos` endpoints
 
 **Commits:** Conventional Commits — `feat` / `fix` / `refactor` / `docs` / `chore` / `perf`
+
+**Autoría:** todo commit sale con la identidad de git del usuario: no cambiarla ni usar `--author`. La IA puede figurar como coautora, nunca como autora. Antes de commitear en un equipo o repo nuevo, revisar `git config user.name`; si no es la del usuario, avisar y no commitear.
 
 **Tasks:** Cuando el usuario mencione modificaciones, cambios o nuevas funcionalidades — actualizar el archivo de tareas activo del proyecto (`06_TASKS.md` o equivalente) antes de codificar.
 
