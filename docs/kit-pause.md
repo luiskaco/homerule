@@ -30,6 +30,9 @@ documentación. Mejoras y funciones nuevas del kit esperan al 2026-11-19.
 desactualizados y seguridad de dependencias) y crear la skill de seguridad por
 temas, y llevarlo a sus proyectos. El resto sigue esperando.
 
+**Excepción (2026-11-08):** el autor pidió la regla de explicaciones en § 0 (regla de
+escritura 8, estilo ASD-STE100).
+
 ## Fricciones
 
 Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué pasó.
@@ -67,6 +70,16 @@ Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué 
 - Quitar de los `AGENTS.md` de los proyectos la copia de las reglas generales, de a 3 proyectos: 17 de 19 la tienen, ya sin las reglas de ADR-034. Antes, tener los globales al día en cada máquina.
 
 Lo demás pendiente está en `06_TASKS.md`.
+
+## Novedades para llevar a la PC del trabajo
+
+Lo que cambió en los archivos globales desde la última vez que se actualizaron allá.
+Al llegar, hacer los pasos 1 y 2 de la sección siguiente y borrar la línea de acá.
+
+- **2026-11-08 — Regla de explicaciones** (§ 0, regla de escritura 8): al pedir una
+  explicación, frases cortas en voz activa, una idea por frase, la misma palabra para
+  la misma cosa y un diagrama si se puede. Entra en `~/.claude/CLAUDE.md` y
+  `~/.gemini/GEMINI.md`.
 
 ## En otra máquina
 
