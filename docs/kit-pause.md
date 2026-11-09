@@ -70,6 +70,7 @@ Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué 
 - Revisar `debugger`: no tiene el hook de solo lectura porque necesita correr tests (ADR-021), pero su descripción dice "No edita código" y la terminal le queda libre. Decidir si alcanza con aclarar la descripción o si conviene otro control. Un hook que solo deje pasar tests no protege de verdad, porque un test puede ejecutar cualquier código.
 - Evaluar un subagente de rendimiento: ningún agente del kit revisa velocidad, carga, bundle ni consultas lentas. Decidirlo junto con la medición de gasto de los subagentes, para no sumar uno que no se use.
 - Quitar de los `AGENTS.md` de los proyectos la copia de las reglas generales, de a 3 proyectos: 17 de 19 la tienen, ya sin las reglas de ADR-034. Antes, tener los globales al día en cada máquina.
+- Sumar a `security-auditor` cuatro ideas de la skill [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) (MIT, citar la fuente): tres resultados posibles (confirmado, falta validar, descartado), que quien valida un hallazgo no sea el agente que lo encontró, una escala de gravedad con ejemplos, y que la falta de una capa de refuerzo no cuente como vulnerabilidad si otra capa ya frena el ataque. La skill completa no se vendoriza: es de 6 fases con muchos subagentes, pide una sandbox que acá no hay y choca de nombre con `/security-audit`.
 
 Lo demás pendiente está en `06_TASKS.md`.
 
