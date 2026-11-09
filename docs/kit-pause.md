@@ -78,10 +78,7 @@ Lo demás pendiente está en `06_TASKS.md`.
 Lo que cambió en los archivos globales desde la última vez que se actualizaron allá.
 Al llegar, hacer los pasos 1 y 2 de la sección siguiente y borrar la línea de acá.
 
-- **2026-11-08 — Regla de explicaciones** (§ 0, regla de escritura 8): al pedir una
-  explicación, frases cortas en voz activa, una idea por frase, la misma palabra para
-  la misma cosa y un diagrama si se puede. Entra en `~/.claude/CLAUDE.md` y
-  `~/.gemini/GEMINI.md`.
+- Nada pendiente: la regla de explicaciones se aplicó el 2026-11-09.
 
 ## En otra máquina
 
