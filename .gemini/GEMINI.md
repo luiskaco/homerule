@@ -89,7 +89,7 @@ Antes de escribir o sugerir código que use una librería, framework, SDK o CLI 
 
 **Autoría:** todo commit sale con la identidad de git del usuario: no cambiarla ni usar `--author`. La IA puede figurar como coautora, nunca como autora. Antes de commitear en un equipo o repo nuevo, revisar `git config user.name`; si no es la del usuario, avisar y no commitear.
 
-**Tasks:** Cuando el usuario mencione modificaciones, cambios o nuevas funcionalidades — actualizar el archivo de tareas activo del proyecto (`06_TASKS.md` o equivalente) antes de codificar.
+**Tasks:** Cuando el usuario mencione modificaciones, cambios o nuevas funcionalidades — actualizar el archivo de tareas activo del proyecto (`02_TASKS.md` o equivalente) antes de codificar.
 
 ---
 
@@ -97,19 +97,17 @@ Antes de escribir o sugerir código que use una librería, framework, SDK o CLI 
 
 | Archivo | Propósito |
 |---------|-----------|
-| `01_PROJECT_PRD.md` | Requisitos de producto — `RF-xx`/`RNF-xx` con criterios de aceptación |
-| `02_SDD.md` | Diseño del sistema |
-| `03_SYSTEM_SPEC.md` | Especificaciones técnicas |
-| `04_DATA_MODEL.md` | Esquemas y entidades |
-| `05_ARCHITECTURE.md` | Decisiones arquitectónicas |
-| `06_TASKS.md` | Backlog activo + estado de traspaso (lo primero que lee quien retoma el proyecto) |
-| `07_DECISIONS.md` | ADRs |
-| `08_CHANGELOG.md` | Historial de versiones |
-| `09_TESTING.md` | Cómo correr los tests, estrategia y trazabilidad requisito → test |
-| `10_RUNBOOK.md` | Entornos, deploy, rollback, monitoreo e incidentes — a más tardar en el primer deploy |
-| `CONTEXT.md` | Glosario del dominio — sin numerar: es un glosario vivo, no un documento de fase (opcional, desde 3 términos) |
+| `01_PRD.md` | Requisitos — `RF-xx`/`RNF-xx` con criterios de aceptación |
+| `02_TASKS.md` | Solo lo abierto, como mucho 10, y dónde quedó el trabajo — lo primero que lee quien retoma el proyecto |
+| `03_DECISIONS.md` | ADR, con un índice de una línea por decisión al principio |
+| `04_CHANGELOG.md` | Una línea por cambio, lo nuevo arriba |
+| `ARCHITECTURE.md` | Opcional — componentes, APIs, integraciones, variables de entorno e infraestructura |
+| `DATA_MODEL.md` | Opcional — entidades y campos |
+| `TESTING.md` | Opcional — cómo correr los tests y qué requisito cubre cada uno |
+| `RUNBOOK.md` | Opcional — deploy, vuelta atrás, monitoreo e incidentes; a más tardar en el primer deploy |
+| `CONTEXT.md` | Opcional — glosario del dominio, desde 3 términos |
 
-Actualizar el archivo correspondiente al completar cada tarea.
+Los 4 numerados van siempre; los opcionales se crean cuando el proyecto los pide. Cada dato va en un solo lugar: al cerrar una tarea, se borra de `02_TASKS.md` y deja una línea en `04_CHANGELOG.md`; el detalle técnico va en el commit.
 
 **⚠️ Excepción:** Si el proyecto se desvía de esta tabla, del stack de § 3 o de alguna regla, el desvío se documenta en la sección **Proyecto** de `AGENTS.md` (raíz del proyecto), que tiene prioridad sobre ellas.
 
@@ -151,7 +149,7 @@ Antes de entregar cualquier código, revisar internamente con estas pasadas — 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
 - **🧪 Verificado:** qué se ejecutó de verdad — build, tests, flujo probado. Nunca dar por probado lo que no se corrió
-- **📝 Docs:** `06_TASKS.md` (con el estado de traspaso), `08_CHANGELOG.md` y el ADR si hubo decisión — al día
+- **📝 Docs:** `02_TASKS.md` (lo abierto y dónde quedó), `04_CHANGELOG.md` y el ADR si hubo decisión — al día
 - **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta problema crítico, bloquea entrega y corrige primero
 - **⚠️ Riesgo:** solo si hubo algo irreversible — migración, borrado de datos, push o deploy a producción
 

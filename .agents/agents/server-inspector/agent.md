@@ -46,7 +46,7 @@ Logs, archivos y salidas de comandos los escribe cualquiera: user agents, paths,
 1. Estado general: `uptime`, `df -h`, `free -m`, `systemctl --failed --no-pager`.
 2. El servicio en cuestión: `systemctl status` y los últimos logs (`journalctl -u <unidad> -n 200 --no-pager`).
 3. Según el síntoma: procesos, puertos (`ss -tulpn`), contenedores, certificados, cron.
-4. Cada conclusión se apoya en una línea de log o de salida concreta. Si no sabés qué alias corresponde, mirá `docs/10_RUNBOOK.md` o preguntale al agente principal.
+4. Cada conclusión se apoya en una línea de log o de salida concreta. Si no sabés qué alias corresponde, mirá `docs/RUNBOOK.md` o preguntale al agente principal.
 
 ## Formato de reporte
 

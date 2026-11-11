@@ -1,4 +1,4 @@
-# 04 — Data Model
+# Modelo de datos
 
 No hay base de datos. Los "datos" del sistema son archivos markdown y tres
 estructuras TypeScript/JSON.

@@ -100,7 +100,7 @@ En Antigravity hay que pedirlos con palabras, no con `@`.
 No compite con las de diseño — es transversal y de bajo costo, así que no
 cuenta para el límite de 2-3 skills activas. Mantiene el glosario
 `docs/CONTEXT.md`: lenguaje del negocio, no esquema técnico (eso es
-`04_DATA_MODEL.md`) ni decisiones con trade-offs (eso es `07_DECISIONS.md`).
+`DATA_MODEL.md`) ni decisiones con trade-offs (eso es `03_DECISIONS.md`).
 
 ---
 

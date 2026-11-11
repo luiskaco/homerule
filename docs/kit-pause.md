@@ -73,14 +73,17 @@ Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué 
 - Sumar a `security-auditor` cuatro ideas de la skill [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) (MIT, citar la fuente): tres resultados posibles (confirmado, falta validar, descartado), que quien valida un hallazgo no sea el agente que lo encontró, una escala de gravedad con ejemplos, y que la falta de una capa de refuerzo no cuente como vulnerabilidad si otra capa ya frena el ataque. La skill completa no se vendoriza: es de 6 fases con muchos subagentes, pide una sandbox que acá no hay y choca de nombre con `/security-audit`.
 - Sumar a la rule `architecture` la "escalera" de [ponytail](https://github.com/dietrichgebert/ponytail) (MIT, citar la fuente): antes de escribir código, preguntar si hace falta, si ya existe en el repo, si lo resuelve la librería estándar o una dependencia ya instalada, y recién ahí escribir lo mínimo; no sumar una dependencia por pocas líneas, sin recortar validación, seguridad ni accesibilidad. El plugin completo no se instala: se mete en cada sesión con un estilo de respuesta propio que choca con § 0 y la Regla de Oro. Su barra de costo por tarea sirve de referencia para medir el gasto de los subagentes. `claude-mem` se descartó: envía lo que hacen las herramientas a un modelo externo y trae analítica activada (ADR-034).
 
-Lo demás pendiente está en `06_TASKS.md`.
+Lo demás pendiente está en `02_TASKS.md`.
 
 ## Novedades para llevar a la PC del trabajo
 
 Lo que cambió en los archivos globales desde la última vez que se actualizaron allá.
 Al llegar, hacer los pasos 1 y 2 de la sección siguiente y borrar la línea de acá.
 
-- Nada pendiente: la regla de explicaciones se aplicó el 2026-11-09.
+- **2026-11-10 — Documentos simplificados** (ADR-035): los globales cambian en
+  § 4, § 5 y § 8. Además, migrar los `docs/` de cada proyecto con
+  `docs/migrate-docs.md` y anotar acá cada uno que quede hecho.
+  - Migrados: _ninguno todavía_.
 
 ## En otra máquina
 

@@ -1,5 +1,7 @@
-# 09 — Testing
+# Tests
 
+> **Opcional:** se crea con el primer test.
+>
 > Cómo se verifica que el proyecto funciona. Quien retome el trabajo (persona u
 > otra IA) tiene que poder correr los tests y saber qué cubren sin preguntar.
 
@@ -28,8 +30,8 @@ o "sin objetivo numérico" con el motivo._
 
 ## Trazabilidad
 
-_Cada criterio de aceptación de `01_PROJECT_PRD.md` tiene al menos un test que
-lo verifica. Un requisito sin test no se da por cumplido en `06_TASKS.md`._
+_Cada criterio de aceptación de `01_PRD.md` tiene al menos un test que
+lo verifica. Un requisito sin test no se da por cumplido en `02_TASKS.md`._
 
 | Requisito | Test(s) | Estado |
 |---|---|---|

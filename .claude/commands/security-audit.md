@@ -59,7 +59,7 @@ Si hay hallazgos — listarlos con severidad:
 
 - 🔴 **Critical** — bloquea el deploy, corregir antes de subir
 - 🟠 **High** — corregir en el próximo commit
-- 🟡 **Medium** — agregar a `06_TASKS.md` como tarea pendiente
+- 🟡 **Medium** — agregar a `02_TASKS.md` como tarea pendiente
 
 ---
 

@@ -67,9 +67,9 @@ lo que no se pudo comprobar va como "a verificar", no como aprobado.
 ### Documentación
 
 - [ ] `/docs` actualizado si hubo cambios de arquitectura, API o datos
-- [ ] `08_CHANGELOG.md` actualizado con la versión
-- [ ] `10_RUNBOOK.md` al día: pasos de deploy y rollback probados, verificación post-deploy definida
-- [ ] `09_TESTING.md`: los requisitos de esta versión tienen test en la tabla de trazabilidad
+- [ ] `04_CHANGELOG.md` con una línea por cada cambio de esta versión
+- [ ] `RUNBOOK.md` al día: pasos de deploy y rollback probados, verificación post-deploy definida
+- [ ] `TESTING.md`: los requisitos de esta versión tienen test en la tabla de trazabilidad
 - [ ] `.env.example` actualizado si se agregaron variables nuevas
 
 ### Veredicto

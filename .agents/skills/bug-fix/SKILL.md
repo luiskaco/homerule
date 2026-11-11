@@ -32,12 +32,12 @@ que reproduce el bug. Pasarle el síntoma y cómo reproducirlo.
 
 - [ ] ¿Cuántos archivos afecta el fix?
 - [ ] ¿El fix puede romper otra funcionalidad?
-- [ ] ¿Afecta el modelo de datos? → revisar `04_DATA_MODEL.md`
+- [ ] ¿Afecta el modelo de datos? → revisar `DATA_MODEL.md`
 - [ ] ¿Afecta la seguridad? → invocar `/security-audit` después del fix
 
-### 3. Actualizar 06_TASKS.md (obligatorio)
+### 3. Actualizar 02_TASKS.md (obligatorio)
 
-Agregar en `## En progreso`:
+Agregar en `## Abiertas` (se borra al cerrar el fix y deja una línea en `04_CHANGELOG.md`):
 
 ```
 - [ ] fix: [descripción del bug] — causa: [causa raíz identificada]

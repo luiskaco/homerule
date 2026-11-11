@@ -82,5 +82,5 @@ Antes de implementar un módulo o feature nuevo:
 - [ ] ¿Está en la capa correcta? (UI / negocio / datos)
 - [ ] ¿Introduce dependencias circulares?
 - [ ] ¿El contrato de la API está definido antes del código?
-- [ ] ¿El modelo de datos está en `04_DATA_MODEL.md`?
-- [ ] ¿La decisión arquitectónica está en `07_DECISIONS.md` (ADR)?
+- [ ] ¿El modelo de datos está en `DATA_MODEL.md`?
+- [ ] ¿La decisión arquitectónica está en `03_DECISIONS.md` (ADR)?

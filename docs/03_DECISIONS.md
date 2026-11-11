@@ -1,4 +1,49 @@
-# 07 — Decisions (ADRs)
+# Decisiones (ADR)
+
+> El índice tiene una línea por decisión. Abrir solo el ADR que haga falta.
+> Un ADR no se borra: si cambia, se marca "Sustituida por ADR-xxx".
+
+## Índice
+
+| ADR | Decisión | Estado |
+|---|---|---|
+| ADR-001 | Nav del sitio organizado por modo de uso, no por herramienta | Sustituida por ADR-006 |
+| ADR-002 | Labels descriptivos en el nav, sin "Inicio" repetido | Aceptada |
+| ADR-003 | Separar las plantillas específicas de Antigravity de las compartidas | Vigente en el criterio, desactualizada en el mecanismo |
+| ADR-004 | Bitácora de cambios duplicada a propósito | Sustituida por ADR-025 |
+| ADR-005 | i18n con next-intl, español como default y solo la interfaz traducida | Aceptada |
+| ADR-006 | Antigravity y Claude Code como catálogos estancos (fin del modo híbrido) | Aceptada |
+| ADR-007 | El kit de subagentes cubre revisión de UI y tests | Aceptada |
+| ADR-008 | Los `destPath` del manifest son la ruta final, sin prefijo de carpeta | Aceptada |
+| ADR-009 | Identificadores en inglés, comentarios y documentación en español | Aceptada |
+| ADR-010 | El repo consume su propio kit (dogfooding) | Aceptada |
+| ADR-011 | El kit de Claude Code se empaquetará como plugin nativo, sin abandonar los ZIPs | Implementada el 2026-09-13 |
+| ADR-012 | `CONTEXT.md` es un glosario vivo, sin número de fase | Aceptada |
+| ADR-013 | Antigravity también lleva subagentes declarables en archivo | Aceptada |
+| ADR-014 | El plugin versiona por fecha (CalVer), no por semver | Aceptada |
+| ADR-015 | `AGENTS.md` en la raíz para lo propio del repo, importado desde `CLAUDE.md` | Aceptada |
+| ADR-016 | Los kits traen `AGENTS.md`: el proyecto puede continuarlo cualquier IA | Aceptada |
+| ADR-017 | SDD con trazabilidad, traspaso, testing y runbook | Aceptada |
+| ADR-018 | Se elimina `00_GEMINI_START`: los desvíos del proyecto van en `AGENTS.md` | Aceptada |
+| ADR-019 | Cierre de tarea digerible: resultado primero y revisión en una línea | Aceptada |
+| ADR-020 | Los workflows de Antigravity pasan a skills | Aceptada |
+| ADR-021 | Subagents de Claude Code: solo lectura impuesto por hook y `security-auditor` ampliado | Aceptada |
+| ADR-022 | Subagent `web-researcher`: investigación web aislada y con salida revisada | Aceptada |
+| ADR-023 | Stack del sitio: Next.js 16, React 19 y Tailwind 4 | Aceptada |
+| ADR-024 | Navegación por kit: un menú "Kits" con selector de tool | Aceptada |
+| ADR-025 | El historial de cambios vive solo en el repo | Aceptada |
+| ADR-026 | Subagents de servidores: `server-inspector` y `server-operator` por alias SSH | Aceptada para Claude Code |
+| ADR-027 | Menos subagents en Claude Code y menos tokens por turno | Aceptada |
+| ADR-028 | Se elimina el modo caveman: reglas de escritura en su lugar | Aceptada |
+| ADR-029 | Criterio propio: la IA cuestiona antes de ejecutar | Aceptada |
+| ADR-030 | Reglas de uso de subagentes en § 8 | Aceptada |
+| ADR-031 | Kit híbrido: un solo juego de reglas para Claude Code y Antigravity | Aceptada |
+| ADR-032 | Mínimos de seguridad y runtime para 2026 | Aceptada |
+| ADR-033 | Seguridad por temas: regla corta y skill con índice | Aceptada |
+| ADR-034 | Datos personales: regla más bloqueo, y commits a nombre del usuario | Aceptada |
+| ADR-035 | Documentos: 4 fijos, 5 opcionales y cada dato en un solo lugar | Aceptada |
+
+---
 
 ## ADR-001 — Nav del sitio organizado por modo de uso, no por herramienta
 
@@ -907,3 +952,28 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Antigravity queda solo con la regla: no se comprobó si admite un bloqueo equivalente.
 - El hook no reconoce datos codificados ni los que un script lee de otro archivo.
 - En GitHub ya no se distingue quién escribió un commit por su autor; queda la línea de coautor.
+
+## ADR-035 — Documentos: 4 fijos, 5 opcionales y cada dato en un solo lugar
+
+**Fecha:** 2026-11-10 · **Estado:** Aceptada
+
+**Contexto:** El kit pedía 11 documentos desde el principio. Cada cambio se escribía en la lista de tareas, el changelog, el commit y el PR. La lista de tareas guardaba las cerradas con su historial: en este repo tenía 59 cerradas, 7 abiertas y unas 4.800 palabras, y es lo primero que lee la IA al retomar. `02_SDD`, `03_SYSTEM_SPEC` y `05_ARCHITECTURE` describían lo mismo desde tres ángulos. Además, la skill de cuenta `project-docs-scaffold` usaba otra estructura de 8 archivos.
+
+**Decisión:**
+
+- **Fijos:** `01_PRD`, `02_TASKS`, `03_DECISIONS` y `04_CHANGELOG`. **Opcionales:** `ARCHITECTURE` (une diseño, especificaciones y arquitectura), `DATA_MODEL`, `TESTING`, `RUNBOOK` y `CONTEXT`, sin número, creados cuando el proyecto los pide.
+- **Tareas:** solo lo abierto, como mucho 10 y en 2–3 líneas. Al cerrar una, se borra y deja una línea en el changelog. El avance va en los commits.
+- **Decisiones:** índice de una línea por ADR al principio; la IA abre solo el que necesita.
+- **Changelog:** una línea por cambio, lo nuevo arriba, archivado por año.
+- Se borra del repo `project-docs-scaffold`. Los proyectos existentes se migran con `docs/migrate-docs.md`.
+
+**Alternativas:**
+
+- **Un archivo de tareas por módulo:** descartada. Reparte el problema pero no lo resuelve: las cerradas se acumulan igual.
+- **Solo cambiar el flujo, sin tocar archivos:** descartada por el autor. Deja los tres documentos que se pisan.
+
+**Consecuencias:**
+
+- Cambian los nombres en el kit, los comandos y los 19 proyectos; la migración se hace desde la PC del trabajo.
+- El historial de las tareas cerradas queda solo en git y en el changelog.
+- Fase 2: la misma limpieza en el núcleo, los globales y los subagentes.

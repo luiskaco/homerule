@@ -16,17 +16,18 @@ archivos markdown planos.
 
 ### Continuar el trabajo
 
-1. **Antes de empezar:** leer en `docs/06_TASKS.md` la sección **Estado de
-   traspaso** (dónde quedó, próximo paso, bloqueos) y después
-   `docs/07_DECISIONS.md` (lo ya decidido — no re-decidirlo). Si este
-   proyecto se desvía de alguna regla, está en la sección **Proyecto** de abajo.
-2. **Para verificar tu trabajo:** `docs/09_TESTING.md` dice cómo correr los
-   tests y qué requisito (`RF-xx` de `docs/01_PROJECT_PRD.md`) cubre cada uno.
-   Para desplegar u operar: `docs/10_RUNBOOK.md`.
+1. **Antes de empezar:** leer en `docs/02_TASKS.md` la sección **Dónde
+   quedó** (estado, próximo paso, bloqueos) y el índice de
+   `docs/03_DECISIONS.md` (lo ya decidido — no re-decidirlo; abrir solo el ADR
+   que toque). Si este proyecto se desvía de alguna regla, está en la sección
+   **Proyecto** de abajo.
+2. **Para verificar tu trabajo:** `docs/TESTING.md`, si existe, dice cómo correr
+   los tests y qué requisito (`RF-xx` de `docs/01_PRD.md`) cubre cada uno.
+   Para desplegar u operar: `docs/RUNBOOK.md`.
 3. **Comandos de § 7:** si tu herramienta no los expone, leé el archivo del
    workflow y seguí sus pasos a mano.
-4. **Al cerrar una tarea:** actualizar `docs/06_TASKS.md` — incluido el Estado
-   de traspaso — y el documento que corresponda según § 5.
+4. **Al cerrar una tarea:** borrarla de `docs/02_TASKS.md`, reescribir
+   **Dónde quedó** y dejar una línea en `docs/04_CHANGELOG.md` (§ 5).
 
 ---
 

@@ -31,7 +31,7 @@ Contraseñas, tokens, cookies, claves, tarjetas ni datos personales en claro. En
 
 ## Ante un incidente
 
-Tener escrito en `docs/10_RUNBOOK.md`:
+Tener escrito en `docs/RUNBOOK.md`:
 
 1. Quién decide y cómo se avisa.
 2. Cómo contener: revocar sesiones, rotar claves, cortar el acceso.

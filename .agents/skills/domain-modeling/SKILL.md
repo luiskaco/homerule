@@ -23,10 +23,10 @@ no lo es, aparece el mismo concepto con tres nombres distintos en tres capas.
 
 - **`docs/CONTEXT.md`** — el glosario. Un término por entrada: qué es, qué
   **no** es, y cómo se llama en el código.
-- **`docs/04_DATA_MODEL.md`** — entidades y campos técnicos. `CONTEXT.md` es
+- **`docs/DATA_MODEL.md`** — entidades y campos técnicos. `CONTEXT.md` es
   el lenguaje del negocio; `04` es el esquema. Un término del glosario puede
   no tener tabla, y una tabla puede no ser un término del dominio.
-- **`docs/07_DECISIONS.md`** — si la definición de un término implicó
+- **`docs/03_DECISIONS.md`** — si la definición de un término implicó
   descartar alternativas con trade-offs reales, eso es un ADR, no una entrada
   de glosario.
 
@@ -55,7 +55,7 @@ Crear `CONTEXT.md` recién cuando haya al menos 3 términos que lo justifiquen
 ## Qué NO hacer
 
 - No convertir `CONTEXT.md` en especificación: nada de endpoints, schemas ni
-  detalles de implementación — eso es `03_SYSTEM_SPEC.md` y `04_DATA_MODEL.md`.
+  detalles de implementación — eso es `ARCHITECTURE.md` y `DATA_MODEL.md`.
 - No documentar un término "por si acaso". Si no apareció en una conversación
   ni en el código, no va.
 - No crear un ADR por cada definición. Un ADR necesita las tres cosas:

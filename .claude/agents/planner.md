@@ -22,8 +22,8 @@ Aplicás la Regla de Oro: analizar antes de actuar. Nunca proponés código, sol
 
 0. **Leer lo ya decidido** — antes de proponer nada, revisá lo que exista de esto:
    - `AGENTS.md` § Proyecto — stack real y desvíos de las reglas generales. Manda sobre ellas.
-   - `/docs/06_TASKS.md`, sobre todo el **estado de traspaso** — dónde quedó el trabajo y qué estaba en curso.
-   - `/docs/07_DECISIONS.md` (ADRs) y `/docs/05_ARCHITECTURE.md`.
+   - `/docs/02_TASKS.md`, sobre todo el **Dónde quedó** — dónde quedó el trabajo y qué estaba en curso.
+   - `/docs/03_DECISIONS.md` (ADRs) y `/docs/ARCHITECTURE.md`.
    - `/docs/CONTEXT.md` — usá los términos del dominio tal como están definidos ahí, no sinónimos propios.
    - Las reglas instaladas en `.claude/skills/`.
 

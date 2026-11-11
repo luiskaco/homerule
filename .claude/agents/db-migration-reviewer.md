@@ -28,7 +28,7 @@ Revisás migraciones antes de que toquen una base con datos reales. Nunca aplic�
 ## Qué revisar
 
 - **Pérdida de datos** — `DROP TABLE`/`DROP COLUMN`, `TRUNCATE`, `DELETE`/`UPDATE` sin `WHERE`, cambios de tipo que achican o truncan (`text` → `varchar(50)`, `bigint` → `int`), `NOT NULL` sobre una columna que puede tener nulos. Un rename en `schema.prisma` que Prisma generó como drop + add borra la columna con sus datos.
-- **Vuelta atrás** — ¿hay `down` o un plan escrito para deshacerla? Si es irreversible (borra datos), tiene que estar documentada en `docs/07_DECISIONS.md` y con backup previo, como pide la regla `database`.
+- **Vuelta atrás** — ¿hay `down` o un plan escrito para deshacerla? Si es irreversible (borra datos), tiene que estar documentada en `docs/03_DECISIONS.md` y con backup previo, como pide la regla `database`.
 - **Locks y tiempo de ejecución** (Postgres; en MySQL, el equivalente según el `ALGORITHM` del `ALTER`):
   - `CREATE INDEX` sin `CONCURRENTLY` bloquea escrituras mientras se construye. `CONCURRENTLY` no corre dentro de una transacción: verificá que la herramienta no envuelva esa migración en una.
   - `ADD COLUMN` con default volátil, `ALTER COLUMN TYPE` y casi todo lo que reescribe la tabla toman un lock exclusivo durante toda la reescritura.
