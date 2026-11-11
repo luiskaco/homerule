@@ -27,6 +27,17 @@ description: Convenciones específicas por lenguaje/framework — aplica automá
 - Pydantic para validación de schemas
 - `use context7 to resolve fastapi` antes de implementar patrones nuevos
 
+**Laravel**
+
+- Laravel 13 con PHP 8.3+ en proyectos nuevos; en los existentes, la versión del `composer.lock`
+- Validación con Form Requests — nunca confiar en `$request->all()` sin validar
+- Eloquent con eager loading (`with()`) para evitar consultas N+1; mass assignment con `$fillable` explícito
+- Auth con Sanctum o un starter kit oficial — no reimplementar login ni tokens
+- `env()` solo dentro de `config/`; el código lee `config()` (con la config cacheada, `env()` devuelve `null`)
+- Tareas lentas (correos, imports, llamadas externas) en colas, no en el request
+- Rutas de API en `routes/api.php` con prefijo `/api/v1/`
+- `use context7 to resolve laravel` antes de implementar patrones nuevos
+
 **WordPress**
 
 - Aplicar reglas de `cms.md` — hardening, updates, 2FA obligatorio

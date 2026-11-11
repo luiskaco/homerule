@@ -60,11 +60,11 @@ Si se cumple alguna condición de **Validar**, planificar con la skill `project-
 | Capa | Tecnología |
 |------|-----------|
 | Frontend | React / Next.js / Vue / Vanilla JS |
-| Backend | Node.js / Python (FastAPI) |
+| Backend | Node.js / Python (FastAPI) / PHP (Laravel) |
 | CMS | WordPress |
 | Base de datos | PostgreSQL / MySQL / MongoDB / Supabase / SQLite |
 | Estilos | Tailwind CSS / CSS puro |
-| Runtime | Node.js 24+ / Python 3.12+ |
+| Runtime | Node.js 24+ / Python 3.12+ / PHP 8.3+ |
 
 **📌 Versiones actualizadas — obligatorio** antes de usar una librería, framework, SDK o CLI:
 

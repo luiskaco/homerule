@@ -22,7 +22,7 @@ description: Activar al diseñar schema, escribir migraciones, elegir ORM, o tra
 
 ### Migraciones
 
-- ORM/migration tool obligatorio en SQL: Prisma, Drizzle o Sequelize (Node) / Alembic (Python + SQLAlchemy).
+- ORM/migration tool obligatorio en SQL: Prisma, Drizzle o Sequelize (Node) / Alembic (Python + SQLAlchemy) / Eloquent y las migraciones de Laravel (PHP).
 - Nunca editar el schema de producción a mano (`ALTER TABLE` manual) — todo cambio pasa por una migración versionada y reproducible.
 - Migraciones reversibles cuando sea posible (`down` migration) — si no lo es (drop de columna con datos), documentarlo en `03_DECISIONS.md`.
 - MongoDB: aunque no tiene schema rígido, versionar los cambios de forma de documento igual (script de migración de datos, no solo de código).
