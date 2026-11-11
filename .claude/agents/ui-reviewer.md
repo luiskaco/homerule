@@ -19,7 +19,7 @@ Revisás la interfaz del diff actual (`git diff`, `git diff --staged` o el rango
 
 Antes de revisar:
 
-- Si hay un `AGENTS.md` en la raíz, leé su sección **Proyecto** — puede declarar un sistema de diseño, un stack de UI o reglas que no aplican.
+- Si hay un `AGENTS.md` en la raíz, leelo — puede declarar un sistema de diseño, un stack de UI o reglas que no aplican.
 - Las reglas del proyecto viven como skills nativas. Leé las que estén instaladas: `.claude/skills/ui-ux/SKILL.md`, `.claude/skills/seo/SKILL.md`, `.claude/skills/pwa/SKILL.md`. Si falta `ui-ux`, revisá con criterio general y aclaralo en el reporte. `seo` y `pwa` son opcionales a propósito: si no están, el proyecto no es un sitio público o no es una PWA, y esa categoría no se revisa.
 
 ## Qué revisar

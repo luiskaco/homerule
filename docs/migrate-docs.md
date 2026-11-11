@@ -40,6 +40,19 @@ Pedido para la IA: "seguí `makeRuleIA/docs/migrate-docs.md` en este proyecto".
 Agregar al principio una tabla con una línea por ADR: número, título y estado.
 El contenido de cada ADR no cambia.
 
+## `AGENTS.md` (ADR-036)
+
+1. Reescribir el `AGENTS.md` del proyecto con la plantilla
+   `makeRuleIA/core/agents-map.md`: qué es, stack y comandos, estructura, lo no
+   negociable y cómo continuar.
+2. Pasar ahí lo que el proyecto tenía propio: su sección **Proyecto**, sus
+   excepciones a las reglas y las notas del proyecto. Lo que ya no aplique se
+   descarta.
+3. Borrar la copia de las reglas generales: secciones 0 a 8 y el mapa del kit.
+4. Si el `CLAUDE.md` del proyecto solo importa `AGENTS.md`, dejarlo así: las
+   reglas generales se cargan desde los archivos globales.
+5. Mantenerlo corto: lo que alguien nuevo necesita para no romper nada.
+
 ## Referencias
 
 1. Buscar en el proyecto los nombres viejos: `AGENTS.md`, `CLAUDE.md`,

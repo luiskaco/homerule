@@ -101,8 +101,8 @@ function buildAntigravitySection(items: ManifestItem[]): string {
     if (agentsMd) {
       lines.push(
         "`AGENTS.md` es el estándar abierto que leen Codex, Cursor, Copilot y el propio " +
-          "Antigravity: si otra IA continúa el proyecto, ahí encuentra las reglas y el mapa. " +
-          "Completá su sección **Proyecto** al arrancar.\n"
+          "Antigravity: si otra IA o persona continúa el proyecto, ahí encuentra lo esencial. " +
+          "Completalo al arrancar con lo esencial del proyecto.\n"
       );
     }
   }
@@ -142,7 +142,7 @@ function buildHybridSection(items: ManifestItem[]): string {
   lines.push(
     "Las reglas y skills viven una sola vez en `.agents/`. Lo que hay en `.claude/commands/` y " +
       "`.claude/skills/` son punteros: cualquier cambio se hace en `.agents/`. " +
-      "Completá la sección **Proyecto** de `AGENTS.md` al arrancar.\n"
+      "Completá `AGENTS.md` al arrancar con lo esencial del proyecto.\n"
   );
 
   for (const tool of ["antigravity", "claude-code"] as const) {
@@ -170,9 +170,9 @@ function buildGenericToolSection(tool: ToolId, items: ManifestItem[]): string {
   lines.push("");
   if (items.some((i) => i.files.some((f) => f.destPath === "AGENTS.md"))) {
     lines.push(
-      "Las reglas viven en `AGENTS.md`, el estándar abierto que leen Codex, Cursor y " +
-        "Copilot, y `CLAUDE.md` las importa: si otra IA continúa el proyecto, encuentra " +
-        "lo mismo. Completá la sección **Proyecto** de `AGENTS.md` al arrancar.\n"
+      "`CLAUDE.md` trae las reglas generales e importa `AGENTS.md`, el estándar abierto que " +
+        "leen Codex, Cursor y Copilot: ahí va lo esencial del proyecto, para cualquier IA o persona. " +
+        "Completá `AGENTS.md` al arrancar.\n"
     );
   }
   const serverNote = buildServerAgentsNote(tool, items);

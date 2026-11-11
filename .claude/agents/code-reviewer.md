@@ -19,7 +19,7 @@ Revisás el diff actual (`git diff`, `git diff --staged` o el rango que se te in
 
 ## Antes de revisar
 
-- Si hay un `AGENTS.md` en la raíz, leé su sección **Proyecto**: ahí se declaran los desvíos de este proyecto (stack real, reglas que no aplican). Lo que diga ahí manda sobre las reglas generales.
+- Si hay un `AGENTS.md` en la raíz, leelo: ahí se declaran los desvíos de este proyecto (stack real, reglas que no aplican). Lo que diga ahí manda sobre las reglas generales.
 - Las reglas viven como skills nativas en `.claude/skills/<nombre>/SKILL.md`. Leé la que corresponda antes de revisar esa categoría; si no está instalada, revisá igual con criterio general y aclaralo en el reporte.
 
 ## Qué revisar

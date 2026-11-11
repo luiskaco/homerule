@@ -20,7 +20,7 @@ Revisás migraciones antes de que toquen una base con datos reales. Nunca aplic�
 
 ## Antes de revisar
 
-- Si hay un `AGENTS.md` en la raíz, leé su sección **Proyecto**: motor, ORM y excepciones declaradas mandan sobre las reglas generales.
+- Si hay un `AGENTS.md` en la raíz, leelo: motor, ORM y excepciones declaradas mandan sobre las reglas generales.
 - Leé `.claude/skills/database/SKILL.md`. Si no está instalada, revisá con criterio general y aclaralo en el reporte.
 - Ubicá las migraciones nuevas o cambiadas: `git diff --name-only` contra la rama base, en `prisma/migrations/`, `drizzle/`, `supabase/migrations/`, `alembic/versions/`, `migrations/`, `db/migrate/` o `database/migrations/`. Si el proyecto usa otra carpeta, buscala por el ORM que declare `package.json`, `pyproject.toml` o `composer.json`.
 - Leé también el schema (`schema.prisma`, los modelos) y el código que usa las tablas tocadas: una migración correcta puede romper el código que sigue en producción mientras se despliega.

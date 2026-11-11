@@ -21,7 +21,7 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | Ruta | Qué es |
 |---|---|
 | `core/CORE.md` | Núcleo Always On — fuente del `AGENTS.md` neutral y del `CLAUDE.md` que reciben los kits |
-| `core/agents-map.md` | Mapa del proyecto que se agrega al `AGENTS.md` de los kits (con variables por tool) |
+| `core/agents-map.md` | Plantilla del `AGENTS.md` de los kits: solo lo esencial del proyecto, sin las reglas generales (ADR-036) |
 | `.gemini/GEMINI.md` | Núcleo Always On del kit de Antigravity |
 | `.agents/rules/` | Las 9 rules técnicas — fuente única para ambos tools |
 | `.agents/skills/` | Skills del kit — se copian tal cual a los dos tools. Incluye los 7 workflows (skills con `metadata: kind: workflow`, ADR-020): Claude los recibe como `.claude/commands/` |
@@ -41,10 +41,11 @@ Editar siempre la fuente, nunca un derivado.
   ZIPs): `.agents/rules/`, `.agents/skills/` (workflows incluidos),
   `.agents/agents/`, `core/CORE.md`, `core/agents-map.md`,
   `.claude/agents/`, `.claude/hooks/` y `docs-templates/`.
-- **El `AGENTS.md` y el `CLAUDE.md` de los kits no tienen fuente propia**: los
-  arma el generador desde `core/CORE.md` + `core/agents-map.md` (ADR-016). Si se
-  reescribe § 7 o la nota de subagentes de § 8 en `CORE.md`, el generador falla
-  a propósito — ajustar `buildAgentsMd()`.
+- **El `AGENTS.md` y el `CLAUDE.md` de los kits no tienen fuente propia**: el
+  `AGENTS.md` sale de `core/agents-map.md` y el `CLAUDE.md`, de `core/CORE.md`
+  más el import de `AGENTS.md` (ADR-036). Si se reescribe el título, § 7 o la
+  nota de subagentes de § 8 en `CORE.md`, el generador falla a propósito —
+  ajustar `buildClaudeMd()` o `buildNeutralCore()`.
 - Este `AGENTS.md` (el de la raíz) es solo del repo y no se empaqueta.
 - **Kit híbrido** (`tool: "hybrid"`, ADR-031): sale de la misma fuente. El generador agrega a cada rule, skill y workflow un puntero de `.claude/` hacia `.agents/`; no tiene fuente propia.
 - **Derivados — se regeneran, no se editan a mano:**

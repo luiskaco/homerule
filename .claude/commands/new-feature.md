@@ -56,7 +56,7 @@ git checkout -b fix/nombre-descriptivo
 
 ### 4. Verificar contexto
 
-- [ ] ¿El stack real del proyecto está en la sección **Proyecto** de `AGENTS.md`? (Nombre y base de datos)
+- [ ] ¿El stack real del proyecto está en `AGENTS.md`? (Nombre y base de datos)
 - [ ] ¿Hay dependencias que instalar antes de empezar?
 - [ ] ¿Afecta el modelo de datos? → revisar `DATA_MODEL.md` primero
 

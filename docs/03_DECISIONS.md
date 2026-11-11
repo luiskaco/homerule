@@ -22,7 +22,7 @@
 | ADR-013 | Antigravity también lleva subagentes declarables en archivo | Aceptada |
 | ADR-014 | El plugin versiona por fecha (CalVer), no por semver | Aceptada |
 | ADR-015 | `AGENTS.md` en la raíz para lo propio del repo, importado desde `CLAUDE.md` | Aceptada |
-| ADR-016 | Los kits traen `AGENTS.md`: el proyecto puede continuarlo cualquier IA | Aceptada |
+| ADR-016 | Los kits traen `AGENTS.md`: el proyecto puede continuarlo cualquier IA | En parte sustituida por ADR-036 |
 | ADR-017 | SDD con trazabilidad, traspaso, testing y runbook | Aceptada |
 | ADR-018 | Se elimina `00_GEMINI_START`: los desvíos del proyecto van en `AGENTS.md` | Aceptada |
 | ADR-019 | Cierre de tarea digerible: resultado primero y revisión en una línea | Aceptada |
@@ -42,6 +42,7 @@
 | ADR-033 | Seguridad por temas: regla corta y skill con índice | Aceptada |
 | ADR-034 | Datos personales: regla más bloqueo, y commits a nombre del usuario | Aceptada |
 | ADR-035 | Documentos: 4 fijos, 5 opcionales y cada dato en un solo lugar | Aceptada |
+| ADR-036 | `AGENTS.md` solo con lo esencial del proyecto, sin las reglas generales | Aceptada |
 
 ---
 
@@ -977,3 +978,28 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Cambian los nombres en el kit, los comandos y los 19 proyectos; la migración se hace desde la PC del trabajo.
 - El historial de las tareas cerradas queda solo en git y en el changelog.
 - Fase 2: la misma limpieza en el núcleo, los globales y los subagentes.
+
+---
+
+## ADR-036 — `AGENTS.md` solo con lo esencial del proyecto, sin las reglas generales
+
+**Estado:** Aceptada (2026-11-11). Sustituye en parte a ADR-016.
+
+**Contexto:** Desde ADR-016, el `AGENTS.md` de los kits de Claude Code y Antigravity traía una copia completa del núcleo, más de 2.000 palabras, y después el mapa del proyecto. En la máquina del autor, la IA cargaba las reglas dos veces: desde los archivos globales y desde `AGENTS.md`. Las copias se desfasaban: 17 de 19 proyectos tienen una versión vieja, sin las reglas de ADR-034. Además, otra IA u otra persona trae su propia forma de trabajar: lo que necesita del proyecto es qué es y qué no puede romper.
+
+**Decisión:**
+
+- `AGENTS.md` lleva solo lo esencial del proyecto, unas 150 palabras: qué es, stack y comandos, estructura, lo no negociable y cómo continuar. Es igual en los tres kits y sale de `core/agents-map.md`.
+- Las reglas generales viven en el `CLAUDE.md` del kit de Claude Code, que además importa `AGENTS.md`, y en el `GEMINI.md` global de Antigravity. El kit híbrido ya las tenía en los globales.
+- Lo que un proyecto hace distinto de las reglas generales sigue en su `AGENTS.md` y tiene prioridad (§ 5). Ya no hay una sección "Proyecto": todo el archivo es del proyecto.
+
+**Alternativas consideradas:**
+
+- **Seguir con la copia del núcleo:** descartada. Duplica lo que cargan los globales y se desfasa en cada proyecto.
+- **Un `AGENTS.md` con un puntero a las reglas del autor:** descartada. Otra persona no tiene esos archivos, y el puntero no le sirve.
+
+**Consecuencias:**
+
+- Quien abra el proyecto con otra herramienta no recibe las reglas del autor, solo lo esencial del proyecto. Es a propósito.
+- El kit de Claude Code sigue entregando el núcleo completo, ahora en su `CLAUDE.md`.
+- Los 19 proyectos se migran con `docs/migrate-docs.md`, en la misma pasada que sus documentos.

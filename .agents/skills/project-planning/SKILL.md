@@ -25,7 +25,7 @@ no crea archivos, carpetas ni convenciones propias.
 
 ## Antes de empezar
 
-1. Revisar la sección **Proyecto** de `AGENTS.md` en la raíz del proyecto:
+1. Revisar el `AGENTS.md` de la raíz del proyecto:
    si define otro stack, otras rutas de documentación o excepciones a las
    reglas, tiene prioridad sobre la tabla de abajo.
 2. Revisar si ya hay una idea validada con el usuario — por ejemplo un spec

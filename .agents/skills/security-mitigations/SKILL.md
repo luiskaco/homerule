@@ -16,7 +16,7 @@ cuesta unos cientos de tokens y leerlos todos no mejora la revisión.
 3. Al implementar, aplicá lo que proteja un riesgo real de este proyecto. Al
    auditar, reportá solo lo que tenga un camino de explotación concreto.
 4. Si aplicás una mitigación distinta o decidís no aplicarla, dejá el motivo en la
-   sección **Proyecto** de `AGENTS.md` o en un ADR.
+   `AGENTS.md` del proyecto o en un ADR.
 
 ## Qué tema abrir
 

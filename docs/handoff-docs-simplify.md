@@ -27,7 +27,13 @@ git pull
   está migrado.
 - Todo lo nuevo de este trabajo se sigue sumando a esta misma rama.
 
-## Próximo paso: fase 2, núcleo y subagentes (T-02)
+## Fase 2, núcleo y subagentes (T-02)
+
+Plan aprobado el 2026-11-11, en este orden: 1) `AGENTS.md` solo con lo
+esencial (**hecho**, ADR-036); 2) núcleo más corto; 3) globales generados con
+un script; 4) subagentes; 5) skills propias del kit.
+
+### Lo detectado al empezar
 
 Objetivo: cada regla en un solo lugar. Lo ya detectado:
 
@@ -51,5 +57,5 @@ Primero un plan corto para aprobar, después los cambios.
 
 ## A mano, una sola vez
 
-- Desactivar en claude.ai la skill de cuenta `project-docs-scaffold`: usa la
-  estructura vieja de 8 archivos y ya salió del repo.
+- ~~Desactivar en claude.ai la skill de cuenta `project-docs-scaffold`~~: hecho
+  el 2026-11-11 (Customize → Skills → Yours → ⋯ → Turn off).

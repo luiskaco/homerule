@@ -146,12 +146,12 @@ npx skills add sickn33/antigravity-awesome-skills --skill api-security-best-prac
 ### Paso 4 — Ajustar stack por proyecto
 
 Si el proyecto difiere del stack base (`GEMINI.md § 3`), de la convención de
-`/docs` o de alguna regla, documentarlo en la sección **Proyecto** del
+`/docs` o de alguna regla, documentarlo en el
 `AGENTS.md` del proyecto — tiene prioridad sobre `GEMINI.md` (ver § 5, nota de
 excepción).
 
 > **Migración:** `00_GEMINI_START.md` ya no existe (ADR-018). Si un proyecto
-> todavía lo tiene, mover su contenido a la sección **Proyecto** de `AGENTS.md`
+> todavía lo tiene, mover su contenido al `AGENTS.md` del proyecto
 > y borrarlo — `GEMINI.md` ya no lo lee.
 
 ---
@@ -441,7 +441,7 @@ no editarla a mano.
 <!-- token-table:start -->
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
-| `GEMINI.md` | ~2,926 | Siempre |
+| `GEMINI.md` | ~2,918 | Siempre |
 | `security.md` | ~2,262 | Model Decision |
 | `architecture.md` | ~599 | Model Decision |
 | `ui-ux.md` | ~2,386 | Model Decision |
@@ -453,14 +453,14 @@ no editarla a mano.
 | `stack-conventions.md` | ~604 | Glob |
 | `/tools-reference` | ~1,374 | Skill — slash o por descripción |
 | `/grill` | ~622 | Skill — slash o por descripción |
-| `/new-feature` | ~454 | Skill — slash o por descripción |
+| `/new-feature` | ~447 | Skill — slash o por descripción |
 | `/bug-fix` | ~420 | Skill — slash o por descripción |
 | `/session-close` | ~565 | Skill — slash o por descripción |
 | `/security-audit` | ~880 | Skill — slash o por descripción |
 | `/deploy-checklist` | ~855 | Skill — slash o por descripción |
-| **Base siempre activa** | **~2,926** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,945–8,948** | sesión normal de código |
-| **Máximo con todo activo** | **~15,017** | improbable — varias reglas casi nunca se activan juntas |
+| **Base siempre activa** | **~2,918** | `GEMINI.md` |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,937–8,940** | sesión normal de código |
+| **Máximo con todo activo** | **~15,009** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

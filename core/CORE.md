@@ -109,7 +109,7 @@ Antes de escribir o sugerir código que use una librería, framework, SDK o CLI 
 
 Los 4 numerados van siempre; los opcionales se crean cuando el proyecto los pide. Cada dato va en un solo lugar: al cerrar una tarea, se borra de `02_TASKS.md` y deja una línea en `04_CHANGELOG.md`; el detalle técnico va en el commit.
 
-**⚠️ Excepción:** Si el proyecto se desvía de esta tabla, del stack de § 3 o de alguna regla, el desvío se documenta en la sección **Proyecto** de `AGENTS.md` (raíz del proyecto), que tiene prioridad sobre ellas.
+**⚠️ Excepción:** Si el proyecto se desvía de esta tabla, del stack de § 3 o de alguna regla, el desvío se documenta en el `AGENTS.md` del proyecto, que tiene prioridad sobre ellas.
 
 ---
 
