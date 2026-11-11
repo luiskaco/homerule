@@ -6,6 +6,8 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Proactive y Regla de Oro, sin contradicción:** § 1 manda sobre cualquier estilo que pida ejecutar sin frenar, pero solo en sus condiciones de Validar; fuera de ellas, un cambio claro y chico se ejecuta sin pedir permiso.
+- **Revisión de la pausa, adelantada:** los auditores de seguridad reportan con tres estados (confirmado, a verificar, descartado) y una escala de gravedad con ejemplos, y un Critical se valida con una segunda instancia; la rule `architecture` suma una escalera antes de escribir código nuevo; `debugger` aclara que corre tests pero no escribe.
 - **Laravel en el stack:** PHP (Laravel) en § 3 con PHP 8.3+, convenciones de Laravel 13 en `stack-conventions` y sus migraciones en `database`.
 - **Skills propias sin repeticiones** (T-02): `project-planning` cita la Regla de Oro en vez de repetirla y manda a `/grill` antes de planificar; `/new-feature` y `/bug-fix` sin el recordatorio que ahora cubre § 7; `/tools-reference` con Context7 en 3 líneas.
 - **Revisores más livianos** (ADR-037): `code-reviewer`, `ui-reviewer`, `security-auditor` y `db-migration-reviewer` ya no cargan las reglas generales; unos 2.000 tokens menos por revisión.

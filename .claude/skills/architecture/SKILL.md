@@ -48,6 +48,20 @@ Nunca en el frontend:
 
 Diseñar stateless desde el inicio. Cualquier instancia debe poder manejar cualquier request sin depender de estado local.
 
+## Antes de escribir código nuevo
+
+Tomar el primer escalón que resuelva todo lo pedido:
+
+1. **¿Hace falta?** Lo que nadie pidió no se construye: se nombra en una línea.
+2. **¿Ya existe en el repo?** Un helper, componente, servicio o patrón: usarlo como lo usa el código vecino.
+3. **¿Lo resuelve la librería estándar o la plataforma?** Usarla, salvo que el proyecto tenga su propia pieza.
+4. **¿Lo resuelve una dependencia ya instalada?** Usarla. No sumar una dependencia por pocas líneas.
+5. **Recién ahí, lo mínimo que funcione**, pero completo: los llamadores, tests y fixtures que el cambio afecta.
+
+Nunca se recorta validación en fronteras de confianza, manejo de errores que evita pérdida de datos, seguridad ni accesibilidad.
+
+> Adaptado de [ponytail](https://github.com/dietrichgebert/ponytail) (MIT).
+
 ## Evitar Estrictamente
 
 - Lógica de negocio en components de UI o HTTP controllers.

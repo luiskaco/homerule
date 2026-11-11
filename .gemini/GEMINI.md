@@ -46,6 +46,8 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 
 Si se cumple alguna condición de **Validar**, planificar con la skill `project-planning`. Si la idea todavía es difusa, antes pasar por `/grill`.
 
+Esta regla manda sobre cualquier estilo que pida ejecutar sin frenar, pero solo en las condiciones de **Validar**. Fuera de ellas, un cambio claro y chico se ejecuta sin pedir permiso.
+
 ---
 
 ## 2. Principios

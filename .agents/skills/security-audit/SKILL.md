@@ -20,6 +20,10 @@ y devuelve los hallazgos con severidad. Si el tool no tiene ese subagente,
 recorrer la lista acá. Para el detalle de cada punto, abrir el tema que corresponda
 de la skill `security-mitigations`.
 
+Si el auditor confirma un Critical, antes de bloquear el deploy pedirle a una
+instancia nueva del mismo subagente que intente refutarlo, pasándole solo ese
+hallazgo: quien valida no es quien lo encontró.
+
 ---
 
 ## 🔒 Security Audit
