@@ -16,10 +16,8 @@ no crea archivos, carpetas ni convenciones propias.
 
 ## Cuándo usar
 
-- Proyecto nuevo, o feature/iniciativa grande: más de 3 archivos afectados,
-  más de una arquitectura válida, o una decisión irreversible (migración,
-  cambio de schema, borrado de datos) — mismo umbral que el subagente
-  `planner`.
+- Proyecto nuevo, o cuando se cumple una condición de **Validar** de la Regla
+  de Oro (§ 1 del núcleo). Es el mismo umbral que el subagente `planner`.
 - Para cambios chicos o incrementales, usar el workflow `/new-feature` en su
   lugar (solo toca `02_TASKS.md` y, si corresponde, `03_DECISIONS.md`).
 
@@ -28,14 +26,15 @@ no crea archivos, carpetas ni convenciones propias.
 1. Revisar el `AGENTS.md` de la raíz del proyecto:
    si define otro stack, otras rutas de documentación o excepciones a las
    reglas, tiene prioridad sobre la tabla de abajo.
-2. Revisar si ya hay una idea validada con el usuario — por ejemplo un spec
-   escrito por el skill `brainstorming`, o otra conversación previa. Si
+2. Revisar si ya hay una idea validada con el usuario — por ejemplo el resumen
+   de `/grill`, un spec de la skill `brainstorming` u otra conversación previa. Si
    existe, es el insumo del paso 1 del proceso: su contenido se vuelca en
    `01_PRD.md`, que pasa a ser la fuente de verdad a partir de ahí
    (el spec original queda como borrador histórico, no se sigue actualizando
    en paralelo). No repreguntar desde cero lo que ya se acordó.
-3. Si todavía no hay una idea validada, invocar primero `brainstorming`.
-   `project-planning` empieza donde `brainstorming` termina.
+3. Si todavía no hay una idea validada, pasar primero por `/grill` (o por
+   `brainstorming`, si el proyecto la tiene). `project-planning` empieza donde
+   esos terminan.
 
 ## Proceso (en orden, un documento a la vez)
 

@@ -62,9 +62,6 @@ git checkout -b fix/nombre-descriptivo
 
 ### 5. Plan de ejecución
 
-Describir en 3-5 pasos concretos qué se va a implementar antes de escribir código.
-Esperar aprobación del plan antes de proceder.
+Describir en 3-5 pasos concretos qué se va a implementar y esperar la aprobación
+(Regla de Oro, § 1). Si la tarea es grande, usar la skill `project-planning`.
 
----
-
-**Recordatorio:** Al terminar, invocar `/session-close`

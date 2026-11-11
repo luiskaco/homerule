@@ -61,6 +61,3 @@ Esperar aprobación antes de proceder.
 - [ ] Edge cases del mismo tipo fueron considerados
 - [ ] Si el bug era de seguridad → invocar `/security-audit`
 
----
-
-**Recordatorio:** Al terminar, invocar `/session-close`

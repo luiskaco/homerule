@@ -33,7 +33,7 @@ Plan aprobado el 2026-11-11, en este orden: 1) `AGENTS.md` solo con lo
 esencial (**hecho**, ADR-036); 2) núcleo más corto (**hecho**: 1.819 → 1.480
 palabras; § 0 queda igual salvo la regla 8); 3) globales generados con
 un script (**hecho**: `scripts/sync-globals.mjs`, se corre con `--write` después del merge); 4) subagentes (**hecho**: los 4 revisores con `omitClaudeMd`, ADR-037); 5) skills
-propias del kit.
+propias del kit (**hecho**). La fase 2 está completa.
 
 ### Lo detectado al empezar
 

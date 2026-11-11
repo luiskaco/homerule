@@ -451,16 +451,16 @@ no editarla a mano.
 | `cms.md` | ~690 | Model Decision |
 | `database.md` | ~862 | Model Decision |
 | `stack-conventions.md` | ~604 | Glob |
-| `/tools-reference` | ~1,374 | Skill — slash o por descripción |
+| `/tools-reference` | ~1,233 | Skill — slash o por descripción |
 | `/grill` | ~622 | Skill — slash o por descripción |
-| `/new-feature` | ~447 | Skill — slash o por descripción |
-| `/bug-fix` | ~420 | Skill — slash o por descripción |
+| `/new-feature` | ~439 | Skill — slash o por descripción |
+| `/bug-fix` | ~405 | Skill — slash o por descripción |
 | `/session-close` | ~565 | Skill — slash o por descripción |
 | `/security-audit` | ~880 | Skill — slash o por descripción |
 | `/deploy-checklist` | ~855 | Skill — slash o por descripción |
 | **Base siempre activa** | **~2,444** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,463–8,466** | sesión normal de código |
-| **Máximo con todo activo** | **~14,689** | improbable — varias reglas casi nunca se activan juntas |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,448–8,325** | sesión normal de código |
+| **Máximo con todo activo** | **~14,548** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +
