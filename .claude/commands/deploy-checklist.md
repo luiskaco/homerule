@@ -36,13 +36,10 @@ lo que no se pudo comprobar va como "a verificar", no como aprobado.
 
 ### Seguridad
 
-- [ ] `npm audit --audit-level=high` sin vulnerabilidades críticas (o `pip-audit` / `composer audit`)
-- [ ] Dependencias instaladas desde el lockfile y sin scripts no autorizados (ver `security.md § Dependencias`)
+- [ ] `/security-audit` sin Critical confirmado, si la versión toca auth, APIs, datos sensibles o dependencias
+- [ ] `npm audit --audit-level=high` sin críticas (o `pip-audit` / `composer audit`)
 - [ ] Variables de entorno: las que lee el código (`process.env.X`, `import.meta.env.X`, `os.environ`) están todas en `.env.example`. Una nueva sin documentar bloquea: el deploy arranca sin ella
 - [ ] `.env*` fuera del repo y en `.gitignore`
-- [ ] Headers de seguridad configurados
-- [ ] RBAC verificado en endpoints nuevos o modificados
-- [ ] Sin stack traces expuestos en respuestas de error
 
 ### Base de datos (si hay migraciones nuevas)
 
@@ -51,11 +48,7 @@ lo que no se pudo comprobar va como "a verificar", no como aprobado.
 
 ### UI (si aplica)
 
-- [ ] 5 estados de UI implementados (loading, skeleton, error, success, empty)
-- [ ] Responsive verificado: 320px, 768px, 1280px
-- [ ] Contraste WCAG AA (4.5:1 mínimo)
-- [ ] Sin imágenes sin `width`/`height` explícitos (CLS)
-- [ ] `prefers-reduced-motion` respetado
+- [ ] `ui-reviewer` (o `frontend` en Antigravity) sin Critical sobre la interfaz de esta versión: cubre estados de UI, responsive, contraste y movimiento reducido según la rule `ui-ux`
 
 ### SEO (si aplica)
 

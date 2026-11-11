@@ -24,9 +24,7 @@ Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos
 
 ### Docs actualizados
 
-> `02_TASKS.md` es **obligatorio**: la tarea cerrada se borra de ahí y deja una
-> línea en `04_CHANGELOG.md`. Cada dato va en un solo lugar: el avance y el
-> detalle técnico, en el commit.
+Según § 5 del núcleo. `02_TASKS.md` es obligatorio.
 
 - [ ] 02_TASKS.md      — **reescribir "Dónde quedó"** (estado, próximo paso, bloqueos) y **borrar las tareas cerradas**
 - [ ] 04_CHANGELOG.md  — una línea arriba por cada tarea cerrada, o "no aplica"
@@ -36,13 +34,7 @@ Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos
 
 ### Verificación de código
 
-Ejecutar activamente antes de marcar como completado:
-
-- [ ] Correr el build — `npm run build` / `python -m pytest` / equivalente
-- [ ] Flujo completo probado manualmente — no solo que compile
-- [ ] Consola limpia — cero errores ni warnings
-- [ ] Edge cases del flujo considerados y probados
-- [ ] Imports válidos, sin dependencias rotas
+- [ ] Pasada 🧪 de § 8, ejecutada de verdad: build, tests y el flujo probado (`npm run build` / `python -m pytest` / equivalente). Lo que no se corrió se dice.
 
 ### Commit sugerido
 
