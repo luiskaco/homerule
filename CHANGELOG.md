@@ -6,6 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Revisores más livianos** (ADR-037): `code-reviewer`, `ui-reviewer`, `security-auditor` y `db-migration-reviewer` ya no cargan las reglas generales; unos 2.000 tokens menos por revisión.
 - **Sugerir comandos:** § 7 vuelve a decir cuándo usar cada comando, y la IA sugiere el que corresponde en una línea, sin correrlo, cuando el usuario está por hacer algo que un comando cubre.
 - **SQLite en el stack:** se suma a la tabla de § 3, al selector de base de datos del sitio y a la rule `database`, con WAL, `.gitignore` del archivo y backups sin copiar la base abierta.
 - **Planificación enganchada a la Regla de Oro:** § 1 manda a usar `project-planning` cuando se cumple una condición de Validar, y antes `/grill` si la idea es difusa.

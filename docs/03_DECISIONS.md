@@ -43,6 +43,7 @@
 | ADR-034 | Datos personales: regla más bloqueo, y commits a nombre del usuario | Aceptada |
 | ADR-035 | Documentos: 4 fijos, 5 opcionales y cada dato en un solo lugar | Aceptada |
 | ADR-036 | `AGENTS.md` solo con lo esencial del proyecto, sin las reglas generales | Aceptada |
+| ADR-037 | Los 4 revisores no cargan las reglas generales (`omitClaudeMd`) | Aceptada |
 
 ---
 
@@ -1003,3 +1004,25 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Quien abra el proyecto con otra herramienta no recibe las reglas del autor, solo lo esencial del proyecto. Es a propósito.
 - El kit de Claude Code sigue entregando el núcleo completo, ahora en su `CLAUDE.md`.
 - Los 19 proyectos se migran con `docs/migrate-docs.md`, en la misma pasada que sus documentos.
+
+---
+
+## ADR-037 — Los 4 revisores no cargan las reglas generales (`omitClaudeMd`)
+
+**Estado:** Aceptada (2026-11-11).
+
+**Contexto:** Según la documentación de Claude Code, cada subagente carga al arrancar todos los `CLAUDE.md` que carga la sesión principal, el global incluido. Un revisor recibía así el núcleo completo, unas 1.600 palabras, en cada llamada. Ahí van reglas para conversar con el usuario (formato de cierre, una pregunta al final, Regla de Oro) que no aplican a un revisor y se pueden mezclar con su formato de reporte. Al revisar los agentes, los bloques que parecían repetidos entre ellos resultaron cortos y propios de cada uno: unificarlos ahorraba poco.
+
+**Decisión:** `code-reviewer`, `ui-reviewer`, `security-auditor` y `db-migration-reviewer` llevan `omitClaudeMd: true`. Cada uno suma una línea con lo único que pierden: responder en español y no poner datos personales del usuario en comandos ni en el reporte. Ya leían por su cuenta el `AGENTS.md` del proyecto y las rules que necesitan.
+
+**Alternativas consideradas:**
+
+- **Unificar los bloques repetidos entre agentes:** descartada. Son de 3 o 4 líneas y cada uno es específico de su tarea.
+- **`omitClaudeMd` en todos los agentes:** descartada. `planner`, `test-writer`, `debugger` y los de servidores escriben, planifican o deciden pasos, y necesitan naming, Regla de Oro y § 8.
+
+**Consecuencias:**
+
+- Unos 2.000 tokens menos por cada revisión.
+- Si un proyecto pone en su `CLAUDE.md` algo que un revisor debería saber, el revisor no lo ve. Eso va en `AGENTS.md`, que sí leen.
+- El hook global de datos personales sigue vigilando sus comandos.
+- Antigravity no cambia: no se comprobó si sus agentes cargan `GEMINI.md`.

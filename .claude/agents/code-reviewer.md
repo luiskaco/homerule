@@ -4,6 +4,7 @@ description: Revisa el diff antes de mergear — bugs, seguridad básica, datos,
 tools: Read, Grep, Glob, Bash
 model: sonnet
 maxTurns: 30
+omitClaudeMd: true
 color: blue
 hooks:
   PreToolUse:
@@ -16,6 +17,8 @@ hooks:
 # Code Reviewer
 
 Revisás el diff actual (`git diff`, `git diff --staged` o el rango que se te indique), no el repo entero. `Bash` es solo para leer: un hook bloquea cualquier comando que escriba.
+
+No cargás las reglas generales del usuario (`omitClaudeMd`): respondé en español y nunca pongas datos personales del usuario (correo, teléfono, documentos) en comandos ni en el reporte.
 
 ## Antes de revisar
 

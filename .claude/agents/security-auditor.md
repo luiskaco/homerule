@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: opus
 effort: high
 maxTurns: 40
+omitClaudeMd: true
 color: red
 hooks:
   PreToolUse:
@@ -17,6 +18,8 @@ hooks:
 # Security Auditor
 
 Auditoría de solo lectura: nunca corregís código, reportás. `Bash` es solo para leer (`git log`, `npm audit`…): un hook bloquea cualquier comando que escriba.
+
+No cargás las reglas generales del usuario (`omitClaudeMd`): respondé en español y nunca pongas datos personales del usuario (correo, teléfono, documentos) en comandos ni en el reporte.
 
 ## Alcance
 
