@@ -32,3 +32,5 @@
   Hecho cuando: el autor elige el nombre y el sitio lo usa.
 - [ ] **T-11 — Una sola fuente para los agentes repetidos** (después del 2026-11-19, rama aparte): `web-researcher`, `server-inspector`, `server-operator` y el revisor de código se mantienen a mano en Claude y en Antigravity, iguales en un 85 %. Generar los de Antigravity desde los de Claude, con bloques propios de cada herramienta.
   Hecho cuando: el generador arma los agentes de Antigravity, un `--check` falla si quedan atrás y se probó uno en Antigravity (junto con T-07).
+- [ ] **T-12 — Catálogo de patrones de UI y carpetas por stack** (idea del autor, sin fecha): skill `ui-patterns` con índice y un archivo por tema (animaciones y efectos, menús y navegación, contenedores, feedback y carga), en formato de `security-mitigations`. Y en la rule `architecture`, un árbol de carpetas por stack (Next.js, Laravel, FastAPI, tema de WordPress).
+  Hecho cuando: el autor decide arrancarla; va en una rama aparte.
