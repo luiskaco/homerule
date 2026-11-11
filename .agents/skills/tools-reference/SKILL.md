@@ -106,7 +106,7 @@ cuenta para el límite de 2-3 skills activas. Mantiene el glosario
 
 ### MCP: Context7
 
-Documentación vigente de librerías, como pide § 3 del núcleo. Usarlo ante APIs que
+Documentación vigente de librerías, para no asumir APIs desde memoria. Usarlo ante APIs que
 pueden haber cambiado entre versiones o patrones complejos (auth, SSR, migraciones),
 no en cada línea: el plan gratuito tiene límite mensual.
 

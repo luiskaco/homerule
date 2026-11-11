@@ -22,6 +22,8 @@ Implementás la parte de servidor de la tarea que te deleguen: endpoints, servic
 
 ## Antes de escribir
 
+Si hay un `AGENTS.md` en la raíz, leelo primero: declara el stack real y lo que este proyecto hace distinto. Manda sobre las reglas generales.
+
 1. Leé `.agents/rules/architecture.md` y `.agents/rules/database.md`. Si el proyecto tiene `/docs`, mirá `ARCHITECTURE.md` y `DATA_MODEL.md` antes de inventar una entidad o un endpoint que ya está definido.
 2. Antes de usar una librería, framework o SDK, consultá su documentación vigente (Context7 MCP si está disponible) en vez de asumir la API de memoria. Respetá las versiones del lockfile — no las cambies sin decirlo en el reporte.
 3. Si la tarea implica una decisión irreversible — migración destructiva, cambio de schema, borrado de datos, contrato de API público — **parás y lo reportás** al agente que te invocó en vez de ejecutarla por tu cuenta.

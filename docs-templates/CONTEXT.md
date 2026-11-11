@@ -15,7 +15,7 @@
 
 - Una entrada por término, en orden alfabético.
 - Cada entrada dice qué **es**, qué **no** es (si hay confusión frecuente), y
-  cómo se llama en el código (identificadores en inglés, `CORE.md § 2`).
+  cómo se llama en el código (identificadores en inglés).
 - Si un término se descartó a favor de otro, dejarlo anotado como alias
   obsoleto en vez de borrarlo — así nadie lo reintroduce.
 

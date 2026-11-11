@@ -24,7 +24,7 @@ Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos
 
 ### Docs actualizados
 
-Según § 5 del núcleo. `02_TASKS.md` es obligatorio.
+Cada dato va en un solo lugar. `02_TASKS.md` es obligatorio.
 
 - [ ] 02_TASKS.md      — **reescribir "Dónde quedó"** (estado, próximo paso, bloqueos) y **borrar las tareas cerradas**
 - [ ] 04_CHANGELOG.md  — una línea arriba por cada tarea cerrada, o "no aplica"
@@ -34,7 +34,7 @@ Según § 5 del núcleo. `02_TASKS.md` es obligatorio.
 
 ### Verificación de código
 
-- [ ] Pasada 🧪 de § 8, ejecutada de verdad: build, tests y el flujo probado (`npm run build` / `python -m pytest` / equivalente). Lo que no se corrió se dice.
+- [ ] Verificación ejecutada de verdad: build, tests y el flujo probado (`npm run build` / `python -m pytest` / equivalente). Lo que no se corrió se dice.
 
 ### Commit sugerido
 

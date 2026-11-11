@@ -122,9 +122,8 @@ directamente al SEO:
 - Herramienta recomendada: `@lhci/cli` (Lighthouse CI).
 
 ```bash
-# Instalar y correr en CI
-npm install -g @lhci/cli
-lhci autorun
+# Como dependencia de desarrollo (queda en el lockfile), y en CI:
+npx lhci autorun
 ```
 
 ## Anti-patterns SEO — Nunca
@@ -135,4 +134,4 @@ lhci autorun
 - Texto importante dentro de imágenes (no indexable).
 - `<h1>` ausente o múltiples `<h1>` en la misma página.
 - URLs con parámetros dinámicos sin canonical (`?page=1`, `?sort=asc`).
-- Contenido detrás de JavaScript sin SSR/SSG (no indexable por crawlers).
+- Contenido que solo aparece con JavaScript, sin SSR/SSG: Google lo indexa tarde y muchos rastreadores, incluidos los de IA, no ejecutan JS.

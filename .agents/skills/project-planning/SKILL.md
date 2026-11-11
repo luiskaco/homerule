@@ -11,13 +11,16 @@ description: >
 # Project Planning
 
 Lleva una idea aprobada hasta un plan de implementación completo, escribiendo
-en los documentos de `/docs` que ya define `GEMINI.md § 5` / `CORE.md § 5` —
-no crea archivos, carpetas ni convenciones propias.
+en los documentos de `/docs` del proyecto (`01_PRD`, `02_TASKS`,
+`03_DECISIONS`, `04_CHANGELOG` y los opcionales que hagan falta) — no crea
+archivos, carpetas ni convenciones propias.
 
 ## Cuándo usar
 
-- Proyecto nuevo, o cuando se cumple una condición de **Validar** de la Regla
-  de Oro (§ 1 del núcleo). Es el mismo umbral que el subagente `planner`.
+- Proyecto nuevo, o una tarea con más de una arquitectura válida, que afecta
+  más de 3 archivos existentes o que incluye algo irreversible (migración,
+  cambio de schema, borrado de datos). Es el mismo umbral que el subagente
+  `planner`.
 - Para cambios chicos o incrementales, usar el workflow `/new-feature` en su
   lugar (solo toca `02_TASKS.md` y, si corresponde, `03_DECISIONS.md`).
 

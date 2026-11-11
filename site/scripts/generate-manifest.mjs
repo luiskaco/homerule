@@ -206,6 +206,42 @@ const TOOL_CONFIG = {
   },
 };
 
+// Los comandos, skills propias, agentes, rules y plantillas viajan a proyectos
+// que puede continuar otra IA, sin el núcleo: no pueden citar sus secciones
+// ("§ 1", "Regla de Oro", "CORE.md"). Dicen la regla en el lugar. Una rule sí
+// puede citar otra rule ("ui-ux.md § Accesibilidad"), porque viaja con el kit.
+const CORE_REFERENCE = /(?<!\.md`? )§ [0-8]\b|del núcleo|Regla de Oro \(|\b(?:CORE|GEMINI)\.md\b/;
+
+function assertNoCoreReferences() {
+  const ownSkills = readdirSync(SKILLS_DIR).filter((name) => {
+    const skillMd = join(SKILLS_DIR, name, "SKILL.md");
+    try {
+      return !/^\s*install:/m.test(readFileSync(skillMd, "utf8").split(/^---$/m)[1] ?? "");
+    } catch {
+      return false;
+    }
+  });
+  const files = [
+    ...ownSkills.flatMap((name) => walk(join(SKILLS_DIR, name))),
+    ...walk(ANTIGRAVITY_AGENTS_DIR),
+    ...walk(CLAUDE_AGENTS_DIR),
+    ...walk(RULES_DIR),
+    ...walk(TEMPLATES_DIR),
+    AGENTS_MAP_PATH,
+  ].filter((file) => extname(file) === ".md");
+  const hits = files.flatMap((file) =>
+    readFileSync(file, "utf8")
+      .split(/\r?\n/)
+      .map((line, i) => (CORE_REFERENCE.test(line) ? `${toPosix(relative(REPO_ROOT, file))}:${i + 1}` : null))
+      .filter(Boolean)
+  );
+  if (hits.length) {
+    throw new Error(`generate-manifest: estos archivos citan el núcleo, que otra IA no tiene — escribir la regla en el lugar:\n  ${hits.join("\n  ")}`);
+  }
+}
+
+assertNoCoreReferences();
+
 const items = [];
 
 // ============================================================

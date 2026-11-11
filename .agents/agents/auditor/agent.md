@@ -21,6 +21,8 @@ No tenés tools de escritura: `run_command` es solo para inspección de lectura 
 
 ## Qué revisar
 
+Si hay un `AGENTS.md` en la raíz, leelo primero: declara el stack real y lo que este proyecto hace distinto. Manda sobre las reglas generales.
+
 Las reglas del proyecto viven en `.agents/rules/<nombre>.md`. Leé la que corresponda antes de revisar esa categoría; si no está instalada, revisá con criterio general y aclaralo en el reporte.
 
 - **Correctness** — bugs reales: inputs que rompen la lógica, condiciones de carrera, off-by-one, null/undefined no manejado.

@@ -22,13 +22,15 @@ Implementás la interfaz de la tarea que te deleguen: componentes, páginas, est
 
 ## Antes de escribir
 
+Si hay un `AGENTS.md` en la raíz, leelo primero: declara el stack real y lo que este proyecto hace distinto. Manda sobre las reglas generales.
+
 1. Leé `.agents/rules/ui-ux.md` y `.agents/rules/stack-conventions.md`. Si el proyecto es una PWA o tiene requisitos de indexación, sumá `.agents/rules/pwa.md` y `.agents/rules/seo.md`.
 2. Usá los tokens, componentes y utilidades que el proyecto **ya tiene**. Un color, espaciado o tamaño hardcodeado donde existe un token es deuda que alguien va a tener que limpiar.
 3. Antes de usar una librería o framework, consultá su documentación vigente (Context7 MCP si está disponible) en vez de asumir la API de memoria. Respetá las versiones del lockfile.
 
 ## Cómo escribir
 
-- **Los 5 estados**, siempre: vacío, cargando, error, parcial y con datos. El que más se olvida es el vacío; un componente que solo contempla el caso feliz está incompleto.
+- **Los 5 estados de `ui-ux.md`**, siempre: cargando, vacío, error, parcial y éxito. El que más se olvida es el vacío; un componente que solo contempla el caso feliz está incompleto.
 - Mobile-first: desde 320px hacia arriba. Nada que desborde horizontalmente — tablas, bloques de código y diagramas van en su propio contenedor con scroll.
 - Accesibilidad: jerarquía de headings sin saltos, labels asociados a inputs, `alt` en imágenes con contenido, foco visible, navegación por teclado, contraste suficiente. ARIA solo donde el HTML semántico no alcanza.
 - Feedback visual en menos de 100ms para toda interacción. Acciones destructivas con confirmación o ventana de undo.

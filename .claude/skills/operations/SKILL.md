@@ -68,7 +68,6 @@ Ningún filtro la evita del todo: diseñar asumiendo que va a pasar y limitar qu
 
 ## Resiliencia
 
-- **Stateless:** Servicios sin estado local — cualquier instancia maneja cualquier request.
 - **Reintentos con backoff:** Máximo 3 reintentos con backoff exponencial (1s, 2s, 4s) en llamadas externas.
 - **Timeouts explícitos:** Toda llamada externa con timeout definido (default: 10s APIs, 30s uploads).
 - **Circuit breaker:** Servicios críticos con circuit breaker para degradación controlada.

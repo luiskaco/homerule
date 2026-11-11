@@ -24,7 +24,7 @@ no lo es, aparece el mismo concepto con tres nombres distintos en tres capas.
 - **`docs/CONTEXT.md`** — el glosario. Un término por entrada: qué es, qué
   **no** es, y cómo se llama en el código.
 - **`docs/DATA_MODEL.md`** — entidades y campos técnicos. `CONTEXT.md` es
-  el lenguaje del negocio; `04` es el esquema. Un término del glosario puede
+  el lenguaje del negocio; `DATA_MODEL.md` es el esquema. Un término del glosario puede
   no tener tabla, y una tabla puede no ser un término del dominio.
 - **`docs/03_DECISIONS.md`** — si la definición de un término implicó
   descartar alternativas con trade-offs reales, eso es un ADR, no una entrada
@@ -47,7 +47,7 @@ Crear `CONTEXT.md` recién cuando haya al menos 3 términos que lo justifiquen
   Los bordes son donde se descubre que faltaba un término.
 - **Verificar contra el código.** Si el glosario dice una cosa y los
   identificadores dicen otra, reportar la discrepancia. La convención es
-  identificadores en inglés (`CORE.md § 2`), así que cada entrada lleva su
+  identificadores en inglés, así que cada entrada lleva su
   equivalente en código.
 - **Documentar inline.** Actualizar `CONTEXT.md` en cuanto un término queda
   firme, no al final de la sesión.

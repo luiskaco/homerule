@@ -6,8 +6,7 @@ description: "Interrogatorio estructurado para afilar un plan antes de codificar
 
 # Invocar con: /grill
 
-Le da forma concreta a la Regla de Oro (`GEMINI.md § 1` / `CORE.md § 1`):
-"planificar antes de actuar". En vez de que el agente asuma lo que falta, lo
+Planificar antes de actuar: en vez de que el agente asuma lo que falta, lo
 pregunta.
 
 **Cuándo:** antes de `/new-feature` en tareas donde el plan todavía es difuso,

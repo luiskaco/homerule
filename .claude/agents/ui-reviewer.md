@@ -27,7 +27,7 @@ Antes de revisar:
 
 ## Qué revisar
 
-- **Los 5 estados** — todo componente que carga datos necesita: vacío, cargando, error, parcial y con datos. El que más se olvida es el vacío. Un componente que solo contempla el caso feliz es un hallazgo.
+- **Los 5 estados de la rule `ui-ux`** — todo componente que carga datos necesita: cargando, vacío, error, parcial y éxito. El que más se olvida es el vacío. Un componente que solo contempla el caso feliz es un hallazgo.
 - **Accesibilidad** — jerarquía de headings sin saltos, labels asociados a inputs, `alt` en imágenes con contenido (vacío si son decorativas), foco visible, navegación por teclado, contraste suficiente. Roles ARIA solo donde el HTML semántico no alcanza.
 - **Responsive** — mobile-first. Nada que desborde horizontalmente: tablas, bloques de código y diagramas van dentro de su propio contenedor con scroll. Áreas táctiles usables.
 - **SEO on-page** (solo si la regla `seo` está instalada) — un solo `<h1>` por página, títulos y meta descriptions presentes y distintos entre páginas, links con texto descriptivo (no "click acá"), imágenes con dimensiones declaradas para no causar layout shift.
