@@ -38,7 +38,7 @@ Este archivo tiene los principios y lo prohibido. El detalle por tema (sesiones,
 - **Sin** reglas de composición ni cambio periódico obligatorio. Rechazar contraseñas comunes o comprometidas (HaveIBeenPwned). Permitir pegar y usar gestores de contraseñas.
 - **Access token:** JWT ≤ 15 minutos de expiración.
 - **Refresh token:** Rotación en cada uso — invalidar el anterior al emitir uno nuevo.
-- **Almacenamiento:** Cookies `HttpOnly` + `Secure` + `SameSite=Strict`. Nunca `localStorage`.
+- **Almacenamiento:** Cookies `HttpOnly` + `Secure` + `SameSite=Lax` para la sesión. `Strict` solo en cookies de acciones muy sensibles (confirmar un pago, cambiar la contraseña): con `Strict`, quien llega desde un enlace externo o vuelve de un login con Google aparece deslogueado. Nunca `localStorage`.
 - **Logout:** Invalidar refresh token en el servidor, no solo borrar cookie del cliente.
 - **Session fixation:** Regenerar session ID post-autenticación.
 - **Brute force:** 5 intentos → 15 min espera. 10 intentos → bloqueo de cuenta.

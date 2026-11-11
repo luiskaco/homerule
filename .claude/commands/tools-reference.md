@@ -75,7 +75,7 @@ Corren en su propio contexto y cuestan tokens: usarlos para tareas grandes, no p
 |----------|-------------|-------------|
 | Planificar tareas grandes | `planner` | — |
 | Revisar un diff | `code-reviewer` | `auditor` |
-| Revisar interfaz | `ui-reviewer` | `frontend` |
+| Revisar interfaz | `ui-reviewer` | `auditor` |
 | Auditar seguridad | `security-auditor` | `security` |
 | Revisar migraciones | `db-migration-reviewer` | — |
 | Encontrar la causa de un bug | `debugger` | — |

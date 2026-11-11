@@ -251,7 +251,7 @@ detalle de su trabajo no contamina la ventana del agente principal.
 
 | Subagente | Qué hace | Escribe código |
 |---|---|---|
-| `auditor` | Review del diff contra las rules: correctness, arquitectura, convenciones, datos, reuse | No — solo lectura |
+| `auditor` | Review del diff contra las rules: correctness, arquitectura, convenciones, datos, reuse e interfaz | No — solo lectura |
 | `backend` | Endpoints, servicios, acceso a datos, migraciones. Verifica con tests/typecheck antes de devolver | Sí |
 | `frontend` | Componentes, páginas, estilos, los 5 estados de UI, accesibilidad | Sí |
 | `security` | Auditoría OWASP: auth, inputs, inyección, secrets, uploads, CORS, privacidad | No — solo lectura |
@@ -442,7 +442,7 @@ no editarla a mano.
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
 | `GEMINI.md` | ~2,497 | Siempre |
-| `security.md` | ~2,262 | Model Decision |
+| `security.md` | ~2,315 | Model Decision |
 | `architecture.md` | ~802 | Model Decision |
 | `ui-ux.md` | ~2,000 | Model Decision |
 | `seo.md` | ~1,445 | Model Decision |
@@ -459,8 +459,8 @@ no editarla a mano.
 | `/security-audit` | ~370 | Skill — slash o por descripción |
 | `/deploy-checklist` | ~792 | Skill — slash o por descripción |
 | **Base siempre activa** | **~2,497** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,669–7,994** | sesión normal de código |
-| **Máximo con todo activo** | **~14,809** | improbable — varias reglas casi nunca se activan juntas |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,669–8,047** | sesión normal de código |
+| **Máximo con todo activo** | **~14,862** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

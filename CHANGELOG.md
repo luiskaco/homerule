@@ -6,6 +6,8 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Cookies de sesión con `SameSite=Lax`:** la rule `security` deja `Strict` solo para acciones muy sensibles, porque con `Strict` quien llega desde un enlace externo o un login con Google aparece deslogueado.
+- **Antigravity revisa la UI con `auditor`:** `frontend` queda solo para implementar.
 - **Comandos y agentes sin citar el núcleo:** dicen la regla en el lugar en vez de "§ 1" o "Regla de Oro", así funcionan con cualquier IA aunque no tenga el núcleo. El generador del sitio falla si vuelve a aparecer una cita.
 - **Pasada completa por reglas, agentes y skills:** los 5 estados de UI quedan iguales en la rule y en los agentes (cargando, vacío, error, parcial y éxito); `planner` y `domain-modeling` dejan de citar secciones que ya no existen; los agentes de Antigravity leen `AGENTS.md`; `ui-ux` deja el catálogo de skills de diseño a `/tools-reference` y el ruteo de idiomas a `seo`; `seo` corrige lo de JavaScript y usa Lighthouse CI sin instalación global.
 - **Menos repetición en los comandos:** `/security-audit` solo organiza la auditoría (delega, valida los Critical y da el veredicto) y deja el checklist a la rule `security` y a `security-mitigations`; `/deploy-checklist` pide la auditoría y el revisor de UI en vez de repetir sus puntos; `/session-close` remite a § 5 y § 8.

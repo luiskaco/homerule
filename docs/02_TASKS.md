@@ -8,16 +8,12 @@
 ## Dónde quedó
 
 - **Última actualización:** 2026-11-11
-- **Dónde quedó:** rama `feat/docs-simplify`, fase 1 hecha (PR #32, sin fusionar por decisión del autor). Detalle para la PC de la oficina en `docs/handoff-docs-simplify.md`.
-- **Próximo paso:** fase 2 (T-02), plan aprobado. Hecho: `AGENTS.md` solo con lo esencial (ADR-036), núcleo más corto, script de globales revisores sin reglas generales (ADR-037) y skills propias sin repeticiones. Fase 2 completa; falta solo el merge del PR #32 y llevarlo a la PC del trabajo (T-04).
+- **Dónde quedó:** rama `feat/docs-simplify` (PR #32, sin fusionar por decisión del autor) con la fase 1 (documentos, ADR-035), la fase 2 (núcleo, `AGENTS.md`, revisores y skills, ADR-036 y ADR-037) y los puntos adelantados de la revisión del 19. Detalle en `docs/handoff-docs-simplify.md`.
+- **Próximo paso:** el merge del PR #32; después, globales con `node scripts/sync-globals.mjs --write` y migrar los 19 proyectos (T-04).
 - **Bloqueos:** ninguno. Los 19 proyectos están en la PC del trabajo, no en esta.
 
 ## Abiertas
 
-- [ ] **T-01 — Simplificar los documentos, fase 1** (ADR-035, excepción a la pausa)
-  Hecho cuando: plantillas, comandos y este repo usan la estructura nueva, hay guía de migración, y paridad, plugin y build pasan.
-- [ ] **T-02 — Simplificar núcleo y subagentes, fase 2**: quitar la redundancia entre `CORE.md`, `GEMINI.md`, los globales, los `AGENTS.md` de los proyectos y los subagentes.
-  Hecho cuando: cada regla vive en un solo lugar y el autor aprueba el plan. Reemplaza a "Optimizar `GEMINI.md`, `AGENTS.md` y `CLAUDE.md`".
 - [ ] **T-03 — Revisión de la pausa** (2026-11-19): la lista de temas está en `docs/kit-pause.md`, sección "Para revisar".
   Hecho cuando: cada tema quedó decidido, hecho o descartado.
 - [ ] **T-04 — Llevar lo nuevo a la PC del trabajo**: globales al día y documentos de los 19 proyectos migrados con `docs/migrate-docs.md`.
@@ -34,3 +30,5 @@
   Hecho cuando: la tabla refleja lo que carga cada kit.
 - [ ] **T-10 — Rebranding del sitio**: nombre nuevo e identidad visual minimalista. Bloqueado por el nombre.
   Hecho cuando: el autor elige el nombre y el sitio lo usa.
+- [ ] **T-11 — Una sola fuente para los agentes repetidos** (después del 2026-11-19, rama aparte): `web-researcher`, `server-inspector`, `server-operator` y el revisor de código se mantienen a mano en Claude y en Antigravity, iguales en un 85 %. Generar los de Antigravity desde los de Claude, con bloques propios de cada herramienta.
+  Hecho cuando: el generador arma los agentes de Antigravity, un `--check` falla si quedan atrás y se probó uno en Antigravity (junto con T-07).

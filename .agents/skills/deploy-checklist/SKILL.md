@@ -51,7 +51,7 @@ lo que no se pudo comprobar va como "a verificar", no como aprobado.
 
 ### UI (si aplica)
 
-- [ ] `ui-reviewer` (o `frontend` en Antigravity) sin Critical sobre la interfaz de esta versión: cubre estados de UI, responsive, contraste y movimiento reducido según la rule `ui-ux`
+- [ ] `ui-reviewer` (o `auditor` en Antigravity) sin Critical sobre la interfaz de esta versión: cubre estados de UI, responsive, contraste y movimiento reducido según la rule `ui-ux`
 
 ### SEO (si aplica)
 

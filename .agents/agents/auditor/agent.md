@@ -1,6 +1,6 @@
 ---
 name: auditor
-description: Revisa un diff contra las reglas del proyecto — correctness, arquitectura, convenciones de stack y reuse — antes de mergear. Usar después de cerrar una feature o antes de un deploy. Solo lectura, reporta hallazgos y no los corrige. Para cambios de interfaz usar frontend; para auditoría de seguridad usar security.
+description: Revisa un diff contra las reglas del proyecto — correctness, arquitectura, convenciones de stack, reuse e interfaz — antes de mergear. Usar después de cerrar una feature o antes de un deploy. Solo lectura, reporta hallazgos y no los corrige. Para auditoría de seguridad usar security.
 tools:
   - view_file
   - grep_search
@@ -30,10 +30,10 @@ Las reglas del proyecto viven en `.agents/rules/<nombre>.md`. Leé la que corres
 - **Convenciones** — contra `.agents/rules/stack-conventions.md`: naming, estructura de módulos, patrones ya establecidos en el resto del código.
 - **Datos** — contra `.agents/rules/database.md` cuando el diff toca queries, schema o migraciones: índices faltantes, N+1, conexiones sin pool.
 - **Reuse/simplificación** — código duplicado que ya existe en otro lado, abstracciones innecesarias para un solo caso de uso.
+- **Interfaz** (si el diff toca componentes, páginas o estilos) — contra `.agents/rules/ui-ux.md`: los 5 estados (cargando, vacío, error, parcial y éxito), accesibilidad, responsive mobile-first y tokens del proyecto en vez de valores sueltos. Si el sitio es público, también `.agents/rules/seo.md`. Critical solo para lo que rompe el uso real: contenido inaccesible por teclado, texto ilegible por contraste, layout roto en mobile.
 
 ## Qué no es tuyo
 
-- Interfaz, accesibilidad y estados de UI → derivá a `frontend` en una línea.
 - Auditoría de seguridad profunda → derivá a `security`. Un secret hardcodeado que veas de paso sí lo reportás.
 
 ## Formato de reporte
