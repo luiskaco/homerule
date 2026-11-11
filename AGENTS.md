@@ -75,6 +75,7 @@ por tool), § 6 (nombres de la jerarquía) y la nota de subagentes de § 8.
 node scripts/sync-claude-kit.mjs          # regenera comandos y rules→skills de Claude
 node scripts/build-plugin.mjs --check     # falla si el plugin quedó atrás de la fuente
 python scripts/check-core-parity.py       # paridad CORE.md ↔ GEMINI.md
+node scripts/sync-globals.mjs             # ¿globales al día? --write los genera desde la fuente
 node scripts/test-readonly-bash.mjs       # casos del hook de solo lectura de los revisores
 node scripts/test-web-guard.mjs           # casos del hook de web-researcher
 node scripts/test-ssh-guard.mjs           # casos del hook de los agentes de servidores

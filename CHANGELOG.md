@@ -6,6 +6,9 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **SQLite en el stack:** se suma a la tabla de § 3, al selector de base de datos del sitio y a la rule `database`, con WAL, `.gitignore` del archivo y backups sin copiar la base abierta.
+- **Planificación enganchada a la Regla de Oro:** § 1 manda a usar `project-planning` cuando se cumple una condición de Validar, y antes `/grill` si la idea es difusa.
+- **Globales generados con un script** (T-02): `scripts/sync-globals.mjs` arma `~/.claude/CLAUDE.md` y `~/.gemini/GEMINI.md` desde la fuente, con copia de respaldo. Sin `--write` solo avisa si están desactualizados.
 - **Núcleo más corto** (T-02): de 1.819 a 1.480 palabras sin perder reglas. La regla de explicaciones, la jerarquía (§ 6), los comandos (§ 7) y el uso de subagentes (§ 8) quedan en pocas líneas; el idioma de los identificadores pasa a § 4.
 - **`AGENTS.md` solo con lo esencial** (ADR-036): el de los kits pasa de más de 2.000 palabras a unas 150, sin la copia de las reglas generales. El kit de Claude Code las trae en su `CLAUDE.md`.
 - **Documentos simplificados** (ADR-035): 4 documentos fijos y 5 opcionales; la lista de tareas guarda solo lo abierto, las decisiones tienen índice y el changelog va de a una línea por cambio. Sale la skill `project-docs-scaffold` y hay una guía para migrar los proyectos.

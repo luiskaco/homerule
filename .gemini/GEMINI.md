@@ -44,6 +44,8 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 2. **Validar:** frenar y preguntar si hay más de una arquitectura válida, si la tarea afecta más de 3 archivos existentes o si hay algo irreversible (migraciones, schema, borrado de datos).
 3. **Ejecutar:** solo con la estrategia clara y aprobada.
 
+Si se cumple alguna condición de **Validar**, planificar con la skill `project-planning`. Si la idea todavía es difusa, antes pasar por `/grill`.
+
 ---
 
 ## 2. Principios
@@ -60,7 +62,7 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 | Frontend | React / Next.js / Vue / Vanilla JS |
 | Backend | Node.js / Python (FastAPI) |
 | CMS | WordPress |
-| Base de datos | PostgreSQL / MySQL / MongoDB / Supabase |
+| Base de datos | PostgreSQL / MySQL / MongoDB / Supabase / SQLite |
 | Estilos | Tailwind CSS / CSS puro |
 | Runtime | Node.js 24+ / Python 3.12+ |
 

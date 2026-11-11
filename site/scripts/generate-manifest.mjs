@@ -193,6 +193,7 @@ const DB_ENGINES = [
   { id: "mysql", label: "MySQL", description: "Relacional — hosting compartido / stack LAMP existente." },
   { id: "mongodb", label: "MongoDB", description: "Documentos, esquema variable, alto volumen de escritura." },
   { id: "supabase", label: "Supabase", description: "Postgres + auth + storage + realtime integrados." },
+  { id: "sqlite", label: "SQLite", description: "Un archivo, sin servidor — apps locales, herramientas internas o un solo servidor." },
 ];
 
 const TOOL_CONFIG = {

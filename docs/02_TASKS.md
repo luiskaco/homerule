@@ -9,7 +9,7 @@
 
 - **Última actualización:** 2026-11-11
 - **Dónde quedó:** rama `feat/docs-simplify`, fase 1 hecha (PR #32, sin fusionar por decisión del autor). Detalle para la PC de la oficina en `docs/handoff-docs-simplify.md`.
-- **Próximo paso:** fase 2 (T-02), plan aprobado. Hecho: `AGENTS.md` solo con lo esencial (ADR-036) y núcleo más corto. Falta: globales generados con un script, subagentes y skills propias.
+- **Próximo paso:** fase 2 (T-02), plan aprobado. Hecho: `AGENTS.md` solo con lo esencial (ADR-036) núcleo más corto y script de globales. Falta: subagentes y skills propias.
 - **Bloqueos:** ninguno. Los 19 proyectos están en la PC del trabajo, no en esta.
 
 ## Abiertas

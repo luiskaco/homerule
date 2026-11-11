@@ -96,10 +96,13 @@ crearon. Lo que viaja es este repo.
    git pull
    ```
 
-2. Revisar que los archivos globales estén al día, porque el kit híbrido depende de
-   ellos: `~/.claude/CLAUDE.md` y `~/.gemini/GEMINI.md`. Su contenido se compara con
-   `core/CORE.md` y `.gemini/GEMINI.md`. Conviene pedirle a la IA que muestre las
-   diferencias antes de pisarlos, por si tienen algo propio de esa máquina.
+2. Poner al día los archivos globales, porque el kit híbrido depende de ellos.
+   El script los genera desde `core/CORE.md` y `.gemini/GEMINI.md`, con copia de
+   respaldo. Sin `--write` solo dice si están desactualizados:
+
+   ```bash
+   node scripts/sync-globals.mjs --write
+   ```
 3. Para seguir con un proyecto, también hay que tenerlo clonado en esa máquina.
 4. Poner la identidad de git con tu correo privado de GitHub, igual que en esta máquina:
 
