@@ -30,7 +30,8 @@ git pull
 ## Fase 2, núcleo y subagentes (T-02)
 
 Plan aprobado el 2026-11-11, en este orden: 1) `AGENTS.md` solo con lo
-esencial (**hecho**, ADR-036); 2) núcleo más corto; 3) globales generados con
+esencial (**hecho**, ADR-036); 2) núcleo más corto (**hecho**: 1.819 → 1.480
+palabras; § 0 queda igual salvo la regla 8); 3) globales generados con
 un script; 4) subagentes; 5) skills propias del kit.
 
 ### Lo detectado al empezar

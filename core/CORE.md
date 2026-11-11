@@ -15,7 +15,7 @@ Escribí como le explicarías algo a un colega que no estuvo mirando: claro, dir
 5. **Comandos que el usuario tiene que correr, en un bloque de código aparte** — nunca en medio de la frase.
 6. **Una sola pregunta al final, fácil de contestar** (sí/no o elegir una opción). Las condiciones van antes, no dentro de la pregunta.
 7. **Lo más corto que se entienda.** Una pregunta simple se contesta en 1–3 frases. Sin repetir lo que dijo el usuario, sin resumir paso a paso lo que se acaba de hacer y sin cerrar con ofrecimientos genéricos ("¿algo más?").
-8. **Explicaciones, en estilo técnico simple** (tomado de ASD-STE100) cuando el usuario pide que le expliquen un tema: frases de 20 palabras como máximo, en voz activa y con una sola idea cada una. Siempre la misma palabra para la misma cosa, sin sinónimos para variar. Si el tema se entiende mejor dibujado (un flujo, una estructura, una comparación), un diagrama en lugar del texto, con una frase que lo presente.
+8. **Explicaciones** (cuando el usuario pide entender un tema): frases de 20 palabras como máximo, en voz activa y siempre la misma palabra para la misma cosa. Si se entiende mejor dibujado, un diagrama con una frase que lo presente.
 
 **Criterio propio — no des la razón por cortesía:**
 
@@ -38,23 +38,17 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 
 ## 1. Regla de Oro: Planificar Antes de Actuar
 
-**NUNCA generar código o modificar archivos sin pasar primero por estos 3 pasos:**
+**Nunca generar código ni modificar archivos sin estos 3 pasos:**
 
-1. **Analizar:** Desglosa el problema, identifica impactos colaterales, propone solución conceptualmente.
-2. **Validar:** Detente y pregunta si hay ambigüedad en alguna de estas condiciones:
-   - Más de una arquitectura válida con trade-offs distintos
-   - La tarea afecta más de 3 archivos existentes
-   - Hay decisiones irreversibles (migraciones, cambios de schema, eliminación de datos)
-3. **Ejecutar:** Solo cuando la estrategia esté clara y aprobada.
+1. **Analizar:** el problema, sus impactos y una solución conceptual.
+2. **Validar:** frenar y preguntar si hay más de una arquitectura válida, si la tarea afecta más de 3 archivos existentes o si hay algo irreversible (migraciones, schema, borrado de datos).
+3. **Ejecutar:** solo con la estrategia clara y aprobada.
 
 ---
 
 ## 2. Principios
 
-- Sistemas seguros, escalables, mantenibles y listos para producción.
-- Priorizar: claridad, modularidad, simplicidad, reutilización.
-- Evitar: deuda técnica, hacks rápidos, sobreingeniería.
-- Identificadores y nombres de archivo siempre en inglés (variables, funciones, tipos, clases, rutas). Comentarios y documentación en español. Respuestas en el idioma del usuario.
+- Código seguro, mantenible y listo para producción: claro, modular y reutilizable, sin hacks ni sobreingeniería.
 - **Datos personales del usuario:** nunca enviarlos fuera del equipo ni dejarlos en algo que salga de él: correo, teléfono, documentos o dirección. Eso incluye User-Agent, cabeceras, URLs, búsquedas, formularios, scripts y archivos del repo. Si un sitio pide un contacto a los clientes automatizados, usar un nombre genérico o preguntar. Solo se usan si el usuario lo pide para ese envío.
 
 ---
@@ -70,20 +64,18 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 | Estilos | Tailwind CSS / CSS puro |
 | Runtime | Node.js 24+ / Python 3.12+ |
 
-**📌 Versiones actualizadas — regla obligatoria:**
+**📌 Versiones actualizadas — obligatorio** antes de usar una librería, framework, SDK o CLI:
 
-Antes de escribir o sugerir código que use una librería, framework, SDK o CLI (React, Next.js, Prisma, Tailwind, FastAPI, etc.):
-
-1. **No asumas** APIs, sintaxis ni versiones desde memoria — pueden estar desactualizadas.
+1. **No asumir** APIs, sintaxis ni versiones desde memoria.
 2. **Consulta la documentación vigente** con Context7 MCP (`resolve-library-id` → `query-docs`) antes de generar el código. Si no está disponible, usa web search.
-3. **Respeta el lockfile del proyecto:** revisa `package.json` / `requirements.txt` / `pyproject.toml` y su lockfile antes de proponer versiones o upgrades; no cambies versiones fijadas sin avisar.
-4. **En instalaciones nuevas** (proyecto sin lockfile), usa la última versión **estable** compatible con el runtime de esta tabla — nunca fijes versiones obsoletas por costumbre.
+3. **Respetar el lockfile:** revisarlo antes de proponer versiones y no cambiar las fijadas sin avisar.
+4. **Sin lockfile:** la última versión estable compatible con el runtime de la tabla.
 
 ---
 
 ## 4. Naming & Git
 
-**Naming:** `kebab-case` archivos · `camelCase` variables · `PascalCase` clases · `UPPER_SNAKE_CASE` constantes · `/api/v1/recursos` endpoints
+**Naming:** `kebab-case` archivos · `camelCase` variables · `PascalCase` clases · `UPPER_SNAKE_CASE` constantes · `/api/v1/recursos` endpoints. Identificadores y nombres de archivo en inglés; comentarios y documentación en español; respuestas en el idioma del usuario.
 
 **Commits:** Conventional Commits — `feat` / `fix` / `refactor` / `docs` / `chore` / `perf`
 
@@ -115,10 +107,7 @@ Los 4 numerados van siempre; los opcionales se crean cuando el proyecto los pide
 
 ## 6. Jerarquía de Reglas
 
-1. Este archivo de memoria del proyecto — máxima prioridad
-2. Skills/rules de convenciones (`security`, `architecture`, `ui-ux`, `seo`, `pwa`, `operations`, `cms`, `database`, `stack-conventions`) — workspace, override local
-3. Comandos/workflows (`/grill`, `/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un comando resume una convención que también vive en una skill/rule, esa skill/rule es la fuente de verdad si hay discrepancia
-4. Resto de skills según contexto del proyecto
+Manda este archivo. Después, las rules de convenciones (`security`, `architecture`, `ui-ux`, etc.); después, los comandos y el resto de las skills. Si un comando y una rule dicen distinto, manda la rule.
 
 ---
 
@@ -126,15 +115,7 @@ Los 4 numerados van siempre; los opcionales se crean cuando el proyecto los pide
 
 Invocar con `/` en el chat:
 
-| Comando | Cuándo |
-|---------|--------|
-| `/grill` | Antes de `/new-feature`, cuando el plan todavía es difuso — la IA interroga hasta afilarlo |
-| `/new-feature` | Antes de iniciar cualquier tarea nueva |
-| `/bug-fix` | Cuando algo está roto — identifica causa raíz antes de codificar |
-| `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
-| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
-| `/deploy-checklist` | Antes de merge a main o deploy a producción |
-| `/tools-reference` | Setup inicial o cuando necesites ver skills y herramientas disponibles |
+`/grill` · `/new-feature` · `/bug-fix` · `/session-close` · `/security-audit` · `/deploy-checklist` · `/tools-reference`. Cada uno dice en su descripción cuándo usarlo.
 
 ---
 
@@ -142,9 +123,9 @@ Invocar con `/` en el chat:
 
 Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
 
-**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (revisión manual, otro agente, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
+**⚠️ Si el usuario trae un informe de auditoría externo, el Inspector no ejecuta: solo se implementan las correcciones indicadas.**
 
-Antes de entregar cualquier código, revisar internamente con estas pasadas — **omitir las que no apliquen** a la tarea (ej. ⚙️ en un cambio solo visual):
+Antes de entregar código, estas pasadas, **omitiendo las que no apliquen**:
 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
@@ -153,22 +134,16 @@ Antes de entregar cualquier código, revisar internamente con estas pasadas — 
 - **🔍 Inspector:** audita contra las skills/rules de seguridad, ui-ux y arquitectura — si detecta problema crítico, bloquea entrega y corrige primero
 - **⚠️ Riesgo:** solo si hubo algo irreversible — migración, borrado de datos, push o deploy a producción
 
-**Reporte al usuario:** una sola línea al final del cierre (§ 0), en texto normal — nunca en bloque de código. Pasada sin observaciones: `✅`. 🧪 dice qué se ejecutó. Solo se explica, en pocas palabras, la pasada que encontró o corrigió algo:
-
-> Revisión: 🎨 ✅ · ⚙️ ✅ · 🧪 build + tests · 📝 ✅ · 🔍 ✅
+**Reporte:** una línea al final del cierre (§ 0), en texto normal. Sin observaciones, `✅`; 🧪 dice qué se ejecutó; solo se explica la pasada que encontró o corrigió algo:
 
 > Revisión: 🎨 ✅ · 🧪 sin verificar: no hay tests · 📝 falta CHANGELOG · 🔍 corregido: XSS en el formulario · ⚠️ push a main
 
 **Uso de subagentes** — cada uno arranca sin contexto y vuelve a leer el proyecto, así que cuestan:
 
-- Cambios chicos (pocos archivos, sin riesgo), directo, sin subagente.
-- Uno por tarea grande, y reanudarlo si la herramienta lo permite, en vez de lanzar otro: conserva lo que ya leyó.
-- A quien implementa, instrucciones exactas: los archivos y los puntos a resolver. A quien revisa, el alcance (el diff o la feature), no una lista cerrada de archivos: tiene que poder seguir el dato hasta donde llega.
-- Revisiones una sola vez, al final. Un cambio chico lleva una sola revisión, salvo que toque login, pagos o datos sensibles: eso siempre pasa por la auditoría de seguridad.
-- Build, tests y lint, con comandos, no con subagentes.
-- Pedir informes breves: hallazgos y resultados, no explicaciones.
+- Cambios chicos, directo; build, tests y lint, con comandos. Un subagente por tarea grande, reanudado en vez de lanzar otro.
+- A quien implementa, los archivos y puntos exactos; a quien revisa, el alcance (diff o feature) para que siga el dato. Pedir informes breves: hallazgos, no explicaciones.
+- Revisión una sola vez, al final. Login, pagos o datos sensibles pasan siempre por la auditoría de seguridad.
 
-> Esto es una **auto-revisión inline** en el mismo turno, no delegación. Para
-> revisión **delegada** en contexto aislado, invocá los subagentes reales de
-> `.claude/agents/` (`code-reviewer`, `security-auditor`) — corren en su propia
-> ventana y no consumen el contexto principal.
+> Esto es una **auto-revisión inline** en el mismo turno. Para revisión delegada,
+> en contexto aislado, usar los subagentes de `.claude/agents/` (`code-reviewer`,
+> `security-auditor`).
