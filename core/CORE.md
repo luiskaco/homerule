@@ -117,7 +117,15 @@ Manda este archivo. Después, las rules de convenciones (`security`, `architectu
 
 Invocar con `/` en el chat:
 
-`/grill` · `/new-feature` · `/bug-fix` · `/session-close` · `/security-audit` · `/deploy-checklist` · `/tools-reference`. Cada uno dice en su descripción cuándo usarlo.
+- `/grill` — antes de `/new-feature`, cuando el plan todavía es difuso.
+- `/new-feature` — al empezar una tarea nueva.
+- `/bug-fix` — cuando algo está roto: causa raíz antes de codificar.
+- `/session-close` — al terminar el día o una tarea.
+- `/security-audit` — antes de subir auth, APIs o datos sensibles.
+- `/deploy-checklist` — antes de un merge a main o un deploy a producción.
+- `/tools-reference` — para ver las skills y herramientas disponibles.
+
+**Sugerir, no correr:** si el usuario está por hacer algo que cubre un comando y no lo nombró, sugerírselo en una línea al final, sin ejecutarlo.
 
 ---
 
