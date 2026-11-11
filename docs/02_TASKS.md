@@ -8,8 +8,8 @@
 ## Dónde quedó
 
 - **Última actualización:** 2026-11-10
-- **Dónde quedó:** rama `feat/docs-simplify`, fase 1 de la simplificación de documentos (T-01), sin PR todavía.
-- **Próximo paso:** guía de migración para los proyectos, chequeos y PR.
+- **Dónde quedó:** rama `feat/docs-simplify`, fase 1 hecha (PR #32, sin fusionar por decisión del autor). Detalle para la PC de la oficina en `docs/handoff-docs-simplify.md`.
+- **Próximo paso:** plan de la fase 2 (T-02).
 - **Bloqueos:** ninguno. Los 19 proyectos están en la PC del trabajo, no en esta.
 
 ## Abiertas
