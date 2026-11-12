@@ -6,6 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Skill `ui-patterns`** (T-12): catálogo de animaciones y efectos, menús y navegación, contenedores y feedback, con cuándo usar cada patrón, cuándo no y cómo hacerlo accesible. Viene en los presets con interfaz. La rule `architecture` suma las carpetas de cada stack.
 - **Cookies de sesión con `SameSite=Lax`:** la rule `security` deja `Strict` solo para acciones muy sensibles, porque con `Strict` quien llega desde un enlace externo o un login con Google aparece deslogueado.
 - **Antigravity revisa la UI con `auditor`:** `frontend` queda solo para implementar.
 - **Comandos y agentes sin citar el núcleo:** dicen la regla en el lugar en vez de "§ 1" o "Regla de Oro", así funcionan con cualquier IA aunque no tenga el núcleo. El generador del sitio falla si vuelve a aparecer una cita.

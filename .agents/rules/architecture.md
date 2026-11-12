@@ -31,6 +31,38 @@ Un módulo = una carpeta en cada capa. Sin mezclar.
 - Comunicación entre módulos solo a través de interfaces/contratos — nunca importando internals
 - Archivo nuevo siempre en la carpeta de su módulo
 
+## Carpetas por stack
+
+Respetar la estructura del framework y agregar los módulos adentro. En un
+proyecto que ya existe, manda la estructura que tiene.
+
+```
+Next.js (App Router)            Laravel
+app/[modulo]/   rutas           app/Http/Controllers/  delgados
+components/ui/  compartidos     app/Http/Requests/     validación
+components/[modulo]/            app/Models/
+lib/[modulo]/   servicios       app/Services/ o Actions/  lógica de negocio
+lib/shared/                     routes/  database/migrations/
+tests/ o junto al archivo       tests/Feature/  tests/Unit/
+
+FastAPI                         Tema de WordPress (bloques)
+app/main.py                     theme.json  style.css
+app/api/v1/     routers         templates/  parts/  patterns/
+app/schemas/    Pydantic        functions.php  solo carga lo de inc/
+app/services/   lógica          inc/        PHP del tema, por tema
+app/models/  app/db/            assets/     CSS, JS e imágenes
+app/core/       config y seguridad
+tests/
+```
+
+- Nada de carpetas cajón (`utils/`, `helpers/`, `misc/`) con archivos de
+  distintos módulos: si algo es compartido, va en la carpeta compartida del
+  stack con un nombre que diga qué hace.
+- La configuración sale de variables de entorno y se lee en un solo lugar
+  (`config/` en Laravel, `app/core/config.py` en FastAPI, `lib/env` en Next.js).
+- Los tests replican la estructura del código: el test de
+  `app/services/billing.py` está en `tests/services/test_billing.py`.
+
 ## Frontend Ligero
 
 El frontend maneja solo:
