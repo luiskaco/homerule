@@ -41,8 +41,17 @@ const git = (argv) => spawnSync("git", argv, { cwd: REPO, encoding: "utf8", maxB
 /** @type {Map<string, Set<string>>} ruta relativa → hashes de sus versiones */
 const known = new Map();
 const addKnown = (path, content) => {
-  if (!known.has(path)) known.set(path, new Set());
-  known.get(path).add(hash(content));
+  // Una skill del kit se copia igual en `.agents/skills/` y en `.claude/skills/`:
+  // cualquiera de sus versiones vale para las dos rutas.
+  const twin = path.startsWith(".agents/skills/")
+    ? ".claude/skills/" + path.slice(".agents/skills/".length)
+    : path.startsWith(".claude/skills/")
+      ? ".agents/skills/" + path.slice(".claude/skills/".length)
+      : null;
+  for (const p of twin ? [path, twin] : [path]) {
+    if (!known.has(p)) known.set(p, new Set());
+    known.get(p).add(hash(content));
+  }
 };
 
 const gen = spawnSync(process.execPath, ["scripts/generate-manifest.mjs"], { cwd: join(REPO, "site"), encoding: "utf8" });
