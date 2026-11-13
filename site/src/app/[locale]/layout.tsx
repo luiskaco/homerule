@@ -50,7 +50,12 @@ export default async function LocaleLayout(
 
   return (
     <html lang={locale} className="dark">
-      <body className="flex min-h-screen flex-col bg-slate-950 text-slate-100 relative antialiased selection:bg-violet-500 selection:text-white">
+      {/* Extensiones como ColorZilla agregan atributos al body antes de que cargue
+          React; esto ignora solo esos atributos, no lo que hay adentro. */}
+      <body
+        suppressHydrationWarning
+        className="flex min-h-screen flex-col bg-slate-950 text-slate-100 relative antialiased selection:bg-violet-500 selection:text-white"
+      >
         <NextIntlClientProvider>
           {/* Background Ambient Mesh & Glows */}
           <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
