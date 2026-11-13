@@ -60,6 +60,18 @@ lo que no se pudo comprobar va como "a verificar", no como aprobado.
 - [ ] Lighthouse SEO score ≥ 90
 - [ ] Lighthouse Performance score ≥ 80
 
+### Versión (si el proyecto tiene número de versión)
+
+Aplica cuando el proyecto declara su versión: `package.json` de una librería o
+paquete publicado, `pyproject.toml`, la cabecera de `style.css` de un tema de
+WordPress o la del archivo principal de un plugin, una app con tienda. Un sitio
+que se despliega solo y no tiene número de versión se saltea.
+
+- [ ] Número subido según los commits desde la última versión (`git log --oneline <último-tag>..HEAD`; sin tags, desde el último commit que cambió el número): un cambio incompatible (`feat!`, `fix!` o `BREAKING CHANGE`) sube el primero, un `feat` el del medio y un `fix` el último. Solo `docs`, `chore` o `refactor` no suben nada
+- [ ] El mismo número en todos los lugares donde aparece: por ejemplo, la cabecera de WordPress y la constante de versión que usa el tema o plugin para cargar CSS y JS (si no sube, el navegador sigue usando los archivos viejos)
+- [ ] `04_CHANGELOG.md`: el título de la fecha lleva el número nuevo (`## 2026-01-15 — v1.4.0`)
+- [ ] Si el proyecto usa tags, `vX.Y.Z` sobre el commit que se despliega
+
 ### Documentación
 
 - [ ] `/docs` actualizado si hubo cambios de arquitectura, API o datos

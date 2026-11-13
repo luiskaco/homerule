@@ -6,6 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Versión en el checklist de deploy:** `/deploy-checklist` pide subir el número de versión según los commits (`fix`, `feat` o cambio incompatible) en los proyectos que lo tienen, como librerías o temas y plugins de WordPress, y que coincida en todos los lugares donde aparece. Los sitios sin número de versión no cambian.
 - **Repo renombrado a `luiskaco/homerule`** (T-10): los comandos del plugin y del clonado apuntan al nombre nuevo; GitHub redirige los enlaces viejos.
 - **Nombre comercial: Homerule** (T-10): reemplaza a "AI Rules Hub" en el sitio, los dos README y el nombre visible del plugin. El nombre interno del plugin (`ai-rules-hub`) y el del repo no cambian todavía.
 - **Primera vista en inglés** (ADR-040): el sitio abre en inglés y el `README.md` pasa a inglés, con su traducción en `README.es.md`. El README se pone al día con el kit global y deja la instalación por proyecto de Antigravity, que ya no aplica.

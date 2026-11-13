@@ -2,6 +2,7 @@
 
 > Una línea por cambio, lo nuevo arriba. Se agrega sin releer el archivo.
 > Al empezar un año nuevo, lo anterior pasa a `CHANGELOG-AAAA.md`.
+> Si el proyecto tiene número de versión, va en el título: `## YYYY-MM-DD — vX.Y.Z`.
 
 ## YYYY-MM-DD
 
