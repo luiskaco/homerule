@@ -9,13 +9,13 @@
       "name": "ai-rules-hub",
       "source": "./",
       "description": "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 9 subagentes especializados.",
-      "version": "2026.11.12",
+      "version": "2026.11.13",
       "author": {
         "name": "luiskaco",
         "url": "https://github.com/luiskaco"
       },
-      "homepage": "https://github.com/luiskaco/-makeRuleIA",
-      "repository": "https://github.com/luiskaco/-makeRuleIA",
+      "homepage": "https://github.com/luiskaco/homerule",
+      "repository": "https://github.com/luiskaco/homerule",
       "license": "MIT",
       "keywords": [
         "rules",

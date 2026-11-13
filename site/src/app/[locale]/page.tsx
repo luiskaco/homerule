@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getPresetsByTool } from "@/lib/presets";
 import { getItemsByCategory } from "@/lib/manifest";
-import { getCatalogSkills } from "@/lib/skill-catalog";
 import { localeAlternates } from "@/lib/seo";
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -15,147 +13,83 @@ export default async function HomePage(props: { params: Promise<{ locale: string
   const params = await props.params;
   setRequestLocale(params.locale);
   const t = await getTranslations("Home");
-  const tools = await getTranslations("Tools");
 
-  const stackCount = getPresetsByTool("antigravity").filter((p) => p.id !== "manual").length;
+  const ruleCount = getItemsByCategory("rule").length + 1;
+  const skillCount = getItemsByCategory("skill").filter((i) => i.tool === "antigravity").length;
   const agentCount = getItemsByCategory("agent").filter((i) => i.tool === "claude-code").length;
-  const skillCount = getCatalogSkills().length;
 
-  const modes = [
+  const steps = [
     {
-      id: "antigravity-solo",
-      eyebrow: tools("antigravity.label"),
-      title: t("modeAntigravityTitle"),
-      description: t("modeAntigravityDescription"),
-      href: "/kits/antigravity",
-      cta: t("modeAntigravityCta"),
-      // Un color fijo por tool en todo el sitio: esmeralda Antigravity, violeta Claude (ADR-024).
-      cardClass: "card-vibrant-emerald border-t-2 border-t-emerald-500",
-      accentClass: "text-emerald-400 group-hover:text-emerald-300",
-      badgeClass: "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30",
-      bullets: [t("modeAntigravityBullet1", { count: stackCount }), t("modeAntigravityBullet2")],
+      id: "install",
+      step: t("step1Eyebrow"),
+      title: t("step1Title"),
+      body: t("step1Body"),
+      cta: t("step1Cta"),
+      href: "/instalar",
     },
     {
-      id: "claude-solo",
-      eyebrow: tools("claude-code.label"),
-      title: t("modeClaudeTitle"),
-      description: t("modeClaudeDescription"),
-      href: "/kits/claude-code",
-      cta: t("modeClaudeCta"),
-      cardClass: "card-vibrant-purple border-t-2 border-t-violet-500",
-      accentClass: "text-violet-400 group-hover:text-violet-300",
-      badgeClass: "bg-violet-500/10 text-violet-300 border border-violet-500/30",
-      bullets: [
-        t("modeClaudeBullet1", { count: agentCount }),
-        t("modeClaudeBullet2"),
-        t("modeClaudeBullet3"),
-      ],
-    },
-    {
-      id: "hybrid",
-      eyebrow: tools("hybrid.label"),
-      title: t("modeHybridTitle"),
-      description: t("modeHybridDescription"),
-      href: "/kits/hybrid",
-      cta: t("modeHybridCta"),
-      cardClass: "card-vibrant-sky border-t-2 border-t-sky-500",
-      accentClass: "text-sky-400 group-hover:text-sky-300",
-      badgeClass: "bg-sky-500/10 text-sky-300 border border-sky-500/30",
-      bullets: [t("modeHybridBullet1"), t("modeHybridBullet2"), t("modeHybridBullet3")],
+      id: "project",
+      step: t("step2Eyebrow"),
+      title: t("step2Title"),
+      body: t("step2Body"),
+      cta: t("step2Cta"),
+      href: "/proyecto-nuevo",
     },
   ];
 
   return (
     <div className="flex flex-col gap-12">
-      {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-linear-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 sm:p-12 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl">
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
-        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 h-64 w-64 rounded-full bg-cyan-600/20 blur-3xl" />
-
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-linear-to-b from-slate-900/90 via-indigo-950/40 to-slate-900/90 p-8 shadow-2xl shadow-indigo-950/50 backdrop-blur-2xl sm:p-12">
+        <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-violet-600/20 blur-3xl" />
+        <div className="absolute bottom-0 left-0 -mb-16 -ml-16 h-64 w-64 rounded-full bg-cyan-600/20 blur-3xl" />
         <div className="relative z-10 flex flex-col items-start gap-5">
-          <div className="inline-flex items-center gap-2 rounded-full bg-violet-500/10 px-4 py-1.5 text-xs font-bold tracking-wide text-violet-300 ring-1 ring-inset ring-violet-500/30 backdrop-blur-md">
-            <span className="flex h-2 w-2 rounded-full bg-violet-400 animate-ping" />
-            {t("badge")}
-          </div>
-
+          <p className="text-xs font-bold uppercase tracking-wide text-violet-300">{t("badge")}</p>
           <h1 className="max-w-3xl text-3xl font-black tracking-tight sm:text-5xl sm:leading-tight">
             {t("titleStart")} <span className="text-gradient-purple">{t("titleAccent")}</span>
           </h1>
-
-          <p className="max-w-2xl text-base text-slate-300 leading-relaxed sm:text-lg">{t("intro")}</p>
-
-          <div className="mt-2 flex flex-wrap gap-4 text-xs font-semibold text-slate-400">
-            <div className="flex items-center gap-2 rounded-lg bg-slate-900/60 px-3 py-1.5 border border-slate-800">
-              <span className="text-emerald-400">✓</span> {t("statStacks", { count: stackCount })}
-            </div>
-            <div className="flex items-center gap-2 rounded-lg bg-slate-900/60 px-3 py-1.5 border border-slate-800">
-              <span className="text-cyan-400">✓</span> {t("statSkills", { count: skillCount })}
-            </div>
-            <div className="flex items-center gap-2 rounded-lg bg-slate-900/60 px-3 py-1.5 border border-slate-800">
-              <span className="text-violet-400">✓</span> {t("statAgents", { count: agentCount })}
-            </div>
-          </div>
+          <p className="max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">{t("intro")}</p>
+          <ul className="mt-2 flex flex-wrap gap-3 text-xs font-semibold text-slate-400">
+            {[t("statRules", { count: ruleCount }), t("statSkills", { count: skillCount }), t("statAgents", { count: agentCount })].map((stat) => (
+              <li key={stat} className="rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-1.5">
+                {stat}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* Los 3 modos de uso: cada kit es independiente */}
-      <section className="flex flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-            <span className="text-violet-400">⚡</span> {t("modesTitle")}
-          </h2>
-          <p className="text-sm text-slate-400">{t("modesSubtitle")}</p>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          {modes.map((mode) => (
-            <Link
-              key={mode.id}
-              href={mode.href}
-              className={`group flex flex-col justify-between rounded-2xl p-6 shadow-xl ${mode.cardClass}`}
-            >
-              <div>
-                <span className={`rounded-full px-3 py-0.5 text-xs font-bold ${mode.badgeClass}`}>
-                  {mode.eyebrow}
-                </span>
-                <h3 className="mt-4 text-lg font-bold text-white">{mode.title}</h3>
-                <p className="mt-2 text-sm text-slate-300 leading-relaxed">{mode.description}</p>
-
-                <ul className="mt-4 flex flex-col gap-1.5 text-xs text-slate-400">
-                  {mode.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-center gap-2">
-                      <span className={mode.accentClass}>▸</span>
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className={`mt-6 flex items-center text-xs font-bold ${mode.accentClass}`}>
-                {mode.cta}
-                <span className="ml-1.5 transition-transform duration-200 group-hover:translate-x-1">→</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Skills & Prompts — transversal a los dos modos */}
-      <section className="rounded-2xl border border-pink-500/20 bg-slate-900/60 p-6 sm:p-8 backdrop-blur-xl">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-pink-500/20 text-pink-400 font-bold border border-pink-500/30">
-              ✨
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">{t("skillsTitle")}</h3>
-              <p className="mt-1 max-w-xl text-sm text-slate-300 leading-relaxed">{t("skillsBody")}</p>
-            </div>
-          </div>
+      <section className="grid gap-6 md:grid-cols-2">
+        {steps.map((step) => (
           <Link
-            href="/mejores-skill"
-            className="shrink-0 inline-flex items-center justify-center rounded-xl bg-pink-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-pink-600/30 transition-all hover:bg-pink-500 hover:scale-105"
+            key={step.id}
+            href={step.href}
+            className="group flex flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900/60 p-6 transition-colors hover:border-violet-500/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
           >
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-violet-300">{step.step}</p>
+              <h2 className="mt-2 text-xl font-bold text-white">{step.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-slate-300">{step.body}</p>
+            </div>
+            <span className="mt-6 text-sm font-bold text-violet-300 group-hover:text-violet-200">
+              {step.cta}
+              <span aria-hidden="true" className="ml-1.5 inline-block transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </span>
+          </Link>
+        ))}
+      </section>
+
+      <section className="flex flex-col gap-4 rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="text-base font-bold text-white">{t("catalogTitle")}</h2>
+          <p className="mt-1 max-w-xl text-sm leading-relaxed text-slate-400">{t("catalogBody")}</p>
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-2">
+          <Link href="/catalogo" className="rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white">
+            {t("catalogCta")}
+          </Link>
+          <Link href="/mejores-skill" className="rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-slate-600 hover:text-white">
             {t("skillsCta")}
           </Link>
         </div>

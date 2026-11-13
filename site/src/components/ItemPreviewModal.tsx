@@ -12,7 +12,7 @@ export default function ItemPreviewModal({
   item: ManifestItem;
   onClose: () => void;
 }) {
-  const t = useTranslations("Build");
+  const t = useTranslations("Preview");
   const descriptions = useTranslations("ItemDescriptions");
   const [activeFile, setActiveFile] = useState(0);
 

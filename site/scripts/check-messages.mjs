@@ -32,7 +32,7 @@ for (const locale of LOCALES) {
     }
   }
 
-  // /plantillas muestra cada plantilla con DocTemplates.descriptions.<archivo>.
+  // /proyecto-nuevo muestra cada plantilla con DocTemplates.descriptions.<archivo>.
   for (const key of templateKeys) {
     if (!messages.DocTemplates?.descriptions?.[key]) missing.push(`${locale}.json → DocTemplates.descriptions["${key}"]`);
   }

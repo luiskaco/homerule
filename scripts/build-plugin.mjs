@@ -22,7 +22,7 @@ const COMMANDS_DIR = join(REPO_ROOT, ".claude", "commands");
 const CLAUDE_SKILLS_DIR = join(REPO_ROOT, ".claude", "skills");
 const AGENT_SKILLS_DIR = join(REPO_ROOT, ".agents", "skills");
 
-const REPO_SLUG = "luiskaco/-makeRuleIA";
+const REPO_SLUG = "luiskaco/homerule";
 const REPO_URL = `https://github.com/${REPO_SLUG}`;
 
 /**
@@ -85,7 +85,7 @@ function buildManifest(version) {
 
   return {
     name: "ai-rules-hub",
-    displayName: "AI Rules Hub",
+    displayName: "Homerule",
     version,
     description:
       "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 9 subagentes especializados.",

@@ -20,7 +20,6 @@ interface SkillContent {
 export default function SkillCard({ skill }: { skill: CatalogSkill }) {
   const t = useTranslations("SkillCard");
   const data = useTranslations("SkillData");
-  const stacks = useTranslations("StackLabels");
 
   const content = data.raw(skill.id) as SkillContent;
   const install = (content.install ?? []).map((step, i) => ({
@@ -157,24 +156,6 @@ export default function SkillCard({ skill }: { skill: CatalogSkill }) {
               </li>
             ))}
           </ul>
-        </div>
-      )}
-
-      {skill.stacks.length > 0 && (
-        <div className="mt-6 border-t border-slate-800/80 pt-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            {t("includedInStacks")}
-          </h3>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {skill.stacks.map((stack) => (
-              <span
-                key={stack.id}
-                className="rounded-full border border-slate-700 bg-slate-800/80 px-3 py-1 text-xs font-semibold text-slate-200"
-              >
-                {stacks(`${stack.id}.label`)}
-              </span>
-            ))}
-          </div>
         </div>
       )}
     </section>

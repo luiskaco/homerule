@@ -4,3 +4,4 @@ out
 next-env.d.ts
 public/manifest.json
 tsconfig.tsbuildinfo
+public/global-kit/

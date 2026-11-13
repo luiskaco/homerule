@@ -1,9 +1,9 @@
-# AGENTS.md — makeRuleIA (AI Rules Hub)
+# AGENTS.md — Homerule (repo makeRuleIA)
 
 Instrucciones del repo para cualquier agente de código (estándar
 [AGENTS.md](https://agents.md)). Este repo es la **fuente** desde la que se
-generan los kits de reglas para Antigravity y Claude Code, más el sitio
-(`site/`) que los arma y descarga como ZIP.
+generan los kits de reglas para Claude Code, Antigravity y Codex, más el sitio
+(`site/`) que entrega el kit global y el arranque de un proyecto (ADR-039).
 
 Este archivo cubre **solo lo propio del repo**. Las reglas globales (modo de
 comunicación, planificar antes de actuar, stack, naming, `/docs`,
@@ -37,33 +37,37 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 
 Editar siempre la fuente, nunca un derivado.
 
-- **Fuente** (lo que `site/scripts/generate-manifest.mjs` empaqueta en los
-  ZIPs): `.agents/rules/`, `.agents/skills/` (workflows incluidos),
+- **Fuente** (lo que `site/scripts/generate-manifest.mjs` lee para armar el
+  manifest y los kits): `.agents/rules/`, `.agents/skills/` (workflows incluidos),
   `.agents/agents/`, `core/CORE.md`, `core/agents-map.md`,
   `.claude/agents/`, `.claude/hooks/` y `docs-templates/`.
-- **El `AGENTS.md` y el `CLAUDE.md` de los kits no tienen fuente propia**: el
-  `AGENTS.md` sale de `core/agents-map.md` y el `CLAUDE.md`, de `core/CORE.md`
-  más el import de `AGENTS.md` (ADR-036). Si se reescribe el título, § 7 o la
-  nota de subagentes de § 8 en `CORE.md`, el generador falla a propósito —
-  ajustar `buildClaudeMd()` o `buildNeutralCore()`.
+- **Los núcleos del kit global no tienen fuente propia**: `~/.claude/CLAUDE.md`
+  y `~/.codex/AGENTS.md` salen de `core/CORE.md`, y `~/.gemini/GEMINI.md`, de
+  `.gemini/GEMINI.md`. El `AGENTS.md` de un proyecto nuevo sale de
+  `core/agents-map.md` (ADR-036). Si se reescribe el título, § 5, § 7 o la nota
+  de subagentes de § 8 en `CORE.md`, el armado falla a propósito: ajustar
+  `scripts/lib/global-kit.mjs`.
 - **Lo que viaja a los proyectos no cita el núcleo:** comandos, skills propias,
   agentes, rules y plantillas dicen la regla en el lugar, sin "§ N" ni
   "Regla de Oro". Otra IA no tiene el núcleo. El generador falla si aparece
   una cita (`assertNoCoreReferences()`).
 - Este `AGENTS.md` (el de la raíz) es solo del repo y no se empaqueta.
-- **Kit global** (ADR-038): `scripts/install-global.mjs` instala en la carpeta
-  personal lo mismo que traen los ZIPs, leyendo el manifest. Como una skill
+- **Kit global** (ADR-038, ADR-039): `scripts/lib/global-kit.mjs` decide qué va
+  a cada carpeta personal; el generador publica un JSON por herramienta en
+  `site/public/global-kit/` y `scripts/install-global.mjs` lo instala, desde el
+  repo o desde el ZIP de `/instalar`. El instalador viaja suelto en el ZIP:
+  solo puede usar módulos de Node. Como una skill
   personal pisa a la del proyecto, después de editar una rule o una skill acá
   hay que reinstalar para verla en la sesión.
-- **Kit híbrido** (`tool: "hybrid"`, ADR-031): sale de la misma fuente. El generador agrega a cada rule, skill y workflow un puntero de `.claude/` hacia `.agents/`; no tiene fuente propia.
 - **Derivados — se regeneran, no se editan a mano:**
   - `.claude/commands/` y `.claude/skills/<regla>/SKILL.md` (las 9 rules
     convertidas) ← `node scripts/sync-claude-kit.mjs` después de editar
     cualquier workflow o rule.
   - `.claude-plugin/plugin.json` y `marketplace.json` ←
     `node scripts/build-plugin.mjs`.
-  - `site/public/manifest.json` ← lo regenera `prebuild`/`predev` del sitio.
-  - La tabla de tokens del `README.md` ← `python scripts/update-token-table.py`.
+  - `site/public/manifest.json` y `site/public/global-kit/` ← los regenera
+    `prebuild`/`predev` del sitio.
+  - La tabla de tokens de `README.md` y `README.es.md` ← `python scripts/update-token-table.py`.
 - **Skills de terceros vendorizadas** (en `.agents/skills/` y `.claude/skills/`):
   no editarlas — se actualizan reinstalando (ver `skills-lock.json` y README
   § Skills de diseño de terceros).
@@ -88,7 +92,7 @@ node scripts/test-readonly-bash.mjs       # casos del hook de solo lectura de lo
 node scripts/test-web-guard.mjs           # casos del hook de web-researcher
 node scripts/test-ssh-guard.mjs           # casos del hook de los agentes de servidores
 node scripts/test-personal-data-guard.mjs # casos del hook global de datos personales
-python scripts/update-token-table.py      # tabla de tokens del README
+python scripts/update-token-table.py      # tabla de tokens de los dos README
 python scripts/make-desktop-zips.py       # ZIPs de skills para Claude Desktop (skills-desktop/, gitignored)
 
 cd site && npm install && npm run dev     # sitio en local (regenera el manifest)
@@ -98,7 +102,9 @@ cd site && npm run build                  # build de producción
 ## Convenciones
 
 - Identificadores y nombres de archivo en inglés; comentarios y documentación
-  en español (ADR-009).
+  en español (ADR-009). Excepción: el `README.md` va en inglés, con su
+  traducción en `README.es.md`; un cambio en uno se replica en el otro en el
+  mismo commit (ADR-040). El sitio abre en inglés.
 - Commits: Conventional Commits (`feat` / `fix` / `refactor` / `docs` /
   `chore` / `perf`).
 - Finales de línea LF en todo el repo (`.gitattributes`). Los guards `--check`

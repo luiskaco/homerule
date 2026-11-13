@@ -3,6 +3,7 @@
 import { readFileSync, readdirSync, statSync, mkdirSync, writeFileSync } from "node:fs";
 import { join, relative, extname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildGlobalKits } from "../../scripts/lib/global-kit.mjs";
 
 const SITE_DIR = fileURLToPath(new URL("..", import.meta.url));
 const REPO_ROOT = join(SITE_DIR, "..");
@@ -95,7 +96,6 @@ const RULES_DIR = join(REPO_ROOT, ".agents", "rules");
 const SKILLS_DIR = join(REPO_ROOT, ".agents", "skills");
 const ANTIGRAVITY_AGENTS_DIR = join(REPO_ROOT, ".agents", "agents");
 const TEMPLATES_DIR = join(REPO_ROOT, "docs-templates");
-const CORE_MD_PATH = join(REPO_ROOT, "core", "CORE.md");
 const DATABASE_MD_PATH = join(RULES_DIR, "database.md");
 const CLAUDE_AGENTS_DIR = join(REPO_ROOT, ".claude", "agents");
 const AGENTS_MAP_PATH = join(REPO_ROOT, "core", "agents-map.md");
@@ -112,80 +112,12 @@ function stripMachineBlocks(content) {
   return content.replace(/\r\n/g, "\n").replace(CODEBASE_MEMORY_BLOCK, "\n");
 }
 
-// Nota de § 8 sobre subagentes de `.claude/agents/`: es de Claude Code, así que
-// sale del AGENTS.md neutral y pasa al CLAUDE.md del kit.
-const CLAUDE_SUBAGENT_NOTE = /\n> Esto es una \*\*auto-revisión inline\*\*[\s\S]*?(?=\n(?!>)|$)/;
-
-// Reemplazo que falla si el ancla desaparece: si alguien reescribe CORE.md,
-// el build se corta en vez de emitir un AGENTS.md con texto de Claude adentro.
-function replaceOrThrow(content, pattern, replacement, what) {
-  if (!pattern.test(content)) {
-    throw new Error(`generate-manifest: no se encontró ${what} en core/CORE.md — revisar buildAgentsMd()`);
-  }
-  return content.replace(pattern, replacement);
-}
-
-/** Núcleo sin nada propio de un tool, derivado de CORE.md (copia del kit híbrido). */
-function buildNeutralCore(coreRaw, header) {
-  let core = stripMachineBlocks(coreRaw);
-  core = replaceOrThrow(core, /^# Core Rules — Global\n/, header, "el título");
-  core = replaceOrThrow(
-    core,
-    /^Invocar con `\/` en el chat:$/m,
-    "Invocar con `/` si tu herramienta los expone como comandos; si no, leer el archivo del comando y seguir sus pasos:",
-    "la línea de invocación de § 7"
-  );
-  return replaceOrThrow(core, CLAUDE_SUBAGENT_NOTE, "", "la nota de subagentes de § 8").trimEnd();
-}
-
 /**
  * `AGENTS.md` de todos los kits: solo lo esencial del proyecto, sin las reglas
  * generales (ADR-036). Cada herramienta trae las suyas.
  */
 function buildAgentsMd(mapRaw) {
   return mapRaw.replace(/\r\n/g, "\n");
-}
-
-/** `CLAUDE.md` del kit híbrido: importa AGENTS.md; las reglas generales están en los globales. */
-function buildHybridClaudeMd() {
-  return [
-    "# CLAUDE.md",
-    "",
-    "@AGENTS.md",
-    "",
-    "---",
-    "",
-    "## Solo para Claude Code",
-    "",
-    "- Las reglas generales se cargan desde `~/.claude/CLAUDE.md`.",
-    "- Los comandos de `.claude/commands/` y las skills de `.claude/skills/` son punteros a `.agents/`, " +
-      "la carpeta que comparte con Antigravity. Cualquier cambio se hace ahí.",
-    "- Los subagentes de `.claude/agents/` y sus hooks son propios de Claude Code.",
-    "",
-  ].join("\n");
-}
-
-/** `CLAUDE.md` del kit: reglas generales de CORE.md + import de AGENTS.md (ADR-036). */
-function buildClaudeMd(title, coreRaw) {
-  const core = replaceOrThrow(stripMachineBlocks(coreRaw), /^# Core Rules — Global\n/, `# ${title}\n`, "el título");
-  return [
-    core.trimEnd(),
-    "",
-    "---",
-    "",
-    "## Proyecto",
-    "",
-    "Lo esencial de este proyecto está en `AGENTS.md`, que lee cualquier IA. " +
-      "Se importa acá porque, con un `CLAUDE.md` presente, Claude Code no lo lee solo:",
-    "",
-    "@AGENTS.md",
-    "",
-    "## Solo para Claude Code",
-    "",
-    "- Los comandos de § 7 son nativos: viven en `.claude/commands/` y se invocan con `/`.",
-    "- Las rules de § 6 son skills nativas en `.claude/skills/<regla>/` — se activan solas por su descripción.",
-    "",
-  ].join("\n");
 }
 
 const DB_ENGINES = [
@@ -199,8 +131,6 @@ const DB_ENGINES = [
 const TOOL_CONFIG = {
   "claude-code": {
     label: "Claude Code",
-    coreDestPath: "CLAUDE.md",
-    coreTitle: "Claude Code — Global",
     skillsDir: ".claude/skills",
     commandsDir: ".claude/commands",
   },
@@ -392,30 +322,11 @@ for (const file of readdirSync(TEMPLATES_DIR).sort()) {
 // Per-tool layer: Claude Code (memoria + rules→skills + skills + comandos + db)
 // ============================================================
 
-const coreBodyRaw = readFileSync(CORE_MD_PATH, "utf8");
-const agentsMapRaw = readFileSync(AGENTS_MAP_PATH, "utf8");
 const databaseRaw = readFileSync(DATABASE_MD_PATH, "utf8");
 const databaseFm = parseFrontmatter(databaseRaw);
 const databaseBody = stripFrontmatter(databaseRaw);
 
 for (const [toolId, cfg] of Object.entries(TOOL_CONFIG)) {
-  // --- Core memory file ---
-  // CLAUDE.md lleva las reglas generales e importa AGENTS.md (ADR-036): van en
-  // el mismo item para que el import nunca apunte a un archivo que no se descargó.
-  const coreFiles = [
-    { destPath: cfg.coreDestPath, content: buildClaudeMd(cfg.coreTitle, coreBodyRaw) },
-    { destPath: "AGENTS.md", content: buildAgentsMd(agentsMapRaw) },
-  ];
-  items.push({
-    id: `${toolId}:core`,
-    category: "global",
-    tool: toolId,
-    label: `${cfg.coreDestPath} + AGENTS.md`,
-    description: `Reglas generales en ${cfg.coreDestPath} para ${cfg.label}, y lo esencial del proyecto en AGENTS.md, que lee cualquier IA.`,
-    files: coreFiles,
-    approxTokens: approxTokens(coreFiles),
-  });
-
   // --- Rules → native Claude Code skill ---
   for (const file of readdirSync(RULES_DIR).sort()) {
     if (extname(file) !== ".md" || file === "database.md") continue;
@@ -553,109 +464,16 @@ for (const file of readdirSync(CLAUDE_AGENTS_DIR).sort()) {
 }
 
 // ============================================================
-// Kit híbrido — tool: "hybrid" (ADR-031).
-// Autocontenido como los otros dos: cada item trae su fuente en `.agents/` y el
-// puntero de `.claude/` que evita tener dos copias de la misma regla.
+// Kit global por herramienta (ADR-038, ADR-039): lo bajan los ZIPs de
+// /instalar y lo instala `scripts/install-global.mjs`, que viaja en cada ZIP.
 // ============================================================
-
-function pushHybridItem(id, category, label, description, files, extra = {}) {
-  items.push({ id: `hybrid:${id}`, category, tool: "hybrid", label, description, ...extra, files, approxTokens: approxTokens(files) });
-}
-
-function rulePointer(id, description, file) {
-  const body = `Esta regla vive en \`.agents/rules/${file}\`, compartida con Antigravity. Leé ese archivo y aplicalo.\n`;
-  return { destPath: `.claude/skills/${id}/SKILL.md`, content: buildSkillMd(id, description, body) };
-}
-
-{
-  const coreRaw = readFileSync(CORE_MD_PATH, "utf8");
-  const mapRaw = readFileSync(AGENTS_MAP_PATH, "utf8");
-
-  // Los dos primeros van a la carpeta del usuario: `zip.ts` los aísla en `global/`.
-  pushHybridItem("global:GEMINI.md", "global", "~/.gemini/GEMINI.md", "Reglas generales de Antigravity. Se cargan solas en todos tus proyectos.", [
-    { destPath: "GEMINI.md", content: stripMachineBlocks(readFileSync(join(REPO_ROOT, ".gemini", "GEMINI.md"), "utf8")) },
-  ]);
-  pushHybridItem("global:CLAUDE.md", "global", "~/.claude/CLAUDE.md", "Reglas generales de Claude Code. Se cargan solas en todos tus proyectos.", [
-    {
-      destPath: "CLAUDE.md",
-      content: replaceOrThrow(
-        stripMachineBlocks(coreRaw),
-        /^# Core Rules — Global\n/,
-        `# ${TOOL_CONFIG["claude-code"].coreTitle}\n`,
-        "el título"
-      ),
-    },
-  ]);
-  pushHybridItem("agents-md", "global", "AGENTS.md", "Lo esencial del proyecto, sin las reglas generales que ya cargan los archivos globales.", [
-    { destPath: "AGENTS.md", content: buildAgentsMd(mapRaw) },
-  ]);
-  pushHybridItem("claude-md", "global", "CLAUDE.md", "Importa AGENTS.md y agrega lo exclusivo de Claude Code.", [
-    { destPath: "CLAUDE.md", content: buildHybridClaudeMd() },
-  ]);
-  const coreCopy = buildNeutralCore(
-    coreRaw,
-    "# Reglas generales — copia\n\n" +
-      "Copia de las reglas globales de Claude Code y Antigravity. Ninguna herramienta la carga sola: " +
-      "leerla solo si no tenés esos archivos globales. Si difiere de ellos, mandan los globales.\n"
-  );
-  pushHybridItem("core-copy", "global", ".agents/CORE.md", "Copia de las reglas generales para otra máquina u otra herramienta.", [
-    { destPath: ".agents/CORE.md", content: `${coreCopy}\n` },
-  ]);
-}
-
-for (const file of readdirSync(RULES_DIR).sort()) {
-  if (extname(file) !== ".md") continue;
-  const content = readFileSync(join(RULES_DIR, file), "utf8");
-  const fm = parseFrontmatter(content);
-  const id = file.replace(/\.md$/, "");
-  const files = [{ destPath: `.agents/rules/${file}`, content }, rulePointer(id, fm.description, file)];
-  if (file === "database.md") {
-    for (const engine of DB_ENGINES) {
-      pushHybridItem(`database:${engine.id}`, "database", engine.label, engine.description, files);
-    }
-  } else {
-    pushHybridItem(`rule:${id}`, "rule", file, fm.description || "", files);
-  }
-}
-
-for (const skillName of readdirSync(SKILLS_DIR).sort()) {
-  const skillPath = join(SKILLS_DIR, skillName);
-  if (!statSync(skillPath).isDirectory()) continue;
-  const raw = readSkillSource(skillName);
-  const fm = parseFrontmatter(raw);
-  const source = `.agents/skills/${skillName}/SKILL.md`;
-  const sourceFiles = walk(skillPath).map((full) => ({
-    destPath: `.agents/skills/${skillName}/${toPosix(relative(skillPath, full))}`,
-    content: readFileSync(full, "utf8"),
-  }));
-  if (isWorkflowSkill(raw)) {
-    const description = fm.description || `Workflow manual /${skillName}`;
-    pushHybridItem(`workflow:${skillName}`, "command", `${skillName}.md`, description, [
-      ...sourceFiles,
-      {
-        destPath: `.claude/commands/${skillName}.md`,
-        content: `---\ndescription: ${yamlQuote(description)}\n---\n\nLeé \`${source}\` y seguí sus pasos.\n`,
-      },
-    ]);
-  } else {
-    const body = `Esta skill vive en \`${source}\`, compartida con Antigravity. Leé ese archivo y seguilo; sus rutas relativas parten de esa carpeta.\n`;
-    pushHybridItem(
-      `skill:${skillName}`,
-      "skill",
-      skillName,
-      fm.description || "",
-      [...sourceFiles, { destPath: `.claude/skills/${skillName}/SKILL.md`, content: buildSkillMd(skillName, fm.description, body) }],
-      fm.install ? { install: fm.install } : {}
-    );
-  }
-}
-
-// Los subagentes no se comparten: cada tool usa su formato, su modelo y sus hooks.
-for (const item of items.filter((i) => i.category === "agent" && i.tool !== "hybrid")) {
-  items.push({ ...item, id: `hybrid:${item.id}`, tool: "hybrid" });
-}
 
 mkdirSync(join(SITE_DIR, "public"), { recursive: true });
 writeFileSync(OUT_FILE, JSON.stringify({ items }, null, 2), "utf8");
 
-console.log(`manifest.json generated with ${items.length} items`);
+const GLOBAL_KIT_DIR = join(SITE_DIR, "public", "global-kit");
+mkdirSync(GLOBAL_KIT_DIR, { recursive: true });
+for (const kit of buildGlobalKits(items, REPO_ROOT)) {
+  writeFileSync(join(GLOBAL_KIT_DIR, `${kit.tool}.json`), JSON.stringify(kit), "utf8");
+}
+writeFileSync(join(GLOBAL_KIT_DIR, "install.mjs"), readFileSync(join(REPO_ROOT, "scripts", "install-global.mjs"), "utf8"), "utf8");

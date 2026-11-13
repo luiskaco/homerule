@@ -1,250 +1,74 @@
 import JSZip from "jszip";
-import type { ManifestItem, ToolId } from "@/lib/manifest";
+import type { KitTool } from "@/lib/kit";
 
-const TOOL_LABELS: Record<ToolId, string> = {
-  antigravity: "Antigravity (Gemini)",
+/**
+ * Los dos ZIPs del sitio (ADR-039):
+ *
+ * - Kit global, uno por herramienta: el `kit.json` que arma el generador, el
+ *   instalador (`scripts/install-global.mjs`, el mismo que se usa desde el repo)
+ *   y un INSTALL.md. Se instala una vez por máquina, en la carpeta personal.
+ * - Proyecto nuevo: `docs/`, `AGENTS.md` y `CLAUDE.md`, para la raíz del proyecto.
+ *
+ * Los textos de los archivos que van adentro del ZIP están en español, igual que
+ * el kit (ADR-009).
+ */
+
+const TOOL_LABEL: Record<KitTool, string> = {
   "claude-code": "Claude Code",
-  hybrid: "Claude Code + Antigravity",
+  antigravity: "Antigravity",
+  codex: "Codex",
 };
 
-/**
- * Prefijo de carpeta dentro del ZIP. Los `destPath` del manifest ya son rutas
- * relativas a la raíz del proyecto (`docs/x.md`, `.agents/rules/x.md`,
- * `.claude/agents/x.md`), así que por defecto no lleva prefijo — agregarlo
- * duplicaba el segmento (`docs/docs/…`, `.agents/.agents/…`).
- *
- * La excepción es el global de Antigravity: `GEMINI.md` se instala en
- * `~/.gemini/`, no en el proyecto, y se aísla en `global/` para que el
- * `cp -r` de la raíz no se lo lleve por error. `AGENTS.md` también es
- * categoría global, pero va a la raíz del proyecto (ADR-016). Los comandos ya
- * no son globales: son skills de workspace en `.agents/skills/` (ADR-020). En
- * el híbrido también se aísla `CLAUDE.md` global, que si no pisaría al del
- * proyecto (ADR-031).
- */
-const ANTIGRAVITY_AGENTS_MD_ID = "antigravity:agents-md";
-
-function isAntigravityUserLevel(item: ManifestItem): boolean {
-  return item.tool === "antigravity" && item.category === "global" && item.id !== ANTIGRAVITY_AGENTS_MD_ID;
+function installMd(tool: KitTool): string {
+  return [
+    `# Kit global — ${TOOL_LABEL[tool]}`,
+    "",
+    "Se instala una vez por máquina, en tu carpeta personal, y vale para todos tus proyectos.",
+    "Necesita Node 24 o más nuevo.",
+    "",
+    "Desde esta carpeta:",
+    "",
+    "```bash",
+    "node install.mjs           # muestra qué va a cambiar, sin tocar nada",
+    "node install.mjs --write   # instala, con respaldo de lo que pisa",
+    "```",
+    "",
+    "Para actualizar, bajá el ZIP de nuevo y repetí los dos comandos: instala lo nuevo y borra lo que el kit ya no trae.",
+    "",
+    "- El respaldo queda en `kit-backup/<fecha-hora>/`, dentro de cada carpeta que toca.",
+    "- Nunca pisa un archivo tuyo con el mismo nombre: lo informa como conflicto. Para pisarlo, `--force`.",
+    "- Conserva el bloque de codebase-memory y el final de línea de tus archivos globales.",
+    "",
+  ].join("\n");
 }
 
-function isHybridUserLevel(item: ManifestItem): boolean {
-  return item.id.startsWith("hybrid:global:");
-}
-
-function destFolder(item: ManifestItem): string {
-  return isAntigravityUserLevel(item) || isHybridUserLevel(item) ? "global" : "";
-}
-
-/**
- * Los agentes de servidores (ADR-026) necesitan una lista de alias en el
- * proyecto y que `ssh` no esté en la allow list del usuario: sin eso, el
- * "cada cambio con aprobación" no se cumple.
- */
-function buildServerAgentsNote(tool: ToolId, items: ManifestItem[]): string | null {
-  if (!items.some((i) => i.category === "agent" && /:agent:server-(inspector|operator)$/.test(i.id))) return null;
-
-  const hostsFile = tool === "antigravity" ? ".agents/ssh-hosts.txt" : ".claude/ssh-hosts.txt";
-  const lines = ["**Agentes de servidores**\n"];
-  lines.push(
-    `- Creá \`${hostsFile}\` con los alias de \`~/.ssh/config\` que pueden usar, uno por línea. ` +
-      "`server-operator` no se conecta sin ese archivo; `server-inspector`, sin él, acepta cualquier alias del config."
-  );
-  if (tool === "antigravity") {
-    lines.push(
-      "- No pongas `ssh`, `scp` ni `rsync` en la allow list de comandos: los cambios correrían sin pedir aprobación."
-    );
-    lines.push(
-      "- Corren con `commandExecutionPolicy: off`: cada comando debería esperar tu aprobación. Antigravity no tiene hooks, " +
-        "así que las reglas de alias, opciones y bloqueo duro dependen del prompt del agente."
-    );
-    lines.push(
-      "- **Sin verificar en vivo** (ADR-026): en la prueba, el agente principal no delegó en estos agentes, corrió los " +
-        "`ssh` él mismo y no pidió aprobación. Revisá cada comando antes de que corra; para cambios en servidores, " +
-        "preferí Claude Code."
-    );
-  } else {
-    lines.push(
-      "- Un hook (`.claude/hooks/ssh-guard.mjs`, necesita Node) revisa cada comando. `server-operator` no corre si la " +
-        "sesión está en `bypassPermissions` o `dontAsk`."
-    );
-  }
-  lines.push("- Para el inspector conviene un alias con un usuario sin sudo en el servidor.\n");
-  return lines.join("\n");
-}
-
-function buildAntigravitySection(items: ManifestItem[]): string {
-  const global = items.filter(isAntigravityUserLevel);
-  const agentsMd = items.find((i) => i.id === ANTIGRAVITY_AGENTS_MD_ID);
-  const rest = items.filter((i) => i.category !== "global");
-  const lines: string[] = [`## ${TOOL_LABELS.antigravity}\n`];
-
-  if (global.length) {
-    lines.push("**Paso 1 — Global (`~/.gemini/`)**\n");
-    lines.push("macOS / Linux:");
-    lines.push("```bash");
-    lines.push("mkdir -p ~/.gemini");
-    lines.push("cp global/GEMINI.md ~/.gemini/GEMINI.md");
-    lines.push("```\n");
-    lines.push("Windows (PowerShell):");
-    lines.push("```powershell");
-    lines.push('New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\\.gemini"');
-    lines.push('Copy-Item "global/GEMINI.md" "$env:USERPROFILE\\.gemini\\GEMINI.md"');
-    lines.push("```\n");
-  }
-
-  if (rest.length || agentsMd) {
-    lines.push("**Paso 2 — Workspace (raíz del proyecto)**\n");
-    lines.push("```bash");
-    if (agentsMd) lines.push("cp AGENTS.md /ruta/a/tu-proyecto/");
-    if (rest.length) lines.push("cp -r .agents/. /ruta/a/tu-proyecto/.agents/");
-    lines.push("```\n");
-    if (agentsMd) {
-      lines.push(
-        "`AGENTS.md` es el estándar abierto que leen Codex, Cursor, Copilot y el propio " +
-          "Antigravity: si otra IA o persona continúa el proyecto, ahí encuentra lo esencial. " +
-          "Completalo al arrancar con lo esencial del proyecto.\n"
-      );
-    }
-  }
-
-  const serverNote = buildServerAgentsNote("antigravity", items);
-  if (serverNote) lines.push(serverNote);
-
-  return lines.join("\n");
-}
-
-function buildHybridSection(items: ManifestItem[]): string {
-  const lines: string[] = [`## ${TOOL_LABELS.hybrid}\n`];
-
-  if (items.some(isHybridUserLevel)) {
-    lines.push("**Paso 1 — Reglas generales (una sola vez por máquina)**\n");
-    lines.push("Se cargan solas en todos tus proyectos. Si ya los tenés al día, salteá este paso.\n");
-    lines.push("macOS / Linux:");
-    lines.push("```bash");
-    lines.push("mkdir -p ~/.gemini ~/.claude");
-    lines.push("cp global/GEMINI.md ~/.gemini/GEMINI.md");
-    lines.push("cp global/CLAUDE.md ~/.claude/CLAUDE.md");
-    lines.push("```\n");
-    lines.push("Windows (PowerShell):");
-    lines.push("```powershell");
-    lines.push('New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\\.gemini","$env:USERPROFILE\\.claude"');
-    lines.push('Copy-Item "global/GEMINI.md" "$env:USERPROFILE\\.gemini\\GEMINI.md"');
-    lines.push('Copy-Item "global/CLAUDE.md" "$env:USERPROFILE\\.claude\\CLAUDE.md"');
-    lines.push("```\n");
-  }
-
-  lines.push("**Paso 2 — Proyecto (raíz del proyecto)**\n");
-  lines.push("```bash");
-  lines.push("cp AGENTS.md CLAUDE.md /ruta/a/tu-proyecto/");
-  lines.push("cp -r .agents/. /ruta/a/tu-proyecto/.agents/");
-  lines.push("cp -r .claude/. /ruta/a/tu-proyecto/.claude/");
-  lines.push("```\n");
-  lines.push(
-    "Las reglas y skills viven una sola vez en `.agents/`. Lo que hay en `.claude/commands/` y " +
-      "`.claude/skills/` son punteros: cualquier cambio se hace en `.agents/`. " +
-      "Completá `AGENTS.md` al arrancar con lo esencial del proyecto.\n"
-  );
-
-  for (const tool of ["antigravity", "claude-code"] as const) {
-    const serverNote = buildServerAgentsNote(tool, items.filter((i) => i.id.startsWith(`hybrid:${tool}:`)));
-    if (serverNote) lines.push(serverNote);
-  }
-
-  return lines.join("\n");
-}
-
-function buildGenericToolSection(tool: ToolId, items: ManifestItem[]): string {
-  const lines: string[] = [`## ${TOOL_LABELS[tool]}\n`];
-  lines.push(
-    "Copiá el contenido de este ZIP (excepto `docs/` y `INSTALL.md`) a la raíz de tu proyecto:\n"
-  );
-  lines.push("```bash");
-  lines.push("cp -r ./* /ruta/a/tu-proyecto/");
-  lines.push("```\n");
-  lines.push("Incluye:");
-  for (const item of items) {
-    for (const file of item.files) {
-      lines.push(`- \`${file.destPath}\``);
-    }
-  }
-  lines.push("");
-  if (items.some((i) => i.files.some((f) => f.destPath === "AGENTS.md"))) {
-    lines.push(
-      "`CLAUDE.md` trae las reglas generales e importa `AGENTS.md`, el estándar abierto que " +
-        "leen Codex, Cursor y Copilot: ahí va lo esencial del proyecto, para cualquier IA o persona. " +
-        "Completá `AGENTS.md` al arrancar.\n"
-    );
-  }
-  const serverNote = buildServerAgentsNote(tool, items);
-  if (serverNote) lines.push(serverNote);
-  return lines.join("\n");
-}
-
-function buildInstallMd(selected: ManifestItem[]): string {
-  const templates = selected.filter((i) => i.category === "template");
-  const rest = selected.filter((i) => i.category !== "template");
-
-  const lines: string[] = ["# Instalación\n"];
-  if (rest.length > 0) {
-    lines.push(
-      rest.some((i) => i.tool === "hybrid")
-        ? "Este ZIP fue generado por AI Rules Hub y es autocontenido: trae todo para " +
-            "trabajar el proyecto con Claude Code y Antigravity a la vez.\n"
-        : "Este ZIP fue generado por AI Rules Hub y es autocontenido: todo lo que hay " +
-            "acá adentro es para un solo agente. Cada sección de abajo corresponde a una " +
-            "carpeta del ZIP.\n"
-    );
-  } else {
-    lines.push(
-      "Este ZIP fue generado por AI Rules Hub — son las plantillas SDD de `docs/`, " +
-        "independientes del agente que uses.\n"
-    );
-  }
-
-  const byTool = new Map<ToolId, ManifestItem[]>();
-  for (const item of rest) {
-    const list = byTool.get(item.tool) ?? [];
-    list.push(item);
-    byTool.set(item.tool, list);
-  }
-
-  if (byTool.has("antigravity")) {
-    lines.push(buildAntigravitySection(byTool.get("antigravity")!));
-  }
-  if (byTool.has("hybrid")) {
-    lines.push(buildHybridSection(byTool.get("hybrid")!));
-  }
-  for (const [tool, items] of byTool) {
-    if (tool === "antigravity" || tool === "hybrid") continue;
-    lines.push(buildGenericToolSection(tool, items));
-  }
-
-  if (templates.length) {
-    lines.push("## Plantillas SDD (`docs/`, raíz del proyecto)\n");
-    lines.push("```bash");
-    lines.push("cp -r docs/. /ruta/a/tu-proyecto/docs/");
-    lines.push("```");
-    lines.push(
-      "\nSon esqueletos vacíos — completar antes de que el equipo/IA los use como fuente de verdad.\n"
-    );
-  }
-
-  return lines.join("\n");
-}
-
-export async function buildZip(items: ManifestItem[], selectedIds: string[]): Promise<Blob> {
-  const selected = items.filter((i) => selectedIds.includes(i.id));
+export async function buildGlobalKitZip(tool: KitTool): Promise<Blob> {
+  const [kit, installer] = await Promise.all([
+    fetch(`/global-kit/${tool}.json`).then((r) => {
+      if (!r.ok) throw new Error(`kit ${tool}: ${r.status}`);
+      return r.text();
+    }),
+    fetch("/global-kit/install.mjs").then((r) => {
+      if (!r.ok) throw new Error(`instalador: ${r.status}`);
+      return r.text();
+    }),
+  ]);
+  const folder = `kit-${tool}`;
   const zip = new JSZip();
+  zip.file(`${folder}/install.mjs`, installer);
+  zip.file(`${folder}/kit.json`, kit);
+  zip.file(`${folder}/INSTALL.md`, installMd(tool));
+  return zip.generateAsync({ type: "blob" });
+}
 
-  for (const item of selected) {
-    const folder = destFolder(item);
-    for (const file of item.files) {
-      zip.file(folder ? `${folder}/${file.destPath}` : file.destPath, file.content);
-    }
-  }
+export interface ProjectFile {
+  path: string;
+  content: string;
+}
 
-  zip.file("INSTALL.md", buildInstallMd(selected));
-
+export async function buildProjectZip(files: ProjectFile[]): Promise<Blob> {
+  const zip = new JSZip();
+  for (const file of files) zip.file(file.path, file.content);
   return zip.generateAsync({ type: "blob" });
 }
 

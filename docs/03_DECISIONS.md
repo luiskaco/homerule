@@ -30,14 +30,14 @@
 | ADR-021 | Subagents de Claude Code: solo lectura impuesto por hook y `security-auditor` ampliado | Aceptada |
 | ADR-022 | Subagent `web-researcher`: investigación web aislada y con salida revisada | Aceptada |
 | ADR-023 | Stack del sitio: Next.js 16, React 19 y Tailwind 4 | Aceptada |
-| ADR-024 | Navegación por kit: un menú "Kits" con selector de tool | Aceptada |
+| ADR-024 | Navegación por kit: un menú "Kits" con selector de tool | Reemplazada por ADR-039 |
 | ADR-025 | El historial de cambios vive solo en el repo | Aceptada |
 | ADR-026 | Subagents de servidores: `server-inspector` y `server-operator` por alias SSH | Aceptada para Claude Code |
 | ADR-027 | Menos subagents en Claude Code y menos tokens por turno | Aceptada |
 | ADR-028 | Se elimina el modo caveman: reglas de escritura en su lugar | Aceptada |
 | ADR-029 | Criterio propio: la IA cuestiona antes de ejecutar | Aceptada |
 | ADR-030 | Reglas de uso de subagentes en § 8 | Aceptada |
-| ADR-031 | Kit híbrido: un solo juego de reglas para Claude Code y Antigravity | Aceptada |
+| ADR-031 | Kit híbrido: un solo juego de reglas para Claude Code y Antigravity | Reemplazada por ADR-039 |
 | ADR-032 | Mínimos de seguridad y runtime para 2026 | Aceptada |
 | ADR-033 | Seguridad por temas: regla corta y skill con índice | Aceptada |
 | ADR-034 | Datos personales: regla más bloqueo, y commits a nombre del usuario | Aceptada |
@@ -45,6 +45,8 @@
 | ADR-036 | `AGENTS.md` solo con lo esencial del proyecto, sin las reglas generales | Aceptada |
 | ADR-037 | Los 4 revisores no cargan las reglas generales (`omitClaudeMd`) | Aceptada |
 | ADR-038 | El kit se instala en la carpeta personal, no en cada proyecto | Aceptada |
+| ADR-039 | El sitio entrega el kit global y el arranque de un proyecto | Aceptada |
+| ADR-040 | Primera vista en inglés: el sitio abre en inglés y el README principal es en inglés | Aceptada |
 
 ---
 
@@ -561,7 +563,7 @@ En el kit de Claude Code, `CLAUDE.md` pasa a ser `@AGENTS.md` + lo exclusivo de 
 ## ADR-024 — Navegación por kit: un menú "Kits" con selector de tool
 
 **Fecha:** 2026-10-24
-**Estado:** Aceptada
+**Estado:** Aceptada **Reemplazada por ADR-039** (2026-11-13).
 
 **Contexto:** El nav tenía dos desplegables casi iguales, "Antigravity solo" y "Claude solo", con las mismas opciones apuntando a páginas distintas o a la misma. "Presets por stack" eran dos páginas con diseños diferentes; la de Claude ni siquiera mostraba los stacks. "Rules y skills por stack" existía solo para Antigravity, y `/subagentes` mezclaba los dos tools. ADR-002 ya había dejado "Presets por stack" repetido en dos grupos.
 
@@ -857,7 +859,7 @@ Mismo texto en `CORE.md` y `GEMINI.md`. De paso se corrige la fila de `/tools-re
 ## ADR-031 — Kit híbrido: un solo juego de reglas para Claude Code y Antigravity
 
 **Fecha:** 2026-11-05
-**Estado:** Aceptada — ajusta ADR-006 y, solo para el híbrido, ADR-016
+**Estado:** Aceptada — ajusta ADR-006 y, solo para el híbrido, ADR-016 **Reemplazada por ADR-039** (2026-11-13).
 
 **Contexto:** ADR-006 separó los dos kits porque el modo híbrido de entonces no tenía ZIP y dejaba rutas rotas. Hoy el autor trabaja proyectos con las dos IA (makeNewMonitorLatam, pluginWordpress), armados a mano. Eso deja cada regla copiada en `.agents/rules/` y `.claude/skills/`, con riesgo de que diverjan, y las reglas generales cargadas dos veces en cada herramienta: una por su archivo global y otra por el `AGENTS.md` del proyecto. Además, cada cambio del núcleo obligó a un commit por proyecto.
 
@@ -1058,3 +1060,56 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Si una skill personal y una del proyecto tienen el mismo nombre, Claude usa la personal. En este repo, después de editar una rule hay que reinstalar para verla en la sesión.
 - Claude muestra la descripción de cada skill dentro de un presupuesto; con muchas skills puede recortar las menos usadas (`skillOverrides` lo ajusta).
 - Los hooks de Antigravity no se instalan todavía: los agentes de Antigravity siguen controlándose por su prompt, como antes. Sumarlos queda para cuando se pruebe si un hook se puede limitar a un subagente.
+
+---
+
+## ADR-039 — El sitio entrega el kit global y el arranque de un proyecto
+
+**Estado:** Aceptada (2026-11-13). Reemplaza a ADR-024 (menú de kits por tool) y a ADR-031 (kit híbrido).
+
+**Contexto:** Con el kit en la carpeta personal (ADR-038), los ZIPs por proyecto del sitio (presets por stack, armador con casillas y kit híbrido) volvían al modelo viejo: copias del kit en cada proyecto, que se desfasan. Y el instalador global solo servía a quien había clonado este repo.
+
+**Decisión:**
+
+- El sitio entrega dos piezas. **`/instalar`**: un ZIP por herramienta (Claude Code, Antigravity, Codex) con `kit.json` y el instalador, una vez por máquina. **`/proyecto-nuevo`**: `docs/` (los 4 fijos y los opcionales que se tilden), `AGENTS.md` y `CLAUDE.md` con `@AGENTS.md`.
+- Un solo armado del kit: `scripts/lib/global-kit.mjs` decide qué va a cada carpeta personal. Lo usa el generador, que publica `public/global-kit/<tool>.json`, y el instalador lee ese mismo JSON, desde el repo o desde el ZIP. El instalador del ZIP es `scripts/install-global.mjs` tal cual: solo usa módulos de Node y valida que el JSON no traiga carpetas ni rutas fuera del kit.
+- `/catalogo` muestra rules, comandos y subagentes con su contenido, sin armar nada. Las skills siguen en `/mejores-skill` y los prompts en `/prompts`.
+- Se borran los presets por stack, el armador, la cabecera del kit y la salida híbrida del generador. Las rutas viejas redirigen con 301.
+
+**Alternativas consideradas:**
+
+- **Scripts de instalación en PowerShell y bash:** sin Node, pero con la lógica de respaldo y registro repetida en dos lenguajes. Descartada: el equipo ya usa Node.
+- **Mantener los ZIPs por proyecto junto al kit global:** dos formas de instalar que se contradicen. Descartada.
+- **Solo el plugin de Claude Code:** no sirve para Antigravity ni Codex, y sus subagentes ignoran los hooks (ADR-026). Queda como opción extra para Claude Code.
+
+**Consecuencias:**
+
+- El kit que baja de la web y el que se instala desde el repo son el mismo: probado instalando los tres ZIPs en una carpeta de prueba y comparando con la instalación desde el repo.
+- Instalar desde la web necesita Node 24.
+- Sin presets, todas las rules se instalan: cada una se activa sola por su disparador. Un proyecto que no quiere una regla lo anota en su `AGENTS.md`.
+- El sitio tiene menos código: se van el armador, los presets y el kit híbrido.
+
+---
+
+## ADR-040 — Primera vista en inglés: el sitio abre en inglés y el README principal es en inglés
+
+**Estado:** Aceptada (2026-11-13). Ajusta ADR-009 solo para el README y el idioma por defecto del sitio.
+
+**Contexto:** El kit apunta a un público más amplio que el equipo, con un nombre comercial en inglés. La primera impresión (la portada del sitio y el README del repo) estaba en español.
+
+**Decisión:**
+
+- El sitio abre en inglés: `/` redirige a `/en` sin mirar el idioma del navegador (`localeDetection: false`). El español queda en el selector de idioma.
+- `README.md` está en inglés y `README.es.md` es su traducción, con un enlace arriba para pasar de uno al otro. Los dos se mantienen iguales: un cambio en uno se replica en el otro en el mismo commit. `update-token-table.py` escribe la tabla en los dos.
+- El contenido del kit (rules, skills, comandos, agentes, plantillas) y la documentación de `docs/` siguen en español (ADR-009).
+
+**Alternativas consideradas:**
+
+- **Detectar el idioma del navegador:** cada visitante vería su idioma, pero la primera vista dejaría de ser predecible. Descartada a pedido del autor.
+- **README solo en inglés:** más simple de mantener, pero deja afuera al equipo, que trabaja en español.
+
+**Consecuencias:**
+
+- Dos README que mantener a la par.
+- Un visitante con el navegador en español ve primero el inglés y cambia con un clic.
+

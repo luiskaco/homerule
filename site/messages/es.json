@@ -1,93 +1,54 @@
 {
   "Layout": {
-    "brand": "Rules Hub",
-    "brandTagline": "Dual-AI System",
-    "metaTitle": "AI Rules Hub | Dual-AI Workflow Packs",
-    "metaDescription": "Catálogo descargable de rules, skills y plantillas SDD para arrancar proyectos con el workflow dual-AI.",
-    "footerTagline": "AI Rules Hub — rules, skills y plantillas listas para bajar",
+    "brand": "Homerule",
+    "brandTagline": "Kit global para IA",
+    "metaTitle": "Homerule | Kit global para Claude Code, Antigravity y Codex",
+    "metaDescription": "Reglas, skills, comandos y subagentes instalados una vez en tu carpeta personal, y el arranque de cada proyecto con docs/ y AGENTS.md.",
+    "footerTagline": "Homerule — un kit global para trabajar con IA",
     "footerDirectory": "Directorio skills.sh ↗",
-    "footerTools": "Antigravity + Claude Code",
+    "footerTools": "Claude Code · Antigravity · Codex",
     "languageLabel": "Idioma"
   },
   "Nav": {
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
-    "skillsPrompts": "Skills & Prompts",
-    "skillCatalog": "Catálogo de skills",
-    "promptTemplates": "Templates de prompt",
-    "docTemplates": "Plantillas SDD",
-    "kits": "Kits"
+    "install": "Instalar",
+    "newProject": "Proyecto nuevo",
+    "catalog": "Catálogo",
+    "kitCatalog": "Rules, comandos y agentes",
+    "skillCatalog": "Skills",
+    "promptTemplates": "Templates de prompt"
   },
   "Home": {
-    "badge": "🚀 Antigravity + Claude Code",
-    "titleStart": "Rules, skills y plantillas",
-    "titleAccent": "listas para descargar",
-    "intro": "Un catálogo único de reglas de gobernanza, skills verificadas y plantillas SDD — empaquetado para el agente que uses. Elegí tu modo de trabajo y bajá el ZIP listo para tirar en la raíz del proyecto.",
-    "statStacks": "{count, plural, one {# stack} other {# stacks}}",
-    "statSkills": "{count, plural, one {# skill en el catálogo} other {# skills en el catálogo}}",
+    "badge": "Claude Code · Antigravity · Codex",
+    "titleStart": "Tu forma de trabajar con IA,",
+    "titleAccent": "instalada una sola vez",
+    "intro": "Las reglas, skills, comandos y subagentes viven en tu carpeta personal y valen para todos tus proyectos. Cada proyecto solo lleva su documentación y su AGENTS.md: quien lo clone trae su propia forma de trabajar.",
+    "statRules": "{count, plural, one {# rule} other {# rules}}",
+    "statSkills": "{count, plural, one {# skill} other {# skills}}",
     "statAgents": "{count, plural, one {# subagente} other {# subagentes}}",
-    "modesTitle": "Elegí tu modo de trabajo",
-    "modesSubtitle": "Tres kits independientes. Elegí con qué agente trabajás, o las dos IA en el mismo proyecto.",
-    "modeAntigravityTitle": "Gemini con GEMINI.md",
-    "modeAntigravityDescription": "El workflow completo para Antigravity: memoria global, rules y skills en .agents/.",
-    "modeAntigravityCta": "Ver presets por stack",
-    "modeAntigravityBullet1": "{count, plural, one {# stack preconfigurado} other {# stacks preconfigurados}}",
-    "modeAntigravityBullet2": "GEMINI.md + .agents/",
-    "modeClaudeTitle": "Claude Code nativo",
-    "modeClaudeDescription": "El workflow completo para Claude Code en formato nativo: CLAUDE.md, skills, comandos y subagentes.",
-    "modeClaudeCta": "Ver presets por stack",
-    "modeClaudeBullet1": "{count, plural, one {# subagente listo} other {# subagentes listos}}",
-    "modeClaudeBullet2": "CLAUDE.md + .claude/skills",
-    "modeClaudeBullet3": "Comandos nativos",
-    "modeHybridTitle": "Claude y Gemini en un mismo proyecto",
-    "modeHybridDescription": "Para proyectos que trabajás con las dos IA: un solo juego de reglas y skills, y los subagentes de cada una.",
-    "modeHybridCta": "Ver presets por stack",
-    "modeHybridBullet1": "Reglas y skills una sola vez, en .agents/",
-    "modeHybridBullet2": "Reglas generales en tus archivos globales",
-    "modeHybridBullet3": "Subagentes de las dos IA",
-    "skillsTitle": "Catálogo de skills y prompts",
-    "skillsBody": "Vale para los tres modos: qué hace cada skill, cuándo usarla y cómo instalarla — más templates de prompt para los pedidos más frecuentes. Va aparte del armador de packs.",
-    "skillsCta": "Ver catálogo →"
-  },
-  "Stacks": {
-    "metaTitle": "Rules y skills por stack — {tool} | AI Rules Hub",
-    "metaDescription": "Qué rules, skills y herramientas externas trae cada stack del kit.",
-    "title": "Rules y skills por stack",
-    "intro": "Referencia de lo que trae cada stack: rules, skills y herramientas externas. Para cambiar una asociación hay que editar <presetsFile></presetsFile> en el repo.",
-    "installNote": {
-      "antigravity": "En Antigravity, las rules se instalan en <rulesDir></rulesDir> y las skills en <skillsDir></skillsDir>.",
-      "claude-code": "En Claude Code, cada rule se instala como skill nativa en <ruleSkill></ruleSkill> y las skills en <skillsDir></skillsDir>.",
-      "hybrid": "En el kit híbrido, las rules se instalan en <rulesDir></rulesDir> y las skills en <skillsDir></skillsDir>. Claude Code las encuentra con punteros en <pointersDir></pointersDir>."
-    },
-    "rulesHeading": "{count, plural, one {Rule (#)} other {Rules (#)}}",
-    "skillsHeading": "{count, plural, one {Skill (#)} other {Skills (#)}}",
-    "noSkills": "Ninguna skill por defecto",
-    "externalToolsHeading": "Herramientas externas (no van en el ZIP)",
-    "cta": "Armar este kit"
-  },
-  "Subagentes": {
-    "metaTitle": "Subagentes — {tool} | AI Rules Hub",
-    "metaDescription": "Los subagentes del kit: qué hace cada uno, cuáles escriben código y cuáles son de solo lectura.",
-    "title": "{count} subagentes",
-    "intro": "Un subagente corre en su propia ventana de contexto, con sus tools permitidas y su modelo. El detalle de su trabajo (los 40 archivos que leyó para encontrar uno) no vuelve a la conversación principal: vuelve el resultado.",
-    "formatPath": "Dónde vive",
-    "formatInvoke": "Cómo se invoca",
-    "formatNote": "Antigravity además acepta subagentes globales en ~/.gemini/config/agents/, aislamiento por worktree de Git y hasta 10 niveles de anidamiento. Los del kit son de workspace: viajan con el proyecto.",
-    "badgeWrites": "escribe",
-    "badgeReadOnly": "solo lectura",
-    "badgeServers": "cambia servidores",
-    "downloadBody": "Los subagentes sirven para cualquier stack, así que vienen preseleccionados en todos los presets, salvo los de servidores: esos se suman a mano y viajan solo en el ZIP. También podés armar el ZIP a mano y elegir solo los que quieras.",
-    "downloadCta": "Armar el ZIP"
+    "step1Eyebrow": "Paso 1 · una vez por máquina",
+    "step1Title": "Instalar el kit global",
+    "step1Body": "Elegí Claude Code, Antigravity o Codex, bajá el ZIP y corré un comando. Para actualizar, repetís lo mismo.",
+    "step1Cta": "Instalar",
+    "step2Eyebrow": "Paso 2 · en cada proyecto",
+    "step2Title": "Arrancar un proyecto",
+    "step2Body": "Un ZIP con docs/ (PRD, tareas, decisiones y changelog, más los opcionales que elijas), AGENTS.md y CLAUDE.md para la raíz del proyecto.",
+    "step2Cta": "Proyecto nuevo",
+    "catalogTitle": "Qué trae el kit",
+    "catalogBody": "Mirá qué hace cada rule, comando, subagente y skill antes de instalarlo, y las skills de terceros que conviene sumar.",
+    "catalogCta": "Rules, comandos y agentes",
+    "skillsCta": "Skills"
   },
   "SkillCatalog": {
     "title": "Catálogo de Skills",
     "intro": "Todas las skills en un solo lugar para decidir qué instalar en el proyecto que tenés entre manos: para qué sirve cada una, cuándo usarla, el comando exacto de instalación y cómo se invoca. Podés verlas como lista completa o agrupadas por tipo de trabajo.",
-    "origins": "Las marcadas <hub></hub> son las que ya vienen armadas acá y se pueden bajar juntas desde <buildLink></buildLink>. Las <external></external> son de terceros: se instalan aparte, con su propio comando.",
+    "origins": "Las marcadas <hub></hub> vienen en el kit global, que se instala desde <installLink>Instalar</installLink>. Las <external></external> son de terceros: se instalan aparte, con su propio comando.",
     "originHub": "Del hub",
     "originExternal": "Externas",
     "viewFlat": "Lista completa",
     "viewByProject": "Por tipo de proyecto",
-    "noInstallFallback": "Se incluye directamente en el ZIP de /build — no requiere instalación aparte.",
+    "noInstallFallback": "Viene en el kit global: no requiere instalación aparte.",
     "jobType": {
       "seo": {
         "label": "SEO",
@@ -126,7 +87,6 @@
     "includes": "{count, plural, one {Qué incluye (# skill)} other {Qué incluye (# skills)}}",
     "howToInstall": "Cómo se instala",
     "howToUse": "Cómo se usa",
-    "includedInStacks": "Ya incluida en estos stacks de /build",
     "notes": "Notas"
   },
   "Prompts": {
@@ -172,31 +132,7 @@
       }
     }
   },
-  "Build": {
-    "loading": "Cargando catálogo…",
-    "sectionGlobal": "Global",
-    "sectionRule": "Rules (.agents/rules/)",
-    "sectionSkill": "Skills",
-    "sectionAgent": "Subagentes",
-    "sectionCommand": "Comandos",
-    "sectionDatabase": "Base de datos (opcional, cualquier stack)",
-    "projectRulesTitle": "Reglas del proyecto (convertidas a skill nativa)",
-    "projectRulesBody": "No son skills externas — es la misma convención de <rulesDir></rulesDir> en formato <skillMd></skillMd>, para que Claude Code las siga igual que Gemini.",
-    "externalToolsHeading": "Herramientas externas (no van en el ZIP)",
-    "approxTokens": "~{count} tokens",
-    "selectedSummary": "{count, plural, one {# item seleccionado} other {# items seleccionados}} · ~{tokens} tokens",
-    "download": "Descargar ZIP",
-    "generating": "Generando...",
-    "close": "Cerrar"
-  },
   "DocTemplates": {
-    "metaTitle": "Plantillas SDD | AI Rules Hub",
-    "metaDescription": "Las plantillas de docs/ — qué va en cada archivo, del PRD al changelog.",
-    "title": "Plantillas SDD",
-    "intro": "Los archivos de docs/ que estructuran un proyecto: cuatro fijos y cinco opcionales, que se crean cuando el proyecto los pide. Independientes del agente que uses — se bajan aparte de los packs de Antigravity y Claude Code.",
-    "downloadBody": "Un ZIP con las plantillas, listas para copiar a docs/ en la raíz de tu proyecto.",
-    "download": "Descargar ZIP",
-    "generating": "Generando...",
     "descriptions": {
       "01_PRD": "Requisitos del producto — cada uno con ID (RF-01), prioridad y criterios de aceptación verificables.",
       "02_TASKS": "Solo lo abierto, como mucho 10 tareas, y dónde quedó el trabajo, para que cualquiera (o cualquier IA) retome.",
@@ -703,88 +639,85 @@
       ]
     }
   },
-  "StackLabels": {
-    "nextjs-branded": {
-      "label": "Next.js / React — con sistema de diseño",
-      "description": "Proyecto Next.js que ya tiene brand, paleta y tipografía definidos (caso habitual en Orange Latam)."
+  "Install": {
+    "metaTitle": "Instalar el kit global | Homerule",
+    "metaDescription": "El kit de reglas, skills, comandos y subagentes para Claude Code, Antigravity o Codex, instalado una vez en tu carpeta personal.",
+    "title": "Instalar el kit global",
+    "intro": "Se instala una vez por máquina, en tu carpeta personal, y vale para todos tus proyectos. Si usás más de una herramienta, instalá el kit de cada una: no se pisan entre sí.",
+    "tools": {
+      "claude-code": {
+        "label": "Claude Code",
+        "description": "Reglas generales, rules como skills nativas, comandos con /, subagentes y sus hooks."
+      },
+      "antigravity": {
+        "label": "Antigravity",
+        "description": "GEMINI.md, rules con disparador, skills, comandos y subagentes."
+      },
+      "codex": {
+        "label": "Codex",
+        "description": "Reglas generales en AGENTS.md; rules y comandos como skills, que se piden con $nombre."
+      }
     },
-    "nextjs-unbranded": {
-      "label": "Next.js / React — sin sistema de diseño",
-      "description": "Proyecto Next.js arrancando de cero, sin brief de marca ni paleta todavía."
-    },
-    "wordpress-cms": {
-      "label": "WordPress / CMS",
-      "description": "Sitio WordPress puro o headless (Sanity, Contentful, Strapi)."
-    },
-    "fastapi-python": {
-      "label": "FastAPI / Python",
-      "description": "Backend Python con FastAPI."
-    },
-    "html-plano": {
-      "label": "HTML / CSS / JS plano",
-      "description": "Sitio estático sin framework — HTML, CSS puro y Vanilla JS."
-    },
-    "react-spa": {
-      "label": "React — SPA (sin Next.js)",
-      "description": "Proyecto React puro (Vite/CRA), sin framework full-stack."
-    },
-    "vue": {
-      "label": "Vue",
-      "description": "Proyecto Vue (Composition API + Pinia)."
-    },
-    "manual": {
-      "label": "Manual / desde cero",
-      "description": "Sin preselección — elegís cada pieza a mano."
+    "counts": "{rules} rules · {skills} skills · {commands} comandos · {agents} subagentes",
+    "countsCodex": "{rules} rules · {skills} skills · {commands} comandos",
+    "installsIn": "Instala en",
+    "download": "Descargar ZIP",
+    "generating": "Armando el ZIP…",
+    "downloadError": "No se pudo armar el ZIP. Recargá la página y probá de nuevo.",
+    "howTitle": "Cómo se instala",
+    "step1": "Descomprimí el ZIP y abrí una terminal en la carpeta que trae: kit-claude-code, kit-antigravity o kit-codex.",
+    "step2": "Mirá qué va a cambiar, sin tocar nada:",
+    "step3": "Instalá:",
+    "noteRequirements": "Necesita Node 24 o más nuevo. Funciona igual en Windows, macOS y Linux.",
+    "noteUpdate": "Para actualizar, bajá el ZIP de nuevo y repetí los pasos: instala lo nuevo y borra lo que el kit ya no trae.",
+    "noteSafe": "Guarda un respaldo de lo que pisa y nunca toca un archivo tuyo con el mismo nombre: lo muestra como conflicto.",
+    "pluginTitle": "Claude Code también como plugin",
+    "pluginBody": "Si preferís que se actualice solo, el kit de Claude Code también se instala como plugin. Trae las rules, skills, comandos y los 8 subagentes por defecto; los de servidores van solo en el ZIP.",
+    "nextTitle": "Después",
+    "nextBody": "En cada proyecto, bajá <link>el arranque del proyecto</link>: docs/ y AGENTS.md."
+  },
+  "NewProject": {
+    "metaTitle": "Proyecto nuevo | Homerule",
+    "metaDescription": "docs/, AGENTS.md y CLAUDE.md para arrancar un proyecto con cualquier IA.",
+    "title": "Proyecto nuevo",
+    "intro": "Lo único que lleva cada proyecto: su documentación en docs/ y un AGENTS.md con lo esencial. Cualquier IA o persona que lo clone sabe por dónde seguir, sin depender de tu forma de trabajar.",
+    "prerequisite": "Las reglas y skills no van acá: vienen del <link>kit global</link>, instalado una vez en tu máquina.",
+    "rootTitle": "En la raíz del proyecto",
+    "agentsMd": "Lo esencial del proyecto: qué es, stack y comandos, estructura y lo que no se negocia. Completalo al arrancar.",
+    "claudeMd": "Solo importa AGENTS.md, porque Claude Code no lo lee solo cuando hay un CLAUDE.md.",
+    "fixedTitle": "Van siempre",
+    "optionalTitle": "Opcionales: se crean cuando el proyecto los pide",
+    "downloadBody": "{count, plural, one {# archivo} other {# archivos}}, listos para copiar a la raíz del proyecto.",
+    "download": "Descargar ZIP",
+    "generating": "Armando el ZIP…",
+    "downloadError": "No se pudo armar el ZIP. Probá de nuevo."
+  },
+  "Catalog": {
+    "metaTitle": "Qué trae el kit | Homerule",
+    "metaDescription": "Las rules, comandos y subagentes del kit global: qué hace cada uno y su contenido.",
+    "title": "Qué trae el kit",
+    "intro": "Todo lo que instala el kit global, para ver qué hace cada pieza antes de instalarla. No hace falta elegir: el kit se instala completo y cada rule se activa sola según lo que estés tocando.",
+    "sectionsLabel": "Secciones del catálogo",
+    "skillsLink": "{count, plural, one {# skill} other {# skills}} →",
+    "rulesTitle": "Rules",
+    "rulesBody": "Convenciones por tema. Cada una se activa sola cuando el trabajo toca su tema: seguridad, base de datos, interfaz, SEO.",
+    "databaseDescription": "Schema, migraciones, ORM, índices y credenciales — PostgreSQL, MySQL, MongoDB, Supabase o SQLite.",
+    "commandsTitle": "Comandos",
+    "commandsBody": "Flujos que se piden a mano: en Claude Code y Antigravity con /, en Codex con $ y el nombre.",
+    "agentsClaudeTitle": "Subagentes de Claude Code",
+    "agentsClaudeBody": "Trabajan en su propio contexto y devuelven un informe corto. Los revisores son de solo lectura.",
+    "agentsAntigravityTitle": "Subagentes de Antigravity",
+    "agentsAntigravityBody": "El mismo rol en el formato de Antigravity. Codex no tiene subagentes declarables.",
+    "access": {
+      "readOnly": "solo lectura",
+      "writes": "escribe archivos",
+      "servers": "cambia servidores"
     }
   },
-  "ExternalTools": {
-    "context7": {
-      "name": "Context7 MCP",
-      "note": "Documentación de librerías en tiempo real, por proyecto."
-    },
-    "skillsSh": {
-      "name": "Más skills en skills.sh",
-      "note": "Directorio de skills de la comunidad compatible con este agente — https://www.skills.sh/"
-    }
-  },
-  "Tools": {
-    "antigravity": {
-      "label": "Antigravity (Gemini)",
-      "description": "GEMINI.md global + .agents/rules + .agents/skills."
-    },
-    "claude-code": {
-      "label": "Claude Code",
-      "description": "CLAUDE.md + .claude/skills + .claude/commands + .claude/agents (subagentes)."
-    },
-    "hybrid": {
-      "label": "Claude + Gemini",
-      "description": "Reglas y skills en .agents/, punteros en .claude/ y los subagentes de cada IA."
-    }
-  },
-  "Kit": {
-    "toolLabel": "Kit para",
-    "sectionsLabel": "Secciones del kit",
-    "tabs": {
-      "presets": "Presets por stack",
-      "stacks": "Rules y skills",
-      "subagents": "Subagentes",
-      "build": "Armar a medida"
-    },
-    "buildMetaTitle": "Armar el kit — AI Rules Hub"
-  },
-  "KitPresets": {
-    "metaTitle": "Presets por stack — {tool} | AI Rules Hub",
-    "metaDescription": "Elegí el stack de tu proyecto y descargá el kit listo para usar: memoria del proyecto, rules, skills, subagentes y plantillas SDD.",
-    "title": "Elegí el stack de tu proyecto",
-    "intro": {
-      "antigravity": "Cada preset arma un ZIP con el <geminiMd></geminiMd> global y las rules, skills y subagentes de <agentsDir></agentsDir>, ya elegidos para ese stack. Lo descomprimís en la raíz del proyecto y listo.",
-      "claude-code": "Cada preset arma un ZIP en formato nativo de Claude Code: <claudeMd></claudeMd>, las rules como skills en <skillsDir></skillsDir>, los comandos de <commandsDir></commandsDir> y los subagentes de <agentsDir></agentsDir>. Es autocontenido: no depende de ningún otro agente.",
-      "hybrid": "Para proyectos que trabajás con las dos IA. Cada preset arma un ZIP con un solo juego de reglas y skills en <agentsDir></agentsDir>, punteros para Claude en <claudeDir></claudeDir> y los subagentes de cada una. Las reglas generales van en tus archivos globales, así no se cargan dos veces."
-    },
-    "counts": "{rules, plural, one {# rule} other {# rules}} · {skills, plural, one {# skill} other {# skills}}",
-    "cta": "Armar este kit",
-    "customTitle": "¿Ningún stack encaja?",
-    "customBody": "Mirá qué <stacksLink>rules y skills trae cada stack</stacksLink>, o arrancá desde cero y elegí cada pieza a mano.",
-    "customCta": "Armar a medida"
+  "Preview": {
+    "open": "Ver",
+    "loading": "Cargando…",
+    "error": "No disponible",
+    "close": "Cerrar"
   }
 }

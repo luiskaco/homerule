@@ -3,8 +3,6 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
-import type { ToolId } from "@/lib/manifest";
-import { LAST_TOOL_EVENT, LAST_TOOL_KEY, isToolId, toolFromPathname } from "@/lib/kit";
 
 interface NavLink {
   /** Clave del namespace `Nav` en messages/*.json. */
@@ -16,62 +14,22 @@ type NavEntry =
   | { id: string; labelKey: string; href: string }
   | { id: string; labelKey: string; links: NavLink[] };
 
-/**
- * "Kits" es un link directo: el selector de tool y las secciones viven en la
- * cabecera del kit (ADR-024). Su href lo resuelve `useKitsHref`.
- */
-const KITS_ENTRY_ID = "kits";
-
+/** Dos pasos y el catálogo (ADR-039): instalar una vez por máquina y arrancar cada proyecto. */
 const ENTRIES: NavEntry[] = [
-  { id: KITS_ENTRY_ID, labelKey: "kits", href: "/kits/antigravity" },
+  { id: "install", labelKey: "install", href: "/instalar" },
+  { id: "new-project", labelKey: "newProject", href: "/proyecto-nuevo" },
   {
-    id: "skills",
-    labelKey: "skillsPrompts",
+    id: "catalog",
+    labelKey: "catalog",
     links: [
+      { labelKey: "kitCatalog", href: "/catalogo" },
       { labelKey: "skillCatalog", href: "/mejores-skill" },
       { labelKey: "promptTemplates", href: "/prompts" },
     ],
   },
-  {
-    id: "doc-templates",
-    labelKey: "docTemplates",
-    href: "/plantillas",
-  },
 ];
 
-/**
- * Href del link "Kits": el tool de la página actual si estás en el kit, si no
- * el último elegido (lo guarda KitHeader y lo avisa con LAST_TOOL_EVENT). Se lee
- * en un efecto para no generar un mismatch de hidratación: el HTML estático
- * siempre sale con Antigravity.
- */
-function useKitsHref(pathname: string): string {
-  const [lastTool, setLastTool] = useState<ToolId>("antigravity");
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(LAST_TOOL_KEY) ?? undefined;
-      if (isToolId(stored)) setLastTool(stored);
-    } catch {
-      // Storage bloqueado: queda Antigravity hasta que llegue el evento.
-    }
-  }, [pathname]);
-
-  useEffect(() => {
-    function onChange(e: Event) {
-      const tool = (e as CustomEvent<string>).detail;
-      if (isToolId(tool)) setLastTool(tool);
-    }
-    window.addEventListener(LAST_TOOL_EVENT, onChange);
-    return () => window.removeEventListener(LAST_TOOL_EVENT, onChange);
-  }, []);
-
-  return `/kits/${toolFromPathname(pathname) ?? lastTool}`;
-}
-
-/** El link "Kits" queda activo en todo el kit, armador incluido. */
-function isEntryActive(entry: { id: string; href: string }, pathname: string): boolean {
-  if (entry.id === KITS_ENTRY_ID) return /^\/(kits|build)(\/|$)/.test(pathname);
+function isEntryActive(entry: { href: string }, pathname: string): boolean {
   return pathname === entry.href;
 }
 
@@ -168,8 +126,6 @@ export default function NavMenu() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
-  const kitsHref = useKitsHref(pathname);
-  const hrefOf = (entry: { id: string; href: string }) => (entry.id === KITS_ENTRY_ID ? kitsHref : entry.href);
 
   useEffect(() => {
     setOpenMenu(null);
@@ -193,7 +149,7 @@ export default function NavMenu() {
           "href" in entry ? (
             <Link
               key={entry.id}
-              href={hrefOf(entry)}
+              href={entry.href}
               aria-current={isEntryActive(entry, pathname) ? "page" : undefined}
               className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 ${
                 isEntryActive(entry, pathname)
@@ -239,7 +195,7 @@ export default function NavMenu() {
                 return (
                   <Link
                     key={entry.id}
-                    href={hrefOf(entry)}
+                    href={entry.href}
                     onClick={() => setMobileOpen(false)}
                     aria-current={isEntryActive(entry, pathname) ? "page" : undefined}
                     className={`-my-2 block py-2 text-[11px] font-bold uppercase tracking-wider transition-colors focus-visible:outline-2 focus-visible:outline-violet-400 ${
