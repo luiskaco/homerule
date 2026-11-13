@@ -63,8 +63,8 @@ estrictamente "Always On".
 
 ### En tu equipo, para todos tus proyectos (recomendado)
 
-Instala el kit una sola vez en tu carpeta personal, para Claude Code y Antigravity
-a la vez (ADR-038). Cada proyecto queda solo con `docs/`, su `AGENTS.md` y un
+Instala el kit una sola vez en tu carpeta personal, para Claude Code, Antigravity
+y Codex a la vez (ADR-038). Cada proyecto queda solo con `docs/`, su `AGENTS.md` y un
 `CLAUDE.md` que lo importa.
 
 ```bash

@@ -6,7 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
-- **Kit en la carpeta personal** (ADR-038): `scripts/install-global.mjs` instala rules, skills, comandos, subagentes y hooks en `~/.claude` y `~/.gemini` para todos los proyectos, con respaldo, y borra lo que el kit ya no trae. `scripts/remove-project-kit.mjs` quita de un proyecto solo las copias exactas del kit. Reemplaza a `sync-globals.mjs`.
+- **Kit en la carpeta personal** (ADR-038): `scripts/install-global.mjs` instala rules, skills, comandos, subagentes y hooks en `~/.claude` y `~/.gemini`, y el núcleo y las skills para Codex en `~/.codex` y `~/.agents`, para todos los proyectos, con respaldo, y borra lo que el kit ya no trae. `scripts/remove-project-kit.mjs` quita de un proyecto solo las copias exactas del kit. Reemplaza a `sync-globals.mjs`.
 - **Skill `ui-patterns`** (T-12): catálogo de animaciones y efectos, menús y navegación, contenedores y feedback, con cuándo usar cada patrón, cuándo no y cómo hacerlo accesible. Viene en los presets con interfaz. La rule `architecture` suma las carpetas de cada stack (Next.js, Laravel, Node, FastAPI, WordPress y CSS por capas) y qué revisar antes de crear un archivo, para que no queden archivos sueltos.
 - **Cookies de sesión con `SameSite=Lax`:** la rule `security` deja `Strict` solo para acciones muy sensibles, porque con `Strict` quien llega desde un enlace externo o un login con Google aparece deslogueado.
 - **Antigravity revisa la UI con `auditor`:** `frontend` queda solo para implementar.

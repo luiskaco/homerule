@@ -1034,7 +1034,7 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 
 **Estado:** Aceptada (2026-11-13). Cambia la forma de instalar de los kits de Claude Code, Antigravity e híbrido para el autor; los ZIPs del sitio siguen para quien instala por proyecto.
 
-**Contexto:** Cada proyecto llevaba su copia de rules, skills, comandos, subagentes y hooks. Una mejora del kit obligaba a tocar los 19 proyectos, y las copias se desfasaban. Claude Code y Antigravity cargan esas piezas desde la carpeta personal en todos los proyectos (verificado en sus documentaciones el 2026-11-13): `~/.claude/{skills,commands,agents,hooks}` y `~/.gemini/GEMINI.md` y `~/.gemini/config/{rules,skills,agents}`.
+**Contexto:** Cada proyecto llevaba su copia de rules, skills, comandos, subagentes y hooks. Una mejora del kit obligaba a tocar los 19 proyectos, y las copias se desfasaban. Claude Code y Antigravity cargan esas piezas desde la carpeta personal en todos los proyectos (verificado en sus documentaciones el 2026-11-13): `~/.claude/{skills,commands,agents,hooks}` y `~/.gemini/GEMINI.md` y `~/.gemini/config/{rules,skills,agents}`. Codex lee `~/.codex/AGENTS.md` y las skills de `~/.agents/skills/`.
 
 **Decisión:**
 
@@ -1042,6 +1042,7 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - El script arma lo que instala desde el manifest del sitio, así sale de la misma fuente que los ZIPs. Deja copia de respaldo, registra qué instaló y borra lo que el kit ya no trae.
 - Los hooks de los subagentes de Claude pasan a la carpeta personal (`$HOME/.claude/hooks/`). La lista `.claude/ssh-hosts.txt` sigue siendo de cada proyecto.
 - Cada proyecto conserva solo lo suyo: `docs/`, el `AGENTS.md` esencial, un `CLAUDE.md` que lo importa y su configuración propia. Quien clone un repo trae su propia forma de trabajar (ADR-036).
+- **Codex:** recibe el núcleo en `~/.codex/AGENTS.md` y las rules, skills y comandos como skills en `~/.agents/skills/`, porque no tiene rules con disparador ni comandos con `/`: se piden con `$nombre`. Sus subagentes no se instalan todavía: un agente de Codex no puede tener su propio sandbox de solo lectura y sus hooks son globales.
 - Reemplaza a `scripts/sync-globals.mjs`.
 
 **Alternativas consideradas:**

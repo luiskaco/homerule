@@ -5,6 +5,7 @@
 //   Claude Code  → ~/.claude/CLAUDE.md, skills/ (rules y skills), commands/,
 //                  agents/ y hooks/ de los subagentes
 //   Antigravity  → ~/.gemini/GEMINI.md y ~/.gemini/config/{rules,skills,agents}/
+//   Codex        → ~/.codex/AGENTS.md y ~/.agents/skills/ (rules y comandos como skills)
 //
 // Uso:
 //   node scripts/install-global.mjs           # solo compara; sale con 1 si hay algo pendiente
@@ -92,6 +93,32 @@ const targets = [];
   targets.push({ root, label: "Antigravity", files });
 }
 
+{
+  // Codex: instrucciones globales en ~/.codex/AGENTS.md y skills en ~/.agents/skills/.
+  // No tiene rules con disparador ni comandos con "/": las rules y los comandos
+  // van como skills, que Codex elige solo o se piden con `$nombre`.
+  const core = readFileSync(join(REPO, "core", "CORE.md"), "utf8").replace(/\r\n/g, "\n").replace(MACHINE_BLOCK, "\n");
+  let agentsMd = replaceOnce(core, /^# Core Rules — Global\n/, "# Codex — Global\n", "el título de CORE.md");
+  agentsMd = replaceOnce(
+    agentsMd,
+    /^Invocar con `\/` en el chat:$/m,
+    // Función, no texto: en un reemplazo de texto, "$`" inserta lo anterior al match.
+    () => "En Codex son skills: invocar con `$` y el nombre (por ejemplo, `$new-feature`), o pedirlo con palabras:",
+    "la línea de invocación de § 7"
+  );
+  agentsMd = replaceOnce(agentsMd, /\n> Esto es una \*\*auto-revisión inline\*\*[\s\S]*?(?=\n(?!>)|$)/, "", "la nota de subagentes de § 8");
+  targets.push({ root: join(HOME, ".codex"), label: "Codex (instrucciones)", files: new Map([["AGENTS.md", agentsMd.trimEnd() + "\n"]]) });
+
+  const files = new Map();
+  for (const item of [...pick("claude-code", ["skill"]).filter((i) => i.id.startsWith("claude-code:rule:")), firstDatabase("claude-code")]) {
+    for (const f of item.files) files.set("skills/" + f.destPath.slice(".claude/skills/".length), f.content);
+  }
+  for (const item of pick("antigravity", ["skill", "command"])) {
+    for (const f of item.files) files.set("skills/" + f.destPath.slice(".agents/skills/".length), f.content);
+  }
+  targets.push({ root: join(HOME, ".agents"), label: "Codex (skills)", files });
+}
+
 // --- 3. Comparar e instalar ------------------------------------------------------
 function removeEmptyDirs(dir, stop) {
   while (dir.startsWith(stop) && dir !== stop && existsSync(dir) && readdirSync(dir).length === 0) {
@@ -99,6 +126,9 @@ function removeEmptyDirs(dir, stop) {
     dir = dirname(dir);
   }
 }
+
+/** Núcleos de cada herramienta: se instalan siempre y conservan lo propio de la máquina. */
+const CORE_FILES = new Set(["CLAUDE.md", "GEMINI.md", "AGENTS.md"]);
 
 let pending = 0;
 let conflicts = 0;
@@ -122,7 +152,7 @@ for (const { root, label, files } of targets) {
     const current = existsSync(target) ? readFileSync(target, "utf8") : null;
     // Los dos núcleos conservan el final de línea y el bloque de codebase-memory de esta máquina.
     let content = rawContent;
-    if (rel === "CLAUDE.md" || rel === "GEMINI.md") {
+    if (CORE_FILES.has(rel)) {
       const block = current?.replace(/\r\n/g, "\n").match(MACHINE_BLOCK);
       if (block) content = `${content.trimEnd()}\n\n${block[0].trim()}\n`;
       if (current?.includes("\r\n")) content = content.replace(/\n/g, "\r\n");
@@ -132,7 +162,7 @@ for (const { root, label, files } of targets) {
       finalFiles.push(rel);
       continue;
     }
-    const owned = installed.has(rel) || rel === "CLAUDE.md" || rel === "GEMINI.md";
+    const owned = installed.has(rel) || CORE_FILES.has(rel);
     if (current !== null && !owned && !FORCE) {
       report.conflictos.push(rel);
       continue;
