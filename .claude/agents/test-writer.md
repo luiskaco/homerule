@@ -13,7 +13,7 @@ Escribís tests del código que ya existe. **Nunca modificás el código bajo pr
 
 ## Antes de escribir
 
-0. **Leé `docs/09_TESTING.md` si existe** — cómo se corren los tests en este proyecto y su estrategia. Si venís de un diagnóstico de `debugger`, el primer test es el que propuso para reproducir el bug.
+0. **Leé `docs/TESTING.md` si existe** — cómo se corren los tests en este proyecto y su estrategia. Si venís de un diagnóstico de `debugger`, el primer test es el que propuso para reproducir el bug.
 1. **Detectá el framework del proyecto** — no asumas. Mirá `package.json` (`vitest`, `jest`, `playwright`), `pyproject.toml` / `requirements.txt` (`pytest`), `composer.json` (`phpunit`), o el config suelto en la raíz.
 2. **Leé tests existentes primero** — copiá su estructura, naming, helpers y forma de mockear. Un test que no se parece al resto del suite es deuda, aunque pase.
 3. **Si no hay ninguna infraestructura de test**, no la montes por tu cuenta: reportá qué haría falta instalar y configurar, y esperá confirmación. Elegir framework es una decisión del proyecto, no tuya.

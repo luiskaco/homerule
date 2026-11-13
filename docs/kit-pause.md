@@ -63,24 +63,25 @@ Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué 
 ## Para revisar el 2026-11-19
 
 - Leer la tabla de fricciones y corregir lo que se repitió.
-- Elegir qué manda: el estilo "Proactive" de Claude, que pide ejecutar sin frenar,
-  o la Regla de Oro, que pide analizar y validar antes de tocar nada. Hoy se
-  contradicen.
+- ~~Elegir qué manda: Proactive o la Regla de Oro~~: hecho el 2026-11-11, adelantado. Mixta: la Regla de Oro frena solo en sus condiciones de Validar; fuera de ellas se ejecuta sin pedir permiso (§ 1).
 - Medir cuánto gasta cada subagente, como quedó anotado en ADR-030.
-- Revisar `debugger`: no tiene el hook de solo lectura porque necesita correr tests (ADR-021), pero su descripción dice "No edita código" y la terminal le queda libre. Decidir si alcanza con aclarar la descripción o si conviene otro control. Un hook que solo deje pasar tests no protege de verdad, porque un test puede ejecutar cualquier código.
+- ~~Revisar `debugger`~~: hecho el 2026-11-11, adelantado: descripción y prompt aclaran que corre tests pero no escribe; si necesita escribir, se lo pide al agente principal. Sin hook nuevo.
 - Evaluar un subagente de rendimiento: ningún agente del kit revisa velocidad, carga, bundle ni consultas lentas. Decidirlo junto con la medición de gasto de los subagentes, para no sumar uno que no se use.
-- Quitar de los `AGENTS.md` de los proyectos la copia de las reglas generales, de a 3 proyectos: 17 de 19 la tienen, ya sin las reglas de ADR-034. Antes, tener los globales al día en cada máquina.
-- Sumar a `security-auditor` cuatro ideas de la skill [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill) (MIT, citar la fuente): tres resultados posibles (confirmado, falta validar, descartado), que quien valida un hallazgo no sea el agente que lo encontró, una escala de gravedad con ejemplos, y que la falta de una capa de refuerzo no cuente como vulnerabilidad si otra capa ya frena el ataque. La skill completa no se vendoriza: es de 6 fases con muchos subagentes, pide una sandbox que acá no hay y choca de nombre con `/security-audit`.
-- Sumar a la rule `architecture` la "escalera" de [ponytail](https://github.com/dietrichgebert/ponytail) (MIT, citar la fuente): antes de escribir código, preguntar si hace falta, si ya existe en el repo, si lo resuelve la librería estándar o una dependencia ya instalada, y recién ahí escribir lo mínimo; no sumar una dependencia por pocas líneas, sin recortar validación, seguridad ni accesibilidad. El plugin completo no se instala: se mete en cada sesión con un estilo de respuesta propio que choca con § 0 y la Regla de Oro. Su barra de costo por tarea sirve de referencia para medir el gasto de los subagentes. `claude-mem` se descartó: envía lo que hacen las herramientas a un modelo externo y trae analítica activada (ADR-034).
+- ~~Quitar de los `AGENTS.md` de los proyectos la copia de las reglas generales~~: pasa a la migración de cada proyecto con `docs/migrate-docs.md` (ADR-036), en la misma pasada que sus documentos.
+- ~~Sumar a `security-auditor` cuatro ideas~~: hecho el 2026-11-11, adelantado: estados confirmado / a verificar / descartado, escala de gravedad con ejemplos, refuerzos sin severidad, y un Critical se valida con una instancia nueva en `/security-audit`. También en el agente `security` de Antigravity.
+- ~~Sumar a la rule `architecture` la "escalera"~~: hecho el 2026-11-11, adelantado: sección "Antes de escribir código nuevo". `claude-mem` sigue descartado (ADR-034).
 
-Lo demás pendiente está en `06_TASKS.md`.
+Lo demás pendiente está en `02_TASKS.md`.
 
 ## Novedades para llevar a la PC del trabajo
 
 Lo que cambió en los archivos globales desde la última vez que se actualizaron allá.
 Al llegar, hacer los pasos 1 y 2 de la sección siguiente y borrar la línea de acá.
 
-- Nada pendiente: la regla de explicaciones se aplicó el 2026-11-09.
+- **2026-11-10 — Documentos simplificados** (ADR-035): los globales cambian en
+  § 4, § 5 y § 8. Además, migrar los `docs/` de cada proyecto con
+  `docs/migrate-docs.md` y anotar acá cada uno que quede hecho.
+  - Migrados: _ninguno todavía_.
 
 ## En otra máquina
 
@@ -93,10 +94,13 @@ crearon. Lo que viaja es este repo.
    git pull
    ```
 
-2. Revisar que los archivos globales estén al día, porque el kit híbrido depende de
-   ellos: `~/.claude/CLAUDE.md` y `~/.gemini/GEMINI.md`. Su contenido se compara con
-   `core/CORE.md` y `.gemini/GEMINI.md`. Conviene pedirle a la IA que muestre las
-   diferencias antes de pisarlos, por si tienen algo propio de esa máquina.
+2. Poner al día los archivos globales, porque el kit híbrido depende de ellos.
+   El script los genera desde `core/CORE.md` y `.gemini/GEMINI.md`, con copia de
+   respaldo. Sin `--write` solo dice si están desactualizados:
+
+   ```bash
+   node scripts/sync-globals.mjs --write
+   ```
 3. Para seguir con un proyecto, también hay que tenerlo clonado en esa máquina.
 4. Poner la identidad de git con tu correo privado de GitHub, igual que en esta máquina:
 

@@ -1,4 +1,7 @@
-# 04 — Data Model
+# Modelo de datos
+
+> **Opcional:** se crea cuando el proyecto guarda datos propios (base de datos,
+> archivos o caché con estructura).
 
 ## Entidades
 

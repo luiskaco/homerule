@@ -193,22 +193,20 @@
     "metaTitle": "Plantillas SDD | AI Rules Hub",
     "metaDescription": "Las plantillas de docs/ — qué va en cada archivo, del PRD al changelog.",
     "title": "Plantillas SDD",
-    "intro": "Los archivos de docs/ que estructuran un proyecto de PRD a changelog. Independientes del agente que uses — se bajan aparte de los packs de Antigravity y Claude Code.",
+    "intro": "Los archivos de docs/ que estructuran un proyecto: cuatro fijos y cinco opcionales, que se crean cuando el proyecto los pide. Independientes del agente que uses — se bajan aparte de los packs de Antigravity y Claude Code.",
     "downloadBody": "Un ZIP con las plantillas, listas para copiar a docs/ en la raíz de tu proyecto.",
     "download": "Descargar ZIP",
     "generating": "Generando...",
     "descriptions": {
-      "01_PROJECT_PRD": "Requisitos de producto — cada uno con ID (RF-01), prioridad y criterios de aceptación verificables.",
-      "02_SDD": "Diseño del sistema.",
-      "03_SYSTEM_SPEC": "Especificaciones técnicas.",
-      "04_DATA_MODEL": "Esquemas y entidades.",
-      "05_ARCHITECTURE": "Decisiones arquitectónicas.",
-      "06_TASKS": "Backlog activo + estado de traspaso: dónde quedó, próximo paso y bloqueos, para que cualquiera (o cualquier IA) retome.",
-      "07_DECISIONS": "ADRs — decisiones con alternativas evaluadas y trade-offs.",
-      "08_CHANGELOG": "Historial de versiones.",
-      "09_TESTING": "Cómo correr los tests, qué cubre cada nivel y qué test verifica cada requisito.",
-      "10_RUNBOOK": "Entornos, deploy, rollback, monitoreo e incidentes conocidos — a más tardar en el primer deploy.",
-      "CONTEXT": "Glosario del dominio — vivo, no de fase (opcional, desde 3 términos)."
+      "01_PRD": "Requisitos del producto — cada uno con ID (RF-01), prioridad y criterios de aceptación verificables.",
+      "02_TASKS": "Solo lo abierto, como mucho 10 tareas, y dónde quedó el trabajo, para que cualquiera (o cualquier IA) retome.",
+      "03_DECISIONS": "ADRs con un índice de una línea por decisión: la IA lee el índice y abre solo la que necesita.",
+      "04_CHANGELOG": "Una línea por cambio, lo nuevo arriba. Se archiva por año.",
+      "ARCHITECTURE": "Opcional — componentes, APIs, integraciones, variables de entorno e infraestructura.",
+      "DATA_MODEL": "Opcional — entidades y campos.",
+      "TESTING": "Opcional — cómo correr los tests, qué cubre cada nivel y qué test verifica cada requisito.",
+      "RUNBOOK": "Opcional — entornos, deploy, vuelta atrás, monitoreo e incidentes; a más tardar en el primer deploy.",
+      "CONTEXT": "Opcional — glosario del dominio, desde 3 términos."
     }
   },
   "SkillData": {
@@ -518,7 +516,7 @@
     "skill:project-planning": {
       "author": "—",
       "summary": "Usar antes de codificar un proyecto nuevo o una iniciativa grande (afecta más de 3 archivos, tiene más de una arquitectura válida, o incluye una decisión irreversible).",
-      "whatItDoes": "Convierte una idea ya validada en los documentos de planificación de `/docs` que define este kit (`01_PROJECT_PRD.md` … `07_DECISIONS.md` + `09_TESTING.md`), en orden, antes de escribir código.",
+      "whatItDoes": "Convierte una idea ya validada en los documentos de planificación de `/docs` que define este kit (`01_PRD.md` … `03_DECISIONS.md` + `TESTING.md`), en orden, antes de escribir código.",
       "whenToUse": [],
       "usage": [],
       "install": []

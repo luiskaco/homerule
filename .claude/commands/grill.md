@@ -6,8 +6,7 @@ description: "Interrogatorio estructurado para afilar un plan antes de codificar
 
 # Invocar con: /grill
 
-Le da forma concreta a la Regla de Oro (`GEMINI.md § 1` / `CORE.md § 1`):
-"planificar antes de actuar". En vez de que el agente asuma lo que falta, lo
+Planificar antes de actuar: en vez de que el agente asuma lo que falta, lo
 pregunta.
 
 **Cuándo:** antes de `/new-feature` en tareas donde el plan todavía es difuso,
@@ -41,7 +40,7 @@ cambian nada del plan, cerrar. Interrogar de más es tan malo como no hacerlo.
    el alcance se infla mientras se codifica.
 4. **Las decisiones irreversibles.** ¿Hay migración, cambio de schema,
    borrado de datos, o contrato de API público? Si sí, eso es un ADR antes
-   de tocar código (`07_DECISIONS.md`).
+   de tocar código (`03_DECISIONS.md`).
 5. **Cómo se sabe que está listo.** Criterio verificable, no "que funcione
    bien". Si no se puede verificar, no está definido.
 6. **El vocabulario.** Si aparecen términos del dominio nuevos o usados con

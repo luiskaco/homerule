@@ -14,18 +14,33 @@ description: Convenciones específicas por lenguaje/framework — aplica automá
 - Server Components por defecto — Client Components solo cuando se necesita interactividad
 - Server Actions para mutaciones de formularios
 - `use context7 to resolve next.js` antes de implementar patrones nuevos
+- Tests: Vitest + Testing Library; flujos de punta a punta con Playwright
 
 **Node.js / API**
 
 - Express o Fastify según el proyecto
 - Validación con Zod en todos los endpoints
 - `/api/v1/` como prefijo base siempre
+- Tests: Vitest; endpoints con requests reales contra la app (supertest o el inject de Fastify)
 
 **Python**
 
 - FastAPI para APIs REST
 - Pydantic para validación de schemas
 - `use context7 to resolve fastapi` antes de implementar patrones nuevos
+- Tests: pytest; endpoints con el `TestClient` de FastAPI
+
+**Laravel**
+
+- Laravel 13 con PHP 8.3+ en proyectos nuevos; en los existentes, la versión del `composer.lock`
+- Validación con Form Requests — nunca confiar en `$request->all()` sin validar
+- Eloquent con eager loading (`with()`) para evitar consultas N+1; mass assignment con `$fillable` explícito
+- Auth con Sanctum o un starter kit oficial — no reimplementar login ni tokens
+- `env()` solo dentro de `config/`; el código lee `config()` (con la config cacheada, `env()` devuelve `null`)
+- Tareas lentas (correos, imports, llamadas externas) en colas, no en el request
+- Rutas de API en `routes/api.php` con prefijo `/api/v1/`
+- `use context7 to resolve laravel` antes de implementar patrones nuevos
+- Tests: Pest, o PHPUnit si el proyecto ya lo usa; base de datos con `RefreshDatabase`
 
 **WordPress**
 
@@ -38,6 +53,7 @@ description: Convenciones específicas por lenguaje/framework — aplica automá
 - Componentes funcionales con hooks únicamente
 - Estado global: Zustand o Context API según complejidad
 - Formularios: React Hook Form + Zod
+- Tests: Vitest + Testing Library
 
 **Vanilla JS**
 
@@ -54,6 +70,7 @@ description: Convenciones específicas por lenguaje/framework — aplica automá
 - Componentes de un solo archivo (`.vue`) organizados por feature, no por tipo
 - `defineProps`/`defineEmits` tipados con TypeScript
 - `use context7 to resolve vue` antes de implementar patrones nuevos
+- Tests: Vitest + Vue Test Utils
 
 **CSS Puro**
 

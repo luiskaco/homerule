@@ -1,43 +1,34 @@
----
+# AGENTS.md
 
-## Mapa del proyecto
+Lo esencial de este proyecto para cualquier persona o IA que trabaje en él
+(estándar abierto [AGENTS.md](https://agents.md)). Cómo trabajar lo decide cada
+uno; lo de acá vale para todos.
 
-Este proyecto se armó con el kit de **{{TOOL_LABEL}}** de AI Rules Hub, pero
-cualquier agente puede continuarlo: todo lo que necesita está en el repo, en
-archivos markdown planos.
+> Completar al iniciar el proyecto y mantenerlo corto: solo lo que alguien
+> nuevo necesita para no romper nada.
 
-| Qué | Dónde |
-|---|---|
-| Rules técnicas (§ 6, punto 2) | `{{RULES_PATH}}` — leer la que aplique antes de tocar esa área |
-| Skills | `{{SKILLS_PATH}}` — una carpeta por skill, con su `SKILL.md` |
-| Subagentes | {{AGENTS_PATH}} |
-| Comandos / workflows (§ 7) | {{WORKFLOWS_PATH}} |
-| Estado del proyecto | `docs/` — ver "Continuar el trabajo" |
+## Qué es
 
-### Continuar el trabajo
+-
 
-1. **Antes de empezar:** leer en `docs/06_TASKS.md` la sección **Estado de
-   traspaso** (dónde quedó, próximo paso, bloqueos) y después
-   `docs/07_DECISIONS.md` (lo ya decidido — no re-decidirlo). Si este
-   proyecto se desvía de alguna regla, está en la sección **Proyecto** de abajo.
-2. **Para verificar tu trabajo:** `docs/09_TESTING.md` dice cómo correr los
-   tests y qué requisito (`RF-xx` de `docs/01_PROJECT_PRD.md`) cubre cada uno.
-   Para desplegar u operar: `docs/10_RUNBOOK.md`.
-3. **Comandos de § 7:** si tu herramienta no los expone, leé el archivo del
-   workflow y seguí sus pasos a mano.
-4. **Al cerrar una tarea:** actualizar `docs/06_TASKS.md` — incluido el Estado
-   de traspaso — y el documento que corresponda según § 5.
+## Stack y comandos
 
----
+- **Stack:**
+- **Instalar:** · **Dev:** · **Test:** · **Build:**
 
-## Proyecto
+## Estructura
 
-> Completar al iniciar el proyecto — es lo primero que lee un agente nuevo.
-> Lo que se anote acá tiene prioridad sobre las reglas de arriba (§ 5).
+- `carpeta/` — qué va
 
-- **Qué es:**
-- **Stack real** (si difiere de § 3):
-- **Comandos:** instalar · dev · test · build
-- **Estructura:** carpetas principales y qué va en cada una
-- **Documentación** (si `/docs` usa otros nombres o rutas que los de § 5):
-- **Excepciones a las reglas:** qué regla no aplica o se adapta en este proyecto, y por qué
+## No negociable
+
+- Nunca se versionan secretos ni credenciales: `.env`, claves, tokens.
+- Los datos personales de usuarios o clientes no salen del entorno previsto.
+- Lo que este proyecto hace distinto de lo habitual, y por qué:
+
+## Para continuar
+
+1. Leer **Dónde quedó** en `docs/02_TASKS.md` y el índice de
+   `docs/03_DECISIONS.md`: lo ya decidido no se vuelve a decidir.
+2. Al cerrar una tarea, sacarla de `docs/02_TASKS.md` y dejar una línea en
+   `docs/04_CHANGELOG.md`.

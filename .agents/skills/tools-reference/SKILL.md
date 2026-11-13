@@ -65,7 +65,7 @@ Cada proyecto trae solo las de su preset; el resto se agrega a medida.
 | `fastapi` | En proyectos con FastAPI |
 | `prisma-database-setup` | Al iniciar un proyecto con Prisma o al cambiar su schema |
 | `wordpress-block-theming` | En temas de WordPress basados en bloques |
-| `brainstorming` | Para validar una idea antes de planificarla |
+| `brainstorming` | Para validar una idea antes de planificarla (el comando `/grill` hace lo mismo y viene siempre) |
 | `project-planning` | Proyecto nuevo o iniciativa grande: lleva una idea validada a los documentos de `/docs` |
 
 ---
@@ -78,7 +78,7 @@ Corren en su propio contexto y cuestan tokens: usarlos para tareas grandes, no p
 |----------|-------------|-------------|
 | Planificar tareas grandes | `planner` | — |
 | Revisar un diff | `code-reviewer` | `auditor` |
-| Revisar interfaz | `ui-reviewer` | `frontend` |
+| Revisar interfaz | `ui-reviewer` | `auditor` |
 | Auditar seguridad | `security-auditor` | `security` |
 | Revisar migraciones | `db-migration-reviewer` | — |
 | Encontrar la causa de un bug | `debugger` | — |
@@ -100,36 +100,16 @@ En Antigravity hay que pedirlos con palabras, no con `@`.
 No compite con las de diseño — es transversal y de bajo costo, así que no
 cuenta para el límite de 2-3 skills activas. Mantiene el glosario
 `docs/CONTEXT.md`: lenguaje del negocio, no esquema técnico (eso es
-`04_DATA_MODEL.md`) ni decisiones con trade-offs (eso es `07_DECISIONS.md`).
+`DATA_MODEL.md`) ni decisiones con trade-offs (eso es `03_DECISIONS.md`).
 
 ---
 
 ### MCP: Context7
 
-Context7 está instalado como MCP. Provee documentación actualizada de librerías en tiempo real.
-
-**Usar siempre antes de implementar con cualquier librería** — evita usar APIs desactualizadas.
-
-Cuándo usarlo:
-
-- Al trabajar con métodos o APIs que pueden haber cambiado entre versiones
-- Al implementar patrones complejos (auth, SSR, server actions, migrations, etc.)
-- Ante cualquier duda sobre la API correcta de una librería
-
-Formato:
+Documentación vigente de librerías, para no asumir APIs desde memoria. Usarlo ante APIs que
+pueden haber cambiado entre versiones o patrones complejos (auth, SSR, migraciones),
+no en cada línea: el plan gratuito tiene límite mensual.
 
 ```
 use context7 to resolve <librería> — <query específica>
 ```
-
-Ejemplos:
-
-```
-use context7 to resolve next.js — server actions with form validation
-use context7 to resolve prisma — upsert with nested relations
-use context7 to resolve tailwindcss — responsive grid v4
-use context7 to resolve react-query — optimistic updates
-```
-
-> El plan gratuito tiene un límite mensual. Usar con criterio — solo cuando la
-> documentación es necesaria, no en cada línea de código.

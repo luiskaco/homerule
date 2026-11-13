@@ -215,7 +215,7 @@ hasta que apruebe, por ítem o por grupo.
   lote técnico.
 - Tras aplicar, vuelve a evaluar solo las reglas tocadas y muestra el antes y
   el después.
-- Si el proyecto tiene `docs/06_TASKS.md`, ofrece registrar ahí los arreglos
+- Si el proyecto tiene `docs/02_TASKS.md`, ofrece registrar ahí los arreglos
   aprobados antes de tocar código. Si se descarta un bloqueante a sabiendas,
-  ofrece dejar constancia en `docs/07_DECISIONS.md`, y los cambios aplicados
-  en `docs/08_CHANGELOG.md`.
+  ofrece dejar constancia en `docs/03_DECISIONS.md`, y los cambios aplicados
+  en `docs/04_CHANGELOG.md`.

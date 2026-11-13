@@ -68,7 +68,6 @@ Ningún filtro la evita del todo: diseñar asumiendo que va a pasar y limitar qu
 
 ## Resiliencia
 
-- **Stateless:** Servicios sin estado local — cualquier instancia maneja cualquier request.
 - **Reintentos con backoff:** Máximo 3 reintentos con backoff exponencial (1s, 2s, 4s) en llamadas externas.
 - **Timeouts explícitos:** Toda llamada externa con timeout definido (default: 10s APIs, 30s uploads).
 - **Circuit breaker:** Servicios críticos con circuit breaker para degradación controlada.
@@ -129,9 +128,16 @@ Todo log debe seguir esta estructura:
 3. **Medio:** Edge cases de formularios, validaciones, uploads.
 4. **Bajo:** UI states (loading, error, empty) en componentes secundarios.
 
+### Cuándo un test es obligatorio
+
+- Toda lógica nueva con ramas, bucles, un parser, dinero o seguridad deja al menos un test chico.
+- Un bug corregido deja el test que lo reproduce: falla antes del fix y pasa después.
+- Un cambio trivial (texto, estilo, renombre) no necesita test.
+- En un proyecto nuevo, la herramienta de tests es la de `stack-conventions.md`.
+
 ### Cobertura Mínima
 
-- Lógica de negocio crítica: 80% cobertura de tests unitarios.
+- Lógica de negocio crítica: 80 % de cobertura con tests unitarios, medido solo ahí. Nunca escribir un test solo para subir el número.
 - Flujos de auth: 100% cubiertos con tests de integración.
 - APIs públicas: contrato validado con tests de contrato o e2e.
 

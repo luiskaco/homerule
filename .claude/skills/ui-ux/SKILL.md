@@ -17,11 +17,11 @@ description: "Activar al construir o revisar interfaces, componentes visuales, f
 
 | Estado | Descripción |
 |--------|-------------|
-| `loading` | Spinner o skeleton mientras espera datos |
-| `skeleton` | Estructura visual previa a los datos reales |
+| `loading` | Skeleton con la estructura real, o spinner si no hay estructura que anticipar |
+| `empty` | Mensaje útil cuando no hay datos — nunca UI rota. Es el que más se olvida |
 | `error` | Mensaje de error + acción de recuperación |
-| `success` | Confirmación visual de acción completada |
-| `empty` | Mensaje útil cuando no hay datos — nunca UI rota |
+| `partial` | Parte de los datos falló o falta: mostrar lo que hay y avisar lo que no |
+| `success` | Datos cargados, o confirmación visual de una acción completada |
 
 > Proyecto PWA: agregar `offline` como 6to estado obligatorio — ver `pwa.md`.
 
@@ -71,7 +71,7 @@ description: "Activar al construir o revisar interfaces, componentes visuales, f
 
 ## Tipografía
 
-- `…` no `...` | `"` `"` no `"` | `&nbsp;` en `10 MB`, `⌘ K`, nombres de marca.
+- `…` no `...` | `“` `”` no `"` | `&nbsp;` en `10 MB`, `⌘ K`, nombres de marca.
 - Estados de carga: `"Cargando…"`, `"Guardando…"`
 - `font-variant-numeric: tabular-nums` en columnas numéricas.
 - `text-wrap: balance` en títulos.
@@ -121,14 +121,8 @@ description: "Activar al construir o revisar interfaces, componentes visuales, f
   / "2 productos" vs. otros idiomas con 3+ formas plurales).
 - Fechas, números, moneda y unidades siempre con `Intl.*` parametrizado por
   locale — nunca formateo manual (`toLocaleDateString()` sin locale explícito
-  hereda el del server, no el del usuario). Refuerza la regla ya existente en
-  `§ Anti-patterns`.
-- Ruteo de idioma explícito en la URL (`/es/`, `/pt/`) — nunca solo por
-  cookie/header sin reflejarlo en la URL, rompe SEO multi-idioma y
-  compartir enlaces.
-- `hreflang` + `lang` en `<html>` correctos por página (ya cubierto en
-  `seo.md § SEO Multi-idioma`) — cada versión de idioma con su propio
-  `<link rel="alternate" hreflang="...">`.
+  hereda el del server, no el del usuario).
+- Ruteo de idioma en la URL, `hreflang` y `lang`: ver `seo.md § SEO Multi-idioma`.
 - Layout a prueba de expansión de texto: alemán/español pueden ser 30-40% más
   largos que inglés — nunca `width` fijo en botones/labels que dependen de texto
   traducido, usar `min-width` + contenido flexible.
@@ -153,21 +147,6 @@ description: "Activar al construir o revisar interfaces, componentes visuales, f
 
 ---
 
-## Comandos de Auditoría (impeccable)
-
-| Comando | Cuándo usarlo |
-|---------|--------------|
-| `/impeccable audit` | Antes de PR — a11y, performance, responsive |
-| `/impeccable critique` | Revisión de jerarquía visual y UX |
-| `/impeccable polish` | Pase final antes de ship |
-| `/impeccable harden` | Errores, i18n, overflow, edge cases |
-| `/impeccable bolder` | Diseño genérico o aburrido |
-| `/impeccable quieter` | Diseño sobrecargado visualmente |
-| `/impeccable typeset` | Tipografía necesita corrección |
-| `/impeccable animate` | Agregar motion con propósito |
-
----
-
 ## Anti-patterns — Nunca
 
 - `user-scalable=no` / `maximum-scale=1`
@@ -189,26 +168,9 @@ description: "Activar al construir o revisar interfaces, componentes visuales, f
 
 ---
 
-## Skills de Diseño — Cuándo Usar Cada Una
+## Skills de Diseño
 
-| Skill | Momento | Qué hace |
-|-------|---------|----------|
-| `frontend-design` | Al **iniciar** UI nueva, con o sin sistema de diseño ya definido (caso habitual en Orange Latam) | Dirección estética — tipografía, jerarquía visual, evita defaults genéricos; infiere un sistema si no existe |
-| `impeccable` | Al **revisar** UI existente — requiere que `frontend-design` ya haya corrido antes | Audita, pule y critica con 23 comandos |
-| `web-design-guidelines` | Al **auditar** estándares | Verifica a11y, forms, performance técnica |
-
-**Nunca activar más de 2-3 a la vez.** Elegir según el momento de la tarea.
-
-### Jerarquía si hay conflicto
-
-1. `web-design-guidelines` — estándares técnicos (a11y, WCAG, forms)
-2. `frontend-design` — sistema de diseño o dirección estética
-3. `impeccable` — vocabulario y auditoría de diseño
-
-### Instalación
-
-Los comandos de instalación de cada skill viven en `tools-reference.md`
-(workflow `/tools-reference`) — fuente de verdad única, no se duplican acá.
+Cuál usar en cada momento, y cómo instalarla, está en `/tools-reference`. Nunca más de 2–3 a la vez. Si chocan, manda `web-design-guidelines` (estándares técnicos), después `frontend-design` (dirección estética) y después `impeccable` (auditoría y pulido).
 
 ---
 

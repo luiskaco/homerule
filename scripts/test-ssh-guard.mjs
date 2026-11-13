@@ -172,7 +172,7 @@ const CASES = [
 
   // ---------- server-operator: pasa sin pedir (local, de lectura) ----------
   ["operate", "git status", "allow"],
-  ["operate", "cat docs/10_RUNBOOK.md", "allow"],
+  ["operate", "cat docs/RUNBOOK.md", "allow"],
   ["operate", "git status", "allow", { permissionMode: "bypassPermissions" }],
 
   // ---------- server-operator: se bloquea ----------

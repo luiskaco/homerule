@@ -1,4 +1,4 @@
-# 01 — Product Requirements Document
+# Requisitos del producto (PRD)
 
 ## Problema
 
@@ -24,8 +24,8 @@ _Perfiles de usuario y flujos principales._
 
 ## Requisitos funcionales
 
-_Un ID por requisito: lo referencian `06_TASKS.md`, `07_DECISIONS.md` y
-`09_TESTING.md`. Los IDs no se reutilizan — un requisito descartado queda
+_Un ID por requisito: lo referencian `02_TASKS.md`, `03_DECISIONS.md` y
+`TESTING.md`. Los IDs no se reutilizan — un requisito descartado queda
 tachado. Prioridad: **M** (Must) · **S** (Should) · **C** (Could)._
 
 ### RF-01 — Título corto

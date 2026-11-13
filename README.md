@@ -146,12 +146,12 @@ npx skills add sickn33/antigravity-awesome-skills --skill api-security-best-prac
 ### Paso 4 — Ajustar stack por proyecto
 
 Si el proyecto difiere del stack base (`GEMINI.md § 3`), de la convención de
-`/docs` o de alguna regla, documentarlo en la sección **Proyecto** del
+`/docs` o de alguna regla, documentarlo en el
 `AGENTS.md` del proyecto — tiene prioridad sobre `GEMINI.md` (ver § 5, nota de
 excepción).
 
 > **Migración:** `00_GEMINI_START.md` ya no existe (ADR-018). Si un proyecto
-> todavía lo tiene, mover su contenido a la sección **Proyecto** de `AGENTS.md`
+> todavía lo tiene, mover su contenido al `AGENTS.md` del proyecto
 > y borrarlo — `GEMINI.md` ya no lo lee.
 
 ---
@@ -199,9 +199,9 @@ siguiente comando — no encadenan automáticamente.
 | Comando | Cuándo invocarlo | Qué hace |
 |---|---|---|
 | `/grill` | Antes de `/new-feature`, cuando el plan todavía es difuso o traés una idea en vez de un requerimiento | Interrogatorio de a una pregunta por turno hasta dejar resueltos problema real, bordes, fuera de alcance, decisiones irreversibles y criterio de terminado. Cierra con un resumen que alimenta al workflow siguiente |
-| `/new-feature` | Antes de empezar cualquier tarea nueva | Define el plan, crea la rama git (`feat/...` o `fix/...`), crea o actualiza `06_TASKS.md`, documenta ADR si hay decisión arquitectónica. Espera tu aprobación del plan antes de codificar |
+| `/new-feature` | Antes de empezar cualquier tarea nueva | Define el plan, crea la rama git (`feat/...` o `fix/...`), crea o actualiza `02_TASKS.md`, documenta ADR si hay decisión arquitectónica. Espera tu aprobación del plan antes de codificar |
 | `/bug-fix` | Algo está roto | Identifica causa raíz antes de tocar código, evalúa impacto, crea rama `fix/...`, plantea plan de 2-3 pasos y espera aprobación |
-| `/session-close` | Al terminar el día o una tarea | Actualiza físicamente los docs de `/docs` relevantes, verifica build y flujo probado, marca la tarea como completed y reescribe el estado de traspaso en `06_TASKS.md`, genera commit sugerido |
+| `/session-close` | Al terminar el día o una tarea | Actualiza físicamente los docs de `/docs` relevantes, verifica build y flujo probado, borra las tareas cerradas de `02_TASKS.md` dejando una línea en `04_CHANGELOG.md`, reescribe "Dónde quedó" y genera commit sugerido |
 | `/security-audit` | Antes de subir features con auth, APIs o datos sensibles | Checklist OWASP + auth + secrets + uploads (resumen — detalle en `security.md`). Lista hallazgos con severidad Critical/High/Medium |
 | `/deploy-checklist` | Antes de merge a `main` o deploy a producción | Checklist completo: código, seguridad, UI, SEO, documentación |
 | `/tools-reference` | Setup inicial o cuando necesites ver qué skills usar y cuándo | Tabla de skills de diseño + Context7, sin instalación duplicada (apunta a este README) |
@@ -223,7 +223,7 @@ con `/`; en Antigravity, al ser skills, también pueden activarse solos.
 
 ```
 /grill                  ← opcional, si el plan está difuso: la IA interroga hasta afilarlo
-/new-feature           ← defines la tarea, se crea la rama y se actualiza 06_TASKS.md
+/new-feature           ← defines la tarea, se crea la rama y se actualiza 02_TASKS.md
   ... trabajas ...
 /security-audit         ← si tocaste auth, APIs o datos sensibles
 /deploy-checklist        ← si vas a hacer merge a main
@@ -251,7 +251,7 @@ detalle de su trabajo no contamina la ventana del agente principal.
 
 | Subagente | Qué hace | Escribe código |
 |---|---|---|
-| `auditor` | Review del diff contra las rules: correctness, arquitectura, convenciones, datos, reuse | No — solo lectura |
+| `auditor` | Review del diff contra las rules: correctness, arquitectura, convenciones, datos, reuse e interfaz | No — solo lectura |
 | `backend` | Endpoints, servicios, acceso a datos, migraciones. Verifica con tests/typecheck antes de devolver | Sí |
 | `frontend` | Componentes, páginas, estilos, los 5 estados de UI, accesibilidad | Sí |
 | `security` | Auditoría OWASP: auth, inputs, inyección, secrets, uploads, CORS, privacidad | No — solo lectura |
@@ -341,7 +341,7 @@ Detalle en [`.agents/skills/seo-audit/SKILL.md`](.agents/skills/seo-audit/SKILL.
 
 | Skill | Cuándo activarla |
 |---|---|
-| `domain-modeling` | Mientras se trabaja, no como paso aparte: al aparecer un término del dominio nuevo o ambiguo, o al nombrar entidades, tipos y endpoints. Mantiene el glosario `docs/CONTEXT.md` — que es lenguaje del negocio, no esquema técnico (eso es `04_DATA_MODEL.md`) |
+| `domain-modeling` | Mientras se trabaja, no como paso aparte: al aparecer un término del dominio nuevo o ambiguo, o al nombrar entidades, tipos y endpoints. Mantiene el glosario `docs/CONTEXT.md` — que es lenguaje del negocio, no esquema técnico (eso es `DATA_MODEL.md`) |
 
 Viene preseleccionada en los 7 stacks reales. La plantilla del glosario está en
 `docs-templates/CONTEXT.md` y se crea recién cuando hay 3 términos que lo
@@ -398,7 +398,7 @@ npx skills add emilkowalski/skills
 ```
 
 `skills-lock.json` registra ahora solo `api-security-best-practices`. Las tres
-de `uipro init` y la propia `project-docs-scaffold` **no** están en el lock —
+de `uipro init` **no** están en el lock —
 el CLI de uipro no lo escribe, así que su única referencia de versión es este
 repo (git). Para reinstalarlas:
 
@@ -441,26 +441,26 @@ no editarla a mano.
 <!-- token-table:start -->
 | Archivo | ~Tokens | Cuándo carga |
 |---|---|---|
-| `GEMINI.md` | ~2,890 | Siempre |
-| `security.md` | ~2,262 | Model Decision |
-| `architecture.md` | ~600 | Model Decision |
-| `ui-ux.md` | ~2,386 | Model Decision |
-| `seo.md` | ~1,423 | Model Decision |
+| `GEMINI.md` | ~2,497 | Siempre |
+| `security.md` | ~2,315 | Model Decision |
+| `architecture.md` | ~802 | Model Decision |
+| `ui-ux.md` | ~2,000 | Model Decision |
+| `seo.md` | ~1,445 | Model Decision |
 | `pwa.md` | ~578 | Model Decision — solo PWA |
-| `operations.md` | ~1,467 | Model Decision |
+| `operations.md` | ~1,553 | Model Decision |
 | `cms.md` | ~690 | Model Decision |
-| `database.md` | ~708 | Model Decision |
-| `stack-conventions.md` | ~604 | Glob |
-| `/tools-reference` | ~1,374 | Skill — slash o por descripción |
-| `/grill` | ~622 | Skill — slash o por descripción |
-| `/new-feature` | ~461 | Skill — slash o por descripción |
+| `database.md` | ~873 | Model Decision |
+| `stack-conventions.md` | ~874 | Glob |
+| `/tools-reference` | ~1,235 | Skill — slash o por descripción |
+| `/grill` | ~604 | Skill — slash o por descripción |
+| `/new-feature` | ~440 | Skill — slash o por descripción |
 | `/bug-fix` | ~405 | Skill — slash o por descripción |
-| `/session-close` | ~598 | Skill — slash o por descripción |
-| `/security-audit` | ~880 | Skill — slash o por descripción |
-| `/deploy-checklist` | ~852 | Skill — slash o por descripción |
-| **Base siempre activa** | **~2,890** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,895–8,912** | sesión normal de código |
-| **Máximo con todo activo** | **~14,982** | improbable — varias reglas casi nunca se activan juntas |
+| `/session-close` | ~488 | Skill — slash o por descripción |
+| `/security-audit` | ~370 | Skill — slash o por descripción |
+| `/deploy-checklist` | ~792 | Skill — slash o por descripción |
+| **Base siempre activa** | **~2,497** | `GEMINI.md` |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~3,669–8,047** | sesión normal de código |
+| **Máximo con todo activo** | **~14,862** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

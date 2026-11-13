@@ -24,29 +24,17 @@ Si un doc tiene cambios pendientes marcados como `⚠️ pendiente`, resolverlos
 
 ### Docs actualizados
 
-> Si se usó /new-feature en esta sesión: `06_TASKS.md` es **obligatorio** —
-> marcar la tarea como `completed` o actualizar su estado.
+Cada dato va en un solo lugar. `02_TASKS.md` es obligatorio.
 
-- [ ] 01_PROJECT_PRD.md  — [motivo o "no aplica"]
-- [ ] 02_SDD.md          — [motivo o "no aplica"]
-- [ ] 03_SYSTEM_SPEC.md  — [motivo o "no aplica"]
-- [ ] 04_DATA_MODEL.md   — [motivo o "no aplica"]
-- [ ] 05_ARCHITECTURE.md — [motivo o "no aplica"]
-- [ ] 06_TASKS.md        — **verificar estado de tarea activa** (en progreso / completada) y **reescribir "Estado de traspaso"**: dónde quedó, próximo paso concreto, bloqueos
-- [ ] 07_DECISIONS.md    — [motivo o "no aplica"]
-- [ ] 08_CHANGELOG.md    — [motivo o "no aplica"]
-- [ ] 09_TESTING.md      — [tests nuevos en la tabla de trazabilidad, o "no aplica"]
-- [ ] 10_RUNBOOK.md      — [si cambió deploy, entornos o infra, o "no aplica"]
+- [ ] 02_TASKS.md      — **reescribir "Dónde quedó"** (estado, próximo paso, bloqueos) y **borrar las tareas cerradas**
+- [ ] 04_CHANGELOG.md  — una línea arriba por cada tarea cerrada, o "no aplica"
+- [ ] 03_DECISIONS.md  — ADR nuevo y su línea en el índice, o "no aplica"
+- [ ] 01_PRD.md        — [motivo o "no aplica"]
+- [ ] Opcionales que existan (`ARCHITECTURE`, `DATA_MODEL`, `TESTING`, `RUNBOOK`, `CONTEXT`) — cuál cambió, o "no aplica". Si hace falta uno que no existe, crearlo desde la plantilla.
 
 ### Verificación de código
 
-Ejecutar activamente antes de marcar como completado:
-
-- [ ] Correr el build — `npm run build` / `python -m pytest` / equivalente
-- [ ] Flujo completo probado manualmente — no solo que compile
-- [ ] Consola limpia — cero errores ni warnings
-- [ ] Edge cases del flujo considerados y probados
-- [ ] Imports válidos, sin dependencias rotas
+- [ ] Verificación ejecutada de verdad: build, tests y el flujo probado (`npm run build` / `python -m pytest` / equivalente). Lo que no se corrió se dice.
 
 ### Commit sugerido
 

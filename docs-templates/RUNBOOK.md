@@ -1,9 +1,10 @@
-# 10 — Runbook
+# Runbook
 
-> Cómo se despliega, se opera y se recupera el proyecto. Escribirlo a más
-> tardar en el primer deploy. Sin secretos: los valores viven en el gestor de
+> **Opcional:** se crea a más tardar en el primer deploy.
+>
+> Cómo se despliega, se opera y se recupera el proyecto. Sin secretos: los valores viven en el gestor de
 > secretos o en el `.env` local — acá solo los nombres (detalle en
-> `03_SYSTEM_SPEC.md`).
+> `ARCHITECTURE.md`).
 
 ## Entornos
 
@@ -27,7 +28,7 @@ ve el resultado._
 
 _Cómo volver a la versión anterior y cuánto tarda. Si hay migraciones de base
 de datos, cómo se revierten — o por qué no se pueden revertir (ver
-`07_DECISIONS.md`)._
+`03_DECISIONS.md`)._
 
 1.
 

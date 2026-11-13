@@ -20,7 +20,7 @@ Aplicás cambios en servidores de a uno, y cada uno con aprobación del usuario:
 
 ## Antes del primer cambio
 
-1. **El alias.** Tiene que estar en `.claude/ssh-hosts.txt`: sin ese archivo, el hook no te deja conectar. Mirá `docs/10_RUNBOOK.md` para saber si es producción, y si lo es, decilo en el reporte. Si el pedido no dice en qué servidor, preguntale al agente principal en vez de elegir uno.
+1. **El alias.** Tiene que estar en `.claude/ssh-hosts.txt`: sin ese archivo, el hook no te deja conectar. Mirá `docs/RUNBOOK.md` para saber si es producción, y si lo es, decilo en el reporte. Si el pedido no dice en qué servidor, preguntale al agente principal en vez de elegir uno.
 2. **El cambio concreto.** Si el pedido es ambiguo ("arreglá nginx"), no improvises: devolvé un plan con los comandos exactos y no ejecutes nada. Para diagnosticar está `server-inspector`.
 3. **El estado actual.** Leelo solo lo justo: cada lectura también pide permiso.
 

@@ -15,7 +15,7 @@ Escribí como le explicarías algo a un colega que no estuvo mirando: claro, dir
 5. **Comandos que el usuario tiene que correr, en un bloque de código aparte** — nunca en medio de la frase.
 6. **Una sola pregunta al final, fácil de contestar** (sí/no o elegir una opción). Las condiciones van antes, no dentro de la pregunta.
 7. **Lo más corto que se entienda.** Una pregunta simple se contesta en 1–3 frases. Sin repetir lo que dijo el usuario, sin resumir paso a paso lo que se acaba de hacer y sin cerrar con ofrecimientos genéricos ("¿algo más?").
-8. **Explicaciones, en estilo técnico simple** (tomado de ASD-STE100) cuando el usuario pide que le expliquen un tema: frases de 20 palabras como máximo, en voz activa y con una sola idea cada una. Siempre la misma palabra para la misma cosa, sin sinónimos para variar. Si el tema se entiende mejor dibujado (un flujo, una estructura, una comparación), un diagrama en lugar del texto, con una frase que lo presente.
+8. **Explicaciones** (cuando el usuario pide entender un tema): frases de 20 palabras como máximo, en voz activa y siempre la misma palabra para la misma cosa. Si se entiende mejor dibujado, un diagrama con una frase que lo presente.
 
 **Criterio propio — no des la razón por cortesía:**
 
@@ -38,23 +38,21 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 
 ## 1. Regla de Oro: Planificar Antes de Actuar
 
-**NUNCA generar código o modificar archivos sin pasar primero por estos 3 pasos:**
+**Nunca generar código ni modificar archivos sin estos 3 pasos:**
 
-1. **Analizar:** Desglosa el problema, identifica impactos colaterales, propone solución conceptualmente.
-2. **Validar:** Detente y pregunta si hay ambigüedad en alguna de estas condiciones:
-   - Más de una arquitectura válida con trade-offs distintos
-   - La tarea afecta más de 3 archivos existentes
-   - Hay decisiones irreversibles (migraciones, cambios de schema, eliminación de datos)
-3. **Ejecutar:** Solo cuando la estrategia esté clara y aprobada.
+1. **Analizar:** el problema, sus impactos y una solución conceptual.
+2. **Validar:** frenar y preguntar si hay más de una arquitectura válida, si la tarea afecta más de 3 archivos existentes o si hay algo irreversible (migraciones, schema, borrado de datos).
+3. **Ejecutar:** solo con la estrategia clara y aprobada.
+
+Si se cumple alguna condición de **Validar**, planificar con la skill `project-planning`. Si la idea todavía es difusa, antes pasar por `/grill`.
+
+Esta regla manda sobre cualquier estilo que pida ejecutar sin frenar, pero solo en las condiciones de **Validar**. Fuera de ellas, un cambio claro y chico se ejecuta sin pedir permiso.
 
 ---
 
 ## 2. Principios
 
-- Sistemas seguros, escalables, mantenibles y listos para producción.
-- Priorizar: claridad, modularidad, simplicidad, reutilización.
-- Evitar: deuda técnica, hacks rápidos, sobreingeniería.
-- Identificadores y nombres de archivo siempre en inglés (variables, funciones, tipos, clases, rutas). Comentarios y documentación en español. Respuestas en el idioma del usuario.
+- Código seguro, mantenible y listo para producción: claro, modular y reutilizable, sin hacks ni sobreingeniería.
 - **Datos personales del usuario:** nunca enviarlos fuera del equipo ni dejarlos en algo que salga de él: correo, teléfono, documentos o dirección. Eso incluye User-Agent, cabeceras, URLs, búsquedas, formularios, scripts y archivos del repo. Si un sitio pide un contacto a los clientes automatizados, usar un nombre genérico o preguntar. Solo se usan si el usuario lo pide para ese envío.
 
 ---
@@ -64,32 +62,30 @@ Largo proporcional al cambio: un fix chico cierra en 2 líneas. Sin narrar el pr
 | Capa | Tecnología |
 |------|-----------|
 | Frontend | React / Next.js / Vue / Vanilla JS |
-| Backend | Node.js / Python (FastAPI) |
+| Backend | Node.js / Python (FastAPI) / PHP (Laravel) |
 | CMS | WordPress |
-| Base de datos | PostgreSQL / MySQL / MongoDB / Supabase |
+| Base de datos | PostgreSQL / MySQL / MongoDB / Supabase / SQLite |
 | Estilos | Tailwind CSS / CSS puro |
-| Runtime | Node.js 24+ / Python 3.12+ |
+| Runtime | Node.js 24+ / Python 3.12+ / PHP 8.3+ |
 
-**📌 Versiones actualizadas — regla obligatoria:**
+**📌 Versiones actualizadas — obligatorio** antes de usar una librería, framework, SDK o CLI:
 
-Antes de escribir o sugerir código que use una librería, framework, SDK o CLI (React, Next.js, Prisma, Tailwind, FastAPI, etc.):
-
-1. **No asumas** APIs, sintaxis ni versiones desde memoria — pueden estar desactualizadas.
+1. **No asumir** APIs, sintaxis ni versiones desde memoria.
 2. **Consulta la documentación vigente** antes de generar el código: Context7 MCP (`resolve-library-id` → `query-docs`) si está configurado; si no, usa búsqueda web o el subagente `browser`.
-3. **Respeta el lockfile del proyecto:** revisa `package.json` / `requirements.txt` / `pyproject.toml` y su lockfile antes de proponer versiones o upgrades; no cambies versiones fijadas sin avisar.
-4. **En instalaciones nuevas** (proyecto sin lockfile), usa la última versión **estable** compatible con el runtime de esta tabla — nunca fijes versiones obsoletas por costumbre.
+3. **Respetar el lockfile:** revisarlo antes de proponer versiones y no cambiar las fijadas sin avisar.
+4. **Sin lockfile:** la última versión estable compatible con el runtime de la tabla.
 
 ---
 
 ## 4. Naming & Git
 
-**Naming:** `kebab-case` archivos · `camelCase` variables · `PascalCase` clases · `UPPER_SNAKE_CASE` constantes · `/api/v1/recursos` endpoints
+**Naming:** `kebab-case` archivos · `camelCase` variables · `PascalCase` clases · `UPPER_SNAKE_CASE` constantes · `/api/v1/recursos` endpoints. Identificadores y nombres de archivo en inglés; comentarios y documentación en español; respuestas en el idioma del usuario.
 
 **Commits:** Conventional Commits — `feat` / `fix` / `refactor` / `docs` / `chore` / `perf`
 
 **Autoría:** todo commit sale con la identidad de git del usuario: no cambiarla ni usar `--author`. La IA puede figurar como coautora, nunca como autora. Antes de commitear en un equipo o repo nuevo, revisar `git config user.name`; si no es la del usuario, avisar y no commitear.
 
-**Tasks:** Cuando el usuario mencione modificaciones, cambios o nuevas funcionalidades — actualizar el archivo de tareas activo del proyecto (`06_TASKS.md` o equivalente) antes de codificar.
+**Tasks:** Cuando el usuario mencione modificaciones, cambios o nuevas funcionalidades — actualizar el archivo de tareas activo del proyecto (`02_TASKS.md` o equivalente) antes de codificar.
 
 ---
 
@@ -97,30 +93,25 @@ Antes de escribir o sugerir código que use una librería, framework, SDK o CLI 
 
 | Archivo | Propósito |
 |---------|-----------|
-| `01_PROJECT_PRD.md` | Requisitos de producto — `RF-xx`/`RNF-xx` con criterios de aceptación |
-| `02_SDD.md` | Diseño del sistema |
-| `03_SYSTEM_SPEC.md` | Especificaciones técnicas |
-| `04_DATA_MODEL.md` | Esquemas y entidades |
-| `05_ARCHITECTURE.md` | Decisiones arquitectónicas |
-| `06_TASKS.md` | Backlog activo + estado de traspaso (lo primero que lee quien retoma el proyecto) |
-| `07_DECISIONS.md` | ADRs |
-| `08_CHANGELOG.md` | Historial de versiones |
-| `09_TESTING.md` | Cómo correr los tests, estrategia y trazabilidad requisito → test |
-| `10_RUNBOOK.md` | Entornos, deploy, rollback, monitoreo e incidentes — a más tardar en el primer deploy |
-| `CONTEXT.md` | Glosario del dominio — sin numerar: es un glosario vivo, no un documento de fase (opcional, desde 3 términos) |
+| `01_PRD.md` | Requisitos — `RF-xx`/`RNF-xx` con criterios de aceptación |
+| `02_TASKS.md` | Solo lo abierto, como mucho 10, y dónde quedó el trabajo — lo primero que lee quien retoma el proyecto |
+| `03_DECISIONS.md` | ADR, con un índice de una línea por decisión al principio |
+| `04_CHANGELOG.md` | Una línea por cambio, lo nuevo arriba |
+| `ARCHITECTURE.md` | Opcional — componentes, APIs, integraciones, variables de entorno e infraestructura |
+| `DATA_MODEL.md` | Opcional — entidades y campos |
+| `TESTING.md` | Opcional — cómo correr los tests y qué requisito cubre cada uno |
+| `RUNBOOK.md` | Opcional — deploy, vuelta atrás, monitoreo e incidentes; a más tardar en el primer deploy |
+| `CONTEXT.md` | Opcional — glosario del dominio, desde 3 términos |
 
-Actualizar el archivo correspondiente al completar cada tarea.
+Los 4 numerados van siempre; los opcionales se crean cuando el proyecto los pide. Cada dato va en un solo lugar: al cerrar una tarea, se borra de `02_TASKS.md` y deja una línea en `04_CHANGELOG.md`; el detalle técnico va en el commit.
 
-**⚠️ Excepción:** Si el proyecto se desvía de esta tabla, del stack de § 3 o de alguna regla, el desvío se documenta en la sección **Proyecto** de `AGENTS.md` (raíz del proyecto), que tiene prioridad sobre ellas.
+**⚠️ Excepción:** Si el proyecto se desvía de esta tabla, del stack de § 3 o de alguna regla, el desvío se documenta en el `AGENTS.md` del proyecto, que tiene prioridad sobre ellas.
 
 ---
 
 ## 6. Jerarquía de Reglas
 
-1. Este archivo `GEMINI.md` — máxima prioridad
-2. `.agents/rules/` (`security.md`, `architecture.md`, `database.md`, `ui-ux.md`, `seo.md`, `pwa.md`, `operations.md`, `cms.md`, `stack-conventions.md`) — workspace, override local
-3. Workflows (`/grill`, `/new-feature`, `/bug-fix`, `/security-audit`, `/deploy-checklist`, `/session-close`, `/tools-reference`) — checklists operativos que se ejecutan en un momento puntual; cuando un workflow resume una regla que también vive en `.agents/rules/`, el archivo de `.agents/rules/` es la fuente de verdad si hay discrepancia
-4. Skills según contexto del proyecto
+Manda este archivo `GEMINI.md`. Después, `.agents/rules/`; después, los workflows y el resto de las skills. Si un workflow y una rule dicen distinto, manda la rule.
 
 ---
 
@@ -128,15 +119,15 @@ Actualizar el archivo correspondiente al completar cada tarea.
 
 Invocar con `/` en el chat:
 
-| Comando | Cuándo |
-|---------|--------|
-| `/grill` | Antes de `/new-feature`, cuando el plan todavía es difuso — la IA interroga hasta afilarlo |
-| `/new-feature` | Antes de iniciar cualquier tarea nueva |
-| `/bug-fix` | Cuando algo está roto — identifica causa raíz antes de codificar |
-| `/session-close` | Al terminar el día o una tarea — actualiza docs y genera commit |
-| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles |
-| `/deploy-checklist` | Antes de merge a main o deploy a producción |
-| `/tools-reference` | Setup inicial o cuando necesites ver skills y herramientas disponibles |
+- `/grill` — antes de `/new-feature`, cuando el plan todavía es difuso.
+- `/new-feature` — al empezar una tarea nueva.
+- `/bug-fix` — cuando algo está roto: causa raíz antes de codificar.
+- `/session-close` — al terminar el día o una tarea.
+- `/security-audit` — antes de subir auth, APIs o datos sensibles.
+- `/deploy-checklist` — antes de un merge a main o un deploy a producción.
+- `/tools-reference` — para ver las skills y herramientas disponibles.
+
+**Sugerir, no correr:** si el usuario está por hacer algo que cubre un comando y no lo nombró, sugerírselo en una línea al final, sin ejecutarlo.
 
 ---
 
@@ -144,35 +135,27 @@ Invocar con `/` en el chat:
 
 Aplicar solo en tareas que generen, modifiquen o revisen código — omitir en consultas informativas.
 
-**⚠️ Si el usuario adjunta o menciona un informe de auditoría externo (revisión manual, herramienta de análisis, etc.) — el Inspector no ejecuta. La auditoría ya fue realizada. Solo implementar las correcciones indicadas.**
+**⚠️ Si el usuario trae un informe de auditoría externo, el Inspector no ejecuta: solo se implementan las correcciones indicadas.**
 
-Antes de entregar cualquier código, revisar internamente con estas pasadas — **omitir las que no apliquen** a la tarea (ej. ⚙️ en un cambio solo visual):
+Antes de entregar código, estas pasadas, **omitiendo las que no apliquen**:
 
 - **🎨 Frontend:** presentación — mobile-first, 5 estados de UI, accesibilidad, estética
 - **⚙️ Backend:** lógica, endpoints, datos — seguridad, modularidad, validación
 - **🧪 Verificado:** qué se ejecutó de verdad — build, tests, flujo probado. Nunca dar por probado lo que no se corrió
-- **📝 Docs:** `06_TASKS.md` (con el estado de traspaso), `08_CHANGELOG.md` y el ADR si hubo decisión — al día
+- **📝 Docs:** `02_TASKS.md` (lo abierto y dónde quedó), `04_CHANGELOG.md` y el ADR si hubo decisión — al día
 - **🔍 Inspector:** audita contra `security.md`, `ui-ux.md` y `architecture.md` — si detecta problema crítico, bloquea entrega y corrige primero
 - **⚠️ Riesgo:** solo si hubo algo irreversible — migración, borrado de datos, push o deploy a producción
 
-**Reporte al usuario:** una sola línea al final del cierre (§ 0), en texto normal — nunca en bloque de código. Pasada sin observaciones: `✅`. 🧪 dice qué se ejecutó. Solo se explica, en pocas palabras, la pasada que encontró o corrigió algo:
-
-> Revisión: 🎨 ✅ · ⚙️ ✅ · 🧪 build + tests · 📝 ✅ · 🔍 ✅
+**Reporte:** una línea al final del cierre (§ 0), en texto normal. Sin observaciones, `✅`; 🧪 dice qué se ejecutó; solo se explica la pasada que encontró o corrigió algo:
 
 > Revisión: 🎨 ✅ · 🧪 sin verificar: no hay tests · 📝 falta CHANGELOG · 🔍 corregido: XSS en el formulario · ⚠️ push a main
 
 **Uso de subagentes** — cada uno arranca sin contexto y vuelve a leer el proyecto, así que cuestan:
 
-- Cambios chicos (pocos archivos, sin riesgo), directo, sin subagente.
-- Uno por tarea grande, y reanudarlo si la herramienta lo permite, en vez de lanzar otro: conserva lo que ya leyó.
-- A quien implementa, instrucciones exactas: los archivos y los puntos a resolver. A quien revisa, el alcance (el diff o la feature), no una lista cerrada de archivos: tiene que poder seguir el dato hasta donde llega.
-- Revisiones una sola vez, al final. Un cambio chico lleva una sola revisión, salvo que toque login, pagos o datos sensibles: eso siempre pasa por la auditoría de seguridad.
-- Build, tests y lint, con comandos, no con subagentes.
-- Pedir informes breves: hallazgos y resultados, no explicaciones.
+- Cambios chicos, directo; build, tests y lint, con comandos. Un subagente por tarea grande, reanudado en vez de lanzar otro.
+- A quien implementa, los archivos y puntos exactos; a quien revisa, el alcance (diff o feature) para que siga el dato. Pedir informes breves: hallazgos, no explicaciones.
+- Revisión una sola vez, al final. Login, pagos o datos sensibles pasan siempre por la auditoría de seguridad.
 
-> Esto es una **auto-revisión inline** en el mismo turno, no delegación. Para
-> trabajo **delegado** en contexto aislado, Antigravity tiene subagentes reales
-> vía `invoke_subagent` (built-in: `research` para exploración de codebase,
-> `browser` para tareas web sandboxed, `self` para clonar el agente actual) —
-> corren en su propia ventana y no contaminan el contexto principal. Usarlos
+> Esto es una **auto-revisión inline** en el mismo turno. Para trabajo delegado,
+> en contexto aislado, usar `invoke_subagent` (`research`, `browser` o `self`)
 > por decisión explícita, no en cada tarea de código.

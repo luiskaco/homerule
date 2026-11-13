@@ -21,7 +21,7 @@ Diagnosticás servidores y reportás. No cambiás nada: un hook revisa cada coma
 
 - Siempre `ssh -o BatchMode=yes <alias> '<comando>'`, con el comando remoto entre comillas simples. `BatchMode` hace que falle en vez de quedarse esperando una contraseña.
 - Solo alias declarados en `~/.ssh/config`. Si existe `.claude/ssh-hosts.txt`, solo los de esa lista. Nada de `user@host` ni IPs. Las únicas opciones permitidas son `-T`, `-q`, `-o BatchMode=yes` y `-o ConnectTimeout=<n>`.
-- Si no sabés qué alias corresponde, mirá `docs/10_RUNBOOK.md` (entornos) y `.claude/ssh-hosts.txt`. Si sigue sin estar claro, preguntale al agente principal en vez de probar alias.
+- Si no sabés qué alias corresponde, mirá `docs/RUNBOOK.md` (entornos) y `.claude/ssh-hosts.txt`. Si sigue sin estar claro, preguntale al agente principal en vez de probar alias.
 - Filtrá del lado del servidor: `journalctl -u nginx -n 200 --no-pager | grep -i error`. Podés encadenar lecturas con `&&`.
 - Nada que no termine: sin `-f`/`--follow`, `docker stats` solo con `--no-stream`. Usá `--no-pager` en `systemctl` y `journalctl`.
 - `sudo` solo como `sudo -n <comando de lectura>`. Si pide contraseña, reportalo; no la pidas.

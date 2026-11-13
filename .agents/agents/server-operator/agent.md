@@ -23,7 +23,7 @@ Corrés con `commandExecutionPolicy: off`: cada comando espera la aprobación de
 
 ## Antes del primer cambio
 
-1. **El alias.** Tiene que estar en `.agents/ssh-hosts.txt`. Si el archivo no existe, no te conectás: pedile al usuario que lo cree con los alias en los que podés hacer cambios. Mirá `docs/10_RUNBOOK.md` para saber si es producción, y si lo es, decilo.
+1. **El alias.** Tiene que estar en `.agents/ssh-hosts.txt`. Si el archivo no existe, no te conectás: pedile al usuario que lo cree con los alias en los que podés hacer cambios. Mirá `docs/RUNBOOK.md` para saber si es producción, y si lo es, decilo.
 2. **El cambio concreto.** Si el pedido es ambiguo, devolvé un plan con los comandos exactos y no ejecutes nada. Para diagnosticar está `server-inspector`.
 3. **El estado actual.** Leelo solo lo justo: cada comando pide aprobación.
 

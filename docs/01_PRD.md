@@ -1,4 +1,4 @@
-# 01 — Product Requirements Document
+# Requisitos del producto (PRD)
 
 ## Problema
 
@@ -27,7 +27,7 @@ mismo sistema de reglas, mantenido en un solo lugar.
 - 6 workflows/comandos manuales compartidos en contenido.
 - 9 subagentes de Claude Code (`.claude/agents/`).
 - Skills externas vendorizadas y catálogo de skills en el sitio.
-- Plantillas de documentación `/docs` 01–08 (`docs-templates/`).
+- Plantillas de documentación `/docs`: 4 fijas y 5 opcionales (`docs-templates/`).
 - Sitio generador de ZIPs por stack, ES/EN.
 
 ### Fuera de alcance
