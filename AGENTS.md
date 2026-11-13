@@ -51,6 +51,10 @@ Editar siempre la fuente, nunca un derivado.
   "Regla de Oro". Otra IA no tiene el núcleo. El generador falla si aparece
   una cita (`assertNoCoreReferences()`).
 - Este `AGENTS.md` (el de la raíz) es solo del repo y no se empaqueta.
+- **Kit global** (ADR-038): `scripts/install-global.mjs` instala en la carpeta
+  personal lo mismo que traen los ZIPs, leyendo el manifest. Como una skill
+  personal pisa a la del proyecto, después de editar una rule o una skill acá
+  hay que reinstalar para verla en la sesión.
 - **Kit híbrido** (`tool: "hybrid"`, ADR-031): sale de la misma fuente. El generador agrega a cada rule, skill y workflow un puntero de `.claude/` hacia `.agents/`; no tiene fuente propia.
 - **Derivados — se regeneran, no se editan a mano:**
   - `.claude/commands/` y `.claude/skills/<regla>/SKILL.md` (las 9 rules
@@ -79,7 +83,7 @@ por tool), § 6 (nombres de la jerarquía) y la nota de subagentes de § 8.
 node scripts/sync-claude-kit.mjs          # regenera comandos y rules→skills de Claude
 node scripts/build-plugin.mjs --check     # falla si el plugin quedó atrás de la fuente
 python scripts/check-core-parity.py       # paridad CORE.md ↔ GEMINI.md
-node scripts/sync-globals.mjs             # ¿globales al día? --write los genera desde la fuente
+node scripts/install-global.mjs           # ¿kit global al día? --write lo instala en ~/.claude, ~/.gemini, ~/.codex y ~/.agents (ADR-038)
 node scripts/test-readonly-bash.mjs       # casos del hook de solo lectura de los revisores
 node scripts/test-web-guard.mjs           # casos del hook de web-researcher
 node scripts/test-ssh-guard.mjs           # casos del hook de los agentes de servidores

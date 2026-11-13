@@ -53,12 +53,29 @@ El contenido de cada ADR no cambia.
    reglas generales se cargan desde los archivos globales.
 5. Mantenerlo corto: lo que alguien nuevo necesita para no romper nada.
 
+## Copias del kit (ADR-038)
+
+El kit vive en la carpeta personal: el proyecto ya no lleva sus copias.
+
+1. Con el kit global instalado (`node scripts/install-global.mjs`, desde makeRuleIA),
+   correr primero sin `--write` para ver qué se borra:
+
+   ```bash
+   node scripts/remove-project-kit.mjs <ruta-del-proyecto>
+   ```
+
+2. Borra solo lo que es copia exacta de alguna versión del kit. Lo que alguien
+   modificó o lo propio del proyecto se queda y se lista: decidir con el usuario si
+   el cambio se lleva al kit o se descarta.
+3. Con su OK, correrlo con `--write`.
+4. El `CLAUDE.md` del proyecto queda con una sola línea: `@AGENTS.md`. Se conservan
+   `.claude/settings.json` y `.claude/ssh-hosts.txt` si existen.
+
 ## Referencias
 
 1. Buscar en el proyecto los nombres viejos: `AGENTS.md`, `CLAUDE.md`,
    `GEMINI.md`, `.claude/`, `.agents/` y el README.
-2. Si el proyecto tiene el kit instalado, actualizar comandos, reglas y agentes
-   con el kit nuevo desde el sitio, sin pisar lo que el proyecto personalizó.
+2. Las copias del kit no se actualizan: se borran (sección anterior).
 
 ## Cierre
 

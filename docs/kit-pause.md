@@ -33,6 +33,8 @@ temas, y llevarlo a sus proyectos. El resto sigue esperando.
 **Excepción (2026-11-08):** el autor pidió la regla de explicaciones en § 0 (regla de
 escritura 8, estilo ASD-STE100).
 
+**Fin anticipado (2026-11-13):** el autor decidió cambiar la forma de trabajar sin esperar al 19: el kit pasa a instalarse en la carpeta personal (ADR-038). Lo que sigue pendiente de la revisión está abajo.
+
 ## Fricciones
 
 Una línea por cada vez que el kit estorbe: fecha, proyecto, herramienta y qué pasó.
@@ -94,12 +96,11 @@ crearon. Lo que viaja es este repo.
    git pull
    ```
 
-2. Poner al día los archivos globales, porque el kit híbrido depende de ellos.
-   El script los genera desde `core/CORE.md` y `.gemini/GEMINI.md`, con copia de
-   respaldo. Sin `--write` solo dice si están desactualizados:
+2. Instalar o actualizar el kit global (ADR-038): núcleo, rules, skills, comandos y
+   subagentes de Claude y de Antigravity, con respaldo. Sin `--write` solo compara:
 
    ```bash
-   node scripts/sync-globals.mjs --write
+   node scripts/install-global.mjs --write
    ```
 3. Para seguir con un proyecto, también hay que tenerlo clonado en esa máquina.
 4. Poner la identidad de git con tu correo privado de GitHub, igual que en esta máquina:

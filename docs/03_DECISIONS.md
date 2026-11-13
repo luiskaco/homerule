@@ -44,6 +44,7 @@
 | ADR-035 | Documentos: 4 fijos, 5 opcionales y cada dato en un solo lugar | Aceptada |
 | ADR-036 | `AGENTS.md` solo con lo esencial del proyecto, sin las reglas generales | Aceptada |
 | ADR-037 | Los 4 revisores no cargan las reglas generales (`omitClaudeMd`) | Aceptada |
+| ADR-038 | El kit se instala en la carpeta personal, no en cada proyecto | Aceptada |
 
 ---
 
@@ -1026,3 +1027,34 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Si un proyecto pone en su `CLAUDE.md` algo que un revisor debería saber, el revisor no lo ve. Eso va en `AGENTS.md`, que sí leen.
 - El hook global de datos personales sigue vigilando sus comandos.
 - Antigravity no cambia: no se comprobó si sus agentes cargan `GEMINI.md`.
+
+---
+
+## ADR-038 — El kit se instala en la carpeta personal, no en cada proyecto
+
+**Estado:** Aceptada (2026-11-13). Cambia la forma de instalar de los kits de Claude Code, Antigravity e híbrido para el autor; los ZIPs del sitio siguen para quien instala por proyecto.
+
+**Contexto:** Cada proyecto llevaba su copia de rules, skills, comandos, subagentes y hooks. Una mejora del kit obligaba a tocar los 19 proyectos, y las copias se desfasaban. Claude Code y Antigravity cargan esas piezas desde la carpeta personal en todos los proyectos (verificado en sus documentaciones el 2026-11-13): `~/.claude/{skills,commands,agents,hooks}` y `~/.gemini/GEMINI.md` y `~/.gemini/config/{rules,skills,agents}`. Codex lee `~/.codex/AGENTS.md` y las skills de `~/.agents/skills/`.
+
+**Decisión:**
+
+- El kit se instala una vez por equipo con `node scripts/install-global.mjs --write`, desde este repo. Actualizar es `git pull` y volver a correrlo.
+- El script arma lo que instala desde el manifest del sitio, así sale de la misma fuente que los ZIPs. Deja copia de respaldo, registra qué instaló y borra lo que el kit ya no trae.
+- Los hooks de los subagentes de Claude pasan a la carpeta personal (`$HOME/.claude/hooks/`). La lista `.claude/ssh-hosts.txt` sigue siendo de cada proyecto.
+- Cada proyecto conserva solo lo suyo: `docs/`, el `AGENTS.md` esencial, un `CLAUDE.md` que lo importa y su configuración propia. Quien clone un repo trae su propia forma de trabajar (ADR-036).
+- **Codex:** recibe el núcleo en `~/.codex/AGENTS.md` y las rules, skills y comandos como skills en `~/.agents/skills/`, porque no tiene rules con disparador ni comandos con `/`: se piden con `$nombre`. Sus subagentes no se instalan todavía: un agente de Codex no puede tener su propio sandbox de solo lectura y sus hooks son globales.
+- Reemplaza a `scripts/sync-globals.mjs`.
+
+**Alternativas consideradas:**
+
+- **Plugin de Claude Code:** descartada por ahora. Los subagentes de plugin ignoran sus hooks (ADR-026), y sin hooks los revisores no quedan en solo lectura.
+- **Plugin de Antigravity importando el de Claude:** sin probar; se puede evaluar después.
+- **Enlaces simbólicos al repo:** en Windows piden permisos especiales; la copia es más simple.
+
+**Consecuencias:**
+
+- Una mejora del kit llega a todos los proyectos de un equipo con un solo comando.
+- Todos los proyectos usan la misma versión del kit.
+- Si una skill personal y una del proyecto tienen el mismo nombre, Claude usa la personal. En este repo, después de editar una rule hay que reinstalar para verla en la sesión.
+- Claude muestra la descripción de cada skill dentro de un presupuesto; con muchas skills puede recortar las menos usadas (`skillOverrides` lo ajusta).
+- Los hooks de Antigravity no se instalan todavía: los agentes de Antigravity siguen controlándose por su prompt, como antes. Sumarlos queda para cuando se pruebe si un hook se puede limitar a un subagente.

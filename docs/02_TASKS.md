@@ -7,9 +7,9 @@
 
 ## Dónde quedó
 
-- **Última actualización:** 2026-11-11
-- **Dónde quedó:** rama `feat/docs-simplify` (PR #32, sin fusionar por decisión del autor) con la fase 1 (documentos, ADR-035), la fase 2 (núcleo, `AGENTS.md`, revisores y skills, ADR-036 y ADR-037) y los puntos adelantados de la revisión del 19. Detalle en `docs/handoff-docs-simplify.md`.
-- **Próximo paso:** el merge del PR #32; después, globales con `node scripts/sync-globals.mjs --write` y migrar los 19 proyectos (T-04).
+- **Última actualización:** 2026-11-13
+- **Dónde quedó:** PR #32 y #34 fusionados en main el 2026-11-13. Rama `feat/global-kit`: el kit se instala en la carpeta personal (ADR-038) con `scripts/install-global.mjs`.
+- **Próximo paso:** kit global (T-13, ADR-038): instalar con `node scripts/install-global.mjs --write`, probar en una sesión nueva y migrar los proyectos.
 - **Bloqueos:** ninguno. Los 19 proyectos están en la PC del trabajo, no en esta.
 
 ## Abiertas
