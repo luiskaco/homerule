@@ -1,6 +1,6 @@
 # makeRuleIA — Memoria del proyecto
 
-Este repo es el **AI Rules Hub**: la fuente desde la que se generan los kits de
+Este repo es **Homerule**: la fuente desde la que se generan los kits de
 reglas para Antigravity y Claude Code. Acá se aplica el mismo kit que se
 distribuye (dogfooding) — las reglas globales se importan del archivo fuente:
 

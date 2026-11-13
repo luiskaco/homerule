@@ -71,7 +71,7 @@ export default async function LocaleLayout(
             <nav className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
               <Link href="/" className="group flex items-center gap-2.5 text-lg font-bold tracking-tight">
                 <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-violet-600 via-indigo-600 to-pink-500 font-extrabold text-white shadow-lg shadow-indigo-500/25 transition-transform duration-300 group-hover:scale-105">
-                  <span className="text-sm font-black tracking-widest">AI</span>
+                  <span aria-hidden="true" className="font-mono text-sm font-black">~/</span>
                   <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-400"></span>

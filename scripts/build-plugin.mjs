@@ -85,7 +85,7 @@ function buildManifest(version) {
 
   return {
     name: "ai-rules-hub",
-    displayName: "AI Rules Hub",
+    displayName: "Homerule",
     version,
     description:
       "Kit de reglas, comandos y subagentes para Claude Code: 9 rules como skills nativas, 7 workflows y 9 subagentes especializados.",

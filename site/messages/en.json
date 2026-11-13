@@ -1,10 +1,10 @@
 {
   "Layout": {
-    "brand": "Rules Hub",
+    "brand": "Homerule",
     "brandTagline": "Global AI kit",
-    "metaTitle": "AI Rules Hub | Global kit for Claude Code, Antigravity and Codex",
+    "metaTitle": "Homerule | Global kit for Claude Code, Antigravity and Codex",
     "metaDescription": "Rules, skills, commands and subagents installed once in your home folder, plus a starter for each project with docs/ and AGENTS.md.",
-    "footerTagline": "AI Rules Hub — one global kit for working with AI",
+    "footerTagline": "Homerule — one global kit for working with AI",
     "footerDirectory": "skills.sh directory ↗",
     "footerTools": "Claude Code · Antigravity · Codex",
     "languageLabel": "Language"
@@ -698,7 +698,7 @@
     "skill:security-mitigations": "Security mitigations by topic (login, permissions, injection, XSS, CSRF, CORS, uploads, secrets, dependencies, logs, errors, APIs, webhooks, AI, infrastructure, WordPress). Use it when building or auditing any of those, to open only the relevant topic. Principles and prohibitions are in the security rule."
   },
   "Install": {
-    "metaTitle": "Install the global kit | AI Rules Hub",
+    "metaTitle": "Install the global kit | Homerule",
     "metaDescription": "The kit of rules, skills, commands and subagents for Claude Code, Antigravity or Codex, installed once in your home folder.",
     "title": "Install the global kit",
     "intro": "Install it once per machine, in your home folder, and it applies to every project. If you use more than one tool, install each one's kit: they don't overwrite each other.",
@@ -735,7 +735,7 @@
     "nextBody": "In each project, download <link>the project starter</link>: docs/ and AGENTS.md."
   },
   "NewProject": {
-    "metaTitle": "New project | AI Rules Hub",
+    "metaTitle": "New project | Homerule",
     "metaDescription": "docs/, AGENTS.md and CLAUDE.md to start a project with any AI.",
     "title": "New project",
     "intro": "All a project carries: its documentation in docs/ and an AGENTS.md with the essentials. Any AI or person who clones it knows where to pick up, without depending on how you work.",
@@ -751,7 +751,7 @@
     "downloadError": "Couldn't build the ZIP. Try again."
   },
   "Catalog": {
-    "metaTitle": "What the kit includes | AI Rules Hub",
+    "metaTitle": "What the kit includes | Homerule",
     "metaDescription": "The rules, commands and subagents of the global kit: what each one does and its content.",
     "title": "What the kit includes",
     "intro": "Everything the global kit installs, so you can see what each piece does first. No need to pick: the kit installs whole and each rule activates on its own based on what you're working on.",

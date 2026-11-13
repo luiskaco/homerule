@@ -1,10 +1,10 @@
 {
   "Layout": {
-    "brand": "Rules Hub",
+    "brand": "Homerule",
     "brandTagline": "Kit global para IA",
-    "metaTitle": "AI Rules Hub | Kit global para Claude Code, Antigravity y Codex",
+    "metaTitle": "Homerule | Kit global para Claude Code, Antigravity y Codex",
     "metaDescription": "Reglas, skills, comandos y subagentes instalados una vez en tu carpeta personal, y el arranque de cada proyecto con docs/ y AGENTS.md.",
-    "footerTagline": "AI Rules Hub — un kit global para trabajar con IA",
+    "footerTagline": "Homerule — un kit global para trabajar con IA",
     "footerDirectory": "Directorio skills.sh ↗",
     "footerTools": "Claude Code · Antigravity · Codex",
     "languageLabel": "Idioma"
@@ -640,7 +640,7 @@
     }
   },
   "Install": {
-    "metaTitle": "Instalar el kit global | AI Rules Hub",
+    "metaTitle": "Instalar el kit global | Homerule",
     "metaDescription": "El kit de reglas, skills, comandos y subagentes para Claude Code, Antigravity o Codex, instalado una vez en tu carpeta personal.",
     "title": "Instalar el kit global",
     "intro": "Se instala una vez por máquina, en tu carpeta personal, y vale para todos tus proyectos. Si usás más de una herramienta, instalá el kit de cada una: no se pisan entre sí.",
@@ -677,7 +677,7 @@
     "nextBody": "En cada proyecto, bajá <link>el arranque del proyecto</link>: docs/ y AGENTS.md."
   },
   "NewProject": {
-    "metaTitle": "Proyecto nuevo | AI Rules Hub",
+    "metaTitle": "Proyecto nuevo | Homerule",
     "metaDescription": "docs/, AGENTS.md y CLAUDE.md para arrancar un proyecto con cualquier IA.",
     "title": "Proyecto nuevo",
     "intro": "Lo único que lleva cada proyecto: su documentación en docs/ y un AGENTS.md con lo esencial. Cualquier IA o persona que lo clone sabe por dónde seguir, sin depender de tu forma de trabajar.",
@@ -693,7 +693,7 @@
     "downloadError": "No se pudo armar el ZIP. Probá de nuevo."
   },
   "Catalog": {
-    "metaTitle": "Qué trae el kit | AI Rules Hub",
+    "metaTitle": "Qué trae el kit | Homerule",
     "metaDescription": "Las rules, comandos y subagentes del kit global: qué hace cada uno y su contenido.",
     "title": "Qué trae el kit",
     "intro": "Todo lo que instala el kit global, para ver qué hace cada pieza antes de instalarla. No hace falta elegir: el kit se instala completo y cada rule se activa sola según lo que estés tocando.",

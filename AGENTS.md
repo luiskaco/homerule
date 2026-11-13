@@ -1,4 +1,4 @@
-# AGENTS.md — makeRuleIA (AI Rules Hub)
+# AGENTS.md — Homerule (repo makeRuleIA)
 
 Instrucciones del repo para cualquier agente de código (estándar
 [AGENTS.md](https://agents.md)). Este repo es la **fuente** desde la que se

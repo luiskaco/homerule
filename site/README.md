@@ -1,4 +1,4 @@
-# AI Rules Hub
+# Homerule — sitio
 
 Sitio Next.js que entrega el kit de este repo en dos piezas (ADR-039):
 

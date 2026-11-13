@@ -1,4 +1,6 @@
-# AI Rules Hub
+# Homerule
+
+> Your AI rules, at home in every project.
 
 **English** · [Español](README.es.md)
 
