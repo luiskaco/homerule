@@ -31,7 +31,9 @@ if (PROJECT === resolve(REPO)) throw new Error("remove-project-kit: este repo es
 const KIT_DIRS = [".claude/skills", ".claude/commands", ".claude/agents", ".claude/hooks", ".agents/rules", ".agents/skills", ".agents/agents"];
 const KEEP = new Set([".claude/settings.json", ".claude/settings.local.json", ".claude/ssh-hosts.txt"]);
 
-const norm = (text) => text.replace(/\r\n/g, "\n");
+// El kit agrega `source:` e `install:` al frontmatter de las skills de terceros:
+// una copia sin esas dos líneas sigue siendo la misma skill.
+const norm = (text) => text.replace(/\r\n/g, "\n").replace(/^(?:source|install): .*\n/gm, "");
 const hash = (text) => createHash("sha256").update(norm(text)).digest("hex");
 const git = (argv) => spawnSync("git", argv, { cwd: REPO, encoding: "utf8", maxBuffer: 1 << 28 });
 
