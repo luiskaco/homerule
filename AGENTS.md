@@ -67,7 +67,7 @@ Editar siempre la fuente, nunca un derivado.
     `node scripts/build-plugin.mjs`.
   - `site/public/manifest.json` y `site/public/global-kit/` ← los regenera
     `prebuild`/`predev` del sitio.
-  - La tabla de tokens del `README.md` ← `python scripts/update-token-table.py`.
+  - La tabla de tokens de `README.md` y `README.es.md` ← `python scripts/update-token-table.py`.
 - **Skills de terceros vendorizadas** (en `.agents/skills/` y `.claude/skills/`):
   no editarlas — se actualizan reinstalando (ver `skills-lock.json` y README
   § Skills de diseño de terceros).
@@ -92,7 +92,7 @@ node scripts/test-readonly-bash.mjs       # casos del hook de solo lectura de lo
 node scripts/test-web-guard.mjs           # casos del hook de web-researcher
 node scripts/test-ssh-guard.mjs           # casos del hook de los agentes de servidores
 node scripts/test-personal-data-guard.mjs # casos del hook global de datos personales
-python scripts/update-token-table.py      # tabla de tokens del README
+python scripts/update-token-table.py      # tabla de tokens de los dos README
 python scripts/make-desktop-zips.py       # ZIPs de skills para Claude Desktop (skills-desktop/, gitignored)
 
 cd site && npm install && npm run dev     # sitio en local (regenera el manifest)
@@ -102,7 +102,9 @@ cd site && npm run build                  # build de producción
 ## Convenciones
 
 - Identificadores y nombres de archivo en inglés; comentarios y documentación
-  en español (ADR-009).
+  en español (ADR-009). Excepción: el `README.md` va en inglés, con su
+  traducción en `README.es.md`; un cambio en uno se replica en el otro en el
+  mismo commit (ADR-040). El sitio abre en inglés.
 - Commits: Conventional Commits (`feat` / `fix` / `refactor` / `docs` /
   `chore` / `perf`).
 - Finales de línea LF en todo el repo (`.gitattributes`). Los guards `--check`

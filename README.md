@@ -1,60 +1,63 @@
-# AI Rules Hub — Guía del Sistema
+# AI Rules Hub
 
-Kit de reglas, skills, comandos y subagentes para trabajar con IA en **Claude Code**,
-**Antigravity** y **Codex**. Se instala una sola vez en la carpeta personal y vale
-para todos los proyectos (ADR-038). Cada proyecto lleva solo su documentación en
-`docs/` y un **`AGENTS.md`** con lo esencial: quien lo clone trae su propia forma de
-trabajar (ADR-036).
+**English** · [Español](README.es.md)
 
-El sitio (`site/`) entrega las dos piezas (ADR-039): el kit global de cada
-herramienta, con su instalador, y el arranque de un proyecto nuevo (`docs/`,
-`AGENTS.md` y `CLAUDE.md`).
+A kit of rules, skills, commands and subagents for working with AI in **Claude Code**,
+**Antigravity** and **Codex**. You install it once in your home folder and it applies
+to every project (ADR-038). Each project only carries its documentation in `docs/` and
+an **`AGENTS.md`** with the essentials: whoever clones it brings their own way of
+working (ADR-036).
 
-Carga selectiva por contexto — nada se lee completo en cada mensaje salvo lo
-estrictamente "Always On".
+The site (`site/`) delivers both pieces (ADR-039): the global kit for each tool, with
+its installer, and a starter for new projects (`docs/`, `AGENTS.md` and `CLAUDE.md`).
 
----
+Context loads selectively: nothing is read in full on every message except what is
+strictly "Always On".
 
-## Estructura
-
-```
-~/.claude/                  # Claude Code: CLAUDE.md, skills/ (rules y skills), commands/, agents/, hooks/
-~/.gemini/                  # Antigravity: GEMINI.md y config/{rules,skills,agents}/
-~/.codex/AGENTS.md          # Codex: reglas generales
-~/.agents/skills/           # Codex: rules, skills y comandos como skills
-
-[proyecto]/
-├── AGENTS.md               # lo esencial del proyecto, para cualquier IA o persona (ADR-036)
-├── CLAUDE.md               # solo importa AGENTS.md
-└── docs/                   # 01_PRD, 02_TASKS, 03_DECISIONS, 04_CHANGELOG y los opcionales
-```
-
-Las rules se activan solas según lo que se esté tocando (seguridad, base de datos,
-interfaz, SEO…), así que el kit se instala completo. Si un proyecto se desvía de
-una regla, el desvío va en su `AGENTS.md`, que manda sobre el kit.
+> The kit's content (rules, skills, commands, agents and `docs/` templates) is written
+> in Spanish (ADR-009). The AI answers in the user's language.
 
 ---
 
-## Instalación
+## Structure
 
-### Desde la web
+```
+~/.claude/                  # Claude Code: CLAUDE.md, skills/ (rules and skills), commands/, agents/, hooks/
+~/.gemini/                  # Antigravity: GEMINI.md and config/{rules,skills,agents}/
+~/.codex/AGENTS.md          # Codex: general rules
+~/.agents/skills/           # Codex: rules, skills and commands as skills
 
-En `/instalar`, elegí la herramienta y bajá el ZIP. Adentro vienen el kit y el
-mismo instalador que se usa desde el repo:
+[project]/
+├── AGENTS.md               # the project essentials, for any AI or person (ADR-036)
+├── CLAUDE.md               # only imports AGENTS.md
+└── docs/                   # 01_PRD, 02_TASKS, 03_DECISIONS, 04_CHANGELOG and the optional ones
+```
+
+Rules activate on their own based on what you're working on (security, database, UI,
+SEO…), so the kit installs whole. If a project deviates from a rule, the deviation goes
+in its `AGENTS.md`, which takes precedence over the kit.
+
+---
+
+## Installation
+
+### From the website
+
+On `/instalar`, pick your tool and download the ZIP. It contains the kit and the same
+installer used from the repo. It requires Node 24 or newer.
 
 ```bash
-node install.mjs           # muestra qué va a cambiar
-node install.mjs --write   # instala, con respaldo
+node install.mjs           # shows what will change
+node install.mjs --write   # installs, with a backup
 ```
 
-Para arrancar un proyecto, `/proyecto-nuevo` arma el ZIP con `docs/`, `AGENTS.md`
-y `CLAUDE.md`.
+To start a project, `/proyecto-nuevo` builds a ZIP with `docs/`, `AGENTS.md` and
+`CLAUDE.md`.
 
-### Desde el repo
+### From the repo
 
-Instala el kit una sola vez en tu carpeta personal, para Claude Code, Antigravity
-y Codex a la vez (ADR-038). Cada proyecto queda solo con `docs/`, su `AGENTS.md` y un
-`CLAUDE.md` que lo importa.
+Installs the kit once in your home folder, for Claude Code, Antigravity and Codex at
+the same time (ADR-038).
 
 ```bash
 git clone https://github.com/luiskaco/-makeRuleIA.git
@@ -64,432 +67,325 @@ git clone https://github.com/luiskaco/-makeRuleIA.git
 node scripts/install-global.mjs --write
 ```
 
-Sin `--write` solo muestra qué cambiaría. Para actualizar: `git pull` y volver a
-correrlo. Deja respaldo en `kit-backup/`, borra lo que el kit ya no trae y nunca
-pisa un archivo tuyo con el mismo nombre.
+Without `--write` it only shows what would change. To update: `git pull` and run it
+again. It leaves a backup in `kit-backup/`, removes what the kit no longer ships and
+never overwrites a file of yours with the same name.
 
-### Claude Code — como plugin
+### Claude Code as a plugin
 
-El plugin se actualiza desde git: un `/plugin update` trae las correcciones
-posteriores a la instalación. El ZIP de `/instalar`, en cambio, se actualiza bajándolo de nuevo.
+The plugin updates from git: `/plugin update` brings the fixes released after you
+installed it. The `/instalar` ZIP, instead, updates when you download it again.
 
 ```
 /plugin marketplace add luiskaco/-makeRuleIA
 /plugin install ai-rules-hub@ai-rules-hub
 ```
 
-Trae las 9 rules como skills nativas, los 7 comandos y 8 de los 10 subagentes: `server-inspector`
-y `server-operator` van solo en el ZIP, porque el plugin ignora el hook que los controla (ADR-026). **No**
-trae `CLAUDE.md` ni `AGENTS.md`: un plugin aporta comandos, agentes y skills, no memoria de
-proyecto — si querés el núcleo global, instalá el kit desde `/instalar`.
+It ships the 9 rules as native skills, the 7 commands and 8 of the 10 subagents:
+`server-inspector` and `server-operator` are ZIP-only, because the plugin ignores the
+hook that controls them (ADR-026). It does **not** ship `CLAUDE.md` or `AGENTS.md`: a
+plugin provides commands, agents and skills, not project memory. For the global core,
+install the kit from `/instalar`.
 
-Las skills de terceros (`hallmark`, `impeccable`, las de Vercel, etc.) no van en
-el plugin a propósito: se instalan desde su repo original, con el comando que
-figura en el catálogo.
+Third-party skills (`hallmark`, `impeccable`, the Vercel ones, etc.) are deliberately
+not in the plugin: install them from their original repo, with the command listed in
+the catalog.
 
-En Antigravity, la instalación por proyecto es la de abajo.
+### Context7 (optional, per project)
 
-### Paso 1 — Archivo global (una sola vez)
-
-**macOS / Linux**
-```bash
-mkdir -p ~/.gemini
-cp GEMINI.md ~/.gemini/GEMINI.md
-```
-
-**Windows (PowerShell)**
-```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini"
-Copy-Item "GEMINI.md" "$env:USERPROFILE\.gemini\GEMINI.md"
-```
-
-> **Migración (ADR-020):** los 7 comandos eran workflows en
-> `~/.gemini/antigravity/global_workflows/`. Antigravity deja de ejecutarlos el
-> 19/10/2026: ahora son skills de workspace (Paso 2). Podés borrar esa carpeta o
-> correr `/migrate-workflows` en la app de Antigravity.
-
-### Paso 2 — Reglas de workspace (por cada proyecto)
+Up-to-date library documentation for the AI. It's an MCP server, not a skill, so it
+isn't part of the kit:
 
 ```bash
-# AGENTS.md — reglas para cualquier IA que continúe el proyecto (completar su sección "Proyecto")
-cp AGENTS.md ./
-
-mkdir -p .agents/rules
-cp security.md architecture.md ui-ux.md seo.md pwa.md operations.md cms.md database.md stack-conventions.md .agents/rules/
-
-# comandos (/grill, /new-feature…) — son skills de workspace, una carpeta por comando
-cp -r grill new-feature bug-fix session-close security-audit deploy-checklist tools-reference .agents/skills/
-
-# subagentes (opcional) — Antigravity los descubre solo al abrir el workspace
-cp -r agents/ .agents/agents/
-```
-
-Si el proyecto es WordPress puro o no usa alguna de las reglas (ej. un sitio sin CMS
-headless), puedes omitir ese archivo — `model_decision` simplemente nunca se activa
-si no hay contexto que lo dispare, así que de todas formas no cuesta nada dejarlo.
-
-### Paso 3 — Skills externas (manual, en tu terminal)
-
-```bash
-# frontend-design (Anthropic)
-npx skills add https://github.com/anthropics/skills --skill frontend-design
-
-# Auditoría técnica de UI (Vercel Web Interface Guidelines)
-npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
-
-# Performance y composición React/Next.js
-npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices
-npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-composition-patterns
-
-# impeccable (polish) — ver instrucciones en impeccable.style
-
-# Context7 MCP — documentación de librerías en tiempo real, por proyecto
 npx ctx7 setup
-
-# api-security-best-practices — patrones de seguridad de API (ver § Skills de Seguridad)
-npx skills add sickn33/antigravity-awesome-skills --skill api-security-best-practices
 ```
-
-### Paso 4 — Ajustar stack por proyecto
-
-Si el proyecto difiere del stack base (`GEMINI.md § 3`), de la convención de
-`/docs` o de alguna regla, documentarlo en el
-`AGENTS.md` del proyecto — tiene prioridad sobre `GEMINI.md` (ver § 5, nota de
-excepción).
-
-> **Migración:** `00_GEMINI_START.md` ya no existe (ADR-018). Si un proyecto
-> todavía lo tiene, mover su contenido al `AGENTS.md` del proyecto
-> y borrarlo — `GEMINI.md` ya no lo lee.
 
 ---
 
-## Rules — Modos de Activación
+## Rules: activation modes
 
-`GEMINI.md` (`~/.gemini/`) es Always On — se lee en cada mensaje, sin excepción.
+`GEMINI.md` (`~/.gemini/`) and `CLAUDE.md` (`~/.claude/`) are Always On: they are read
+on every message, no exceptions.
 
-El resto vive en `.agents/rules/` y Antigravity los escanea automáticamente. Cada
-uno define su modo en el frontmatter (`trigger`) y, salvo `manual`, una
-`description` que le dice al modelo cuándo activarse solo.
+Each rule defines its mode in the frontmatter (`trigger`) and, except `manual`, a
+`description` that tells the model when to activate it on its own.
 
-| Archivo | Trigger | Se activa cuando... |
+| File | Trigger | Activates when… |
 |---|---|---|
-| `security.md` | Model Decision | Auth, endpoints de API, validación de inputs, uploads, secrets, CORS |
-| `architecture.md` | Model Decision | Módulo o archivo nuevo, decisión de en qué capa/carpeta va algo |
-| `ui-ux.md` | Model Decision | Interfaces, componentes visuales, formularios, estados de carga/error, accesibilidad, dark mode, i18n |
-| `seo.md` | Model Decision | Meta tags, Open Graph, structured data, canonical, hreflang, Core Web Vitals como ranking factor |
-| `pwa.md` | Model Decision | Manifest, service worker, cache, estado offline, update flow — **solo si el proyecto es una PWA** |
-| `operations.md` | Model Decision | CI/CD, logging, infraestructura, integración de agentes/LLM |
-| `cms.md` | Model Decision | WordPress, Drupal, o CMS headless (Sanity, Contentful, Strapi) |
-| `database.md` | Model Decision | Diseño de schema, migraciones, elección de ORM, pooling, índices, credenciales de DB |
-| `stack-conventions.md` | Glob `*.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css` | Al editar cualquier archivo de esos tipos |
+| `security.md` | Model Decision | Auth, API endpoints, input validation, uploads, secrets, CORS |
+| `architecture.md` | Model Decision | A new module or file, deciding which layer or folder something goes in |
+| `ui-ux.md` | Model Decision | Interfaces, visual components, forms, loading/error states, accessibility, dark mode, i18n |
+| `seo.md` | Model Decision | Meta tags, Open Graph, structured data, canonical, hreflang, Core Web Vitals as a ranking factor |
+| `pwa.md` | Model Decision | Manifest, service worker, cache, offline state, update flow — **only if the project is a PWA** |
+| `operations.md` | Model Decision | CI/CD, logging, infrastructure, agent/LLM integration |
+| `cms.md` | Model Decision | WordPress, Drupal, or a headless CMS (Sanity, Contentful, Strapi) |
+| `database.md` | Model Decision | Schema design, migrations, ORM choice, pooling, indexes, DB credentials |
+| `stack-conventions.md` | Glob `*.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css` | When editing any file of those types |
 
-> `tools-reference` **no** está en esta tabla a propósito — es un comando
-> (skill de workspace en `.agents/skills/tools-reference/`), no regla. Ver
-> tabla de Workflows abajo.
+> `tools-reference` is deliberately **not** in this table: it's a command, not a rule.
+> See the Workflows table below.
 
-Si una regla y un workflow describen lo mismo (ej. checklist de seguridad en
-`security-audit.md` vs. el detalle en `security.md`), **la regla en
-`.agents/rules/` es la fuente de verdad** — los workflows son resúmenes
-operativos, no la documentación completa.
+If a rule and a workflow describe the same thing (e.g. the security checklist in
+`/security-audit` vs. the detail in `security.md`), **the rule is the source of
+truth**: workflows are operational summaries, not the full documentation.
 
 ---
 
 ## Workflows
 
-7 workflows, implementados como skills (ADR-020) — **se invocan escribiendo el
-comando en el chat.** En Claude Code son comandos y solo corren si los escribís;
-en Antigravity son skills, así que además pueden activarse solos cuando la tarea
-coincide con su descripción. Las líneas tipo "Recordatorio: invocar
-`/session-close`" dentro de cada workflow son avisos para que tú escribas el
-siguiente comando — no encadenan automáticamente.
+7 workflows, implemented as skills (ADR-020): **invoke them by typing the command in
+the chat.** In Claude Code they are commands and only run when you type them; in
+Antigravity they are skills, so they can also activate on their own when the task
+matches their description. In Codex they are skills invoked with `$` and the name.
+Lines like "Reminder: invoke `/session-close`" inside a workflow are prompts for you to
+type the next command: they don't chain automatically.
 
-| Comando | Cuándo invocarlo | Qué hace |
+| Command | When to invoke it | What it does |
 |---|---|---|
-| `/grill` | Antes de `/new-feature`, cuando el plan todavía es difuso o traés una idea en vez de un requerimiento | Interrogatorio de a una pregunta por turno hasta dejar resueltos problema real, bordes, fuera de alcance, decisiones irreversibles y criterio de terminado. Cierra con un resumen que alimenta al workflow siguiente |
-| `/new-feature` | Antes de empezar cualquier tarea nueva | Define el plan, crea la rama git (`feat/...` o `fix/...`), crea o actualiza `02_TASKS.md`, documenta ADR si hay decisión arquitectónica. Espera tu aprobación del plan antes de codificar |
-| `/bug-fix` | Algo está roto | Identifica causa raíz antes de tocar código, evalúa impacto, crea rama `fix/...`, plantea plan de 2-3 pasos y espera aprobación |
-| `/session-close` | Al terminar el día o una tarea | Actualiza físicamente los docs de `/docs` relevantes, verifica build y flujo probado, borra las tareas cerradas de `02_TASKS.md` dejando una línea en `04_CHANGELOG.md`, reescribe "Dónde quedó" y genera commit sugerido |
-| `/security-audit` | Antes de subir features con auth, APIs o datos sensibles | Checklist OWASP + auth + secrets + uploads (resumen — detalle en `security.md`). Lista hallazgos con severidad Critical/High/Medium |
-| `/deploy-checklist` | Antes de merge a `main` o deploy a producción | Checklist completo: código, seguridad, UI, SEO, documentación |
-| `/tools-reference` | Setup inicial o cuando necesites ver qué skills usar y cuándo | Tabla de skills de diseño + Context7, sin instalación duplicada (apunta a este README) |
+| `/grill` | Before `/new-feature`, when the plan is still fuzzy or you bring an idea instead of a requirement | Asks one question per turn until the real problem, edge cases, out-of-scope items, irreversible decisions and done criteria are settled. Ends with a summary that feeds the next workflow |
+| `/new-feature` | Before starting any new task | Defines the plan, creates the git branch (`feat/...` or `fix/...`), creates or updates `02_TASKS.md`, records an ADR if there's an architectural decision. Waits for your approval before coding |
+| `/bug-fix` | Something is broken | Finds the root cause before touching code, assesses impact, creates a `fix/...` branch, proposes a 2-3 step plan and waits for approval |
+| `/session-close` | At the end of the day or a task | Updates the relevant `/docs` files, checks the build and the tested flow, removes closed tasks from `02_TASKS.md` leaving a line in `04_CHANGELOG.md`, rewrites "Where things stand" and suggests a commit |
+| `/security-audit` | Before shipping features with auth, APIs or sensitive data | OWASP + auth + secrets + uploads checklist (summary; detail in `security.md`). Lists findings with Critical/High/Medium severity |
+| `/deploy-checklist` | Before a merge to `main` or a production deploy | Full checklist: code, security, UI, SEO, documentation |
+| `/tools-reference` | Initial setup or when you need to see which skills to use and when | Table of design skills + Context7 |
 
-### Cómo pedir algo: no hace falta decir "skill"
+### How to ask: no need to say "skill"
 
-- **Explícito:** escribí el comando (`/grill`, `/new-feature`…). Funciona en
-  Claude Code y en Antigravity.
-- **Automático:** describí la tarea con tus palabras ("quiero planificar esta
-  feature", "revisá la seguridad antes de subir") y el agente activa la skill
-  cuya descripción calza. Las rules (`security`, `seo`, `ui-ux`…) se activan así.
-- **Forzar una concreta:** nombrala en el pedido ("usá la skill `hallmark` para
-  esta landing"). Evita que el agente elija otra.
+- **Explicit:** type the command (`/grill`, `/new-feature`…). Works in Claude Code and
+  Antigravity.
+- **Automatic:** describe the task in your own words ("I want to plan this feature",
+  "check security before shipping") and the agent activates the skill whose
+  description matches. Rules (`security`, `seo`, `ui-ux`…) activate this way.
+- **Force a specific one:** name it in the request ("use the `hallmark` skill for this
+  landing page"). It keeps the agent from picking another.
 
-Diferencia entre tools: en Claude Code los 7 comandos solo corren si los escribís
-con `/`; en Antigravity, al ser skills, también pueden activarse solos.
-
-### Flujo típico de una tarea
+### Typical task flow
 
 ```
-/grill                  ← opcional, si el plan está difuso: la IA interroga hasta afilarlo
-/new-feature           ← defines la tarea, se crea la rama y se actualiza 02_TASKS.md
-  ... trabajas ...
-/security-audit         ← si tocaste auth, APIs o datos sensibles
-/deploy-checklist        ← si vas a hacer merge a main
-/session-close          ← siempre al cerrar, actualiza docs y sugiere el commit
+/grill                  ← optional, if the plan is fuzzy: the AI questions you until it's sharp
+/new-feature            ← you define the task, the branch is created and 02_TASKS.md is updated
+  ... you work ...
+/security-audit         ← if you touched auth, APIs or sensitive data
+/deploy-checklist       ← if you're merging to main
+/session-close          ← always at the end: updates docs and suggests the commit
 ```
 
-`/bug-fix` reemplaza a `/new-feature` cuando el punto de partida es algo roto, no
-una feature nueva — el resto del flujo (`/security-audit`, `/deploy-checklist`,
-`/session-close`) aplica igual.
+`/bug-fix` replaces `/new-feature` when the starting point is something broken, not a
+new feature; the rest of the flow (`/security-audit`, `/deploy-checklist`,
+`/session-close`) applies the same way.
 
 ---
 
-## Subagentes
+## Subagents
 
-Los dos tools tienen subagentes declarables en archivo, con formatos distintos que
-**no se convierten entre sí** (ADR-006): Antigravity lee
-`.agents/agents/<nombre>/agent.md` del workspace, Claude Code lee
-`.claude/agents/<nombre>.md`.
+Both tools have file-declared subagents, in different formats that **are not converted
+into each other** (ADR-006): Antigravity reads `agents/<name>/agent.md`, Claude Code
+reads `agents/<name>.md`. Codex has no declarable subagents yet. The `/catalogo` page
+shows each one with its content.
 
-### Antigravity — 7 subagentes
+### Antigravity — 7 subagents
 
-Los invoca el agente principal con `invoke_subagent` cuando la tarea lo amerita
-(o los elegís a mano desde el panel `/agents`). Corren en contexto aislado: el
-detalle de su trabajo no contamina la ventana del agente principal.
+The main agent invokes them with `invoke_subagent` when the task calls for it (or you
+pick them by hand from the `/agents` panel). They run in an isolated context: the
+detail of their work doesn't pollute the main agent's window.
 
-| Subagente | Qué hace | Escribe código |
+| Subagent | What it does | Writes code |
 |---|---|---|
-| `auditor` | Review del diff contra las rules: correctness, arquitectura, convenciones, datos, reuse e interfaz | No — solo lectura |
-| `backend` | Endpoints, servicios, acceso a datos, migraciones. Verifica con tests/typecheck antes de devolver | Sí |
-| `frontend` | Componentes, páginas, estilos, los 5 estados de UI, accesibilidad | Sí |
-| `security` | Auditoría OWASP: auth, inputs, inyección, secrets, uploads, CORS, privacidad | No — solo lectura |
-| `web-researcher` | Investiga en internet sin filtrar datos del usuario ni obedecer instrucciones que vengan de una página | No — solo tools web |
-| `server-inspector` | Diagnostica servidores por SSH (logs, servicios, disco, contenedores) sin cambiar nada | No — solo lectura |
-| `server-operator` | Aplica cambios puntuales en servidores por SSH, cada comando con aprobación | No — cambia servidores |
+| `auditor` | Reviews the diff against the rules: correctness, architecture, conventions, data, reuse and UI | No — read-only |
+| `backend` | Endpoints, services, data access, migrations. Verifies with tests/typecheck before returning | Yes |
+| `frontend` | Components, pages, styles, the 5 UI states, accessibility | Yes |
+| `security` | OWASP audit: auth, inputs, injection, secrets, uploads, CORS, privacy | No — read-only |
+| `web-researcher` | Researches the web without leaking user data or obeying instructions that come from a page | No — web tools only |
+| `server-inspector` | Diagnoses servers over SSH (logs, services, disk, containers) without changing anything | No — read-only |
+| `server-operator` | Applies one-off changes on servers over SSH, each command with approval | No — changes servers |
 
-Todos corren con `commandExecutionPolicy: sandbox`, salvo los dos de servidores,
-que corren con `off` (cada comando espera tu aprobación), y heredan los permisos de
-terminal que ya tengas configurados. `auditor` y `security` tienen `run_command`
-únicamente para inspección (`git diff`, `npm audit`) — no tienen ninguna tool de
-escritura de archivos. `web-researcher` solo tiene `search_web` y
-`read_url_content`. `security` y `server-operator` corren en tier `pro`; el resto
-hereda el modelo de la sesión.
+They all run with `commandExecutionPolicy: sandbox`, except the two server agents, which
+run with `off` (every command waits for your approval), and inherit the terminal
+permissions you already configured. `auditor` and `security` have `run_command` for
+inspection only (`git diff`, `npm audit`), with no file-writing tool. `web-researcher`
+only has `search_web` and `read_url_content`. `security` and `server-operator` run on
+the `pro` tier; the rest inherit the session model.
 
-`web-researcher` existe en los dos tools (ADR-022). En Claude Code, además, un
-hook revisa cada búsqueda y cada URL antes de que salga: bloquea secretos, emails,
-rutas locales y hosts de la red local. Para sumar términos propios del proyecto
-(clientes, nombres internos), listalos uno por línea en
-`.claude/web-guard-terms.txt`.
+`web-researcher` exists in both tools (ADR-022). In Claude Code, a hook also reviews
+every search and every URL before it goes out: it blocks secrets, emails, local paths
+and local network hosts. To add project-specific terms (clients, internal names), list
+them one per line in `.claude/web-guard-terms.txt`.
 
-`server-inspector` y `server-operator` también existen en los dos tools (ADR-026).
-Se conectan solo por alias de `~/.ssh/config`, listados por proyecto en
-`.claude/ssh-hosts.txt` o `.agents/ssh-hosts.txt`; el operator no se conecta sin
-esa lista. **No pongas `ssh`, `scp` ni `rsync` en la allow list de comandos**: los
-cambios correrían sin pedir aprobación. En Claude Code un hook
-(`.claude/hooks/ssh-guard.mjs`) le deja al inspector solo comandos de lectura, le
-hace pedir aprobación al operator en cada comando y les bloquea a los dos lo que deja
-sin acceso al servidor; en Antigravity esas reglas viven en el prompt.
+`server-inspector` and `server-operator` also exist in both tools (ADR-026). They only
+connect through `~/.ssh/config` aliases, listed per project in `.claude/ssh-hosts.txt`
+or `.agents/ssh-hosts.txt`; the operator won't connect without that list. **Don't put
+`ssh`, `scp` or `rsync` in the command allow list**: changes would run without asking
+for approval. In Claude Code a hook (`~/.claude/hooks/ssh-guard.mjs`) limits the
+inspector to read-only commands, makes the operator ask for approval on every command
+and blocks both from anything that would cut off access to the server; in Antigravity
+those rules live in the prompt.
 
-### Claude Code — 10 subagentes
+### Claude Code — 10 subagents
 
-`planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`,
-`db-migration-reviewer`, `debugger`, `test-writer`, `web-researcher`,
-`server-inspector` y `server-operator` (estos dos, opcionales). Detalle en la
-página `/kits/claude-code/subagentes` del sitio.
+`planner`, `code-reviewer`, `ui-reviewer`, `security-auditor`, `db-migration-reviewer`,
+`debugger`, `test-writer`, `web-researcher`, `server-inspector` and `server-operator`.
 
-Son 8 por defecto (ADR-027): lo que ya cubre Claude Code o un comando del kit no
-tiene subagent propio. Para buscar en el código está el agente `Explore` de
-Claude Code; los docs y el commit los cierra `/session-close`, y el chequeo de
-deploy, `/deploy-checklist`. Los comandos delegan en su agente: `/bug-fix` en
-`debugger` y `/security-audit` en `security-auditor`.
+8 by default (ADR-027): what Claude Code or a kit command already covers has no
+subagent of its own. For searching the code there's Claude Code's `Explore` agent;
+`/session-close` closes the docs and the commit, and `/deploy-checklist` the deploy
+check. Commands delegate to their agent: `/bug-fix` to `debugger` and `/security-audit`
+to `security-auditor`.
 
 ---
 
 ## Skills
 
-Conocimiento externo empaquetado — complementan `stack-conventions.md`, no lo
-reemplazan.
+Packaged external knowledge: they complement `stack-conventions.md`, they don't
+replace it.
 
 | | `stack-conventions.md` | Skills |
 |---|---|---|
-| Qué es | Tus reglas del proyecto | Conocimiento externo de la comunidad |
-| Ejemplo | "usamos Zod para validación" | "así se evitan waterfalls en React" |
-| Cuándo carga | Glob al editar código | Según criterio definido en `tools-reference.md` |
+| What it is | Your project rules | External community knowledge |
+| Example | "we use Zod for validation" | "this is how you avoid waterfalls in React" |
+| When it loads | Glob, when editing code | By the criteria in `tools-reference` |
 
-### Las 5 skills activas
+### Design skills
 
-| Skill | Cuándo activarla |
+| Skill | When to use it |
 |---|---|
-| `frontend-design` | Iniciar UI nueva, con o sin sistema de diseño ya definido (caso habitual en Orange Latam) |
-| `impeccable` (polish) | Revisar UI existente o antes de PR — requiere que `frontend-design` haya corrido antes |
-| `web-design-guidelines` | Auditar a11y, forms, performance contra Web Interface Guidelines de Vercel |
-| `vercel-react-best-practices` | Escribir o revisar componentes React/Next.js — 70 reglas de performance |
-| `vercel-composition-patterns` | Refactorizar componentes con muchos props booleanos, diseñar APIs de componentes reutilizables (shadcn/ui) |
+| `frontend-design` | Starting a new UI, with or without an existing design system |
+| `impeccable` (polish) | Reviewing an existing UI or before a PR; `frontend-design` should have run first |
+| `web-design-guidelines` | Auditing a11y, forms and performance against Vercel's Web Interface Guidelines |
+| `vercel-react-best-practices` | Writing or reviewing React/Next.js components — 70 performance rules |
+| `vercel-composition-patterns` | Refactoring components with many boolean props, designing reusable component APIs (shadcn/ui) |
+| `ui-patterns` | Choosing or naming a UI pattern: animations, menus, modals, drawers, toasts, skeletons, empty states |
 
-Nunca más de 2-3 activas a la vez. Detalle completo, jerarquía si hay conflicto e
-instalación de cada una (`frontend-design`, `impeccable`,
-`web-design-guidelines`, `vercel-react-best-practices`,
-`vercel-composition-patterns`) está en `tools-reference.md` — no se duplica aquí
-para evitar que las dos copias diverjan.
+Never more than 2-3 active at once. The full detail, the precedence when they conflict
+and how to install each one live in `/tools-reference`, not here, so the two copies
+don't drift apart.
 
-### Skills de Marketing/SEO
+### Marketing/SEO skills
 
-Categoría aparte — no compiten con las skills de diseño de arriba.
-
-| Skill | Cuándo activarla |
+| Skill | When to use it |
 |---|---|
-| `seo-audit` | Auditar o diagnosticar problemas de SEO — caída de tráfico, indexación, ranking. Diagnóstico únicamente: los umbrales concretos (Lighthouse, OG, meta tags) los define `seo.md`, no la skill |
+| `seo-audit` | Auditing or diagnosing SEO problems: traffic drops, indexing, ranking. Diagnosis only: the concrete thresholds (Lighthouse, OG, meta tags) are defined by `seo.md`, not the skill |
+| `ai-seo` | Getting the content cited by AI engines (AI Overviews, ChatGPT, Perplexity): AEO/GEO, `llms.txt` |
 
-Instalación: `npx skills add https://github.com/coreyhaines31/marketingskills --skill seo-audit`
-(el paquete trae ~30 skills de marketing — solo se instala `seo-audit`, no el paquete completo).
-Detalle en [`.agents/skills/seo-audit/SKILL.md`](.agents/skills/seo-audit/SKILL.md).
+### Domain skill
 
-### Skill de dominio
-
-| Skill | Cuándo activarla |
+| Skill | When to use it |
 |---|---|
-| `domain-modeling` | Mientras se trabaja, no como paso aparte: al aparecer un término del dominio nuevo o ambiguo, o al nombrar entidades, tipos y endpoints. Mantiene el glosario `docs/CONTEXT.md` — que es lenguaje del negocio, no esquema técnico (eso es `DATA_MODEL.md`) |
+| `domain-modeling` | While working, not as a separate step: when a new or ambiguous domain term appears, or when naming entities, types and endpoints. It maintains the `docs/CONTEXT.md` glossary, which is business language, not a technical schema (that's `DATA_MODEL.md`) |
 
-Viene preseleccionada en los 7 stacks reales. La plantilla del glosario está en
-`docs-templates/CONTEXT.md` y se crea recién cuando hay 3 términos que lo
-justifiquen (ADR-012).
+The glossary template is in `docs-templates/CONTEXT.md` and is created only when 3
+terms justify it (ADR-012).
 
-### Skill de lanzamiento
+### Launch and security skills
 
-| Skill | Cuándo activarla |
+| Skill | When to use it |
 |---|---|
-| `security-mitigations` | Al implementar o auditar login, permisos, APIs, uploads, dependencias, IA o WordPress: un índice lleva al tema que toca, sin leer todo. |
-| `prelaunch-compliance-audit` | Antes de lanzar una web o app (o con una ya publicada): auditoría contra 43 reglas legales, de privacidad, seguridad, accesibilidad, técnicas y SEO. Investiga la normativa vigente del país del proyecto, entrega un reporte por severidad y propone arreglos que no aplica sin aprobación. También redacta privacidad, términos, reembolsos, cookies y aviso legal a partir de los hechos del proyecto |
+| `security-mitigations` | When implementing or auditing login, permissions, APIs, uploads, dependencies, AI or WordPress: an index leads to the relevant topic without reading everything |
+| `prelaunch-compliance-audit` | Before launching a website or app (or with one already live): an audit against 43 legal, privacy, security, accessibility, technical and SEO rules. It researches the current regulations of the project's country, delivers a report by severity and proposes fixes it doesn't apply without approval. It also drafts privacy, terms, refunds, cookies and legal notice texts from the project's facts |
+| `api-security-best-practices` | Designing or reviewing API endpoints: auth, input validation, rate limiting, protection against injection/SSRF/DDoS. Don't use it to pick the project's thresholds (that's `security.md`); use it for the implementation patterns (JWT, Zod, rate limiters, headers) |
 
-Viene preseleccionada en los 7 stacks reales y `/deploy-checklist` la recomienda
-en el primer lanzamiento. Carga por partes: `SKILL.md` tiene el flujo y el formato
-del reporte; el catálogo, la normativa por país y los textos legales están en
-`references/` y se leen solo cuando el paso los necesita. No sustituye a un
-abogado ni a una prueba de penetración.
+`/deploy-checklist` recommends `prelaunch-compliance-audit` on the first launch. It
+loads in parts: `SKILL.md` has the flow and the report format; the catalog, the
+regulations by country and the legal texts live in `references/` and are read only when
+a step needs them. It doesn't replace a lawyer or a penetration test.
 
-### Skills de Seguridad
+### Third-party design skills
 
-Complementa `security.md`: la regla define los umbrales y checklist del proyecto
-(rate limits, headers obligatorios, hashing), la skill trae los patrones de
-implementación paso a paso.
+Unlike the ones in `.agents/skills/`, these do **not** ship in the global kit: they are
+code from other repos, with their own license and their own update cycle.
 
-| Skill | Cuándo activarla |
-|---|---|
-| `api-security-best-practices` | Diseñar o revisar endpoints de API — auth, validación de inputs, rate limiting, protección contra inyección/SSRF/DDoS. No la uses para elegir los umbrales del proyecto (eso lo define `security.md`), sí para los patrones de implementación (JWT, Zod, rate limiters, headers) |
-
-Instalación: `npx skills add sickn33/antigravity-awesome-skills --skill api-security-best-practices`
-(el repo fuente es una colección "awesome" grande — ~1900 skills, varias con
-frontmatter inválido — se instala solo esta, no el paquete completo).
-Detalle en [`.agents/skills/api-security-best-practices/SKILL.md`](.agents/skills/api-security-best-practices/SKILL.md).
-
-### Skills de diseño de terceros
-
-A diferencia de las de `.agents/skills/`, **no** entran en el kit global:
-son código de otros repos, con su propia licencia y su propio ciclo de
-actualización.
-
-| Origen | Skills | Dónde viven |
+| Source | Skills | Where they live |
 |---|---|---|
-| [nutlope/hallmark](https://github.com/nutlope/hallmark) | `hallmark` | Cuenta de Claude del autor |
-| [emilkowalski/skills](https://github.com/emilkowalski/skill) | `emil-design-eng`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`, `apple-design`, `pick-ui-library` | Cuenta de Claude del autor |
-| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design-system`, `ui-styling` | Vendorizadas en `.claude/skills/` |
+| [nutlope/hallmark](https://github.com/nutlope/hallmark) | `hallmark` | The author's Claude account |
+| [emilkowalski/skills](https://github.com/emilkowalski/skill) | `emil-design-eng`, `review-animations`, `improve-animations`, `find-animation-opportunities`, `animation-vocabulary`, `apple-design`, `pick-ui-library` | The author's Claude account |
+| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design-system`, `ui-styling` | Vendored in `.claude/skills/` |
 
-Las 8 de hallmark y emilkowalski estaban también vendorizadas acá y se sacaron
-del repo el 2026-10-28: eran idénticas a las de la cuenta y en cada sesión de
-este proyecto aparecían dos veces. Para usarlas en otra máquina o cuenta,
-instalarlas como skills personales:
+To use them on another machine or account, install them as personal skills:
 
 ```bash
 npx skills add nutlope/hallmark
 npx skills add emilkowalski/skills
-```
-
-`skills-lock.json` registra ahora solo `api-security-best-practices`. Las tres
-de `uipro init` **no** están en el lock —
-el CLI de uipro no lo escribe, así que su única referencia de versión es este
-repo (git). Para reinstalarlas:
-
-```bash
 npx ui-ux-pro-max-cli init --ai claude
 ```
 
-> `uipro init` instala además `design`, `brand`, `banner-design` y `slides`
-> —un paquete propio de diseño gráfico (logos, identidad corporativa,
-> banners de redes, presentaciones) que su README no menciona. Se borraron
-> a mano por quedar fuera del alcance del repo: si volvés a correr `uipro
-> init`, reaparecen.
+`skills-lock.json` only records `api-security-best-practices`. The three from `uipro
+init` are **not** in the lock: the uipro CLI doesn't write it, so their only version
+reference is this repo (git).
 
-#### Subirlas a Claude Desktop
+> `uipro init` also installs `design`, `brand`, `banner-design` and `slides`, a separate
+> graphic design pack (logos, brand identity, social banners, presentations) that its
+> README doesn't mention. They were removed by hand as out of scope for this repo: if
+> you run `uipro init` again, they come back.
 
-Claude Desktop las toma como skill personal en formato ZIP. Para generarlos:
+#### Uploading them to Claude Desktop
+
+Claude Desktop takes them as personal skills in ZIP format. To build them:
 
 ```bash
 python scripts/make-desktop-zips.py
 ```
 
-Deja un `.zip` por skill en `skills-desktop/` (gitignored), cada uno con su
-`SKILL.md` en la raíz de la carpeta. **No alcanza con copiar solo el
-`SKILL.md`** salvo en las de un único archivo: `ui-ux-pro-max` son 39
-archivos — sin su `data/` la skill queda apuntando a archivos que no existen.
+It leaves one `.zip` per skill in `skills-desktop/` (gitignored), each with its
+`SKILL.md` at the folder root. **Copying only the `SKILL.md` isn't enough** except for
+single-file skills: `ui-ux-pro-max` is 39 files, and without its `data/` the skill
+points to files that don't exist.
 
-> `ui-ux-pro-max` funciona parcialmente en Desktop: su `SKILL.md` invoca
-> `python3 skills/ui-ux-pro-max/scripts/search.py`, una ruta relativa al
-> proyecto que ahí no existe. Los CSV de datos se leen igual, pero la búsqueda
-> automatizada del design system no corre.
+> `ui-ux-pro-max` works partially in Desktop: its `SKILL.md` calls
+> `python3 skills/ui-ux-pro-max/scripts/search.py`, a project-relative path that doesn't
+> exist there. The data CSVs are still read, but the automated design-system search
+> doesn't run.
 
 ---
 
-## Consumo de Tokens (aproximado)
+## Token usage (approximate)
 
-Estimación por caracteres/4 — no es el tokenizer real, sirve como orden de
-magnitud. La tabla se regenera con `python scripts/update-token-table.py` —
-no editarla a mano.
+Estimated as characters/4: not the real tokenizer, but a good order of magnitude. The
+table is regenerated with `python scripts/update-token-table.py`; don't edit it by
+hand.
 
 <!-- token-table:start -->
-| Archivo | ~Tokens | Cuándo carga |
+| File | ~Tokens | When it loads |
 |---|---|---|
-| `GEMINI.md` | ~2,497 | Siempre |
+| `GEMINI.md` | ~2,497 | Always |
 | `security.md` | ~2,315 | Model Decision |
 | `architecture.md` | ~1,572 | Model Decision |
 | `ui-ux.md` | ~2,000 | Model Decision |
 | `seo.md` | ~1,445 | Model Decision |
-| `pwa.md` | ~578 | Model Decision — solo PWA |
+| `pwa.md` | ~578 | Model Decision — PWA only |
 | `operations.md` | ~1,553 | Model Decision |
 | `cms.md` | ~690 | Model Decision |
 | `database.md` | ~873 | Model Decision |
 | `stack-conventions.md` | ~874 | Glob |
-| `/tools-reference` | ~1,267 | Skill — slash o por descripción |
-| `/grill` | ~604 | Skill — slash o por descripción |
-| `/new-feature` | ~440 | Skill — slash o por descripción |
-| `/bug-fix` | ~405 | Skill — slash o por descripción |
-| `/session-close` | ~488 | Skill — slash o por descripción |
-| `/security-audit` | ~370 | Skill — slash o por descripción |
-| `/deploy-checklist` | ~792 | Skill — slash o por descripción |
-| **Base siempre activa** | **~2,497** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~4,439–8,079** | sesión normal de código |
-| **Máximo con todo activo** | **~15,664** | improbable — varias reglas casi nunca se activan juntas |
+| `/tools-reference` | ~1,267 | Skill — slash or by description |
+| `/grill` | ~604 | Skill — slash or by description |
+| `/new-feature` | ~440 | Skill — slash or by description |
+| `/bug-fix` | ~405 | Skill — slash or by description |
+| `/session-close` | ~488 | Skill — slash or by description |
+| `/security-audit` | ~370 | Skill — slash or by description |
+| `/deploy-checklist` | ~792 | Skill — slash or by description |
+| **Always-on baseline** | **~2,497** | `GEMINI.md` |
+| **Typical case** (1-2 rules + 1 workflow) | **~4,439–8,079** | regular coding session |
+| **Maximum, everything active** | **~15,664** | unlikely — several rules almost never activate together |
 <!-- token-table:end -->
 
-El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +
-CMS en el mismo mensaje), no el caso real. En la práctica, una tarea de feature
-normal carga `GEMINI.md` + 1-2 reglas relevantes + el workflow invocado.
+The "maximum, everything active" is a theoretical ceiling (e.g. touching auth + UI +
+infra + CMS in the same message), not the real case. In practice, a regular feature
+task loads `GEMINI.md` + 1-2 relevant rules + the invoked workflow.
 
 ---
 
-## Notas de mantenimiento
+## Maintenance notes
 
-- **`security.md` es la fuente de verdad de seguridad.** `security-audit.md` y la
-  sección de seguridad de `deploy-checklist.md` son checklists resumidos que
-  referencian secciones específicas (`§ NextAuth v5`, `§ File Uploads`) — si se
-  actualiza una regla de seguridad, revisar si el resumen en los workflows quedó
-  desactualizado.
-- **`architecture.md` tiene una excepción explícita para Next.js App Router** —
-  Server Components/Actions sí pueden tocar la capa de datos; Client Components no.
-  No aplicar el patrón estricto de capas a un proyecto App Router sin leer esa
-  excepción primero.
-- **`operations.md` asume infraestructura self-hosted** (Docker Compose +
-  Cloudflare Tunnel) como caso por defecto, no AWS/GCP — las reglas de Secret
-  Manager de proveedor cloud son condicionales, solo si un proyecto específico
-  se despliega ahí.
-- Todos los archivos usan LF (no CRLF) y `description` no vacío en su frontmatter
-  — si se edita un archivo desde Windows, verificar que no se reintroduzcan
-  CRLF antes de commitear.
+- **`security.md` is the source of truth for security.** `/security-audit` and the
+  security section of `/deploy-checklist` are summarized checklists that point to
+  specific sections; if a security rule changes, check whether the workflow summaries
+  went stale.
+- **`architecture.md` has an explicit exception for the Next.js App Router**: Server
+  Components/Actions may touch the data layer; Client Components may not. Don't apply
+  the strict layer pattern to an App Router project without reading that exception
+  first.
+- **`operations.md` assumes self-hosted infrastructure** (Docker Compose + Cloudflare
+  Tunnel) as the default case, not AWS/GCP; the cloud-provider Secret Manager rules are
+  conditional, only if a specific project deploys there.
+- Every file uses LF (not CRLF) and a non-empty `description` in its frontmatter; if
+  you edit a file from Windows, make sure CRLF doesn't creep back in before committing.

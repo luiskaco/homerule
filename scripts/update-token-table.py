@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Regenera la tabla de consumo de tokens del README.md.
+"""Regenera la tabla de consumo de tokens de los dos README.
 
 Estimación por caracteres/4 (mismo criterio que generate-manifest.mjs).
-Reescribe el bloque entre <!-- token-table:start --> y <!-- token-table:end -->.
+Reescribe el bloque entre <!-- token-table:start --> y <!-- token-table:end -->
+de README.md (inglés) y README.es.md (español), cada uno con sus textos.
 
 Uso:  python scripts/update-token-table.py
 """
@@ -11,7 +12,7 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-README = REPO / "README.md"
+READMES = {"en": REPO / "README.md", "es": REPO / "README.es.md"}
 
 RULES_DIR = REPO / ".agents" / "rules"
 SKILLS_DIR = REPO / ".agents" / "skills"  # los workflows son skills con `metadata: kind: workflow` (ADR-020)
@@ -19,15 +20,40 @@ GEMINI = REPO / ".gemini" / "GEMINI.md"
 
 # Orden y etiqueta de carga por archivo — refleja la tabla histórica del README.
 RULE_LOAD = {
-    "security.md": "Model Decision",
-    "architecture.md": "Model Decision",
-    "ui-ux.md": "Model Decision",
-    "seo.md": "Model Decision",
-    "pwa.md": "Model Decision — solo PWA",
-    "operations.md": "Model Decision",
-    "cms.md": "Model Decision",
-    "database.md": "Model Decision",
-    "stack-conventions.md": "Glob",
+    "security.md": "decision",
+    "architecture.md": "decision",
+    "ui-ux.md": "decision",
+    "seo.md": "decision",
+    "pwa.md": "pwa",
+    "operations.md": "decision",
+    "cms.md": "decision",
+    "database.md": "decision",
+    "stack-conventions.md": "glob",
+}
+
+TEXT = {
+    "en": {
+        "header": "| File | ~Tokens | When it loads |",
+        "decision": "Model Decision",
+        "pwa": "Model Decision — PWA only",
+        "glob": "Glob",
+        "always": "Always",
+        "skill": "Skill — slash or by description",
+        "base": "| **Always-on baseline** | **~{n}** | `GEMINI.md` |",
+        "typical": "| **Typical case** (1-2 rules + 1 workflow) | **~{a}–{b}** | regular coding session |",
+        "max": "| **Maximum, everything active** | **~{n}** | unlikely — several rules almost never activate together |",
+    },
+    "es": {
+        "header": "| Archivo | ~Tokens | Cuándo carga |",
+        "decision": "Model Decision",
+        "pwa": "Model Decision — solo PWA",
+        "glob": "Glob",
+        "always": "Siempre",
+        "skill": "Skill — slash o por descripción",
+        "base": "| **Base siempre activa** | **~{n}** | `GEMINI.md` |",
+        "typical": "| **Caso típico** (1-2 reglas + 1 workflow) | **~{a}–{b}** | sesión normal de código |",
+        "max": "| **Máximo con todo activo** | **~{n}** | improbable — varias reglas casi nunca se activan juntas |",
+    },
 }
 WORKFLOW_ORDER = [
     "tools-reference",
@@ -75,7 +101,7 @@ def fmt(n: int) -> str:
 
 rows = []
 gemini_tokens = tokens(GEMINI)
-rows.append(("`GEMINI.md`", gemini_tokens, "Siempre"))
+rows.append(("`GEMINI.md`", gemini_tokens, "always"))
 
 rule_tokens = {}
 for name, load in RULE_LOAD.items():
@@ -91,7 +117,7 @@ for name in WORKFLOW_ORDER:
     if not path.exists():
         continue
     workflow_tokens[name] = tokens(path)
-    rows.append((f"`/{name}`", workflow_tokens[name], "Skill — slash o por descripción"))
+    rows.append((f"`/{name}`", workflow_tokens[name], "skill"))
 
 # Caso típico: GEMINI + 2 reglas frecuentes (security + ui-ux como techo,
 # architecture como piso) + 1 workflow. Máximo: todo activo a la vez.
@@ -104,26 +130,27 @@ tipico_max = (
 )
 maximo = gemini_tokens + sum(rule_tokens.values()) + max(workflow_tokens.values())
 
-lines = ["| Archivo | ~Tokens | Cuándo carga |", "|---|---|---|"]
-for label, n, load in rows:
-    lines.append(f"| {label} | ~{fmt(n)} | {load} |")
-lines.append(f"| **Base siempre activa** | **~{fmt(gemini_tokens)}** | `GEMINI.md` |")
-lines.append(
-    f"| **Caso típico** (1-2 reglas + 1 workflow) | **~{fmt(tipico_min)}–{fmt(tipico_max)}** | sesión normal de código |"
-)
-lines.append(
-    f"| **Máximo con todo activo** | **~{fmt(maximo)}** | improbable — varias reglas casi nunca se activan juntas |"
-)
-table = "\n".join(lines)
+def table_for(lang: str) -> str:
+    t = TEXT[lang]
+    lines = [t["header"], "|---|---|---|"]
+    for label, n, load in rows:
+        lines.append(f"| {label} | ~{fmt(n)} | {t[load]} |")
+    lines.append(t["base"].format(n=fmt(gemini_tokens)))
+    lines.append(t["typical"].format(a=fmt(tipico_min), b=fmt(tipico_max)))
+    lines.append(t["max"].format(n=fmt(maximo)))
+    return "\n".join(lines)
 
-content = README.read_text(encoding="utf-8")
-new_content, count = re.subn(
-    r"(<!-- token-table:start -->\n)[\s\S]*?(\n<!-- token-table:end -->)",
-    lambda m: m.group(1) + table + m.group(2),
-    content,
-)
-if count != 1:
-    raise SystemExit("No se encontró el bloque token-table en README.md")
 
-README.write_text(new_content, encoding="utf-8", newline="\n")
-print(f"Tabla regenerada: {len(rows)} archivos, máximo ~{fmt(maximo)} tokens")
+for lang, readme in READMES.items():
+    table = table_for(lang)
+    content = readme.read_text(encoding="utf-8")
+    new_content, count = re.subn(
+        r"(<!-- token-table:start -->\n)[\s\S]*?(\n<!-- token-table:end -->)",
+        lambda m: m.group(1) + table + m.group(2),
+        content,
+    )
+    if count != 1:
+        raise SystemExit(f"No se encontró el bloque token-table en {readme.name}")
+    readme.write_text(new_content, encoding="utf-8", newline="\n")
+
+print(f"Tabla regenerada en {len(READMES)} README: {len(rows)} archivos, máximo ~{fmt(maximo)} tokens")

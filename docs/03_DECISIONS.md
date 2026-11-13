@@ -46,6 +46,7 @@
 | ADR-037 | Los 4 revisores no cargan las reglas generales (`omitClaudeMd`) | Aceptada |
 | ADR-038 | El kit se instala en la carpeta personal, no en cada proyecto | Aceptada |
 | ADR-039 | El sitio entrega el kit global y el arranque de un proyecto | Aceptada |
+| ADR-040 | Primera vista en inglés: el sitio abre en inglés y el README principal es en inglés | Aceptada |
 
 ---
 
@@ -1087,4 +1088,28 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Instalar desde la web necesita Node 24.
 - Sin presets, todas las rules se instalan: cada una se activa sola por su disparador. Un proyecto que no quiere una regla lo anota en su `AGENTS.md`.
 - El sitio tiene menos código: se van el armador, los presets y el kit híbrido.
+
+---
+
+## ADR-040 — Primera vista en inglés: el sitio abre en inglés y el README principal es en inglés
+
+**Estado:** Aceptada (2026-11-13). Ajusta ADR-009 solo para el README y el idioma por defecto del sitio.
+
+**Contexto:** El kit apunta a un público más amplio que el equipo, con un nombre comercial en inglés. La primera impresión (la portada del sitio y el README del repo) estaba en español.
+
+**Decisión:**
+
+- El sitio abre en inglés: `/` redirige a `/en` sin mirar el idioma del navegador (`localeDetection: false`). El español queda en el selector de idioma.
+- `README.md` está en inglés y `README.es.md` es su traducción, con un enlace arriba para pasar de uno al otro. Los dos se mantienen iguales: un cambio en uno se replica en el otro en el mismo commit. `update-token-table.py` escribe la tabla en los dos.
+- El contenido del kit (rules, skills, comandos, agentes, plantillas) y la documentación de `docs/` siguen en español (ADR-009).
+
+**Alternativas consideradas:**
+
+- **Detectar el idioma del navegador:** cada visitante vería su idioma, pero la primera vista dejaría de ser predecible. Descartada a pedido del autor.
+- **README solo en inglés:** más simple de mantener, pero deja afuera al equipo, que trabaja en español.
+
+**Consecuencias:**
+
+- Dos README que mantener a la par.
+- Un visitante con el navegador en español ve primero el inglés y cambia con un clic.
 
