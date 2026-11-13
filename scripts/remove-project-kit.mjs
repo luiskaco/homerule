@@ -84,7 +84,15 @@ function walk(dir) {
   if (!existsSync(dir)) return [];
   return readdirSync(dir).flatMap((name) => {
     const full = join(dir, name);
-    return statSync(full).isDirectory() ? walk(full) : [full];
+    // Un enlace roto (junction o symlink sin destino) no se puede leer: se informa y se salta.
+    let stat;
+    try {
+      stat = statSync(full);
+    } catch {
+      console.log(`  (se salta, enlace roto o ilegible: ${relative(PROJECT, full).split(sep).join("/")})`);
+      return [];
+    }
+    return stat.isDirectory() ? walk(full) : [full];
   });
 }
 
