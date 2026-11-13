@@ -103,7 +103,7 @@ export default async function InstallPage(props: { params: Promise<{ locale: str
       <section className="flex max-w-3xl flex-col gap-3 rounded-xl border border-dashed border-slate-700 p-6">
         <h2 className="text-base font-semibold text-white">{t("pluginTitle")}</h2>
         <p className="text-sm leading-relaxed text-slate-400">{t("pluginBody")}</p>
-        <Command>{"/plugin marketplace add luiskaco/-makeRuleIA\n/plugin install ai-rules-hub@ai-rules-hub"}</Command>
+        <Command>{"/plugin marketplace add luiskaco/homerule\n/plugin install ai-rules-hub@ai-rules-hub"}</Command>
       </section>
 
       <section className="flex max-w-3xl flex-col gap-2">

@@ -62,7 +62,7 @@ Installs the kit once in your home folder, for Claude Code, Antigravity and Code
 the same time (ADR-038).
 
 ```bash
-git clone https://github.com/luiskaco/-makeRuleIA.git
+git clone https://github.com/luiskaco/homerule.git
 ```
 
 ```bash
@@ -79,7 +79,7 @@ The plugin updates from git: `/plugin update` brings the fixes released after yo
 installed it. The `/instalar` ZIP, instead, updates when you download it again.
 
 ```
-/plugin marketplace add luiskaco/-makeRuleIA
+/plugin marketplace add luiskaco/homerule
 /plugin install ai-rules-hub@ai-rules-hub
 ```
 

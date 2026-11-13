@@ -22,7 +22,7 @@ const COMMANDS_DIR = join(REPO_ROOT, ".claude", "commands");
 const CLAUDE_SKILLS_DIR = join(REPO_ROOT, ".claude", "skills");
 const AGENT_SKILLS_DIR = join(REPO_ROOT, ".agents", "skills");
 
-const REPO_SLUG = "luiskaco/-makeRuleIA";
+const REPO_SLUG = "luiskaco/homerule";
 const REPO_URL = `https://github.com/${REPO_SLUG}`;
 
 /**

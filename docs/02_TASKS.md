@@ -22,7 +22,7 @@
   Hecho cuando: se sabe si Antigravity respeta la política de cada agente, y queda anotado en ADR-026.
 - [ ] **T-09 — Tabla de tokens del README**: `update-token-table.py` mide el `GEMINI.md` crudo y no conoce el `AGENTS.md` que arma el generador.
   Hecho cuando: la tabla refleja lo que carga cada kit.
-- [ ] **T-10 — Identidad de Homerule**: el nombre ya está elegido (Homerule, 2026-11-13) y se usa en el sitio, los README y el plugin. Falta la identidad visual minimalista, el dominio, renombrar el repo en GitHub y decidir si el plugin cambia su nombre interno (`ai-rules-hub`: cambiarlo obliga a reinstalarlo).
+- [ ] **T-10 — Identidad de Homerule**: el nombre ya está elegido (Homerule, 2026-11-13) y se usa en el sitio, los README y el plugin. El repo ya se llama `luiskaco/homerule`. Falta la identidad visual minimalista, el dominio (el sitio sigue en `make-rule-ia.vercel.app`) y decidir si el plugin cambia su nombre interno (`ai-rules-hub`: cambiarlo obliga a reinstalarlo).
   Hecho cuando: el sitio tiene la identidad nueva y el repo y el dominio usan el nombre.
 - [ ] **T-11 — Una sola fuente para los agentes repetidos** (después del 2026-11-19, rama aparte): `web-researcher`, `server-inspector`, `server-operator` y el revisor de código se mantienen a mano en Claude y en Antigravity, iguales en un 85 %. Generar los de Antigravity desde los de Claude, con bloques propios de cada herramienta.
   Hecho cuando: el generador arma los agentes de Antigravity, un `--check` falla si quedan atrás y se probó uno en Antigravity (junto con T-07).

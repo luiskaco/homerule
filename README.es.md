@@ -63,7 +63,7 @@ Instala el kit una sola vez en tu carpeta personal, para Claude Code, Antigravit
 Codex a la vez (ADR-038).
 
 ```bash
-git clone https://github.com/luiskaco/-makeRuleIA.git
+git clone https://github.com/luiskaco/homerule.git
 ```
 
 ```bash
@@ -80,7 +80,7 @@ El plugin se actualiza desde git: un `/plugin update` trae las correcciones post
 a la instalación. El ZIP de `/instalar`, en cambio, se actualiza bajándolo de nuevo.
 
 ```
-/plugin marketplace add luiskaco/-makeRuleIA
+/plugin marketplace add luiskaco/homerule
 /plugin install ai-rules-hub@ai-rules-hub
 ```
 
