@@ -28,6 +28,7 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | `.agents/agents/` | 7 subagentes de Antigravity (fuente e instalación local) |
 | `.claude/agents/` | 10 subagentes de Claude Code (fuente e instalación local), 8 por defecto (ADR-027); `server-inspector` y `server-operator` van solo en el ZIP, no en el plugin (ADR-026) |
 | `.claude/hooks/` | `personal-data-guard.mjs` es un hook global que se instala a mano por equipo y no viaja en ningún kit (ADR-034). El resto son hooks de los subagentes: `readonly-bash.mjs` impone el solo lectura en los revisores (ADR-021), `web-guard.mjs` revisa lo que `web-researcher` manda a internet (ADR-022) y `ssh-guard.mjs` controla los agentes de servidores (ADR-026). `shell-parse.mjs` es el parser que comparten `readonly-bash` y `ssh-guard`. Viajan en el ZIP con cada agente que los usa, junto con lo que importan |
+| `git-hooks/` | Freno de secretos al commitear (ADR-041): `pre-commit` corre `secret-scan.mjs`; el resto de los hooks son puentes a los del repo. Se activa por equipo con `core.hooksPath` global y no viaja en ningún kit |
 | `docs-templates/` | Plantillas `/docs` que se empaquetan en los kits |
 | `docs/` | Documentación de este repo: `01_PRD`, `02_TASKS`, `03_DECISIONS`, `ARCHITECTURE`, `DATA_MODEL` y el recordatorio de la pausa. El changelog vive en la raíz (ADR-025) |
 | `scripts/` | Generadores y guards (ver Comandos) |
@@ -92,6 +93,7 @@ node scripts/test-readonly-bash.mjs       # casos del hook de solo lectura de lo
 node scripts/test-web-guard.mjs           # casos del hook de web-researcher
 node scripts/test-ssh-guard.mjs           # casos del hook de los agentes de servidores
 node scripts/test-personal-data-guard.mjs # casos del hook global de datos personales
+node scripts/test-secret-scan.mjs         # casos del freno de secretos al commitear
 python scripts/update-token-table.py      # tabla de tokens de los dos README
 python scripts/make-desktop-zips.py       # ZIPs de skills para Claude Desktop (skills-desktop/, gitignored)
 

@@ -80,6 +80,8 @@ Lo demás pendiente está en `02_TASKS.md`.
 Lo que cambió en los archivos globales desde la última vez que se actualizaron allá.
 Al llegar, hacer los pasos 1 y 2 de la sección siguiente y borrar la línea de acá.
 
+- **2026-11-13 — Freno de secretos y menos sugerencias repetidas** (ADR-041): además de los pasos 1 y 2, el paso 6.
+
 - **2026-11-10 — Documentos simplificados** (ADR-035): los globales cambian en
   § 4, § 5 y § 8. Además, migrar los `docs/` de cada proyecto con
   `docs/migrate-docs.md` y anotar acá cada uno que quede hecho.
@@ -117,3 +119,9 @@ crearon. Lo que viaja es este repo.
    `.claude/hooks/personal-data-guard.mjs` a `~/.claude/hooks/`, crear
    `~/.claude/personal-data.txt` con tus datos, uno por línea, y agregar el hook a
    `~/.claude/settings.json`, como explica la cabecera del archivo.
+
+6. Activar el freno de secretos al commitear (ADR-041), desde la carpeta del repo:
+
+   ```bash
+   git config --global core.hooksPath "$(pwd)/git-hooks"
+   ```

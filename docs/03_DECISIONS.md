@@ -47,6 +47,7 @@
 | ADR-038 | El kit se instala en la carpeta personal, no en cada proyecto | Aceptada |
 | ADR-039 | El sitio entrega el kit global y el arranque de un proyecto | Aceptada |
 | ADR-040 | Primera vista en inglés: el sitio abre en inglés y el README principal es en inglés | Aceptada |
+| ADR-041 | Freno de secretos al commitear: hook de git global para cualquier IA | Aceptada |
 
 ---
 
@@ -1113,3 +1114,28 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Dos README que mantener a la par.
 - Un visitante con el navegador en español ve primero el inglés y cambia con un clic.
 
+## ADR-041 — Freno de secretos al commitear: hook de git global para cualquier IA
+
+**Estado:** Aceptada (2026-11-13).
+
+**Contexto:** Las reglas prohíben versionar secretos y `/deploy-checklist` los busca, pero son instrucciones: la IA las puede pasar por alto. En studioIA una clave privada de Google terminó en el repo. Claude, Antigravity y Codex commitean, y solo Claude tiene hooks propios.
+
+**Decisión:**
+
+- `git-hooks/` tiene un `pre-commit` que corre `secret-scan.mjs` sobre lo que entra al commit: bloquea archivos que no se versionan (`.env` reales, `wp-config.php`, llaves privadas) y líneas con una clave privada o un token con formato conocido de proveedor. No imprime el secreto.
+- Se activa una vez por equipo con `git config --global core.hooksPath <repo>/git-hooks`: cubre cualquier IA y los commits a mano. Apunta al clon del repo, así que `git pull` lo actualiza.
+- Con `core.hooksPath` global, git deja de mirar `.git/hooks` de cada repo. Cada hook de `git-hooks/` es un puente que corre el del repo si existe. Un repo con su propio `core.hooksPath` (Husky) usa el suyo y no pasa por este freno.
+- Una línea de ejemplo a propósito se marca con `secret-scan: allow`. Saltar el hook (`--no-verify`) lo decide el usuario.
+- No viaja en el kit global: se instala a mano, como el hook de datos personales (ADR-034).
+
+**Alternativas consideradas:**
+
+- **Hook de Claude Code (PreToolUse):** más simple, pero solo cubre a Claude.
+- **Gitleaks u otra herramienta externa:** más patrones, pero es otro binario que instalar y mantener en cada equipo. Se puede sumar más adelante dentro del mismo `pre-commit`.
+- **Solo la regla y el checklist:** es lo que había, y no alcanzó.
+
+**Consecuencias:**
+
+- Si se mueve o se borra el clon del repo, el freno deja de correr sin avisar.
+- Detecta formatos conocidos; un secreto sin formato propio (una contraseña suelta) pasa. La regla `security` sigue cubriendo el resto.
+- Si Node no está disponible, el commit se frena.

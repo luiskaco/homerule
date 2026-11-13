@@ -1,5 +1,5 @@
 ---
-description: "Al terminar el día o una tarea — verifica docs, código y genera commit sugerido"
+description: "Cuando el usuario dice que termina el día o deja el proyecto — verifica docs, código y genera commit sugerido"
 ---
 
 # Workflow: Cierre de Sesión

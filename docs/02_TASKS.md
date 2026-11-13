@@ -8,8 +8,8 @@
 ## Dónde quedó
 
 - **Última actualización:** 2026-11-13
-- **Dónde quedó:** kit global (ADR-038, PR #35) y sitio simple (ADR-039, rama `feat/site-simple`, sobre `feat/global-kit`) hechos; 26 proyectos migrados el 2026-11-13. Falta fusionar makeControlHubk40 (fusionar despliega a producción).
-- **Próximo paso:** fusionar el PR #35 y después el del sitio simple: fusionar a `main` despliega el sitio en Vercel.
+- **Dónde quedó:** kit global, sitio simple (Homerule) y freno de secretos al commitear (ADR-041) en `main` y en Vercel; 26 proyectos migrados. Falta fusionar makeControlHubk40 (fusionar despliega a producción).
+- **Próximo paso:** llevar los globales y el freno de secretos a la otra PC (T-04, paso 6 de `docs/kit-pause.md`); revisión de la pausa el 2026-11-19 (T-03).
 - **Bloqueos:** ninguno.
 
 ## Abiertas

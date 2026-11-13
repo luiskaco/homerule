@@ -1,0 +1,16 @@
+#!/bin/sh
+# Hook global de git (ADR-041): revisa secretos antes de cada commit.
+if ! command -v node >/dev/null 2>&1; then
+  echo "secret-scan: no encuentro node; commit frenado. Instalá Node o usá --no-verify bajo tu responsabilidad." >&2
+  exit 1
+fi
+node "$(dirname "$0")/secret-scan.mjs" || exit 1
+
+# Con core.hooksPath global, git deja de mirar .git/hooks de cada repo.
+# Este puente corre el hook propio del repo, si lo tiene (ADR-041).
+hook=$(basename "$0")
+repo_hook="$(git rev-parse --git-common-dir)/hooks/$hook"
+if [ -f "$repo_hook" ] && [ -x "$repo_hook" ]; then
+  exec "$repo_hook" "$@"
+fi
+exit 0

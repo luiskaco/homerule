@@ -122,12 +122,12 @@ Invocar con `/` en el chat:
 - `/grill` — antes de `/new-feature`, cuando el plan todavía es difuso.
 - `/new-feature` — al empezar una tarea nueva.
 - `/bug-fix` — cuando algo está roto: causa raíz antes de codificar.
-- `/session-close` — al terminar el día o una tarea.
+- `/session-close` — cuando el usuario dice que termina el día o deja el proyecto.
 - `/security-audit` — antes de subir auth, APIs o datos sensibles.
 - `/deploy-checklist` — antes de un merge a main o un deploy a producción.
 - `/tools-reference` — para ver las skills y herramientas disponibles.
 
-**Sugerir, no correr:** si el usuario está por hacer algo que cubre un comando y no lo nombró, sugerírselo en una línea al final, sin ejecutarlo.
+**Sugerir, no correr:** si el usuario está por hacer algo que cubre un comando y no lo nombró, sugerírselo en una línea al final, sin ejecutarlo. Cada comando se sugiere una sola vez por conversación, y `/session-close` solo cuando el usuario dice que termina. Lo mismo con un recordatorio (una tarea pendiente, una clave a revocar): se dice una vez, no al final de cada respuesta.
 
 ---
 

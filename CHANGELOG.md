@@ -6,6 +6,8 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Freno de secretos al commitear** (ADR-041): un hook de git global frena el commit si entra un `.env`, un `wp-config.php`, una llave privada o un token con formato conocido. Cubre a Claude, Antigravity, Codex y los commits a mano. Se activa una vez por equipo.
+- **Menos sugerencias repetidas:** cada comando se sugiere una sola vez por conversación, `/session-close` solo cuando el usuario dice que termina, y un recordatorio se dice una vez. Gemini sugería cerrar la sesión al final de cada tarea.
 - **Versión en el checklist de deploy:** `/deploy-checklist` pide subir el número de versión según los commits (`fix`, `feat` o cambio incompatible) en los proyectos que lo tienen, como librerías o temas y plugins de WordPress, y que coincida en todos los lugares donde aparece. Los sitios sin número de versión no cambian.
 - **Repo renombrado a `luiskaco/homerule`** (T-10): los comandos del plugin y del clonado apuntan al nombre nuevo; GitHub redirige los enlaces viejos.
 - **Nombre comercial: Homerule** (T-10): reemplaza a "AI Rules Hub" en el sitio, los dos README y el nombre visible del plugin. El nombre interno del plugin (`ai-rules-hub`) y el del repo no cambian todavía.
