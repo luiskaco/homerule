@@ -61,7 +61,25 @@ estrictamente "Always On".
 
 ## Instalación
 
-### Claude Code — como plugin (recomendado)
+### En tu equipo, para todos tus proyectos (recomendado)
+
+Instala el kit una sola vez en tu carpeta personal, para Claude Code y Antigravity
+a la vez (ADR-038). Cada proyecto queda solo con `docs/`, su `AGENTS.md` y un
+`CLAUDE.md` que lo importa.
+
+```bash
+git clone https://github.com/luiskaco/-makeRuleIA.git
+```
+
+```bash
+node scripts/install-global.mjs --write
+```
+
+Sin `--write` solo muestra qué cambiaría. Para actualizar: `git pull` y volver a
+correrlo. Deja respaldo en `kit-backup/`, borra lo que el kit ya no trae y nunca
+pisa un archivo tuyo con el mismo nombre.
+
+### Claude Code — como plugin
 
 El plugin se actualiza desde git: un `/plugin update` trae las correcciones
 posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
@@ -80,7 +98,7 @@ Las skills de terceros (`hallmark`, `impeccable`, las de Vercel, etc.) no van en
 el plugin a propósito: se instalan desde su repo original, con el comando que
 figura en el catálogo.
 
-Antigravity no tiene un sistema equivalente — ahí la instalación es la de abajo.
+En Antigravity, la instalación por proyecto es la de abajo.
 
 ### Paso 1 — Archivo global (una sola vez)
 
