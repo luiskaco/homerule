@@ -321,6 +321,14 @@
       ],
       "install": []
     },
+    "skill:ui-patterns": {
+      "author": "—",
+      "summary": "Use it when choosing or naming an interface pattern: an effect, a menu type, a modal or a drawer, a loading state. An index points to the right topic.",
+      "whatItDoes": "Catalog of animations and effects, menus and navigation, overlays and feedback: what each pattern is, when to use it, when not to, and how to keep it accessible.",
+      "whenToUse": [],
+      "usage": [],
+      "install": []
+    },
     "skill:security-mitigations": {
       "author": "—",
       "summary": "Use it when building or auditing login, permissions, user data, APIs, uploads, dependencies, AI or WordPress. An index points to the right topic, so you don't read everything.",

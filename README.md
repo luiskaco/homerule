@@ -443,7 +443,7 @@ no editarla a mano.
 |---|---|---|
 | `GEMINI.md` | ~2,497 | Siempre |
 | `security.md` | ~2,315 | Model Decision |
-| `architecture.md` | ~802 | Model Decision |
+| `architecture.md` | ~1,572 | Model Decision |
 | `ui-ux.md` | ~2,000 | Model Decision |
 | `seo.md` | ~1,445 | Model Decision |
 | `pwa.md` | ~578 | Model Decision — solo PWA |
@@ -451,7 +451,7 @@ no editarla a mano.
 | `cms.md` | ~690 | Model Decision |
 | `database.md` | ~873 | Model Decision |
 | `stack-conventions.md` | ~874 | Glob |
-| `/tools-reference` | ~1,235 | Skill — slash o por descripción |
+| `/tools-reference` | ~1,267 | Skill — slash o por descripción |
 | `/grill` | ~604 | Skill — slash o por descripción |
 | `/new-feature` | ~440 | Skill — slash o por descripción |
 | `/bug-fix` | ~405 | Skill — slash o por descripción |
@@ -459,8 +459,8 @@ no editarla a mano.
 | `/security-audit` | ~370 | Skill — slash o por descripción |
 | `/deploy-checklist` | ~792 | Skill — slash o por descripción |
 | **Base siempre activa** | **~2,497** | `GEMINI.md` |
-| **Caso típico** (1-2 reglas + 1 workflow) | **~3,669–8,047** | sesión normal de código |
-| **Máximo con todo activo** | **~14,862** | improbable — varias reglas casi nunca se activan juntas |
+| **Caso típico** (1-2 reglas + 1 workflow) | **~4,439–8,079** | sesión normal de código |
+| **Máximo con todo activo** | **~15,664** | improbable — varias reglas casi nunca se activan juntas |
 <!-- token-table:end -->
 
 El "máximo con todo activo" es un techo teórico (ej. tocar auth + UI + infra +

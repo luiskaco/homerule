@@ -28,6 +28,7 @@ export const SKILL_JOB_TYPES: Record<string, JobTypeId[]> = {
   "vercel-composition-patterns": ["web"],
   "web-design-guidelines": ["web"],
   "wordpress-block-theming": ["web"],
+  "ui-patterns": ["web"],
   fastapi: ["backend"],
   "prisma-database-setup": ["backend"],
   "error-handling-patterns": ["backend", "general"],

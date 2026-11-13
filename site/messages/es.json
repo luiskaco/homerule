@@ -321,6 +321,14 @@
       ],
       "install": []
     },
+    "skill:ui-patterns": {
+      "author": "—",
+      "summary": "Usar al elegir o nombrar un patrón de interfaz: un efecto, un tipo de menú, un modal o un cajón, un estado de carga. Un índice lleva al tema que toca.",
+      "whatItDoes": "Catálogo de animaciones y efectos, menús y navegación, contenedores y feedback: qué es cada patrón, cuándo conviene, cuándo no y cómo hacerlo accesible.",
+      "whenToUse": [],
+      "usage": [],
+      "install": []
+    },
     "skill:security-mitigations": {
       "author": "—",
       "summary": "Usar al implementar o auditar login, permisos, datos de usuarios, APIs, uploads, dependencias, IA o WordPress. Un índice lleva al tema que toca, sin leer todo.",

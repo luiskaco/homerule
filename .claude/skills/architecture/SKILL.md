@@ -31,6 +31,70 @@ Un módulo = una carpeta en cada capa. Sin mezclar.
 - Comunicación entre módulos solo a través de interfaces/contratos — nunca importando internals
 - Archivo nuevo siempre en la carpeta de su módulo
 
+## Carpetas por stack
+
+Respetar la estructura del framework y agregar los módulos adentro. En un
+proyecto que ya existe, manda la estructura que tiene.
+
+```
+Next.js (App Router)            Laravel
+app/[modulo]/   rutas           app/Http/Controllers/  delgados
+components/ui/  compartidos     app/Http/Requests/     validación
+components/[modulo]/            app/Models/
+lib/[modulo]/   servicios       app/Services/ o Actions/  lógica de negocio
+lib/shared/                     routes/  database/migrations/
+tests/ o junto al archivo       tests/Feature/  tests/Unit/
+
+Node (API con Express/Fastify)  FastAPI
+src/app.ts      arma la app     app/main.py
+src/modules/[modulo]/           app/api/v1/     routers
+  routes  controller            app/schemas/    Pydantic
+  service  schema  repository   app/services/   lógica
+src/shared/     middlewares     app/models/  app/db/
+src/config/     env y ajustes   app/core/       config y seguridad
+tests/                          tests/
+
+Tema de WordPress (bloques)     CSS puro o Sass, por capas (@layer)
+theme.json  style.css           styles/main.css   solo importa, en orden:
+templates/  parts/  patterns/   styles/reset/
+functions.php  solo carga inc/  styles/tokens/    variables
+inc/        PHP del tema        styles/base/      etiquetas HTML
+assets/     CSS, JS, imágenes   styles/layout/    grillas y contenedores
+                                styles/components/  un archivo por componente
+                                styles/utilities/
+```
+
+Con CSS por capas, el orden de `@layer` decide qué gana, sin `!important`. Con
+Tailwind casi no hacen falta carpetas: los tokens van en el tema y quedan pocos
+archivos de componentes.
+
+### Antes de crear un archivo
+
+1. **Buscar si ya existe** algo que haga lo mismo o un archivo donde encaje.
+2. **Ubicarlo en su módulo y su capa:** pantalla, API, lógica o datos del área
+   a la que pertenece. Si no encaja en ningún módulo, es compartido o falta un
+   módulo nuevo: decidirlo, no dejarlo suelto.
+3. **Nombrarlo por lo que hace,** en inglés y `kebab-case` (o la convención del
+   framework: `PascalCase` para componentes y clases).
+
+### Lo que no va
+
+- Archivos sueltos en la raíz: ahí solo van la configuración del proyecto
+  (`package.json`, `composer.json`, `.env.example`, configs de herramientas),
+  el `README.md` y el `AGENTS.md`.
+- Carpetas cajón (`utils/`, `helpers/`, `misc/`, `new/`, `old/`) con archivos de
+  distintos módulos: lo compartido va en la carpeta compartida del stack, con
+  un nombre que diga qué hace.
+- Copias y borradores (`archivo-v2.ts`, `copy-of-…`, `test2.php`): para eso está
+  git. Lo que ya no se usa se borra.
+- Scripts y pruebas sueltas: los scripts de mantenimiento van en `scripts/`, la
+  documentación en `docs/` y lo temporal fuera del repo.
+- La configuración sale de variables de entorno y se lee en un solo lugar
+  (`config/` en Laravel y Node, `app/core/config.py` en FastAPI, `lib/env` en
+  Next.js).
+- Los tests replican la estructura del código: el test de
+  `app/services/billing.py` está en `tests/services/test_billing.py`.
+
 ## Frontend Ligero
 
 El frontend maneja solo:

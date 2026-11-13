@@ -31,7 +31,7 @@ const REPO_URL = `https://github.com/${REPO_SLUG}`;
  * traen `install:` en el frontmatter o figuran en `skills-lock.json`, y no se
  * redistribuyen por el plugin.
  */
-const HUB_OWNED_SKILLS = ["domain-modeling", "prelaunch-compliance-audit", "project-planning", "security-mitigations"];
+const HUB_OWNED_SKILLS = ["domain-modeling", "prelaunch-compliance-audit", "project-planning", "security-mitigations", "ui-patterns"];
 
 /**
  * Subagents que viajan solo por ZIP (ADR-026). Los subagents de plugin ignoran
