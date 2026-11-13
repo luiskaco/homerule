@@ -1,123 +1,77 @@
 #!/usr/bin/env node
-// Instala el kit en la carpeta personal, para todos los proyectos del equipo
-// (ADR-038). Reemplaza a sync-globals.mjs.
+// Instala el kit en la carpeta personal, para todos los proyectos (ADR-038).
 //
 //   Claude Code  → ~/.claude/CLAUDE.md, skills/ (rules y skills), commands/,
 //                  agents/ y hooks/ de los subagentes
 //   Antigravity  → ~/.gemini/GEMINI.md y ~/.gemini/config/{rules,skills,agents}/
 //   Codex        → ~/.codex/AGENTS.md y ~/.agents/skills/ (rules y comandos como skills)
 //
-// Uso:
-//   node scripts/install-global.mjs           # solo compara; sale con 1 si hay algo pendiente
-//   node scripts/install-global.mjs --write   # instala, con respaldo en kit-backup/<fecha-hora>/
-//   node scripts/install-global.mjs --write --force   # también pisa archivos ajenos con el mismo nombre
+// Corre de dos formas, con el mismo código (ADR-039):
+//   - Desde el repo: arma los tres kits con el generador del sitio y los instala.
+//   - Desde el ZIP que baja la web: instala el `kit.json` que viene al lado.
 //
-// Sale del manifest del sitio, así instala lo mismo que traen los ZIPs. Registra
-// lo instalado en .kit-installed.json y, en la próxima corrida, borra lo que el
-// kit ya no trae. Nunca pisa un archivo que no instaló él, salvo con --force.
-// No toca los hooks de Antigravity ni el hook de datos personales (ADR-034).
+// Uso:
+//   node install.mjs                     # solo compara; sale con 1 si hay algo pendiente
+//   node install.mjs --write             # instala, con respaldo en kit-backup/<fecha-hora>/
+//   node install.mjs --write --force     # también pisa archivos ajenos con el mismo nombre
+//   node install.mjs --from <kit.json>   # instala un kit puntual
+//
+// Registra lo instalado en .kit-installed.json y, en la próxima corrida, borra
+// lo que el kit ya no trae. Nunca pisa un archivo que no instaló él, salvo con
+// --force. No toca los hooks de Antigravity ni el hook de datos personales (ADR-034).
+// Solo usa módulos de Node: tiene que correr suelto, fuera del repo.
 import { spawnSync } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmdirSync, statSync, unlinkSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const REPO = fileURLToPath(new URL("..", import.meta.url));
+const HERE = dirname(fileURLToPath(import.meta.url));
 const HOME = process.env.GLOBALS_HOME || homedir();
-const WRITE = process.argv.includes("--write");
-const FORCE = process.argv.includes("--force");
+const args = process.argv.slice(2);
+const WRITE = args.includes("--write");
+const FORCE = args.includes("--force");
+const FROM = args.includes("--from") ? args[args.indexOf("--from") + 1] : null;
 const STAMP = new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-");
 
 const MACHINE_BLOCK = /\n*<!-- codebase-memory-mcp:start -->[\s\S]*?<!-- codebase-memory-mcp:end -->\n*/;
-const CLAUDE_AGENTS_NOTE =
-  " Claude Code no carga `AGENTS.md` por sí solo cuando existe un `CLAUDE.md`: leerlo al iniciar la sesión.";
 
-function replaceOnce(text, pattern, replacement, what) {
-  if (!pattern.test(text)) throw new Error(`install-global: no se encontró ${what}`);
-  return text.replace(pattern, replacement);
+// --- 1. Qué kits instalar ----------------------------------------------------------
+function loadKits() {
+  if (FROM) return [JSON.parse(readFileSync(FROM, "utf8"))];
+  const zipKit = join(HERE, "kit.json");
+  if (existsSync(zipKit)) return [JSON.parse(readFileSync(zipKit, "utf8"))];
+
+  // Desde el repo: el generador del sitio arma los tres kits en site/public/global-kit/.
+  const repo = join(HERE, "..");
+  const gen = spawnSync(process.execPath, ["scripts/generate-manifest.mjs"], { cwd: join(repo, "site"), encoding: "utf8" });
+  if (gen.status !== 0) {
+    process.stderr.write(gen.stderr || gen.stdout);
+    throw new Error("install-global: falló generate-manifest");
+  }
+  const dir = join(repo, "site", "public", "global-kit");
+  return ["claude-code", "antigravity", "codex"].map((tool) => JSON.parse(readFileSync(join(dir, `${tool}.json`), "utf8")));
 }
 
-// --- 1. Manifest fresco, desde la fuente --------------------------------------
-const gen = spawnSync(process.execPath, ["scripts/generate-manifest.mjs"], { cwd: join(REPO, "site"), encoding: "utf8" });
-if (gen.status !== 0) {
-  process.stderr.write(gen.stderr || gen.stdout);
-  throw new Error("install-global: falló generate-manifest");
-}
-const { items } = JSON.parse(readFileSync(join(REPO, "site", "public", "manifest.json"), "utf8"));
-const pick = (tool, categories) => items.filter((i) => i.tool === tool && categories.includes(i.category));
-const firstDatabase = (tool) => items.find((i) => i.tool === tool && i.category === "database");
-
-// --- 2. Qué va a dónde -----------------------------------------------------------
-/** @type {{root: string, label: string, files: Map<string, string>}[]} */
-const targets = [];
-
-{
-  const root = join(HOME, ".claude");
-  const files = new Map();
-  for (const item of [...pick("claude-code", ["skill", "command", "agent"]), firstDatabase("claude-code")]) {
-    for (const f of item.files) {
-      if (!f.destPath.startsWith(".claude/")) throw new Error(`install-global: ruta inesperada ${f.destPath}`);
-      // Los hooks de los subagentes viven en la carpeta personal, no en el proyecto.
-      const content = f.destPath.startsWith(".claude/agents/")
-        ? f.content.replaceAll("$CLAUDE_PROJECT_DIR/.claude/hooks/", "$HOME/.claude/hooks/")
-        : f.content;
-      files.set(f.destPath.slice(".claude/".length), content);
+// El kit puede venir de un ZIP: solo se aceptan las carpetas del kit y rutas relativas sin "..".
+const KIT_ROOTS = [".claude", ".gemini", ".codex", ".agents"];
+function assertSafe(target) {
+  if (!KIT_ROOTS.includes(target.root)) throw new Error(`install-global: carpeta no permitida "${target.root}"`);
+  for (const rel of Object.keys(target.files)) {
+    const parts = rel.split("/");
+    if (rel.startsWith("/") || rel.includes("\\") || /^[a-zA-Z]:/.test(rel) || parts.some((p) => p === "" || p === "." || p === "..")) {
+      throw new Error(`install-global: ruta no permitida "${target.root}/${rel}"`);
     }
   }
-  const core = readFileSync(join(REPO, "core", "CORE.md"), "utf8").replace(/\r\n/g, "\n").replace(MACHINE_BLOCK, "\n");
-  let claudeMd = replaceOnce(core, /^# Core Rules — Global\n/, "# Claude Code — Global\n", "el título de CORE.md");
-  claudeMd = replaceOnce(
-    claudeMd,
-    /(el desvío se documenta en el `AGENTS\.md` del proyecto, que tiene prioridad sobre ellas\.)/,
-    `$1${CLAUDE_AGENTS_NOTE}`,
-    "la excepción de § 5"
-  );
-  files.set("CLAUDE.md", claudeMd.trimEnd() + "\n");
-  targets.push({ root, label: "Claude Code", files });
 }
 
-{
-  const root = join(HOME, ".gemini");
-  const files = new Map();
-  const map = (destPath) => {
-    if (destPath.startsWith(".agents/rules/")) return "config/rules/" + destPath.slice(".agents/rules/".length);
-    if (destPath.startsWith(".agents/skills/")) return "config/skills/" + destPath.slice(".agents/skills/".length);
-    if (destPath.startsWith(".agents/agents/")) return "config/agents/" + destPath.slice(".agents/agents/".length);
-    throw new Error(`install-global: ruta inesperada ${destPath}`);
-  };
-  for (const item of [...pick("antigravity", ["rule", "skill", "command", "agent"]), firstDatabase("antigravity")]) {
-    for (const f of item.files) files.set(map(f.destPath), f.content);
-  }
-  const gemini = readFileSync(join(REPO, ".gemini", "GEMINI.md"), "utf8").replace(/\r\n/g, "\n").replace(MACHINE_BLOCK, "\n");
-  files.set("GEMINI.md", gemini.trimEnd() + "\n");
-  targets.push({ root, label: "Antigravity", files });
-}
-
-{
-  // Codex: instrucciones globales en ~/.codex/AGENTS.md y skills en ~/.agents/skills/.
-  // No tiene rules con disparador ni comandos con "/": las rules y los comandos
-  // van como skills, que Codex elige solo o se piden con `$nombre`.
-  const core = readFileSync(join(REPO, "core", "CORE.md"), "utf8").replace(/\r\n/g, "\n").replace(MACHINE_BLOCK, "\n");
-  let agentsMd = replaceOnce(core, /^# Core Rules — Global\n/, "# Codex — Global\n", "el título de CORE.md");
-  agentsMd = replaceOnce(
-    agentsMd,
-    /^Invocar con `\/` en el chat:$/m,
-    // Función, no texto: en un reemplazo de texto, "$`" inserta lo anterior al match.
-    () => "En Codex son skills: invocar con `$` y el nombre (por ejemplo, `$new-feature`), o pedirlo con palabras:",
-    "la línea de invocación de § 7"
-  );
-  agentsMd = replaceOnce(agentsMd, /\n> Esto es una \*\*auto-revisión inline\*\*[\s\S]*?(?=\n(?!>)|$)/, "", "la nota de subagentes de § 8");
-  targets.push({ root: join(HOME, ".codex"), label: "Codex (instrucciones)", files: new Map([["AGENTS.md", agentsMd.trimEnd() + "\n"]]) });
-
-  const files = new Map();
-  for (const item of [...pick("claude-code", ["skill"]).filter((i) => i.id.startsWith("claude-code:rule:")), firstDatabase("claude-code")]) {
-    for (const f of item.files) files.set("skills/" + f.destPath.slice(".claude/skills/".length), f.content);
-  }
-  for (const item of pick("antigravity", ["skill", "command"])) {
-    for (const f of item.files) files.set("skills/" + f.destPath.slice(".agents/skills/".length), f.content);
-  }
-  targets.push({ root: join(HOME, ".agents"), label: "Codex (skills)", files });
-}
+/** @type {{root: string, label: string, files: Map<string, string>}[]} */
+const targets = loadKits().flatMap((kit) =>
+  kit.targets.map((target) => {
+    assertSafe(target);
+    return { root: join(HOME, target.root), label: target.label, files: new Map(Object.entries(target.files)) };
+  })
+);
 
 // --- 3. Comparar e instalar ------------------------------------------------------
 function removeEmptyDirs(dir, stop) {

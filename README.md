@@ -1,19 +1,14 @@
 # AI Rules Hub — Guía del Sistema
 
-Sistema de reglas para dos formas de trabajo con IA:
+Kit de reglas, skills, comandos y subagentes para trabajar con IA en **Claude Code**,
+**Antigravity** y **Codex**. Se instala una sola vez en la carpeta personal y vale
+para todos los proyectos (ADR-038). Cada proyecto lleva solo su documentación en
+`docs/` y un **`AGENTS.md`** con lo esencial: quien lo clone trae su propia forma de
+trabajar (ADR-036).
 
-- **Híbrida** — Gemini/Antigravity como desarrollador principal, Claude como
-  PM/auditor.
-- **Claude Code individual** — Claude como desarrollador completo, con la misma
-  base de reglas convertida a formato nativo (`CLAUDE.md` + `.claude/skills` +
-  `.claude/commands` + `.claude/agents`).
-
-Para proyectos que se trabajan con las dos IA está el kit híbrido **Claude + Gemini** (ADR-031): un solo juego de reglas y skills en `.agents/`, punteros en `.claude/` y las reglas generales en los archivos globales.
-
-Los dos kits dejan además un **`AGENTS.md`** en la raíz del proyecto — el
-estándar abierto que leen Codex, Cursor, Copilot y Antigravity — con las reglas
-en versión neutral y un mapa del proyecto: si mañana lo continúa otra IA,
-encuentra lo mismo (ADR-016).
+El sitio (`site/`) entrega las dos piezas (ADR-039): el kit global de cada
+herramienta, con su instalador, y el arranque de un proyecto nuevo (`docs/`,
+`AGENTS.md` y `CLAUDE.md`).
 
 Carga selectiva por contexto — nada se lee completo en cada mensaje salvo lo
 estrictamente "Always On".
@@ -23,45 +18,39 @@ estrictamente "Always On".
 ## Estructura
 
 ```
-~/.gemini/                                    # GLOBAL — una sola vez, aplica a todos los proyectos
-└── GEMINI.md                                 # Always On — núcleo: principios, stack base, naming, jerarquía
+~/.claude/                  # Claude Code: CLAUDE.md, skills/ (rules y skills), commands/, agents/, hooks/
+~/.gemini/                  # Antigravity: GEMINI.md y config/{rules,skills,agents}/
+~/.codex/AGENTS.md          # Codex: reglas generales
+~/.agents/skills/           # Codex: rules, skills y comandos como skills
 
 [proyecto]/
-├── AGENTS.md                                 # reglas neutrales + mapa — lo lee cualquier IA (ADR-016)
-└── .agents/                                  # WORKSPACE — override local, por proyecto
-    ├── rules/
-    │   ├── security.md                       # Model Decision
-    │   ├── architecture.md                   # Model Decision
-    │   ├── ui-ux.md                          # Model Decision
-    │   ├── seo.md                            # Model Decision
-    │   ├── pwa.md                            # Model Decision — solo proyectos PWA
-    │   ├── operations.md                     # Model Decision
-    │   ├── cms.md                            # Model Decision
-    │   ├── database.md                       # Model Decision — schema, migraciones, pooling, índices
-    │   └── stack-conventions.md              # Glob: *.tsx,*.ts,*.jsx,*.js,*.py,*.php,*.css
-    ├── agents/                               # subagentes de Antigravity — ver § Subagentes
-    │   ├── auditor/agent.md                  # review de diff — solo lectura
-    │   ├── backend/agent.md                  # implementa servidor, datos, migraciones
-    │   ├── frontend/agent.md                 # implementa interfaz
-    │   └── security/agent.md                 # auditoría de seguridad — solo lectura
-    └── skills/                               # los 7 comandos (/grill, /new-feature…, ADR-020) + skills opcionales — ver § Skills
+├── AGENTS.md               # lo esencial del proyecto, para cualquier IA o persona (ADR-036)
+├── CLAUDE.md               # solo importa AGENTS.md
+└── docs/                   # 01_PRD, 02_TASKS, 03_DECISIONS, 04_CHANGELOG y los opcionales
 ```
 
-> **¿Por qué global + workspace?** Trabajas varios proyectos a la vez (Media Hub,
-> Abencia, Agency CRM, sitios de cliente). `GEMINI.md` no cambia
-> de un proyecto a otro — va en `~/.gemini/` una sola vez. Las reglas técnicas
-> (`security.md`, `architecture.md`, etc.) sí pueden variar por proyecto — un sitio
-> WordPress no necesita las mismas convenciones que Abencia en Next.js — así que
-> viven en `.agents/rules/` dentro de cada repo, donde se pueden ajustar sin tocar
-> lo global. Si todos tus proyectos comparten exactamente las mismas reglas técnicas,
-> también puedes moverlas a `~/.gemini/config/rules/` y saltarte la copia por
-> proyecto — pero perderías la posibilidad de variarlas caso por caso.
+Las rules se activan solas según lo que se esté tocando (seguridad, base de datos,
+interfaz, SEO…), así que el kit se instala completo. Si un proyecto se desvía de
+una regla, el desvío va en su `AGENTS.md`, que manda sobre el kit.
 
 ---
 
 ## Instalación
 
-### En tu equipo, para todos tus proyectos (recomendado)
+### Desde la web
+
+En `/instalar`, elegí la herramienta y bajá el ZIP. Adentro vienen el kit y el
+mismo instalador que se usa desde el repo:
+
+```bash
+node install.mjs           # muestra qué va a cambiar
+node install.mjs --write   # instala, con respaldo
+```
+
+Para arrancar un proyecto, `/proyecto-nuevo` arma el ZIP con `docs/`, `AGENTS.md`
+y `CLAUDE.md`.
+
+### Desde el repo
 
 Instala el kit una sola vez en tu carpeta personal, para Claude Code, Antigravity
 y Codex a la vez (ADR-038). Cada proyecto queda solo con `docs/`, su `AGENTS.md` y un
@@ -82,7 +71,7 @@ pisa un archivo tuyo con el mismo nombre.
 ### Claude Code — como plugin
 
 El plugin se actualiza desde git: un `/plugin update` trae las correcciones
-posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
+posteriores a la instalación. El ZIP de `/instalar`, en cambio, se actualiza bajándolo de nuevo.
 
 ```
 /plugin marketplace add luiskaco/-makeRuleIA
@@ -92,7 +81,7 @@ posteriores a la instalación. El ZIP, en cambio, es una copia congelada.
 Trae las 9 rules como skills nativas, los 7 comandos y 8 de los 10 subagentes: `server-inspector`
 y `server-operator` van solo en el ZIP, porque el plugin ignora el hook que los controla (ADR-026). **No**
 trae `CLAUDE.md` ni `AGENTS.md`: un plugin aporta comandos, agentes y skills, no memoria de
-proyecto — si querés el núcleo global, bajá el ZIP desde `/build`.
+proyecto — si querés el núcleo global, instalá el kit desde `/instalar`.
 
 Las skills de terceros (`hallmark`, `impeccable`, las de Vercel, etc.) no van en
 el plugin a propósito: se instalan desde su repo original, con el comando que
@@ -298,8 +287,7 @@ esa lista. **No pongas `ssh`, `scp` ni `rsync` en la allow list de comandos**: l
 cambios correrían sin pedir aprobación. En Claude Code un hook
 (`.claude/hooks/ssh-guard.mjs`) le deja al inspector solo comandos de lectura, le
 hace pedir aprobación al operator en cada comando y les bloquea a los dos lo que deja
-sin acceso al servidor; en Antigravity esas reglas viven en el prompt. No vienen
-preseleccionados en ningún preset.
+sin acceso al servidor; en Antigravity esas reglas viven en el prompt.
 
 ### Claude Code — 10 subagentes
 
@@ -395,7 +383,7 @@ Detalle en [`.agents/skills/api-security-best-practices/SKILL.md`](.agents/skill
 
 ### Skills de diseño de terceros
 
-A diferencia de las de `.agents/skills/`, **no** entran en el ZIP de `/build`:
+A diferencia de las de `.agents/skills/`, **no** entran en el kit global:
 son código de otros repos, con su propia licencia y su propio ciclo de
 actualización.
 

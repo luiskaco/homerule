@@ -84,9 +84,9 @@ export default async function MejoresSkillPage(props: { params: Promise<{ locale
             {t.rich("origins", {
               hub: () => <strong className="font-semibold text-slate-200">{t("originHub")}</strong>,
               external: () => <strong className="font-semibold text-slate-200">{t("originExternal")}</strong>,
-              buildLink: () => (
-                <Link href="/build" className="font-semibold text-violet-400 underline hover:text-violet-300">
-                  /build
+              installLink: (chunks) => (
+                <Link href="/instalar" className="font-semibold text-violet-400 underline hover:text-violet-300">
+                  {chunks}
                 </Link>
               ),
             })}

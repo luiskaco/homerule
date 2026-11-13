@@ -1,5 +1,5 @@
 /**
- * Skills de terceros que no vienen en el ZIP de /build — se instalan aparte,
+ * Skills de terceros que no vienen en el kit global — se instalan aparte,
  * con su propio comando.
  *
  * Igual que `skill-catalog.ts`: acá va solo la estructura (links y comandos).

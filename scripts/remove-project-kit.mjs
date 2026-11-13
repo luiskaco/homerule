@@ -9,7 +9,7 @@
 //
 // Un archivo del proyecto se considera copia del kit si su contenido es igual a
 // alguna versión que tuvo ese archivo en la historia de este repo, o a lo que
-// hoy genera el manifest para cualquiera de los tres kits. No toca `AGENTS.md`,
+// hoy genera el manifest para cualquiera de los kits. No toca `AGENTS.md`,
 // `CLAUDE.md`, `docs/`, `.claude/settings*.json` ni `.claude/ssh-hosts.txt`.
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
