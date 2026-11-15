@@ -8,7 +8,8 @@
     "prebuild": "npm run generate-manifest && node scripts/check-messages.mjs",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "vitest run"
   },
   "dependencies": {
     "jszip": "^3.10.2",
@@ -24,7 +25,8 @@
     "@types/react-dom": "^19.3.0",
     "postcss": "^8.5.31",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
   },
   "overrides": {
     "@types/react": "^19.3.0",

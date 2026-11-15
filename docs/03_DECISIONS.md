@@ -1154,7 +1154,7 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Los textos de la interfaz están en `messages/*.json` (namespace `Stack`), en inglés y español. El contenido del catálogo (motivos, avisos, descripciones) queda en español por ahora; la página lo avisa.
 - Los colores salen de tokens propios acotados a `.stack-chooser` en `globals.css`: no tocan el resto del sitio. El sitio es siempre oscuro, así que solo hay variante oscura.
 - Los datos (respuestas, perfil y stack armado) siguen en `localStorage`, por navegador. Se leen después de montar para no romper la hidratación.
-- Los tests de `makeStackWork` no viajan: el sitio no tiene corredor de tests. La integridad del catálogo se sigue verificando allá.
+- Los tests de `makeStackWork` (49: integridad del catálogo y recorrido de combinaciones) viajan a `site/src/stack/` y corren con `npm test` en `site/` (Vitest). La documentación original queda en `docs/stack-chooser/`.
 
 **Alternativas consideradas:**
 
@@ -1163,6 +1163,6 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 
 **Consecuencias:**
 
-- Hay dos copias del motor y del catálogo. Hasta resolver T-12, cada cambio se hace en `makeStackWork` (que tiene los tests) y se copia al sitio.
+- `makeStackWork` queda sin nada propio y se elimina: el sitio es la única versión que se mantiene (el proyecto nació para ser parte de Homerule). Se borra después de mergear esta rama.
 - Es una función nueva dentro de la pausa del kit: se hizo como excepción pedida por el autor (ver `docs/kit-pause.md`).
 - El catálogo en español hace que la versión en inglés sea mixta hasta traducirlo.
