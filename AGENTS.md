@@ -33,6 +33,7 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | `docs/` | Documentación de este repo: `01_PRD`, `02_TASKS`, `03_DECISIONS`, `ARCHITECTURE`, `DATA_MODEL` y el recordatorio de la pausa. El changelog vive en la raíz (ADR-025) |
 | `scripts/` | Generadores y guards (ver Comandos) |
 | `site/` | Sitio Next.js 16 (App Router, React 19, next-intl, Tailwind 4) — deploy en Vercel |
+| `site/src/stack/` | Motor, catálogo, tipos y tests de Stack Chooser (`/stack`, ADR-042): puros, sin React. La interfaz está en `site/src/components/stack/`. Su documentación de origen está en `docs/stack-chooser/` |
 
 ## Fuente vs. derivados
 
@@ -127,3 +128,11 @@ cd site && npm run build                  # build de producción
 - `03_DECISIONS.md` — decisiones con alternativas evaluadas y trade-offs (ADR), con su línea en el índice.
 - `CONTEXT.md` — glosario del dominio, sin numerar (ADR-012). Lenguaje del
   negocio, no esquema ni decisiones. Lo mantiene la skill `domain-modeling`.
+
+## Stack Chooser (`/stack`)
+
+- **Agregar una tecnología es agregar un registro al catálogo** (`site/src/stack/catalog/`, un `tech({...})`); no se toca el motor.
+- Una ficha solo lleva `verifiedAt` y `source` si se contrastó con documentación vigente (Context7 o la fuente oficial). Lo demás queda en `null`: no se marca verificado de memoria. `source` dice qué parte de la ficha se confirmó.
+- Los puntajes del motor son una heurística que ordena, no demuestra. La verificación solo desempata, nunca suma puntos (Stack Chooser ADR-003).
+- `npm test` (en `site/`) revisa la integridad del catálogo y recorre más de mil combinaciones de respuestas. Ninguna ficha nueva puede romperlo.
+- `engine/` y `catalog/` no importan React. Las respuestas y el stack armado solo se guardan en `localStorage`; las inválidas se descartan al leerlas (`components/stack/storage.ts`).

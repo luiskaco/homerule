@@ -17,7 +17,8 @@
     "catalog": "Catalog",
     "kitCatalog": "Rules, commands and agents",
     "skillCatalog": "Skills",
-    "promptTemplates": "Prompt templates"
+    "promptTemplates": "Prompt templates",
+    "stack": "Stack Chooser"
   },
   "Home": {
     "badge": "Claude Code · Antigravity · Codex",
@@ -777,5 +778,126 @@
     "loading": "Loading…",
     "error": "Unavailable",
     "close": "Close"
+  },
+  "Stack": {
+    "page": {
+      "metaTitle": "Stack Chooser | Homerule",
+      "metaDescription": "Build your project stack layer by layer, get warnings when something does not fit, and export a block for your AGENTS.md and an ADR.",
+      "title": "Stack Chooser",
+      "intro": "Pick a technology for each layer of your project. If something does not fit, you get a warning instead of a block. Then take the result to the AGENTS.md and docs/03_DECISIONS.md of your project.",
+      "languageNote": "The technology catalog, its reasons and the warnings are written in Spanish for now. The interface is translated."
+    },
+    "app": {
+      "intro": "Build your stack layer by layer, mixing whatever you want. If something does not fit we warn you, but the decision is yours.",
+      "suggest": "Suggest one",
+      "contextNotice": "Warnings are calculated for your project.",
+      "changeAnswers": "Change answers",
+      "exportTitle": "Take it to your project",
+      "footnote": "Warnings come from fixed rules over our own catalog, with no AI. Anything marked “unverified” was loaded from memory and must be confirmed against current documentation before adopting it.",
+      "bar": "{layers, plural, one {# layer} other {# layers}} · {warnings, plural, one {# warning} other {# warnings}}",
+      "viewStack": "View your stack"
+    },
+    "picker": {
+      "cost": {
+        "free": "Free",
+        "freemium": "Free plan",
+        "usage": "Pay per use",
+        "paid": "Paid"
+      },
+      "verified": "Verified",
+      "unverified": "Unverified",
+      "builtIn": "Included, nothing to install",
+      "avoidIf": "Avoid it if:",
+      "warningPrefix": "Warning: ",
+      "notePrefix": "Note: ",
+      "notNeeded": "Not needed for your project",
+      "chosenByYou": "Chosen by you",
+      "suggested": "Suggested",
+      "clear": "Remove choice",
+      "none": "I use nothing",
+      "withWarnings": ", with warnings",
+      "noneInLayer": "You use nothing in this layer.",
+      "hint": "Pick an option, or hover one, to see the details."
+    },
+    "summary": {
+      "title": "Your stack",
+      "reset": "Start over",
+      "empty": "You have not chosen anything yet. Pick a technology in any layer, or ask for a starting point.",
+      "none": "I use nothing",
+      "suggestedLower": "suggested",
+      "count": "{layers, plural, one {# layer} other {# layers}} · {warnings, plural, one {# warning} other {# warnings}}",
+      "unverifiedCount": "{count} unverified",
+      "toReview": "To review",
+      "toKeepInMind": "To keep in mind",
+      "export": "Take it to your project"
+    },
+    "export": {
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyFailed": "Could not copy",
+      "download": "Download .md",
+      "agentsTitle": "Block for AGENTS.md",
+      "agentsHint": "Paste it in the Project section of the AGENTS.md of your repo.",
+      "adrTitle": "Decision record (ADR)",
+      "adrHint": "Paste it in docs/03_DECISIONS.md with its alternatives and rejections."
+    },
+    "profile": {
+      "title": "My profile",
+      "intro": "What you master or already pay for moves up in the ranking, but does not decide alone. Saved in this browser.",
+      "search": "Search technology",
+      "searchPlaceholder": "Search technology…",
+      "levelFor": "Level in {name}",
+      "unmarked": "Not marked",
+      "level": {
+        "master": "I master it",
+        "know": "I know it",
+        "never": "I prefer not to use it"
+      },
+      "alreadyPaying": "I already pay for it",
+      "showing": "Showing {shown} of {total}. Type above to find others.",
+      "noMatch": "No technology matches the search."
+    },
+    "dialog": {
+      "title": "Suggest a starting point",
+      "intro": "Tell us about the project and the layers you have not chosen yet are filled in. What you already chose is left alone.",
+      "cancel": "Cancel",
+      "confirm": "Fill in the stack"
+    },
+    "form": {
+      "ariaLabel": "Project details",
+      "type": "Project type",
+      "stage": "Stage",
+      "scale": {
+        "prototype": "Prototype",
+        "product": "Product in production"
+      },
+      "seo": "How much does SEO matter?",
+      "seoLevel": {
+        "none": "Does not matter",
+        "useful": "Useful",
+        "critical": "Critical"
+      },
+      "hosting": "Hosting",
+      "hostingOption": {
+        "serverless": "No server of my own",
+        "ownServer": "Own server",
+        "any": "Do not care"
+      },
+      "budget": "Monthly budget",
+      "budgetOption": {
+        "free": "Zero",
+        "low": "Low",
+        "flexible": "Flexible"
+      },
+      "needs": "The project needs",
+      "feature": {
+        "needsUsers": "User accounts",
+        "needsPayments": "Payments",
+        "needsFiles": "File uploads",
+        "needsEmail": "Sending email",
+        "needsAI": "AI in the app",
+        "realtime": "Real time"
+      }
+    }
   }
 }

@@ -100,3 +100,48 @@ body {
   animation: ambientPulse 8s ease-in-out infinite;
 }
 
+
+/*
+ * Stack Chooser (/stack): tokens propios del componente, acotados a `.stack-chooser`
+ * para no tocar el resto del sitio. El sitio es siempre oscuro, así que solo hay variante oscura.
+ */
+@theme inline {
+  --color-paper: var(--sc-paper);
+  --color-surface: var(--sc-surface);
+  --color-sunken: var(--sc-sunken);
+  --color-ink: var(--sc-ink);
+  --color-ink-soft: var(--sc-ink-soft);
+  --color-muted: var(--sc-muted);
+  --color-rule: var(--sc-rule);
+  --color-rule-strong: var(--sc-rule-strong);
+  --color-accent: var(--sc-accent);
+  --color-accent-fg: var(--sc-accent-fg);
+  --color-accent-ink: var(--sc-accent-ink);
+  --color-accent-soft: var(--sc-accent-soft);
+  --color-warn: var(--sc-warn);
+  --color-warn-soft: var(--sc-warn-soft);
+  --color-ok: var(--sc-ok);
+  --color-ok-soft: var(--sc-ok-soft);
+  --radius-control: 6px;
+  --radius-card: 10px;
+}
+
+.stack-chooser {
+  --sc-paper: oklch(19% 0.016 260);
+  --sc-surface: oklch(23% 0.016 260);
+  --sc-sunken: oklch(16% 0.014 260);
+  --sc-ink: oklch(95% 0.006 255);
+  --sc-ink-soft: oklch(86% 0.01 255);
+  --sc-muted: oklch(72% 0.014 257);
+  --sc-rule: oklch(32% 0.016 260);
+  --sc-rule-strong: oklch(44% 0.02 260);
+  --sc-accent: oklch(68% 0.17 256);
+  --sc-accent-fg: oklch(16% 0.02 260);
+  --sc-accent-ink: oklch(80% 0.12 256);
+  --sc-accent-soft: oklch(28% 0.06 258);
+  --sc-warn: oklch(82% 0.12 85);
+  --sc-warn-soft: oklch(28% 0.05 80);
+  --sc-ok: oklch(80% 0.12 155);
+  --sc-ok-soft: oklch(27% 0.05 155);
+  color: var(--sc-ink);
+}

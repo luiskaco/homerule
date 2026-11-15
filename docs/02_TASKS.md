@@ -26,3 +26,5 @@
   Hecho cuando: el sitio tiene la identidad nueva y el repo y el dominio usan el nombre.
 - [ ] **T-11 — Una sola fuente para los agentes repetidos** (después del 2026-11-19, rama aparte): `web-researcher`, `server-inspector`, `server-operator` y el revisor de código se mantienen a mano en Claude y en Antigravity, iguales en un 85 %. Generar los de Antigravity desde los de Claude, con bloques propios de cada herramienta.
   Hecho cuando: el generador arma los agentes de Antigravity, un `--check` falla si quedan atrás y se probó uno en Antigravity (junto con T-07).
+- [ ] **T-12 — Stack Chooser en inglés** (ADR-042): el catálogo, los motivos, los avisos y los bloques exportados están solo en español, así que la página en inglés queda mezclada. Plan: traducciones por id sobre el catálogo base, mensajes del motor por idioma (español por defecto) y un test que falle si una tecnología no tiene su inglés.
+  Hecho cuando: con el idioma en inglés todo el texto sale en inglés, incluido lo exportado.

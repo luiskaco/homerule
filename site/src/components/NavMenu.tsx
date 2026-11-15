@@ -18,6 +18,7 @@ type NavEntry =
 const ENTRIES: NavEntry[] = [
   { id: "install", labelKey: "install", href: "/instalar" },
   { id: "new-project", labelKey: "newProject", href: "/proyecto-nuevo" },
+  { id: "stack", labelKey: "stack", href: "/stack" },
   {
     id: "catalog",
     labelKey: "catalog",
