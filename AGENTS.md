@@ -33,6 +33,7 @@ auto-revisión) viven en el núcleo de cada tool y no se duplican acá:
 | `docs/` | Documentación de este repo: `01_PRD`, `02_TASKS`, `03_DECISIONS`, `ARCHITECTURE`, `DATA_MODEL` y el recordatorio de la pausa. El changelog vive en la raíz (ADR-025) |
 | `scripts/` | Generadores y guards (ver Comandos) |
 | `site/` | Sitio Next.js 16 (App Router, React 19, next-intl, Tailwind 4) — deploy en Vercel |
+| `site/src/stack/` | Motor, catálogo y tipos de Stack Chooser (`/stack`), copiados de `makeStackWork` (ADR-042): puros, sin React. La interfaz está en `site/src/components/stack/` |
 
 ## Fuente vs. derivados
 

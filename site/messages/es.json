@@ -17,7 +17,8 @@
     "catalog": "Catálogo",
     "kitCatalog": "Rules, comandos y agentes",
     "skillCatalog": "Skills",
-    "promptTemplates": "Templates de prompt"
+    "promptTemplates": "Templates de prompt",
+    "stack": "Elegir stack"
   },
   "Home": {
     "badge": "Claude Code · Antigravity · Codex",
@@ -719,5 +720,126 @@
     "loading": "Cargando…",
     "error": "No disponible",
     "close": "Cerrar"
+  },
+  "Stack": {
+    "page": {
+      "metaTitle": "Stack Chooser | Homerule",
+      "metaDescription": "Armá el stack de tu proyecto capa por capa, recibí avisos si algo no encaja y exportá un bloque para tu AGENTS.md y un ADR.",
+      "title": "Stack Chooser",
+      "intro": "Elegí una tecnología para cada capa de tu proyecto. Si algo no encaja, te avisamos en vez de bloquearte. Después llevá el resultado al AGENTS.md y a docs/03_DECISIONS.md de tu proyecto.",
+      "languageNote": "Por ahora el catálogo de tecnologías, sus motivos y los avisos están solo en español. La interfaz sí está traducida."
+    },
+    "app": {
+      "intro": "Armá tu stack capa por capa, combinando lo que quieras. Si algo no encaja te avisamos, pero la decisión es tuya.",
+      "suggest": "Sugerime uno",
+      "contextNotice": "Avisos calculados para tu proyecto.",
+      "changeAnswers": "Cambiar respuestas",
+      "exportTitle": "Llevarlo a tu proyecto",
+      "footnote": "Los avisos salen de reglas fijas sobre un catálogo propio, sin IA. Lo marcado “sin verificar” se cargó de memoria y hay que confirmarlo en la documentación vigente antes de adoptarlo.",
+      "bar": "{layers, plural, one {# capa} other {# capas}} · {warnings, plural, one {# aviso} other {# avisos}}",
+      "viewStack": "Ver tu stack"
+    },
+    "picker": {
+      "cost": {
+        "free": "Gratis",
+        "freemium": "Plan gratuito",
+        "usage": "Pago por uso",
+        "paid": "De pago"
+      },
+      "verified": "Verificada",
+      "unverified": "Sin verificar",
+      "builtIn": "Viene incluido, no se instala",
+      "avoidIf": "Evitala si:",
+      "warningPrefix": "Aviso: ",
+      "notePrefix": "Ojo: ",
+      "notNeeded": "No hace falta según tu proyecto",
+      "chosenByYou": "Elegida por vos",
+      "suggested": "Sugerida",
+      "clear": "Quitar elección",
+      "none": "No uso nada",
+      "withWarnings": ", con avisos",
+      "noneInLayer": "No usás nada en esta capa.",
+      "hint": "Elegí una opción, o pasá el cursor por una, para ver los detalles."
+    },
+    "summary": {
+      "title": "Tu stack",
+      "reset": "Empezar de cero",
+      "empty": "Todavía no elegiste nada. Elegí una tecnología en cualquier capa, o pedí que te sugieran un punto de partida.",
+      "none": "No uso nada",
+      "suggestedLower": "sugerida",
+      "count": "{layers, plural, one {# capa} other {# capas}} · {warnings, plural, one {# aviso} other {# avisos}}",
+      "unverifiedCount": "{count} sin verificar",
+      "toReview": "Para revisar",
+      "toKeepInMind": "Para tener presente",
+      "export": "Llevarlo a tu proyecto"
+    },
+    "export": {
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "copyFailed": "No se pudo copiar",
+      "download": "Descargar .md",
+      "agentsTitle": "Bloque para AGENTS.md",
+      "agentsHint": "Pegalo en la sección Proyecto del AGENTS.md de tu repo.",
+      "adrTitle": "Registro de la decisión (ADR)",
+      "adrHint": "Pegalo en docs/03_DECISIONS.md con sus alternativas y descartes."
+    },
+    "profile": {
+      "title": "Mi perfil",
+      "intro": "Lo que dominás o ya pagás sube su puesto, pero no decide solo. Se guarda en este navegador.",
+      "search": "Buscar tecnología",
+      "searchPlaceholder": "Buscar tecnología…",
+      "levelFor": "Nivel en {name}",
+      "unmarked": "Sin marcar",
+      "level": {
+        "master": "La domino",
+        "know": "La conozco",
+        "never": "Prefiero no usarla"
+      },
+      "alreadyPaying": "Ya la pago",
+      "showing": "Mostrando {shown} de {total}. Escribí arriba para encontrar otras.",
+      "noMatch": "Ninguna tecnología coincide con la búsqueda."
+    },
+    "dialog": {
+      "title": "Sugerime un punto de partida",
+      "intro": "Contá cómo es el proyecto y se rellenan las capas que todavía no elegiste. Lo que ya elegiste vos no se toca.",
+      "cancel": "Cancelar",
+      "confirm": "Rellenar el stack"
+    },
+    "form": {
+      "ariaLabel": "Datos del proyecto",
+      "type": "Tipo de proyecto",
+      "stage": "Etapa",
+      "scale": {
+        "prototype": "Prototipo",
+        "product": "Producto en producción"
+      },
+      "seo": "¿Cuánto importa el SEO?",
+      "seoLevel": {
+        "none": "No importa",
+        "useful": "Es útil",
+        "critical": "Es crítico"
+      },
+      "hosting": "Hosting",
+      "hostingOption": {
+        "serverless": "Sin servidor propio",
+        "ownServer": "Servidor propio",
+        "any": "Me da igual"
+      },
+      "budget": "Presupuesto mensual",
+      "budgetOption": {
+        "free": "Cero",
+        "low": "Bajo",
+        "flexible": "Flexible"
+      },
+      "needs": "El proyecto necesita",
+      "feature": {
+        "needsUsers": "Cuentas de usuario",
+        "needsPayments": "Pagos",
+        "needsFiles": "Subida de archivos",
+        "needsEmail": "Envío de email",
+        "needsAI": "IA en la app",
+        "realtime": "Tiempo real"
+      }
+    }
   }
 }

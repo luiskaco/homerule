@@ -33,6 +33,8 @@ temas, y llevarlo a sus proyectos. El resto sigue esperando.
 **Excepción (2026-11-08):** el autor pidió la regla de explicaciones en § 0 (regla de
 escritura 8, estilo ASD-STE100).
 
+**Excepción (2026-11-15):** el autor pidió sumar Stack Chooser al sitio como una página más del menú (ADR-042).
+
 **Fin anticipado (2026-11-13):** el autor decidió cambiar la forma de trabajar sin esperar al 19: el kit pasa a instalarse en la carpeta personal (ADR-038). Lo que sigue pendiente de la revisión está abajo.
 
 ## Fricciones

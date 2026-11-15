@@ -48,6 +48,7 @@
 | ADR-039 | El sitio entrega el kit global y el arranque de un proyecto | Aceptada |
 | ADR-040 | Primera vista en inglés: el sitio abre en inglés y el README principal es en inglés | Aceptada |
 | ADR-041 | Freno de secretos al commitear: hook de git global para cualquier IA | Aceptada |
+| ADR-042 | Stack Chooser dentro del sitio, como una página más del menú | Aceptada |
 
 ---
 
@@ -1139,3 +1140,29 @@ ADR-006 sigue vigente en lo demás: el híbrido tiene su propio `tool` y sus ite
 - Si se mueve o se borra el clon del repo, el freno deja de correr sin avisar.
 - Detecta formatos conocidos; un secreto sin formato propio (una contraseña suelta) pasa. La regla `security` sigue cubriendo el resto.
 - Si Node no está disponible, el commit se frena.
+
+## ADR-042 — Stack Chooser dentro del sitio, como una página más del menú
+
+**Estado:** Aceptada (2026-11-15).
+
+**Contexto:** Stack Chooser (`makeStackWork`) recomienda o arma el stack de un proyecto capa por capa y exporta un bloque para el `AGENTS.md` y un ADR. Es el paso que viene antes de arrancar un proyecto con el kit, así que encaja en Homerule. Estaba como app aparte (Vite + React, sin remoto ni deploy).
+
+**Decisión:**
+
+- Una página `/stack` en el menú principal ("Stack Chooser" / "Elegir stack"), entre "Proyecto nuevo" y "Catálogo". Un solo sitio y un solo deploy.
+- El motor, el catálogo y los tipos se copian a `site/src/stack/` (`domain`, `catalog`, `engine`), sin cambios: siguen sin importar React. La interfaz va en `site/src/components/stack/` como componentes cliente.
+- Los textos de la interfaz están en `messages/*.json` (namespace `Stack`), en inglés y español. El contenido del catálogo (motivos, avisos, descripciones) queda en español por ahora; la página lo avisa.
+- Los colores salen de tokens propios acotados a `.stack-chooser` en `globals.css`: no tocan el resto del sitio. El sitio es siempre oscuro, así que solo hay variante oscura.
+- Los datos (respuestas, perfil y stack armado) siguen en `localStorage`, por navegador. Se leen después de montar para no romper la hidratación.
+- Los tests de `makeStackWork` no viajan: el sitio no tiene corredor de tests. La integridad del catálogo se sigue verificando allá.
+
+**Alternativas consideradas:**
+
+- **Enlace a un deploy aparte:** rápido y sin tocar código, pero dos sitios con estilos distintos, y la app no tiene deploy.
+- **Paquete compartido entre los dos repos:** evita la copia, pero exige publicar y versionar un paquete para una sola pantalla.
+
+**Consecuencias:**
+
+- Hay dos copias del motor y del catálogo. Hasta resolver T-12, cada cambio se hace en `makeStackWork` (que tiene los tests) y se copia al sitio.
+- Es una función nueva dentro de la pausa del kit: se hizo como excepción pedida por el autor (ver `docs/kit-pause.md`).
+- El catálogo en español hace que la versión en inglés sea mixta hasta traducirlo.
