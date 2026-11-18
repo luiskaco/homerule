@@ -87,8 +87,8 @@ Al llegar, hacer los pasos 1 y 2 de la sección siguiente y borrar la línea de 
 - **2026-11-10 — Documentos simplificados** (ADR-035): los globales cambian en
   § 4, § 5 y § 8. Además, migrar los `docs/` de cada proyecto con
   `docs/migrate-docs.md` y anotar acá cada uno que quede hecho.
-  - Migrados (2026-11-14, PC de la casa): `makeScriptsUtilities` (PR #1 abierto), `aetherstack` (PR #1 abierto) y `makeStackWork` (rama local `docs/migrate-docs`, el repo no tiene remoto).
-  - Pendiente en la oficina: `makeOLatamAds` (se está trabajando allá; esta PC ya no tiene copia).
+  - Migrados (2026-11-14, PC de la casa): `makeScriptsUtilities` (PR #1 fusionado), `aetherstack` (PR #1 fusionado) y `makeStackWork` (rama local `docs/migrate-docs`, el repo no tiene remoto).
+  - Migrados (2026-11-18, PC de la oficina): `makeOLatamAds` (PR #2 fusionado, con hasta 40 tareas abiertas como excepción) y `supaChat` (PR #1 fusionado).
 
 ## En otra máquina
 
