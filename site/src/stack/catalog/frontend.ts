@@ -35,6 +35,16 @@ export const FRONTEND = [
     source: 'Context7 /vercel/next.js v16.2.9 (Server Components por defecto, Route Handlers) · npm next 16.4.5',
   }),
   tech({
+    id: 'react-router',
+    name: 'React Router 7 (modo framework, ex Remix)',
+    layer: 'frontend',
+    types: ['landing', 'ecommerce', 'saas', 'ai-app'],
+    solves: 'React con render en servidor, carga de datos por ruta y formularios que funcionan sin JavaScript.',
+    traits: ['seo-friendly', 'mature', 'type-safe', 'serverless-friendly', 'self-hostable'],
+    provides: ['js-tooling', 'js-runtime', 'ssr', 'react', 'backend-capable', 'http-api'],
+    avoidWhen: ['Si buscás el ecosistema y los ejemplos de Next.js, que es mucho más usado.'],
+  }),
+  tech({
     id: 'astro',
     name: 'Astro',
     layer: 'frontend',
@@ -83,6 +93,16 @@ export const FRONTEND = [
     provides: ['js-tooling', 'spa', 'vue'],
     excludeWhen: [{ key: 'seo', is: 'critical' }],
     avoidWhen: ['Sitios públicos que viven del SEO: el contenido se arma en el navegador.'],
+  }),
+  tech({
+    id: 'angular',
+    name: 'Angular',
+    layer: 'frontend',
+    types: ['saas', 'ecommerce'],
+    solves: 'Framework completo de Google en TypeScript, con estructura fija, formularios y render en servidor opcional.',
+    traits: ['mature', 'type-safe', 'batteries-included', 'self-hostable'],
+    provides: ['js-tooling', 'spa', 'ssr'],
+    avoidWhen: ['Landings o proyectos chicos: su estructura y su curva de aprendizaje pesan más de lo que aportan.'],
   }),
   tech({
     id: 'vanilla-js',
