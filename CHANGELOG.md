@@ -6,6 +6,9 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Next.js 16.4.6 en el sitio:** corrige una vulnerabilidad conocida de la 16.4.3 que frenaba el build.
+- **Las tarjetas de instalación enlazan a "Qué trae el kit":** cada kit tiene un enlace para ver qué hace cada rule, comando y subagente antes de descargarlo.
+- **Esfuerzo medio en tres revisores:** `planner`, `security-auditor` y `db-migration-reviewer` siguen en Opus, pero pasan de esfuerzo alto a medio por defecto para gastar menos. `server-operator` no cambia.
 - **Stack Chooser en el sitio** (ADR-042): nueva página `/stack` en el menú, en inglés y español, para armar el stack de un proyecto capa por capa, con avisos, sugerencia opcional y exportación de un bloque para `AGENTS.md` y un ADR. El catálogo sigue en español.
 - **Freno de secretos al commitear** (ADR-041): un hook de git global frena el commit si entra un `.env`, un `wp-config.php`, una llave privada o un token con formato conocido. Cubre a Claude, Antigravity, Codex y los commits a mano. Se activa una vez por equipo.
 - **Menos sugerencias repetidas:** cada comando se sugiere una sola vez por conversación, `/session-close` solo cuando el usuario dice que termina, y un recordatorio se dice una vez. Gemini sugería cerrar la sesión al final de cada tarea.

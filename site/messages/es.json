@@ -661,6 +661,7 @@
     },
     "counts": "{rules} rules · {skills} skills · {commands} comandos · {agents} subagentes",
     "countsCodex": "{rules} rules · {skills} skills · {commands} comandos",
+    "seeContents": "Ver qué hace cada pieza →",
     "installsIn": "Instala en",
     "download": "Descargar ZIP",
     "generating": "Armando el ZIP…",

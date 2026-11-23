@@ -59,9 +59,14 @@ export default async function InstallPage(props: { params: Promise<{ locale: str
                 </h2>
                 <p className="mt-1 text-sm leading-relaxed text-slate-400">{t(`tools.${tool}.description`)}</p>
               </div>
-              <p className="text-sm text-slate-300">
-                {tool === "codex" ? t("countsCodex", c) : t("counts", c)}
-              </p>
+              <div className="flex flex-col gap-1">
+                <p className="text-sm text-slate-300">
+                  {tool === "codex" ? t("countsCodex", c) : t("counts", c)}
+                </p>
+                <Link href="/catalogo" className="w-fit text-sm font-medium text-violet-300 underline underline-offset-2 hover:text-violet-200">
+                  {t("seeContents")}
+                </Link>
+              </div>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{t("installsIn")}</p>
                 <ul className="mt-1 flex flex-col gap-0.5 font-mono text-xs text-slate-300">

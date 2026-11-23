@@ -719,6 +719,7 @@
     },
     "counts": "{rules} rules · {skills} skills · {commands} commands · {agents} subagents",
     "countsCodex": "{rules} rules · {skills} skills · {commands} commands",
+    "seeContents": "See what each piece does →",
     "installsIn": "Installs into",
     "download": "Download ZIP",
     "generating": "Building the ZIP…",
