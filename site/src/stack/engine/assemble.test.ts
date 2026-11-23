@@ -162,3 +162,47 @@ describe('armador libre: opciones de una capa', () => {
     expect(fastapi?.warnings).toEqual([]);
   });
 });
+
+describe('armador libre: el hosting publica lo elegido', () => {
+  it('la combinación con Express, SQLAlchemy y GitHub Actions programado avisa las dos cosas', () => {
+    const selection: ManualSelection = {
+      frontend: 'react-vite',
+      backend: 'express',
+      orm: 'sqlalchemy',
+      deploy: 'github-actions-cron',
+    };
+    const warnings = evaluateSelection(selection).warnings;
+    expect(warnings.some((w) => w.kind === 'missing-need' && w.techId === 'sqlalchemy')).toBe(true);
+    const notHosted = warnings.filter((w) => w.kind === 'not-hosted');
+    expect(notHosted.map((w) => w.message).join(' ')).toContain('React + Vite');
+    expect(notHosted.map((w) => w.message).join(' ')).toContain('Express');
+  });
+
+  it('GitHub Pages publica una SPA pero no su API', () => {
+    expect(kinds({ frontend: 'react-vite', deploy: 'github-pages' })).not.toContain('not-hosted');
+    expect(kinds({ frontend: 'react-vite', backend: 'express', deploy: 'github-pages' })).toContain('not-hosted');
+  });
+
+  it('Vercel publica Next.js con FastAPI, pero no Laravel', () => {
+    expect(kinds({ frontend: 'nextjs', backend: 'fastapi', deploy: 'vercel' })).not.toContain('not-hosted');
+    expect(kinds({ frontend: 'react-vite', backend: 'laravel', deploy: 'vercel' })).toContain('not-hosted');
+  });
+
+  it('una app móvil no se publica en Vercel, sí en las tiendas', () => {
+    expect(kinds({ frontend: 'react-native-expo', deploy: 'vercel' })).toContain('not-hosted');
+    expect(kinds({ frontend: 'react-native-expo', deploy: 'mobile-stores' })).not.toContain('not-hosted');
+  });
+
+  it('el backend de una app móvil se avisa como información, no como problema', () => {
+    const warnings = evaluateSelection({ frontend: 'react-native-expo', backend: 'fastapi', deploy: 'mobile-stores' }).warnings;
+    const notHosted = warnings.filter((w) => w.kind === 'not-hosted');
+    expect(notHosted).toHaveLength(1);
+    expect(notHosted[0].severity).toBe('info');
+  });
+
+  it('un servidor propio publica cualquier backend', () => {
+    for (const backend of ['express', 'fastapi', 'laravel', 'go', 'rails']) {
+      expect(kinds({ frontend: 'react-vite', backend, deploy: 'vps-docker' }), backend).not.toContain('not-hosted');
+    }
+  });
+});

@@ -51,6 +51,24 @@ describe('integridad del catálogo', () => {
     }
   });
 
+  it('cada hosting dice qué publica, y todo lo publicable tiene algún hosting', () => {
+    const deploys = CATALOG.filter((t) => t.layer === 'deploy');
+    for (const d of deploys) expect(d.hosts.length, `${d.id}: sin hosts`).toBeGreaterThan(0);
+    const hosted = new Set(deploys.flatMap((d) => d.hosts));
+    for (const t of CATALOG) {
+      if (t.layer !== 'deploy') expect(t.hosts, `${t.id}: hosts solo va en hosting`).toEqual([]);
+      for (const env of t.runsOn) expect(hosted.has(env), `${t.id}: nadie publica ${env}`).toBe(true);
+    }
+  });
+
+  it('todo frontend y backend dice qué necesita para publicarse', () => {
+    for (const t of CATALOG) {
+      if ((t.layer === 'frontend' || t.layer === 'backend') && !t.isNone) {
+        expect(t.runsOn.length, `${t.id}: falta runsOn`).toBeGreaterThan(0);
+      }
+    }
+  });
+
   it('cada capa tiene al menos una tecnología', () => {
     for (const layer of LAYERS) {
       expect(

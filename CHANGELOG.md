@@ -6,6 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
+- **Stack Chooser revisa el hosting:** cada hosting dice qué puede publicar, y si no cubre el frontend o el backend elegidos aparece un aviso (por ejemplo, GitHub Actions programado para una web o Vercel con Laravel). En apps móviles y de escritorio, que el backend necesite otro hosting es solo informativo. Go y Ruby cuentan como segundo lenguaje.
 - **Stack Chooser: 7 tecnologías nuevas y modal que cierra al tocar afuera.** Suma Angular, React Router 7 (ex Remix), Go, Ruby on Rails, Neon, Auth0 y la API de Gemini, todas sin verificar todavía. Lemon Squeezy quedó afuera porque anunció su cierre.
 - **Next.js 16.4.6 en el sitio:** corrige una vulnerabilidad conocida de la 16.4.3 que frenaba el build.
 - **Las tarjetas de instalación enlazan a "Qué trae el kit":** cada kit tiene un enlace para ver qué hace cada rule, comando y subagente antes de descargarlo.
