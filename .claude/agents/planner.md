@@ -3,7 +3,7 @@ name: planner
 description: Planifica tareas grandes (más de 3 archivos, varias arquitecturas posibles o pasos irreversibles) contra las reglas y los ADRs del proyecto. No escribe código; para tareas chicas no hace falta.
 tools: Read, Grep, Glob, Bash
 model: opus
-effort: high
+effort: medium
 maxTurns: 25
 color: purple
 hooks:

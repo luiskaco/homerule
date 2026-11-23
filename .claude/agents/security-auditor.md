@@ -3,7 +3,7 @@ name: security-auditor
 description: Auditoría de seguridad a fondo (auth, IDOR, inyección, secrets, SSRF, uploads, RLS) con escenario de explotación por hallazgo. Solo lectura. Usar antes de subir auth, APIs o datos sensibles; para un diff común alcanza code-reviewer.
 tools: Read, Grep, Glob, Bash
 model: opus
-effort: high
+effort: medium
 maxTurns: 40
 omitClaudeMd: true
 color: red

@@ -3,7 +3,7 @@ name: db-migration-reviewer
 description: Revisa migraciones antes de aplicarlas — pérdida de datos, vuelta atrás, locks y compatibilidad con el código desplegado. Solo lectura. Usar solo si el diff agrega o cambia una migración.
 tools: Read, Grep, Glob, Bash
 model: opus
-effort: high
+effort: medium
 maxTurns: 30
 omitClaudeMd: true
 color: purple
