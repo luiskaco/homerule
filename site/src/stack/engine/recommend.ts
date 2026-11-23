@@ -107,7 +107,31 @@ function discardReason(
   const clash = chosen.find((c) => tech.conflicts.includes(c.id) || c.conflicts.includes(tech.id));
   if (clash) return `Choca con ${clash.name}.`;
 
+  const orphan = unhosted(tech, chosen).find((t) => !separateBackend(t, chosen));
+  if (orphan) return `No publica ${orphan.name}.`;
+
   return null;
+}
+
+/**
+ * Lo elegido que un hosting no puede publicar: frontend, backend o CMS cuyo
+ * entorno (`runsOn`) no está entre los que el hosting declara en `hosts`.
+ * Una tecnología que no es hosting no deja nada sin publicar.
+ */
+export function unhosted(deploy: Technology, chosen: readonly Technology[]): Technology[] {
+  if (deploy.layer !== 'deploy') return [];
+  return chosen.filter((t) => t.runsOn.length > 0 && !t.runsOn.some((env) => deploy.hosts.includes(env)));
+}
+
+/**
+ * Una app móvil o de escritorio se distribuye por su canal (tienda, instalador)
+ * y su backend vive aparte: que ese hosting no publique el backend es esperable.
+ */
+export function separateBackend(tech: Technology, chosen: readonly Technology[]): boolean {
+  return (
+    tech.layer === 'backend' &&
+    chosen.some((c) => c.layer === 'frontend' && c.runsOn.some((env) => env === 'mobile-app' || env === 'desktop-app'))
+  );
 }
 
 /** Capacidades que indican en qué lenguaje corre una tecnología. */
@@ -115,6 +139,8 @@ const LANGUAGE_OF: Readonly<Record<string, string>> = {
   'js-tooling': 'javascript',
   python: 'python',
   php: 'php',
+  go: 'go',
+  ruby: 'ruby',
 };
 
 export function languagesOf(capabilities: Iterable<string>): Set<string> {

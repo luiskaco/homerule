@@ -108,6 +108,15 @@ export interface Technology {
   excludeWhen: Condition[];
   /** Cuándo conviene evitarla (texto para mostrar). */
   avoidWhen: string[];
+  /**
+   * Qué hace falta para publicarla (frontend, backend o CMS): alguno de estos
+   * entornos. Vacío = no se publica aparte. Valores: static, node-ssr, node,
+   * python, php, go, ruby, container, node-script, python-script, mobile-app,
+   * desktop-app.
+   */
+  runsOn: string[];
+  /** Solo hosting: los entornos de `runsOn` que puede publicar. */
+  hosts: string[];
   cost: Cost;
   /** Una opción "no hace falta": no se lista como tecnología a instalar. */
   isNone: boolean;

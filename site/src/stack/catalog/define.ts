@@ -11,6 +11,8 @@ export function tech(input: TechInput): Technology {
     provides: [],
     needs: [],
     conflicts: [],
+    runsOn: [],
+    hosts: [],
     excludeWhen: [],
     avoidWhen: [],
     cost: 'free',

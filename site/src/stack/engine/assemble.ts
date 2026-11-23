@@ -9,6 +9,8 @@ import {
   isSatisfied,
   languagesOf,
   normalizeAnswers,
+  separateBackend,
+  unhosted,
 } from './recommend';
 
 /**
@@ -26,6 +28,7 @@ export type WarningKind =
   | 'budget'
   | 'missing-need'
   | 'conflict'
+  | 'not-hosted'
   | 'second-language';
 
 export interface SelectionWarning {
@@ -91,6 +94,18 @@ export function techWarnings(
   for (const other of others) {
     if (tech.conflicts.includes(other.id) || other.conflicts.includes(tech.id)) {
       warn('conflict', `Choca con ${other.name}.`);
+    }
+  }
+
+  for (const orphan of unhosted(tech, others)) {
+    if (separateBackend(orphan, others)) {
+      warnings.push({
+        kind: 'not-hosted',
+        severity: 'info',
+        message: `${orphan.name} necesita su propio hosting: este solo distribuye la app.`,
+      });
+    } else {
+      warn('not-hosted', `No publica ${orphan.name}: vas a necesitar otro hosting para eso.`);
     }
   }
 
