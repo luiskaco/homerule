@@ -6,7 +6,7 @@ Registro de cambios relevantes del proyecto **AI Rules Hub / makeRuleIA**, tanto
 
 ### Cambios
 
-- **Stack Chooser: 8 tecnologías nuevas y modal que cierra al tocar afuera.** Suma Angular, React Router 7 (ex Remix), Go, Ruby on Rails, Neon, Auth0 y la API de Gemini, todas sin verificar todavía. Lemon Squeezy quedó afuera porque anunció su cierre.
+- **Stack Chooser: 7 tecnologías nuevas y modal que cierra al tocar afuera.** Suma Angular, React Router 7 (ex Remix), Go, Ruby on Rails, Neon, Auth0 y la API de Gemini, todas sin verificar todavía. Lemon Squeezy quedó afuera porque anunció su cierre.
 - **Next.js 16.4.6 en el sitio:** corrige una vulnerabilidad conocida de la 16.4.3 que frenaba el build.
 - **Las tarjetas de instalación enlazan a "Qué trae el kit":** cada kit tiene un enlace para ver qué hace cada rule, comando y subagente antes de descargarlo.
 - **Esfuerzo medio en tres revisores:** `planner`, `security-auditor` y `db-migration-reviewer` siguen en Opus, pero pasan de esfuerzo alto a medio por defecto para gastar menos. `server-operator` no cambia.
