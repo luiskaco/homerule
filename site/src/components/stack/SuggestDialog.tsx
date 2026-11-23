@@ -35,6 +35,11 @@ export function SuggestDialog({ open, answers, profile, onAnswers, onProfile, on
         e.preventDefault();
         onCancel();
       }}
+      // El contenido ocupa todo el <dialog> (p-0), así que un clic con target en
+      // el propio <dialog> solo puede venir del fondo: se cierra como con Escape.
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onCancel();
+      }}
       aria-labelledby="suggest-title"
       className="m-auto max-h-[90vh] w-[min(40rem,calc(100vw-2rem))] overflow-y-auto rounded-card border border-rule bg-paper p-0 text-ink backdrop:bg-black/60"
     >

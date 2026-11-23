@@ -27,6 +27,17 @@ export const DATABASE = [
     source: 'Context7 /websites/supabase_guides (Postgres, RLS, auth.users, Realtime) · npm @supabase/supabase-js 2.119.0',
   }),
   tech({
+    id: 'neon',
+    name: 'Neon (Postgres serverless)',
+    layer: 'database',
+    types: ['ecommerce', 'saas', 'api', 'ai-app'],
+    solves: 'Postgres gestionado que escala a cero y crea una rama de la base para cada entorno.',
+    traits: ['serverless-friendly', 'quick-start', 'ai-friendly', 'type-safe'],
+    provides: ['sql-db', 'postgres'],
+    cost: 'freemium',
+    avoidWhen: ['Si necesitás la base en tu propio servidor: es un servicio gestionado.'],
+  }),
+  tech({
     id: 'mysql',
     name: 'MySQL / MariaDB',
     layer: 'database',
@@ -163,6 +174,32 @@ export const BACKEND = [
     avoidWhen: [
       'Si querés un solo lenguaje con un frontend en JavaScript: sumás PHP y su entorno.',
       'Hosting sin servidor propio: necesita PHP corriendo.',
+    ],
+  }),
+  tech({
+    id: 'go',
+    name: 'Go (net/http, Gin o Echo)',
+    layer: 'backend',
+    types: ['ecommerce', 'saas', 'api', 'ai-app', 'automation'],
+    solves: 'APIs y servicios compilados a un solo binario, rápidos y con poco consumo de memoria.',
+    traits: ['lightweight', 'mature', 'type-safe', 'self-hostable'],
+    provides: ['backend', 'go', 'http-api'],
+    avoidWhen: [
+      'Si querés compartir código y tipos con un frontend en TypeScript.',
+      'Paneles o CRUD grandes: no trae ORM ni panel de administración.',
+    ],
+  }),
+  tech({
+    id: 'rails',
+    name: 'Ruby on Rails',
+    layer: 'backend',
+    types: ['ecommerce', 'saas', 'api'],
+    solves: 'Framework completo con ORM (Active Record), migraciones, colas y generadores incluidos.',
+    traits: ['batteries-included', 'mature', 'quick-start', 'self-hostable'],
+    provides: ['backend', 'ruby', 'http-api', 'orm-builtin'],
+    avoidWhen: [
+      'Si querés un solo lenguaje con un frontend en JavaScript: sumás Ruby y su entorno.',
+      'Hosting sin servidor propio: necesita Ruby corriendo.',
     ],
   }),
   tech({

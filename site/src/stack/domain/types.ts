@@ -50,7 +50,7 @@ export type Trait =
  *
  * Capacidades en uso: js-tooling, js-runtime, spa, static, ssr, react, vue,
  * svelte, react-native, dart, desktop-shell, backend, backend-capable, http-api,
- * python, php, wordpress, sql-db, postgres, mysql, sqlite, nosql-db, mongo,
+ * python, php, go, ruby, wordpress, sql-db, postgres, mysql, sqlite, nosql-db, mongo,
  * supabase, firebase, orm, orm-builtin, auth, payments, files, email, llm,
  * vercel, netlify, cloudflare, paas, vps, github.
  */
